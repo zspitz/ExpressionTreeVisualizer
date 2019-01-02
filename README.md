@@ -8,7 +8,7 @@ This project is inspired by the excellent [ReadableExpressions](https://github.c
 
 The goals of this project are:
 
-1. Provide an extension method on expressions that returns a Roslyn syntax tree, in either C# or VB.NET
+1. Provide an extension method on expressions that returns a Roslyn syntax tree, in either C# or VB.NET, using the SyntaxNode API as much as possible
 2. Provide an extension method on expressions that returns a string representation of that tree, with optional trivia insertion.
     * Ideally the trivia insertion will be based on project settings, or the user's IDE settings, if possible
 3. Provide a visualizer with a tree representation of the expression, alongside the code
