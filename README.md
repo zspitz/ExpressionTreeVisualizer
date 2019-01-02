@@ -1,7 +1,7 @@
 # ExpressionToSyntaxNode
 Maps expression trees to Roslyn Syntax Node trees, using the SyntaxNode API for cross-language support
 
-This project is inspired by the excellent [ReadableExpressions](https://github.com/agileobjects/ReadableExpressions) project. However, it has the following limitations:
+This is inspired by the excellent [ReadableExpressions](https://github.com/agileobjects/ReadableExpressions) project. However, it has the following limitations:
 
 1. code output is only in CSharp
 2. closed-over variables in VB.NET expressions are not handled
