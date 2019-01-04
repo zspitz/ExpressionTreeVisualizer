@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using static Microsoft.CodeAnalysis.LanguageNames;
@@ -13,6 +14,7 @@ namespace ExpressionTreeTransform {
         private string language;
         private Workspace workspace;
         private SyntaxGenerator generator;
+        private List<Expression> visitedExpressions;
 
         public SyntaxNode GetSyntaxNode(Expression expr, string language) {
             this.language = language;
@@ -21,10 +23,18 @@ namespace ExpressionTreeTransform {
             workspace = new AdhocWorkspace();
             generator = SyntaxGenerator.GetGenerator(workspace, language);
 
-            return getSyntaxNode(expr);
+            return getSyntaxNode(expr).NormalizeWhitespace("    ", true);    
+        }
+
+        public SyntaxNode GetSyntaxNode(Expression expr, string language, out Dictionary<Expression, int> expressionIDs) {
+            visitedExpressions = new List<Expression>();
+            var ret = GetSyntaxNode(expr, language);
+            expressionIDs = visitedExpressions.Select((x, index) => (x, index)).ToDictionary();
+            return ret;
         }
 
         private SyntaxNode getSyntaxNode(Expression expr) {
+            SyntaxNode ret;
             switch (expr.NodeType) {
 
                 #region BinaryExpression
@@ -66,7 +76,8 @@ namespace ExpressionTreeTransform {
 
                 // array indexing operations
                 case ArrayIndex:
-                    return getSyntaxNode(expr as BinaryExpression);
+                    ret= getSyntaxNode(expr as BinaryExpression);
+                    break;
 
                 #endregion
 
@@ -81,18 +92,22 @@ namespace ExpressionTreeTransform {
                 case Quote:
                 case TypeAs:
                 case UnaryPlus:
-                    return getSyntaxNode(expr as UnaryExpression);
+                    ret = getSyntaxNode(expr as UnaryExpression);
+                    break;
 
                 #endregion
 
                 case Lambda:
-                    return getSyntaxNode(expr as LambdaExpression);
+                    ret= getSyntaxNode(expr as LambdaExpression);
+                    break;
 
                 case Parameter:
-                    return getSyntaxNode(expr as ParameterExpression);
+                    ret = getSyntaxNode(expr as ParameterExpression);
+                    break;
 
                 case Constant:
-                    return getSyntaxNode(expr as ConstantExpression);
+                    ret = getSyntaxNode(expr as ConstantExpression);
+                    break;
 
                 default:
                     throw new NotImplementedException();
@@ -200,6 +215,12 @@ namespace ExpressionTreeTransform {
                     default:
                         break;*/
             }
+
+            if (visitedExpressions != null) {
+                visitedExpressions.Add(expr);
+                ret = ret.WithAdditionalAnnotations(new SyntaxAnnotation("expressionID", (visitedExpressions.Count -1).ToString()));
+            }
+            return ret;
         }
 
         private SyntaxNode getSyntaxNode(BinaryExpression expr) {

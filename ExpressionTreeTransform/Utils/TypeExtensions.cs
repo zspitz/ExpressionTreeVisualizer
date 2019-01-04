@@ -23,5 +23,7 @@ namespace System {
         };
 
         public static bool IsNumeric(this Type type) => type.In(numericTypes);
+
+        public static bool InheritsFromOrImplements<T>(this Type type) => typeof(T).IsAssignableFrom(type);
     }
 }

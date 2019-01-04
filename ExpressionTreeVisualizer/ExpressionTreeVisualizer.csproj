@@ -10,4 +10,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ExpressionTreeTransform\ExpressionTreeTransform.csproj" />
+  </ItemGroup>
+
 </Project>
