@@ -8,4 +8,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.10.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ExpressionTreeTransform.Utils\ExpressionTreeTransform.Utils.csproj" />
+  </ItemGroup>
+
 </Project>

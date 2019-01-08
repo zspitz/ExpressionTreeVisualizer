@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
-namespace System.Linq {
+namespace ExpressionTreeTransform.Util {
     public static class IEnumerableTExtensions {
         public static bool None<T>(this IEnumerable<T> src, Func<T,bool> predicate = null) {
             if (predicate != null) { return !src.Any(predicate); }

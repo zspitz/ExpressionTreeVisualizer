@@ -8,6 +8,7 @@ using static Microsoft.CodeAnalysis.LanguageNames;
 using static System.Linq.Expressions.ExpressionType;
 using CS = Microsoft.CodeAnalysis.CSharp;
 using VB = Microsoft.CodeAnalysis.VisualBasic;
+using ExpressionTreeTransform.Util;
 
 namespace ExpressionTreeTransform {
     public class Mapper {
@@ -252,6 +253,7 @@ namespace ExpressionTreeTransform {
                             (VB.Syntax.ExpressionSyntax)right
                         );
                     }
+                    //TODO use Math.Power
                     throw new NotImplementedException();
 
                 case Subtract:

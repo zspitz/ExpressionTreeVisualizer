@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
 using static Microsoft.CodeAnalysis.LanguageNames;
+using ExpressionTreeTransform.Util;
 
 namespace ExpressionTreeTransform.Tests {
     public class CompilerGenerated {

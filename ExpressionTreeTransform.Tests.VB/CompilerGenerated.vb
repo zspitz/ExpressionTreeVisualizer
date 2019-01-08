@@ -4,6 +4,7 @@ Imports Xunit
 Imports Microsoft.CodeAnalysis.LanguageNames
 Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports ExpressionTreeTransform.Util
 
 Namespace ExpressionTreeTransform.Tests.VB
     Public Class CompilerGenerated
