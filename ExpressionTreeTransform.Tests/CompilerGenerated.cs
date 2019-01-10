@@ -34,5 +34,7 @@ class Class1 {{
         [Fact]
         public void ReturnBooleanFalse() => buildAssert(() => false, "() => false");
 
+        [Fact]
+        public void ReturnMemberAccess() => buildAssert(() => "abcd".Length, "() => \"abcd\".Length");
     }
 }

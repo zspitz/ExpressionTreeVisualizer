@@ -21,16 +21,18 @@ class Class1 {{
 
         static void Main(string[] args) {
             var mapper = new Mapper();
+            var i = 7;
+            var j = 8;
             Expression<Func<bool>> expr = () => true;
             //var mapped = mapper.GetSyntaxNode(expr, CSharp);
 
             //var root = expressionNode("() => true");
 
-            var mapped = mapper.GetSyntaxNode(expr, VisualBasic, out var expressionIDs);
-            var root = VisualBasicSyntaxTree.ParseText("Dim expr = Function() True").GetRoot();
-            var node = root.DescendantNodes().OfType<EqualsValueSyntax>().First().ChildNodes().First();
-            Console.WriteLine(mapped.IsEquivalentTo(node, false));
-            Console.WriteLine(node.IsEquivalentTo(mapped, false));
+            //var mapped = mapper.GetSyntaxNode(expr, VisualBasic, out var expressionIDs);
+            //var root = VisualBasicSyntaxTree.ParseText("Dim expr = Function() True").GetRoot();
+            //var node = root.DescendantNodes().OfType<EqualsValueSyntax>().First().ChildNodes().First();
+            //Console.WriteLine(mapped.IsEquivalentTo(node, false));
+            //Console.WriteLine(node.IsEquivalentTo(mapped, false));
 
             //Console.WriteLine(mapped.ToFullString());
             //mapped = mapped.NormalizeWhitespace("    ", true);
@@ -46,6 +48,7 @@ class Class1 {{
             //foreach (var d in tree.GetDiagnostics()) {
             //    Console.WriteLine(d);
             //}
+
 
             Console.ReadKey(true);
         }
