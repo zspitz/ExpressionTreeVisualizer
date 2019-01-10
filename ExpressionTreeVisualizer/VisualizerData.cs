@@ -1,0 +1,62 @@
+﻿using ExpressionTreeTransform;
+using Microsoft.CodeAnalysis;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using ExpressionTreeTransform.Util;
+
+namespace ExpressionTreeVisualizer {
+    [Serializable]
+    public class VisualizerData {
+        public string Source { get; set; }
+        public ExpressionNodeData NodeData { get; set; }
+
+        // for deserialization
+        public VisualizerData() { }
+
+        public VisualizerData(Expression expr, string language) {
+            var node = expr.ToSyntaxNode(language, out var expressionIDs);
+            Source = node.ToFullString();
+            NodeData = new ExpressionNodeData(expr, node, expressionIDs);
+        }
+
+        // TODO closed-over variables
+    }
+
+    [Serializable]
+    public class ExpressionNodeData {
+        public Dictionary<string, ExpressionNodeData> Children { get; set; }
+        public ExpressionType NodeType { get; set; }
+        public string ReflectionTypeName { get; set; }
+        public (int start, int length) Span { get; set; }
+
+        // for deserialization
+        public ExpressionNodeData() { }
+
+        public ExpressionNodeData(Expression expr, SyntaxNode tree, Dictionary<Expression, int> expressionIDs) {
+            var annotatedNodes = tree.GetAnnotatedNodes("expressionID").Select(node => (node.GetAnnotations("expressionID").Single().Data, node)).ToDictionary();
+            Children = expr.GetType().GetProperties().SelectMany(prp => {
+                IEnumerable<(string, Expression)> ret = Enumerable.Empty<(string, Expression)>();
+                if (prp.PropertyType.InheritsFromOrImplements<Expression>()) {
+                    ret = new[] { (prp.Name, prp.GetValue(expr) as Expression) };
+                } else if (prp.PropertyType.InheritsFromOrImplements<IEnumerable<Expression>>()) {
+                    ret = (prp.GetValue(expr) as IEnumerable<Expression>).Select((x, index) => ($"{prp.Name}[{index}]", x));
+                }
+                return ret.Where(x => x.Item2 != null);
+            }).Select(x => {
+                if (expressionIDs.TryGetValue(x.Item2, out var id)) {
+                    var node = annotatedNodes[id.ToString()];
+                    Span = (node.SpanStart, node.Span.Length);
+                }
+                return (x.Item1, new ExpressionNodeData(x.Item2, tree, expressionIDs));
+            }).ToDictionary();
+
+            NodeType = expr.NodeType;
+            ReflectionTypeName = expr.Type.Name;
+
+            //TODO load selected properties based on type, e.g. ConstantExpression.Value
+
+        }
+    }
+}
