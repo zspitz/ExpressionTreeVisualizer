@@ -27,6 +27,7 @@ namespace ExpressionTreeTransform {
             return getSyntaxNode(expr).NormalizeWhitespace("    ", true);    
         }
 
+        // TODO keep track of closed over variables per closure, using passed-in List<(string closure, string name, Type type)>
         public SyntaxNode GetSyntaxNode(Expression expr, string language, out Dictionary<Expression, int> expressionIDs) {
             visitedExpressions = new List<Expression>();
             var ret = GetSyntaxNode(expr, language);
@@ -108,6 +109,10 @@ namespace ExpressionTreeTransform {
 
                 case Constant:
                     ret = getSyntaxNode(expr as ConstantExpression);
+                    break;
+
+                case MemberAccess:
+                    ret = getSyntaxNode(expr as MemberExpression);
                     break;
 
                 default:
@@ -226,7 +231,7 @@ namespace ExpressionTreeTransform {
 
         private SyntaxNode getSyntaxNode(BinaryExpression expr) {
             Func<SyntaxNode, SyntaxNode, SyntaxNode> method = null;
-            var left = getSyntaxNode(expr.Right);
+            var left = getSyntaxNode(expr.Left);
             var right = getSyntaxNode(expr.Right);
 
             switch (expr.NodeType) {
@@ -430,6 +435,10 @@ namespace ExpressionTreeTransform {
             }
         }
 
+        private SyntaxNode getSyntaxNode(MemberExpression expr) {
+            //TODO track closure variables here -- if the instance has the DisplayClass attribute
+            return generator.MemberAccessExpression(getSyntaxNode(expr.Expression), expr.Member.Name);
+        }
 
         //private SyntaxNode getSyntaxNode(BlockExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(ConditionalExpression expr) => throw new NotImplementedException();
@@ -442,7 +451,6 @@ namespace ExpressionTreeTransform {
         //private SyntaxNode getSyntaxNode(LabelExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(ListInitExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(LoopExpression expr) => throw new NotImplementedException();
-        //private SyntaxNode getSyntaxNode(MemberExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(MemberInitExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(MethodCallExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(NewArrayExpression expr) => throw new NotImplementedException();
