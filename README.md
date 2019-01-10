@@ -14,3 +14,7 @@ The goals of this project are:
 3. Provide a visualizer with a tree representation of the expression, alongside the code
 
 Note that expression support is incomplete -- lots of `NotImplementedException`.
+
+Screenshot (really early days yet; the closed over variables has only dummy values):
+
+![Screenshot](screenshot.png)
