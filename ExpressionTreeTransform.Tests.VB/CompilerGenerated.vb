@@ -27,6 +27,16 @@ Namespace ExpressionTreeTransform.Tests.VB
         Sub ReturnBooleanFalse()
             BuildAssert(Function() False, "Function() False")
         End Sub
+
+        <Fact>
+        Sub ReturnObjectCreation()
+            BuildAssert(Function() New Date(1980, 1, 1), "Function() New Date(1980, 1, 1)")
+        End Sub
+
+        <Fact>
+        Sub ReturnDateLiteral()
+            BuildAssert(Function() #1/1/1980#, "Function() #1/1/1980")
+        End Sub
     End Class
 End Namespace
 

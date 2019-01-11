@@ -7,7 +7,7 @@ namespace System {
     public static class TypeExtensions {
         public static Type UnderlyingIfNullable(this Type type) => Nullable.GetUnderlyingType(type) ?? type;
 
-        private static HashSet<Type> numericTypes = new HashSet<Type>() {
+        private static readonly HashSet<Type> numericTypes = new HashSet<Type>() {
             typeof(byte),
             typeof(short),
             typeof(int),
@@ -22,7 +22,7 @@ namespace System {
             typeof(decimal)
         };
 
-        public static bool IsNumeric(this Type type) => type.In(numericTypes);
+        public static bool IsNumeric(this Type type) => type.UnderlyingIfNullable().In(numericTypes);
 
         public static bool InheritsFromOrImplements<T>(this Type type) => typeof(T).IsAssignableFrom(type);
     }

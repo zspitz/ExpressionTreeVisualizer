@@ -36,5 +36,8 @@ class Class1 {{
 
         [Fact]
         public void ReturnMemberAccess() => buildAssert(() => "abcd".Length, "() => \"abcd\".Length");
+
+        [Fact]
+        public void ReturnObjectCreation() => buildAssert(() => new DateTime(1980, 1, 1), "() => new DateTime(1980, 1, 1)");
     }
 }
