@@ -15,6 +15,10 @@ The goals of this project are:
 
 Note that expression support is incomplete -- lots of `NotImplementedException`.
 
-Screenshot (really early days yet; the closed over variables has only dummy values):
+Screenshot of the visualizer (really early days yet; the closed over variables has only dummy values):
 
 ![Screenshot](screenshot.png)
+
+Slightly more complicated expression, using Visual Basic:
+
+![Screenshot](screenshot2.png)
