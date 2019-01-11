@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using ExpressionTreeTransform.Util;
+using CS = Microsoft.CodeAnalysis.CSharp;
+using VB = Microsoft.CodeAnalysis.VisualBasic;
 
 namespace ExpressionTreeVisualizer {
     [Serializable]
@@ -54,14 +56,14 @@ namespace ExpressionTreeVisualizer {
             NodeType = expr.NodeType;
             ReflectionTypeName = expr.Type.Name;
 
-            if (expr is ConstantExpression cexpr && (
-                cexpr.Type.UnderlyingIfNullable().In(typeof(string), typeof(DateTime), typeof(TimeSpan)) || 
-                cexpr.Type.IsNumeric()
-            )) {
-                if (tree.Language=="CSharp" && cexpr.Type.UnderlyingIfNullable().In(typeof(DateTime), typeof(TimeSpan))) {
+            // TODO test if the syntax node is a literal, or an identifier
+            // only if it's an identifier, then call ToString for some types
+            if (expr is ConstantExpression cexpr) {
+                var sn = expressionSyntaxNode[expr];
+                if (sn.IsLiteral()) {
+                    ConstantValue = sn.ToFullString();
+                } else if (cexpr.Type.UnderlyingIfNullable().In(typeof(DateTime), typeof(TimeSpan))) {
                     ConstantValue = cexpr.Value.ToString();
-                } else {
-                    ConstantValue = expressionSyntaxNode[expr].ToFullString();
                 }
             }
 

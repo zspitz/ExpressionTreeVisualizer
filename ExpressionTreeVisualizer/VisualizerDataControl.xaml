@@ -30,6 +30,6 @@
     <GridSplitter HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Black" ShowsPreview="True" Width="5" Grid.Column="1" />
     <DockPanel Grid.Column="2">
         <Button Content="*" HorizontalAlignment="Right" DockPanel.Dock="Top" />
-        <TextBlock Text="{Binding Source}" />
+        <TextBlock Text="{Binding Source}" TextWrapping="Wrap" />
     </DockPanel>
 </ag:AutoGrid>
