@@ -56,8 +56,6 @@ namespace ExpressionTreeVisualizer {
             NodeType = expr.NodeType;
             ReflectionTypeName = expr.Type.Name;
 
-            // TODO test if the syntax node is a literal, or an identifier
-            // only if it's an identifier, then call ToString for some types
             if (expr is ConstantExpression cexpr) {
                 var sn = expressionSyntaxNode[expr];
                 if (sn.IsLiteral()) {
@@ -66,9 +64,6 @@ namespace ExpressionTreeVisualizer {
                     ConstantValue = cexpr.Value.ToString();
                 }
             }
-
-            //TODO load selected properties based on type, e.g. ConstantExpression.Value
-
         }
     }
 }
