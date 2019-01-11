@@ -1,15 +1,14 @@
 ﻿<ag:AutoGrid x:Class="ExpressionTreeVisualizer.VisualizerDataControl" ColumnCount="3" Columns="*,Auto,*" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:my="clr-namespace:ExpressionTreeVisualizer" xmlns:ag="clr-namespace:WpfAutoGrid;assembly=WpfAutoGrid">
     <FrameworkElement.Resources>
         <my:RootConverter x:Key="RootConverter" />
+        <my:ConditionalFormatConverter x:Key="ConditionalFormatConverter" />
         <HierarchicalDataTemplate x:Key="ExpressionNodeTemplate" ItemsSource="{Binding Value.Children}">
             <TextBlock>
-                <Run Foreground="Gray" Text="{Binding Key, Mode=OneTime}" /> - <Run Text="{Binding Value.NodeType, Mode=OneTime}" /> (<Run Text="{Binding Value.ReflectionTypeName, Mode=OneTime}" Foreground="Gray" />)
+                <Run Foreground="Gray" Text="{Binding Key, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
+                <Run Text="{Binding Value.NodeType, Mode=OneTime}" />
+                <Run Text="{Binding Value.ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter= ({0})}" Foreground="Gray" />
+                <Run Text="{Binding Value.ConstantValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" Foreground="Gray" />
             </TextBlock>
-            
-            <!--<StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Key}" Foreground="DarkGray" />
-                <TextBlock Text="{Binding Value.NodeType}" />
-            </StackPanel>-->
         </HierarchicalDataTemplate>
     </FrameworkElement.Resources>
     <DockPanel>
@@ -20,7 +19,13 @@
             <TextBlock Text="Value2" />
         </ag:AutoGrid>
         <TextBlock Text="Closed-over variables" Background="Gray" DockPanel.Dock="Bottom" />
-        <TreeView ItemsSource="{Binding NodeData, Converter={StaticResource RootConverter}}" ItemTemplate="{StaticResource ExpressionNodeTemplate}" />
+        <TreeView ItemsSource="{Binding NodeData, Converter={StaticResource RootConverter}}" ItemTemplate="{StaticResource ExpressionNodeTemplate}">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="True" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
     </DockPanel>
     <GridSplitter HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Black" ShowsPreview="True" Width="5" Grid.Column="1" />
     <DockPanel Grid.Column="2">

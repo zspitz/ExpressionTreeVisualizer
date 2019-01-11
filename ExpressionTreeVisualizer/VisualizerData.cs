@@ -16,9 +16,9 @@ namespace ExpressionTreeVisualizer {
         public VisualizerData() { }
 
         public VisualizerData(Expression expr, string language) {
-            var node = expr.ToSyntaxNode(language, out var expressionIDs);
+            var node = expr.ToSyntaxNode(language, out var expressionSyntaxNodes);
             Source = node.ToFullString();
-            NodeData = new ExpressionNodeData(expr, node, expressionIDs);
+            NodeData = new ExpressionNodeData(expr, node, expressionSyntaxNodes);
         }
 
         // TODO closed-over variables
@@ -30,12 +30,12 @@ namespace ExpressionTreeVisualizer {
         public ExpressionType NodeType { get; set; }
         public string ReflectionTypeName { get; set; }
         public (int start, int length) Span { get; set; }
+        public string ConstantValue { get; set; }
 
         // for deserialization
         public ExpressionNodeData() { }
 
-        public ExpressionNodeData(Expression expr, SyntaxNode tree, Dictionary<Expression, int> expressionIDs) {
-            var annotatedNodes = tree.GetAnnotatedNodes("expressionID").Select(node => (node.GetAnnotations("expressionID").Single().Data, node)).ToDictionary();
+        public ExpressionNodeData(Expression expr, SyntaxNode tree, Dictionary<Expression, SyntaxNode> expressionSyntaxNode) {
             Children = expr.GetType().GetProperties().SelectMany(prp => {
                 IEnumerable<(string, Expression)> ret = Enumerable.Empty<(string, Expression)>();
                 if (prp.PropertyType.InheritsFromOrImplements<Expression>()) {
@@ -45,15 +45,25 @@ namespace ExpressionTreeVisualizer {
                 }
                 return ret.Where(x => x.Item2 != null);
             }).Select(x => {
-                if (expressionIDs.TryGetValue(x.Item2, out var id)) {
-                    var node = annotatedNodes[id.ToString()];
+                if (expressionSyntaxNode.TryGetValue(x.Item2, out var node)) {
                     Span = (node.SpanStart, node.Span.Length);
                 }
-                return (x.Item1, new ExpressionNodeData(x.Item2, tree, expressionIDs));
+                return (x.Item1, new ExpressionNodeData(x.Item2, tree, expressionSyntaxNode));
             }).ToDictionary();
 
             NodeType = expr.NodeType;
             ReflectionTypeName = expr.Type.Name;
+
+            if (expr is ConstantExpression cexpr && (
+                cexpr.Type.UnderlyingIfNullable().In(typeof(string), typeof(DateTime), typeof(TimeSpan)) || 
+                cexpr.Type.IsNumeric()
+            )) {
+                if (tree.Language=="CSharp" && cexpr.Type.UnderlyingIfNullable().In(typeof(DateTime), typeof(TimeSpan))) {
+                    ConstantValue = cexpr.Value.ToString();
+                } else {
+                    ConstantValue = expressionSyntaxNode[expr].ToFullString();
+                }
+            }
 
             //TODO load selected properties based on type, e.g. ConstantExpression.Value
 
