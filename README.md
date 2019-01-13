@@ -3,7 +3,7 @@ Maps expression trees to Roslyn Syntax Node trees, using the SyntaxNode API for 
 
 This is inspired by the excellent [ReadableExpressions](https://github.com/agileobjects/ReadableExpressions) project. However, it has the following limitations:
 
-1. code output is only in CSharp
+1. code output is only in C#
 2. closed-over variables in VB.NET expressions are not handled
 
 The goals of this project are:
