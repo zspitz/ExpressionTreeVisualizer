@@ -8,10 +8,10 @@ This is inspired by the excellent [ReadableExpressions](https://github.com/agile
 
 The goals of this project are:
 
-1. Provide an extension method on expressions that returns a Roslyn syntax tree, in either C# or VB.NET, using the SyntaxNode API as much as possible, but dropping down to the language-specific `SyntaxFactory` as needed.
+1. Provide an extension method on expressions that returns a Roslyn syntax tree, in either C# or VB.NET, using the language-independent `SyntaxNode` API as much as possible, and dropping down to the language-specific `SyntaxFactory` as needed.
 2. Provide an extension method on expressions that returns a string representation of that tree, with optional trivia insertion.
-    * Ideally the trivia insertion will be based on project settings, or the user's IDE settings, if possible
 3. Provide a visualizer with a tree representation of the expression, alongside the code
+    * Ideally the trivia insertion within the visualizer will be based on project settings, or the user's IDE settings, if possible
 
 Note that expression support is incomplete -- lots of `NotImplementedException`.
 
