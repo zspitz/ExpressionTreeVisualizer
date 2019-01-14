@@ -3,14 +3,14 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 
-[assembly: DebuggerVisualizer(typeof(ExpressionTreeVisualizer.Visualizer), Target = typeof(System.Linq.Expressions.Expression))]
+[assembly: DebuggerVisualizer(typeof(ExpressionTreeVisualizer.Visualizer), typeof(ExpressionTreeVisualizer.VisualizerDataObjectSource), Target = typeof(System.Linq.Expressions.Expression), Description ="Expression Tree Visualizer")]
 
 namespace ExpressionTreeVisualizer {
     public class Visualizer : DialogDebuggerVisualizer {
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) {
             if (windowService == null) { throw new ArgumentNullException(nameof(windowService)); }
             if (objectProvider == null) { throw new ArgumentNullException(nameof(objectProvider)); }
-            var data = objectProvider.GetObject() as VisualizerData;
+            var data = (VisualizerData)objectProvider.GetObject();
 
             var control = new VisualizerDataControl { DataContext = data };
 

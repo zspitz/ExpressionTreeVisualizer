@@ -15,14 +15,17 @@ namespace _visualizerTests {
         static void Main(string[] args) {
             var i = 7;
             var j = 8;
-            Expression<Func<bool>> expr = () => i * j <= 25 || new DateTime(1,1,1981).Year >= j;
+            Expression<Func<int>> expr = () => i + j;
 
-            var expr1 = Lambda(Constant(new DateTime(1980, 1, 1)));
+            //Expression<Func<bool>> expr = () => i * j <= 25 || new DateTime(1,1,1981).Year >= j;
 
-            var data = new VisualizerData(expr, VisualBasic);
+            //var expr1 = Lambda(Constant(new DateTime(1980, 1, 1)));
 
+            var data = new VisualizerData(expr, CSharp);
             var visualizerHost = new VisualizerDevelopmentHost(data, typeof(Visualizer));
             visualizerHost.ShowVisualizer();
+
+            Console.ReadKey(true);
         }
     }
 }
