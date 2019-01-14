@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq.Expressions;
+using static System.Linq.Expressions.Expression;
 
 namespace ExpressionTreeTransform {
     public static class ExpressionExtension {
@@ -16,5 +17,8 @@ namespace ExpressionTreeTransform {
         // TODO // format code based on current project settings / editor settings ?
         public static string ToCode(this Expression expr, string language = LanguageNames.CSharp) =>
             expr.ToSyntaxNode(language).ToFullString();
+
+        internal static object ExtractValue(this Expression expr) =>
+            Lambda(expr).Compile().DynamicInvoke();
     }
 }

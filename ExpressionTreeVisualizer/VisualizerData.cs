@@ -33,7 +33,7 @@ namespace ExpressionTreeVisualizer {
         public ExpressionType NodeType { get; set; }
         public string ReflectionTypeName { get; set; }
         public (int start, int length) Span { get; set; }
-        public string ConstantValue { get; set; }
+        public string StringValue { get; set; }
 
         // for deserialization
         public ExpressionNodeData() { }
@@ -56,14 +56,8 @@ namespace ExpressionTreeVisualizer {
 
             NodeType = expr.NodeType;
             ReflectionTypeName = expr.Type.Name;
-
-            // ConstantExpression of compiler-generated classes which hold closed-over variables don't have a corresponding SyntaxNode
-            if (expr is ConstantExpression cexpr && expressionSyntaxNode.TryGetValue(expr, out var sn)) {
-                if (sn.IsLiteral()) {
-                    ConstantValue = sn.ToFullString();
-                } else if (cexpr.Type.UnderlyingIfNullable().In(typeof(DateTime), typeof(TimeSpan))) {
-                    ConstantValue = cexpr.Value.ToString();
-                }
+            if (expressionSyntaxNode.TryGetValue(expr, out var sn)) {
+                StringValue = sn.GetAnnotations("stringValue").SingleOrDefault()?.Data;
             }
         }
     }

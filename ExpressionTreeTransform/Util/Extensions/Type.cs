@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text;
+using ExpressionTreeTransform.Util;
 
 namespace System {
     public static class TypeExtensions {
@@ -29,5 +31,8 @@ namespace System {
 
         public static bool HasAttribute<TAttribute>(this Type type, bool inherit = false) where TAttribute : Attribute => 
             type.GetCustomAttributes(typeof(TAttribute), inherit).Any();
+
+        public static bool IsClosureClass(this Type type) =>
+            type.HasAttribute<CompilerGeneratedAttribute>() && type.Name.ContainsAny("DisplayClass", "Closure$");
     }
 }

@@ -7,7 +7,7 @@
                 <Run Foreground="Gray" Text="{Binding Key, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
                 <Run Text="{Binding Value.NodeType, Mode=OneTime}" />
                 <Run Text="{Binding Value.ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter= ({0})}" Foreground="Gray" />
-                <Run Text="{Binding Value.ConstantValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" Foreground="Gray" />
+                <Run Text="{Binding Value.StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" Foreground="Gray" />
             </TextBlock>
         </HierarchicalDataTemplate>
     </FrameworkElement.Resources>

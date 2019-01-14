@@ -6,12 +6,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
+using static Microsoft.CodeAnalysis.Formatting.Formatter;
 using static Microsoft.CodeAnalysis.LanguageNames;
 using static System.Linq.Expressions.ExpressionType;
 using CS = Microsoft.CodeAnalysis.CSharp;
 using VB = Microsoft.CodeAnalysis.VisualBasic;
-using static Microsoft.CodeAnalysis.Formatting.Formatter;
-using System.Runtime.CompilerServices;
 
 namespace ExpressionTreeTransform {
     public class Mapper {
@@ -436,29 +435,55 @@ namespace ExpressionTreeTransform {
         // TODO the typename needs to be resolved based on the current imports
         private SyntaxNode getSyntaxNode(Type t) => generator.IdentifierName(t.Name);
 
-        private SyntaxNode getSyntaxNode(ConstantExpression expr) {
-            switch (expr.Value) {
+        private (SyntaxNode, SyntaxAnnotation) parseValue(object value) {
+            SyntaxNode ret;
+            switch (value) {
                 case bool b:
-                    return b ? generator.TrueLiteralExpression() : generator.FalseLiteralExpression();
+                    ret = b ? generator.TrueLiteralExpression() : generator.FalseLiteralExpression();
+                    break;
                 case null:
-                    return generator.NullLiteralExpression();
+                    ret = generator.NullLiteralExpression();
+                    break;
                 default:
-                    var tryLiteral = generator.LiteralExpression(expr.Value);
-                    if (!tryLiteral.IsKind(CS.SyntaxKind.NullLiteralExpression) && !tryLiteral.IsKind(VB.SyntaxKind.NothingLiteralExpression)) {
-                        return tryLiteral;
+                    ret = generator.LiteralExpression(value);
+                    if (ret.IsKind(CS.SyntaxKind.NullLiteralExpression) || ret.IsKind(VB.SyntaxKind.NothingLiteralExpression)) {
+                        // constant cannot be represented as a literal
+                        ret = generator.IdentifierName($"#{value.GetType().Name}");
                     }
-                    return ConstantExpressionSyntaxNode?.Invoke(expr, generator);
+                    break;
             }
+
+            string stringValue = null;
+            if (ret.IsLiteral()) {
+                stringValue = ret.ToFullString();
+            } else if (value.GetType().UnderlyingIfNullable().In(typeof(DateTime), typeof(TimeSpan))) {
+                stringValue = value.ToString();
+            } else {
+                stringValue = ret.ToFullString();
+            }
+            SyntaxAnnotation annotation = null;
+            if (!stringValue.IsNullOrWhitespace()) {
+                annotation = new SyntaxAnnotation("stringValue", stringValue);
+            }
+
+            return (ret, annotation);
+        }
+
+        private SyntaxNode getSyntaxNode(ConstantExpression expr) {
+            var (ret, annotation) = parseValue(expr.Value);
+            if (annotation != null) { ret = ret.WithAdditionalAnnotations(annotation); }
+            return ret;
         }
 
         private SyntaxNode getSyntaxNode(MemberExpression expr) {
-            if (expr.Expression is ConstantExpression cexpr && cexpr.Type.HasAttribute<CompilerGeneratedAttribute>()) {
-                if (cexpr.Type.Name.ContainsAny("DisplayClass", "Closure$")) {
-                    return generator.IdentifierName(expr.Member.Name.Replace("$VB$Local_", ""));
-                }
+            if (expr.Expression is ConstantExpression cexpr && cexpr.Type.IsClosureClass()) {
+                var ret = generator.IdentifierName(expr.Member.Name.Replace("$VB$Local_", ""));
+                var value = expr.ExtractValue();
+                var (_, annotation) = parseValue(value);
+                if (annotation != null) { ret = ret.WithAdditionalAnnotations(annotation); }
+                return ret;
             }
 
-            // TODO track closure variables here -- if the instance has the DisplayClass attribute
             return generator.MemberAccessExpression(getSyntaxNode(expr.Expression), expr.Member.Name);
         }
 
