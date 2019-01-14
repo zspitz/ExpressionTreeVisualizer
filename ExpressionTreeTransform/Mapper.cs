@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
 using static Microsoft.CodeAnalysis.LanguageNames;
@@ -25,18 +26,17 @@ namespace ExpressionTreeTransform {
             // TODO within the visualizer, it may be possible to get the workspace / generator for the current code
             workspace = new AdhocWorkspace();
             generator = SyntaxGenerator.GetGenerator(workspace, language);
-
             return getSyntaxNode(expr).NormalizeWhitespace("    ", true);
         }
 
         // TODO keep track of closed over variables per closure, using passed-in List<(string closure, string name, Type type)>
-        public SyntaxNode GetSyntaxNode(Expression expr, string language, out Dictionary<Expression, SyntaxNode> expressionSyntaxNodes) {
+        public SyntaxNode GetSyntaxNode(Expression expr, string language, out ImmutableDictionary<Expression, SyntaxNode> expressionSyntaxNodes) {
             visitedExpressions = new List<Expression>();
             var ret = GetSyntaxNode(expr, language);
 
-            var expressionIDs = visitedExpressions.Select((x, index) => (x, index)).ToDictionary();
-            var annotatedNodes = ret.GetAnnotatedNodes("expressionID").Select(x => (int.Parse(x.GetAnnotations("expressionID").Single().Data), x)).ToDictionary();
-            expressionSyntaxNodes = visitedExpressions.Select((x, index) => (x, annotatedNodes[index])).ToDictionary();
+            var expressionIDs = visitedExpressions.Select((x, index) => (x, index)).ToImmutableDictionary();
+            var annotatedNodes = ret.GetAnnotatedNodes("expressionID").Select(x => (int.Parse(x.GetAnnotations("expressionID").Single().Data), x)).ToImmutableDictionary();
+            expressionSyntaxNodes = visitedExpressions.Select((x, index) => (x, annotatedNodes[index])).ToImmutableDictionary();
 
             return ret;
         }

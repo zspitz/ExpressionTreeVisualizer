@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using ExpressionTreeTransform.Util;
 using CS = Microsoft.CodeAnalysis.CSharp;
 using VB = Microsoft.CodeAnalysis.VisualBasic;
+using System.Collections.Immutable;
 
 namespace ExpressionTreeVisualizer {
     [Serializable]
@@ -37,7 +38,7 @@ namespace ExpressionTreeVisualizer {
         // for deserialization
         public ExpressionNodeData() { }
 
-        public ExpressionNodeData(Expression expr, SyntaxNode tree, Dictionary<Expression, SyntaxNode> expressionSyntaxNode) {
+        public ExpressionNodeData(Expression expr, SyntaxNode tree, ImmutableDictionary<Expression, SyntaxNode> expressionSyntaxNode) {
             Children = expr.GetType().GetProperties().SelectMany(prp => {
                 IEnumerable<(string, Expression)> ret = Enumerable.Empty<(string, Expression)>();
                 if (prp.PropertyType.InheritsFromOrImplements<Expression>()) {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq.Expressions;
 
 namespace ExpressionTreeTransform {
@@ -9,7 +10,7 @@ namespace ExpressionTreeTransform {
         public static SyntaxNode ToSyntaxNode(this Expression expr, string language = LanguageNames.CSharp) =>
             new Mapper().GetSyntaxNode(expr, language);
 
-        public static SyntaxNode ToSyntaxNode(this Expression expr, string language, out Dictionary<Expression, SyntaxNode> expressionSyntaxNodes) =>
+        public static SyntaxNode ToSyntaxNode(this Expression expr, string language, out ImmutableDictionary<Expression, SyntaxNode> expressionSyntaxNodes) =>
             new Mapper().GetSyntaxNode(expr, language, out expressionSyntaxNodes);
 
         // TODO // format code based on current project settings / editor settings ?
