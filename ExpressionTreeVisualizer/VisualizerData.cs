@@ -57,8 +57,8 @@ namespace ExpressionTreeVisualizer {
             NodeType = expr.NodeType;
             ReflectionTypeName = expr.Type.Name;
 
-            if (expr is ConstantExpression cexpr) {
-                var sn = expressionSyntaxNode[expr];
+            // ConstantExpression of compiler-generated classes which hold closed-over variables don't have a corresponding SyntaxNode
+            if (expr is ConstantExpression cexpr && expressionSyntaxNode.TryGetValue(expr, out var sn)) {
                 if (sn.IsLiteral()) {
                     ConstantValue = sn.ToFullString();
                 } else if (cexpr.Type.UnderlyingIfNullable().In(typeof(DateTime), typeof(TimeSpan))) {

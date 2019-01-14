@@ -24,8 +24,6 @@ namespace _visualizerTests {
             var data = new VisualizerData(expr, CSharp);
             var visualizerHost = new VisualizerDevelopmentHost(data, typeof(Visualizer));
             visualizerHost.ShowVisualizer();
-
-            Console.ReadKey(true);
         }
     }
 }

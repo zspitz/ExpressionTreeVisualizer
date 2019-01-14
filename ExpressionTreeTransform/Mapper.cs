@@ -10,6 +10,8 @@ using static Microsoft.CodeAnalysis.LanguageNames;
 using static System.Linq.Expressions.ExpressionType;
 using CS = Microsoft.CodeAnalysis.CSharp;
 using VB = Microsoft.CodeAnalysis.VisualBasic;
+using static Microsoft.CodeAnalysis.Formatting.Formatter;
+using System.Runtime.CompilerServices;
 
 namespace ExpressionTreeTransform {
     public class Mapper {
@@ -26,7 +28,7 @@ namespace ExpressionTreeTransform {
             // TODO within the visualizer, it may be possible to get the workspace / generator for the current code
             workspace = new AdhocWorkspace();
             generator = SyntaxGenerator.GetGenerator(workspace, language);
-            return getSyntaxNode(expr).NormalizeWhitespace("    ", true);
+            return Format(getSyntaxNode(expr).NormalizeWhitespace("    ", true), workspace);
         }
 
         // TODO keep track of closed over variables per closure, using passed-in List<(string closure, string name, Type type)>
@@ -450,6 +452,12 @@ namespace ExpressionTreeTransform {
         }
 
         private SyntaxNode getSyntaxNode(MemberExpression expr) {
+            if (expr.Expression is ConstantExpression cexpr && cexpr.Type.HasAttribute<CompilerGeneratedAttribute>()) {
+                if (cexpr.Type.Name.ContainsAny("DisplayClass", "Closure$")) {
+                    return generator.IdentifierName(expr.Member.Name.Replace("$VB$Local_", ""));
+                }
+            }
+
             // TODO track closure variables here -- if the instance has the DisplayClass attribute
             return generator.MemberAccessExpression(getSyntaxNode(expr.Expression), expr.Member.Name);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 
@@ -25,5 +26,8 @@ namespace System {
         public static bool IsNumeric(this Type type) => type.UnderlyingIfNullable().In(numericTypes);
 
         public static bool InheritsFromOrImplements<T>(this Type type) => typeof(T).IsAssignableFrom(type);
+
+        public static bool HasAttribute<TAttribute>(this Type type, bool inherit = false) where TAttribute : Attribute => 
+            type.GetCustomAttributes(typeof(TAttribute), inherit).Any();
     }
 }
