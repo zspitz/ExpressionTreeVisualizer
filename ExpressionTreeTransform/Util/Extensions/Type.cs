@@ -29,9 +29,6 @@ namespace System {
 
         public static bool InheritsFromOrImplements<T>(this Type type) => typeof(T).IsAssignableFrom(type);
 
-        public static bool HasAttribute<TAttribute>(this Type type, bool inherit = false) where TAttribute : Attribute => 
-            type.GetCustomAttributes(typeof(TAttribute), inherit).Any();
-
         public static bool IsClosureClass(this Type type) =>
             type.HasAttribute<CompilerGeneratedAttribute>() && type.Name.ContainsAny("DisplayClass", "Closure$");
     }

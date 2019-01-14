@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using static Microsoft.CodeAnalysis.Formatting.Formatter;
 using static Microsoft.CodeAnalysis.LanguageNames;
 using static System.Linq.Expressions.ExpressionType;
@@ -126,6 +127,10 @@ namespace ExpressionTreeTransform {
                     ret = getSyntaxNode(expr as NewExpression);
                     break;
 
+                case Call:
+                    ret = getSyntaxNode(expr as MethodCallExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
@@ -138,8 +143,6 @@ namespace ExpressionTreeTransform {
                     case Assign:
                         break;
                     case Block:
-                        break;
-                    case Call:
                         break;
                     case Conditional:
                         break;
@@ -233,7 +236,7 @@ namespace ExpressionTreeTransform {
                         break;*/
             }
 
-            if (visitedExpressions != null) {
+            if (visitedExpressions != null && !visitedExpressions.Contains(expr)) {
                 visitedExpressions.Add(expr);
                 ret = ret.WithAdditionalAnnotations(new SyntaxAnnotation("expressionID", (visitedExpressions.Count - 1).ToString()));
             }
@@ -420,7 +423,7 @@ namespace ExpressionTreeTransform {
         }
 
         private SyntaxNode getSyntaxNode(LambdaExpression expr) {
-            var parameters = expr.Parameters.Select(x => getSyntaxNode(x));
+            var parameters = expr.Parameters.Select(x => generator.LambdaParameter(x.Name));
             // TODO handle multple-statement expressions
             var body = getSyntaxNode(expr.Body);
             if (expr.ReturnType == typeof(void)) {
@@ -430,7 +433,7 @@ namespace ExpressionTreeTransform {
             }
         }
 
-        private SyntaxNode getSyntaxNode(ParameterExpression expr) => generator.LambdaParameter(expr.Name);
+        private SyntaxNode getSyntaxNode(ParameterExpression expr) => generator.IdentifierName(expr.Name);
 
         // TODO the typename needs to be resolved based on the current imports
         private SyntaxNode getSyntaxNode(Type t) => generator.IdentifierName(t.Name);
@@ -484,6 +487,11 @@ namespace ExpressionTreeTransform {
                 return ret;
             }
 
+            if (expr.Expression == null) {
+                // static member
+                return generator.IdentifierName($"{expr.Member.DeclaringType.Name}.{expr.Member.Name}");
+            }
+
             return generator.MemberAccessExpression(getSyntaxNode(expr.Expression), expr.Member.Name);
         }
 
@@ -492,6 +500,35 @@ namespace ExpressionTreeTransform {
             // TODO what about generic constructors?
             return generator.ObjectCreationExpression(getSyntaxNode(expr.Type), expr.Arguments.Select(x => getSyntaxNode(x)));
         }
+
+        private SyntaxNode getSyntaxNode(MethodCallExpression expr) {
+            Expression instance = null;
+            IEnumerable<Expression> arguments = expr.Arguments;
+
+            if (expr.Object !=null) {
+                // instance method
+                instance = expr.Object;
+            } else if (expr.Method.HasAttribute<ExtensionAttribute>()) {
+                // extension method
+                instance = expr.Arguments[0];
+                arguments = expr.Arguments.Skip(1);
+            }
+
+            SyntaxNode invokeSubject = 
+                instance != null ?
+                getSyntaxNode(instance) :
+                generator.IdentifierName(expr.Method.ReflectedType.Name);
+
+            return generator.InvocationExpression(
+                generator.MemberAccessExpression(
+                    invokeSubject, expr.Method.Name
+                ), arguments.Select(x=> getSyntaxNode(x))
+            );
+        }
+
+        // TODO friendly typenames -- language alias for types, generic types
+        // TODO handle anonymous type construction
+
 
         //private SyntaxNode getSyntaxNode(BlockExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(ConditionalExpression expr) => throw new NotImplementedException();
@@ -505,7 +542,6 @@ namespace ExpressionTreeTransform {
         //private SyntaxNode getSyntaxNode(ListInitExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(LoopExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(MemberInitExpression expr) => throw new NotImplementedException();
-        //private SyntaxNode getSyntaxNode(MethodCallExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(NewArrayExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(RuntimeVariablesExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(SwitchExpression expr) => throw new NotImplementedException();

@@ -6,8 +6,9 @@
             <TextBlock>
                 <Run Foreground="Gray" Text="{Binding Key, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
                 <Run Text="{Binding Value.NodeType, Mode=OneTime}" />
-                <Run Text="{Binding Value.ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter= ({0})}" Foreground="Gray" />
-                <Run Text="{Binding Value.StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" Foreground="Gray" />
+                <Run Text="{Binding Value.ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter= ({0})}" Foreground="DarkGray" />
+                <Run Text="{Binding Value.Name, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter= \{0\}}" Foreground="DarkGray" />
+                <Run Text="{Binding Value.StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" Foreground="DarkGray" />
             </TextBlock>
         </HierarchicalDataTemplate>
     </FrameworkElement.Resources>
@@ -27,7 +28,7 @@
             </TreeView.ItemContainerStyle>
         </TreeView>
     </DockPanel>
-    <GridSplitter HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Black" ShowsPreview="True" Width="5" Grid.Column="1" />
+    <GridSplitter HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="SlateGray" ShowsPreview="True" Width="5" Grid.Column="1" />
     <DockPanel Grid.Column="2">
         <Button Content="*" HorizontalAlignment="Right" DockPanel.Dock="Top" />
         <TextBlock Text="{Binding Source}" TextWrapping="Wrap" />

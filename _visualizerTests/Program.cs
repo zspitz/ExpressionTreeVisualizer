@@ -17,7 +17,11 @@ namespace _visualizerTests {
             var j = 8;
             //Expression<Func<int>> expr = () => i + j;
 
-            Expression<Func<bool>> expr = () => i * j <= 25 || new DateTime(1,1,1981).Year >= j;
+            var dte = DateTime.Now;
+
+            //Expression<Func<bool>> expr = () => i * j <= 25 || new DateTime(1,1,1981).Year >= j && new { DateTime.Now }.Now.Day > 10;
+
+            Expression<Func<int, int>> expr = x => Enumerable.Range(1, x).Select(y => x * y).Count();
 
             //var expr1 = Lambda(Constant(new DateTime(1980, 1, 1)));
 

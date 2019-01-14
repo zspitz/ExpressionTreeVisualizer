@@ -34,6 +34,7 @@ namespace ExpressionTreeVisualizer {
         public string ReflectionTypeName { get; set; }
         public (int start, int length) Span { get; set; }
         public string StringValue { get; set; }
+        public string Name { get; set; }
 
         // for deserialization
         public ExpressionNodeData() { }
@@ -58,6 +59,9 @@ namespace ExpressionTreeVisualizer {
             ReflectionTypeName = expr.Type.Name;
             if (expressionSyntaxNode.TryGetValue(expr, out var sn)) {
                 StringValue = sn.GetAnnotations("stringValue").SingleOrDefault()?.Data;
+            }
+            if (expr is ParameterExpression pexpr) {
+                Name = pexpr.Name;
             }
         }
     }
