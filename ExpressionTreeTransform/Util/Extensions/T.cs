@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace System {
+namespace ExpressionTreeTransform.Util {
     public static class TExtensions {
         public static bool In<T>(this T val, IEnumerable<T> vals) => vals.Contains(val);
         public static bool In<T>(this T val, params T[] vals) => vals.Contains(val);

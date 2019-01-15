@@ -436,7 +436,7 @@ namespace ExpressionTreeTransform {
         private SyntaxNode getSyntaxNode(ParameterExpression expr) => generator.IdentifierName(expr.Name);
 
         // TODO the typename needs to be resolved based on the current imports
-        private SyntaxNode getSyntaxNode(Type t) => generator.IdentifierName(t.Name);
+        private SyntaxNode getSyntaxNode(Type t) => generator.IdentifierName(t.FriendlyName(language));
 
         private (SyntaxNode, SyntaxAnnotation) parseValue(object value) {
             SyntaxNode ret;

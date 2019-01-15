@@ -25,7 +25,7 @@ namespace _visualizerTests {
 
             //var expr1 = Lambda(Constant(new DateTime(1980, 1, 1)));
 
-            var data = new VisualizerData(expr, CSharp);
+            var data = new VisualizerData(expr, VisualBasic);
             var visualizerHost = new VisualizerDevelopmentHost(data, typeof(Visualizer));
             visualizerHost.ShowVisualizer();
         }

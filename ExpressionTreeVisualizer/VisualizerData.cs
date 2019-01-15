@@ -56,7 +56,7 @@ namespace ExpressionTreeVisualizer {
             }).ToDictionary();
 
             NodeType = expr.NodeType;
-            ReflectionTypeName = expr.Type.Name;
+            ReflectionTypeName = expr.Type.FriendlyName(tree.Language);
             if (expressionSyntaxNode.TryGetValue(expr, out var sn)) {
                 StringValue = sn.GetAnnotations("stringValue").SingleOrDefault()?.Data;
             }
