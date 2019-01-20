@@ -33,6 +33,9 @@ namespace ExpressionTreeTransform.Util {
         public static bool IsClosureClass(this Type type) =>
             type.HasAttribute<CompilerGeneratedAttribute>() && type.Name.ContainsAny("DisplayClass", "Closure$");
 
+        public static bool IsAnonymous(this Type type) =>
+            type.HasAttribute<CompilerGeneratedAttribute>() && type.Name.Contains("Anonymous") && type.Name.ContainsAny("<>", "VB$");
+
         private static readonly Dictionary<Type, string> CSKeywordTypes = new Dictionary<Type, string> {
             {typeof(bool), "bool"},
             {typeof(byte), "byte"},
@@ -71,6 +74,7 @@ namespace ExpressionTreeTransform.Util {
         };
 
         public static string FriendlyName(this Type type, string language) {
+            if (type.IsAnonymous()) { return ""; }
             if (!type.IsGenericType) {
                 var dict = language == CSharp ? CSKeywordTypes :
                     language == VisualBasic ? VBKeywordTypes :

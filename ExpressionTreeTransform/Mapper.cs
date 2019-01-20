@@ -15,12 +15,10 @@ using VB = Microsoft.CodeAnalysis.VisualBasic;
 
 namespace ExpressionTreeTransform {
     public class Mapper {
-        public Func<ConstantExpression, SyntaxGenerator, SyntaxNode> ConstantExpressionSyntaxNode = (expr, generator) => generator.IdentifierName($"#{expr.Value.GetType().Name}");
-
         private string language;
         private Workspace workspace;
         private SyntaxGenerator generator;
-        private List<Expression> visitedExpressions;
+        private List<object> visitedObjects; // can be Expression, MemberBinding
 
         public SyntaxNode GetSyntaxNode(Expression expr, string language) {
             this.language = language;
@@ -32,13 +30,13 @@ namespace ExpressionTreeTransform {
         }
 
         // TODO keep track of closed over variables per closure, using passed-in List<(string closure, string name, Type type)>
-        public SyntaxNode GetSyntaxNode(Expression expr, string language, out ImmutableDictionary<Expression, SyntaxNode> expressionSyntaxNodes) {
-            visitedExpressions = new List<Expression>();
+        public SyntaxNode GetSyntaxNode(Expression expr, string language, out ImmutableDictionary<object, SyntaxNode> mappedSyntaxNodes) {
+            visitedObjects = new List<object>();
             var ret = GetSyntaxNode(expr, language);
 
-            var expressionIDs = visitedExpressions.Select((x, index) => (x, index)).ToImmutableDictionary();
-            var annotatedNodes = ret.GetAnnotatedNodes("expressionID").Select(x => (int.Parse(x.GetAnnotations("expressionID").Single().Data), x)).ToImmutableDictionary();
-            expressionSyntaxNodes = visitedExpressions.Select((x, index) => (x, annotatedNodes[index])).ToImmutableDictionary();
+            var expressionIDs = visitedObjects.Select((x, index) => (x, index)).ToImmutableDictionary();
+            var annotatedNodes = ret.GetAnnotatedNodes("nodeID").Select(x => (int.Parse(x.GetAnnotations("nodeID").Single().Data), x)).ToImmutableDictionary();
+            mappedSyntaxNodes = visitedObjects.Select((x, index) => (x, annotatedNodes[index])).ToImmutableDictionary();
 
             return ret;
         }
@@ -129,6 +127,10 @@ namespace ExpressionTreeTransform {
 
                 case Call:
                     ret = getSyntaxNode(expr as MethodCallExpression);
+                    break;
+
+                case MemberInit:
+                    ret = getSyntaxNode(expr as MemberInitExpression);
                     break;
 
                 default:
@@ -236,11 +238,14 @@ namespace ExpressionTreeTransform {
                         break;*/
             }
 
-            if (visitedExpressions != null && !visitedExpressions.Contains(expr)) {
-                visitedExpressions.Add(expr);
-                ret = ret.WithAdditionalAnnotations(new SyntaxAnnotation("expressionID", (visitedExpressions.Count - 1).ToString()));
-            }
+            registerVisited(expr, ref ret);
             return ret;
+        }
+
+        private void registerVisited<T>(object o, ref T node) where T : SyntaxNode {
+            if (visitedObjects == null || visitedObjects.Contains(o)) { return; }
+            visitedObjects.Add(o);
+            node = node.WithAdditionalAnnotations(new SyntaxAnnotation("nodeID", (visitedObjects.Count - 1).ToString()));
         }
 
         private SyntaxNode getSyntaxNode(BinaryExpression expr) {
@@ -495,17 +500,79 @@ namespace ExpressionTreeTransform {
             return generator.MemberAccessExpression(getSyntaxNode(expr.Expression), expr.Member.Name);
         }
 
-        private SyntaxNode getSyntaxNode(NewExpression expr) {
-            // TODO object initialization
-            // TODO what about generic constructors?
-            return generator.ObjectCreationExpression(getSyntaxNode(expr.Type), expr.Arguments.Select(x => getSyntaxNode(x)));
+        private CS.Syntax.ExpressionSyntax getCSSyntaxNode(MemberBinding binding) {
+            CS.Syntax.ExpressionSyntax ret;
+            switch (binding) {
+                case MemberAssignment assignmentBinding:
+                    ret = CS.SyntaxFactory.AssignmentExpression(
+                        CS.SyntaxKind.SimpleAssignmentExpression,
+                        CS.SyntaxFactory.IdentifierName(assignmentBinding.Member.Name),
+                        (CS.Syntax.ExpressionSyntax)getSyntaxNode(assignmentBinding.Expression)
+                    );
+                    break;
+                case MemberListBinding listBinding:
+                    throw new NotImplementedException("C# - ListBinding");
+                case MemberMemberBinding memberBinding:
+                    throw new NotImplementedException("C# - MemberMemberBinding");
+                default:
+                    throw new NotImplementedException();
+            }
+            registerVisited(binding, ref ret);
+            return ret;
         }
+
+        private VB.Syntax.FieldInitializerSyntax getVBSyntaxNode(MemberBinding binding) {
+            VB.Syntax.FieldInitializerSyntax ret;
+            switch (binding) {
+                case MemberAssignment assignmentBinding:
+                    ret = VB.SyntaxFactory.NamedFieldInitializer(
+                        VB.SyntaxFactory.IdentifierName(binding.Member.Name), 
+                        (VB.Syntax.ExpressionSyntax)getSyntaxNode(assignmentBinding.Expression)
+                    );
+                    break;
+                case MemberListBinding listBinding:
+                    throw new NotImplementedException("VB - ListBinding");
+                case MemberMemberBinding memberBinding:
+                    throw new NotImplementedException("VB - MemberMemberBinding");
+                default:
+                    throw new NotImplementedException();
+            }
+            registerVisited(binding, ref ret);
+            return ret;
+        }
+
+        // TODO handle collection initializers
+
+        private SyntaxNode getSyntaxNode(MemberInitExpression expr) {
+            var ret = getSyntaxNode(expr.NewExpression);
+            if (expr.Bindings.Any()) {
+                switch (language) {
+                    case CSharp:
+                        return ((CS.Syntax.ObjectCreationExpressionSyntax)ret).WithInitializer(
+                            CS.SyntaxFactory.InitializerExpression(
+                                CS.SyntaxKind.ObjectInitializerExpression,
+                                CS.SyntaxFactory.SeparatedList(expr.Bindings.Select(binding => getCSSyntaxNode(binding)))
+                            ));
+                    case VisualBasic:
+                        return ((VB.Syntax.ObjectCreationExpressionSyntax)ret).WithInitializer(
+                                VB.SyntaxFactory.ObjectMemberInitializer(expr.Bindings.Select(binding => getVBSyntaxNode(binding)).ToArray())
+                            );
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+            return ret;
+        }
+
+        // TODO what about generic constructors?
+        private SyntaxNode getSyntaxNode(NewExpression expr) =>
+            generator.ObjectCreationExpression(getSyntaxNode(expr.Type), expr.Arguments.Select(x => getSyntaxNode(x)));
 
         private SyntaxNode getSyntaxNode(MethodCallExpression expr) {
             Expression instance = null;
             IEnumerable<Expression> arguments = expr.Arguments;
 
-            if (expr.Object !=null) {
+            if (expr.Object != null) {
                 // instance method
                 instance = expr.Object;
             } else if (expr.Method.HasAttribute<ExtensionAttribute>()) {
@@ -514,7 +581,7 @@ namespace ExpressionTreeTransform {
                 arguments = expr.Arguments.Skip(1);
             }
 
-            SyntaxNode invokeSubject = 
+            SyntaxNode invokeSubject =
                 instance != null ?
                 getSyntaxNode(instance) :
                 generator.IdentifierName(expr.Method.ReflectedType.Name);
@@ -522,11 +589,12 @@ namespace ExpressionTreeTransform {
             return generator.InvocationExpression(
                 generator.MemberAccessExpression(
                     invokeSubject, expr.Method.Name
-                ), arguments.Select(x=> getSyntaxNode(x))
+                ), arguments.Select(x => getSyntaxNode(x))
             );
         }
 
-        // TODO friendly typenames -- language alias for types, generic types
+
+
         // TODO handle anonymous type construction
 
 
@@ -541,7 +609,6 @@ namespace ExpressionTreeTransform {
         //private SyntaxNode getSyntaxNode(LabelExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(ListInitExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(LoopExpression expr) => throw new NotImplementedException();
-        //private SyntaxNode getSyntaxNode(MemberInitExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(NewArrayExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(RuntimeVariablesExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(SwitchExpression expr) => throw new NotImplementedException();
