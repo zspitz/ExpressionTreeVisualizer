@@ -35,7 +35,7 @@ namespace ExpressionTreeTransform {
             var ret = GetSyntaxNode(expr, language);
 
             var expressionIDs = visitedObjects.Select((x, index) => (x, index)).ToImmutableDictionary();
-            var annotatedNodes = ret.GetAnnotatedNodes("nodeID").Select(x => (int.Parse(x.GetAnnotations("nodeID").Single().Data), x)).ToImmutableDictionary();
+            var annotatedNodes = ret.GetAnnotatedNodes("nodeID").SelectMany(node => node.GetAnnotations("nodeID").Select(x=>(int.Parse(x.Data), node))).ToImmutableDictionary();
             mappedSyntaxNodes = visitedObjects.Select((x, index) => (x, annotatedNodes[index])).ToImmutableDictionary();
 
             return ret;
@@ -133,6 +133,10 @@ namespace ExpressionTreeTransform {
                     ret = getSyntaxNode(expr as MemberInitExpression);
                     break;
 
+                case ListInit:
+                    ret = getSyntaxNode(expr as ListInitExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
@@ -147,8 +151,6 @@ namespace ExpressionTreeTransform {
                     case Block:
                         break;
                     case Conditional:
-                        break;
-                    case Constant:
                         break;
                     case DebugInfo:
                         break;
@@ -180,21 +182,13 @@ namespace ExpressionTreeTransform {
                         break;
                     case LeftShiftAssign:
                         break;
-                    case ListInit:
-                        break;
                     case Loop:
-                        break;
-                    case MemberAccess:
-                        break;
-                    case MemberInit:
                         break;
                     case ModuloAssign:
                         break;
                     case MultiplyAssign:
                         break;
                     case MultiplyAssignChecked:
-                        break;
-                    case New:
                         break;
                     case NewArrayBounds:
                         break;
@@ -593,7 +587,70 @@ namespace ExpressionTreeTransform {
             );
         }
 
+        private CS.Syntax.ExpressionSyntax getCSSyntaxNode(ElementInit elementInit) {
+            var args = elementInit.Arguments.Select(arg => getSyntaxNode(arg)).Cast<CS.Syntax.ExpressionSyntax>();
+            CS.Syntax.ExpressionSyntax ret = null;
+            switch (elementInit.Arguments.Count) {
+                case 0:
+                    throw new NotImplementedException();
+                case 1:
+                    ret = args.First();
+                    break;
+                default:
+                    ret = CS.SyntaxFactory.InitializerExpression(
+                        CS.SyntaxKind.ComplexElementInitializerExpression,
+                        CS.SyntaxFactory.SeparatedList(args)
+                    );
+                    break;
+            }
+            registerVisited(elementInit, ref ret);
+            return ret;
+        }
 
+        private VB.Syntax.ExpressionSyntax getVBSyntaxNode(ElementInit elementInit) {
+            var args = elementInit.Arguments.Select(arg => getSyntaxNode(arg)).Cast<VB.Syntax.ExpressionSyntax>();
+            VB.Syntax.ExpressionSyntax ret;
+            switch (elementInit.Arguments.Count) {
+                case 0:
+                    throw new NotImplementedException();
+                case 1:
+                    ret = args.First();
+                    break;
+                default:
+                    ret = VB.SyntaxFactory.CollectionInitializer(
+                        VB.SyntaxFactory.SeparatedList(args)
+                    );
+                    break;
+            }
+            registerVisited(elementInit, ref ret);
+            return ret;
+        }
+
+        private SyntaxNode getSyntaxNode(ListInitExpression expr) {
+            var ret = getSyntaxNode(expr.NewExpression);
+            switch (language) {
+                case CSharp:
+                    ret= ((CS.Syntax.ObjectCreationExpressionSyntax)ret).WithInitializer(
+                         CS.SyntaxFactory.InitializerExpression(
+                             CS.SyntaxKind.CollectionInitializerExpression,
+                             CS.SyntaxFactory.SeparatedList(expr.Initializers.Select(init => getCSSyntaxNode(init)))
+                         ));
+                    break;
+                case VisualBasic:
+                    ret= ((VB.Syntax.ObjectCreationExpressionSyntax)ret).WithInitializer(
+                        VB.SyntaxFactory.ObjectCollectionInitializer(
+                            VB.SyntaxFactory.CollectionInitializer(
+                                VB.SyntaxFactory.SeparatedList(expr.Initializers.Select(init => getVBSyntaxNode(init)))
+                            )
+                        )
+                    );
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            registerVisited(expr, ref ret);
+            return ret;
+        }
 
         // TODO handle anonymous type construction
 
@@ -607,7 +664,6 @@ namespace ExpressionTreeTransform {
         //private SyntaxNode getSyntaxNode(IndexExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(InvocationExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(LabelExpression expr) => throw new NotImplementedException();
-        //private SyntaxNode getSyntaxNode(ListInitExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(LoopExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(NewArrayExpression expr) => throw new NotImplementedException();
         //private SyntaxNode getSyntaxNode(RuntimeVariablesExpression expr) => throw new NotImplementedException();

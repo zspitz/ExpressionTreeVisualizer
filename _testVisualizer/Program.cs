@@ -27,6 +27,7 @@ namespace _testVisualizer {
     public class TestVisualizerData {
         public TestVisualizerData() { }
         public TestVisualizerData(System.Linq.Expressions.Expression expr) {
+            Debugger.NotifyOfCrossThreadDependency();
             var workspace = new AdhocWorkspace();
             Status = "Success";
         }

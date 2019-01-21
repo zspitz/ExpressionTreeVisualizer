@@ -80,6 +80,9 @@ namespace ExpressionTreeVisualizer {
             if (expr is MemberInitExpression initexpr) {
                 initexpr.Bindings.Select((x, index) => ($"Binding[{index}]", new ExpressionNodeData(x, tree, mappedSyntaxNodes))).AddRangeTo(Children);
             }
+            if (expr is ListInitExpression listinitexpr) {
+                listinitexpr.Initializers.Select((x, index) => ($"Initializer[{index}]", new ExpressionNodeData(x, tree, mappedSyntaxNodes))).AddRangeTo(Children);
+            }
 
             NodeType = expr.NodeType.ToString();
             ReflectionTypeName = expr.Type.FriendlyName(tree.Language);
