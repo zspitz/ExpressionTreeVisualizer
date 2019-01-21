@@ -15,10 +15,10 @@ The goals of this project are:
 
 Note that expression support is incomplete -- lots of `NotImplementedException`.
 
-Screenshot of the visualizer (really early days yet; the closed over variables has only dummy values):
+Screenshot of the visualizer -- VB output, and highlighting a parameter and closed-over variables
 
-![Screenshot](screenshot.png)
+![Screenshot](screenshot-vb.jpg)
 
-Slightly more complicated expression, using Visual Basic:
+Slightly more complicated expression -- C# output and some constants, in addition to the same closed-over variables:
 
-![Screenshot](screenshot2.png)
+![Screenshot](screenshot-csharp.jpg)
