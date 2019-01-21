@@ -8,18 +8,44 @@
                 <Run Text="{Binding Value.NodeType, Mode=OneTime}" />
                 <Run Text="{Binding Value.ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter= ({0})}" Foreground="DarkGray" />
                 <Run Text="{Binding Value.Name, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter= \{0\}}" Foreground="DarkGray" />
-                <Run Text="{Binding Value.StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" Foreground="DarkGray" />
-            </TextBlock>
+                <Run Text="{Binding Value.StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" Foreground="DarkGray" /></TextBlock>
         </HierarchicalDataTemplate>
     </FrameworkElement.Resources>
     <DockPanel>
-        <ag:AutoGrid ColumnCount="2" RowCount="3" Columns="Auto,*" DockPanel.Dock="Bottom"> 
-            <TextBlock Text="Label1" />
-            <TextBlock Text="Value1" />
-            <TextBlock Text="Label2" />
-            <TextBlock Text="Value2" />
+        <ag:AutoGrid ColumnCount="3" RowCount="2" Orientation="Vertical" Columns="*,*,2*" DockPanel.Dock="Bottom">
+            <ag:AutoGrid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Background" Value="Gray" />
+                </Style>
+                <Style TargetType="DataGrid">
+                    <Setter Property="IsReadOnly" Value="True" />
+                    <Setter Property="AutoGenerateColumns" Value="False" />
+                </Style>
+            </ag:AutoGrid.Resources>
+            <Label Content="Constants" />
+            <DataGrid ItemsSource="{Binding Constants}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Type}" Header="Type" />
+                    <DataGridTextColumn Binding="{Binding Value}" Header="Value" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Label Content="Parameters" />
+            <DataGrid ItemsSource="{Binding Parameters}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                    <DataGridTextColumn Binding="{Binding Type}" Header="Type" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Label Content="Closed-over variables" />
+            <DataGrid ItemsSource="{Binding ClosedVars}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Closure}" Header="Closure" />
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                    <DataGridTextColumn Binding="{Binding Type}" Header="Type" />
+                    <DataGridTextColumn Binding="{Binding Value}" Header="Value" />
+                </DataGrid.Columns>
+            </DataGrid>
         </ag:AutoGrid>
-        <TextBlock Text="Closed-over variables" Background="Gray" DockPanel.Dock="Bottom" />
         <TreeView ItemsSource="{Binding NodeData, Converter={StaticResource RootConverter}}" ItemTemplate="{StaticResource ExpressionNodeTemplate}">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">

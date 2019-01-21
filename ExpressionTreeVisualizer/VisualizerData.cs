@@ -12,6 +12,9 @@ namespace ExpressionTreeVisualizer {
     public class VisualizerData {
         public string Source { get; set; }
         public ExpressionNodeData NodeData { get; set; }
+        public HashSet<EndNodeData> Constants { get; } = new HashSet<EndNodeData>();
+        public HashSet<EndNodeData> Parameters { get; } = new HashSet<EndNodeData>();
+        public HashSet<EndNodeData> ClosedVars { get; } = new HashSet<EndNodeData>();
 
         // for deserialization
         public VisualizerData() { }
@@ -19,10 +22,8 @@ namespace ExpressionTreeVisualizer {
         public VisualizerData(Expression expr, string language) {
             var node = expr.ToSyntaxNode(language, out var mappedSyntaxNodes);
             Source = node.ToFullString();
-            NodeData = new ExpressionNodeData(expr, node, mappedSyntaxNodes);
+            NodeData = new ExpressionNodeData(expr, node, mappedSyntaxNodes, this);
         }
-
-        // TODO closed-over variables
     }
 
     [Serializable]
@@ -37,14 +38,14 @@ namespace ExpressionTreeVisualizer {
         // for deserialization
         public ExpressionNodeData() { }
 
-        public ExpressionNodeData(ElementInit init, SyntaxNode tree, ImmutableDictionary<object, SyntaxNode> mappedSyntaxNodes) {
+        public ExpressionNodeData(ElementInit init, SyntaxNode tree, ImmutableDictionary<object, SyntaxNode> mappedSyntaxNodes, VisualizerData visualizerData) {
             NodeType = "ElementInit";
             Children = init.Arguments.Select((x, index) => {
-                return ($"Argument[{index}]", new ExpressionNodeData(x, tree, mappedSyntaxNodes));
+                return ($"Argument[{index}]", new ExpressionNodeData(x, tree, mappedSyntaxNodes, visualizerData));
             }).ToDictionary();
         }
 
-        public ExpressionNodeData(MemberBinding binding, SyntaxNode tree, ImmutableDictionary<object, SyntaxNode> mappedSyntaxNodes) {
+        public ExpressionNodeData(MemberBinding binding, SyntaxNode tree, ImmutableDictionary<object, SyntaxNode> mappedSyntaxNodes,VisualizerData visualizerData) {
             Name = binding.Member.Name;
             NodeType = binding.BindingType.ToString();
             if (mappedSyntaxNodes.TryGetValue(binding, out var node)) {
@@ -53,11 +54,11 @@ namespace ExpressionTreeVisualizer {
             switch (binding) {
                 case MemberAssignment assignmentBinding:
                     Children = new[] {
-                        ( "Expression", new ExpressionNodeData(assignmentBinding.Expression, tree, mappedSyntaxNodes) )
+                        ( "Expression", new ExpressionNodeData(assignmentBinding.Expression, tree, mappedSyntaxNodes, visualizerData) )
                     }.ToDictionary();
                     break;
                 case MemberListBinding listBinding:
-                    Children = listBinding.Initializers.Select((x, index) => ($"Iinitializers[{index}]", new ExpressionNodeData(x, tree, mappedSyntaxNodes))).ToDictionary();
+                    Children = listBinding.Initializers.Select((x, index) => ($"Iinitializers[{index}]", new ExpressionNodeData(x, tree, mappedSyntaxNodes, visualizerData))).ToDictionary();
                     break;
                 case MemberMemberBinding memberBinding:
                     throw new NotImplementedException("MemberMemberBinding");
@@ -66,7 +67,7 @@ namespace ExpressionTreeVisualizer {
             }
         }
 
-        public ExpressionNodeData(Expression expr, SyntaxNode tree, ImmutableDictionary<object, SyntaxNode> mappedSyntaxNodes) {
+        public ExpressionNodeData(Expression expr, SyntaxNode tree, ImmutableDictionary<object, SyntaxNode> mappedSyntaxNodes, VisualizerData visualizerData) {
             Children = expr.GetType().GetProperties().SelectMany(prp => {
                 IEnumerable<(string, Expression)> ret = Enumerable.Empty<(string, Expression)>();
                 if (prp.PropertyType.InheritsFromOrImplements<Expression>()) {
@@ -75,13 +76,15 @@ namespace ExpressionTreeVisualizer {
                     ret = (prp.GetValue(expr) as IEnumerable<Expression>).Select((x, index) => ($"{prp.Name}[{index}]", x));
                 }
                 return ret.Where(x => x.Item2 != null);
-            }).Select(x => (x.Item1, new ExpressionNodeData(x.Item2, tree, mappedSyntaxNodes))).ToDictionary();
+            }).Select(x => (x.Item1, new ExpressionNodeData(x.Item2, tree, mappedSyntaxNodes, visualizerData))).ToDictionary();
 
-            if (expr is MemberInitExpression initexpr) {
-                initexpr.Bindings.Select((x, index) => ($"Binding[{index}]", new ExpressionNodeData(x, tree, mappedSyntaxNodes))).AddRangeTo(Children);
-            }
-            if (expr is ListInitExpression listinitexpr) {
-                listinitexpr.Initializers.Select((x, index) => ($"Initializer[{index}]", new ExpressionNodeData(x, tree, mappedSyntaxNodes))).AddRangeTo(Children);
+            switch (expr) {
+                case MemberInitExpression initexpr:
+                    initexpr.Bindings.Select((x, index) => ($"Binding[{index}]", new ExpressionNodeData(x, tree, mappedSyntaxNodes, visualizerData))).AddRangeTo(Children);
+                    break;
+                case ListInitExpression listinitexpr:
+                    listinitexpr.Initializers.Select((x, index) => ($"Initializer[{index}]", new ExpressionNodeData(x, tree, mappedSyntaxNodes, visualizerData))).AddRangeTo(Children);
+                    break;
             }
 
             NodeType = expr.NodeType.ToString();
@@ -93,6 +96,33 @@ namespace ExpressionTreeVisualizer {
             if (expr is ParameterExpression pexpr) {
                 Name = pexpr.Name;
             }
+
+            var endNodeData = new EndNodeData {
+                Name = Name,
+                Type = ReflectionTypeName,
+                Value = StringValue
+            };
+            switch (expr) {
+                case ConstantExpression cexpr when !cexpr.Type.IsClosureClass():
+                    visualizerData.Constants.Add(endNodeData);
+                    break;
+                case ParameterExpression pexpr1:
+                    visualizerData.Parameters.Add(endNodeData);
+                    break;
+                case MemberExpression mexpr when mexpr.Expression is ConstantExpression cexpr1 && cexpr1.Type.IsClosureClass():
+                    endNodeData.Name = mexpr.Member.Name;
+                    endNodeData.Closure = cexpr1.Type.FriendlyName(tree.Language);
+                    visualizerData.ClosedVars.Add(endNodeData);
+                    break;
+            }
         }
+    }
+
+    [Serializable]
+    public struct EndNodeData {
+        public string Closure { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string Value { get; set; }
     }
 }

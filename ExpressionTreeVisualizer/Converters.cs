@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using static System.Windows.DependencyProperty;
 using ExpressionTreeTransform.Util;
+using static System.Windows.Visibility;
 
 namespace ExpressionTreeVisualizer {
     public abstract class ReadOnlyConverterBase : IValueConverter {
@@ -24,6 +25,13 @@ namespace ExpressionTreeVisualizer {
             var sValue = value as string;
             if (sValue.IsNullOrWhitespace()) { return value; }
             return value.Formatted(parameter as string);
+        }
+    }
+
+    public class AnyVisibilityConverter : ReadOnlyConverterBase {
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+            if ((value as IEnumerable).Any()) { return Visible; }
+            return Collapsed;
         }
     }
 }
