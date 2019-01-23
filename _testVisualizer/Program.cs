@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 
 [assembly: DebuggerVisualizer(typeof(_testVisualizer.TestVisualizer), typeof(_testVisualizer.TestVisualizerDataObjectSource), Target = typeof(System.Linq.Expressions.Expression), Description = "Test Visualizer")]
-
 namespace _testVisualizer {
     public class TestVisualizer : DialogDebuggerVisualizer {
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) {
@@ -27,7 +26,6 @@ namespace _testVisualizer {
     public class TestVisualizerData {
         public TestVisualizerData() { }
         public TestVisualizerData(System.Linq.Expressions.Expression expr) {
-            Debugger.NotifyOfCrossThreadDependency();
             var workspace = new AdhocWorkspace();
             Status = "Success";
         }

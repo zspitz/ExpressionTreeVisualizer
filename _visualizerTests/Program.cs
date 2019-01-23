@@ -11,9 +11,9 @@ namespace _visualizerTests {
         static void Main(string[] args) {
             var i = 7;
             var j = 8;
-            Expression<Func<string, int>> expr = s => i + j;
+            //Expression<Func<string, int>> expr = s => i + j;
 
-            //Expression<Func<bool>> expr = () => i * j <= 25 || new DateTime(1, 1, 1981).Year >= j && new { DateTime.Now }.Now.Day > 10;
+            Expression<Func<bool>> expr = () => i * j <= 25 || new DateTime(1, 1, 1981).Year >= j && new { DateTime.Now }.Now.Day > 10;
 
             //Expression<Func<int, int>> expr = x => Enumerable.Range(1, x).Select(y => x * y).Count();
 
@@ -26,7 +26,7 @@ namespace _visualizerTests {
             //Expression<Func<Wrapper>> expr = () => new Wrapper {
             //    {",","2"},
             //    "1",
-            //    {"3","4"}
+            //    {"3","4"} 
             //};
 
             var data = new VisualizerData(expr, VisualBasic);

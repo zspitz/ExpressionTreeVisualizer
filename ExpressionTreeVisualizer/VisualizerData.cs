@@ -34,6 +34,15 @@ namespace ExpressionTreeVisualizer {
         public (int start, int length) Span { get; set; }
         public string StringValue { get; set; }
         public string Name { get; set; }
+        public string Closure { get; set; }
+        public EndNodeTypes? EndNodeType { get; set; }
+
+        public EndNodeData EndNodeData => new EndNodeData {
+            Closure = Closure,
+            Name=Name,
+            Type=ReflectionTypeName,
+            Value = StringValue
+        };
 
         // for deserialization
         public ExpressionNodeData() { }
@@ -68,6 +77,7 @@ namespace ExpressionTreeVisualizer {
         }
 
         public ExpressionNodeData(Expression expr, SyntaxNode tree, ImmutableDictionary<object, SyntaxNode> mappedSyntaxNodes, VisualizerData visualizerData) {
+            // populate child nodes
             Children = expr.GetType().GetProperties().SelectMany(prp => {
                 IEnumerable<(string, Expression)> ret = Enumerable.Empty<(string, Expression)>();
                 if (prp.PropertyType.InheritsFromOrImplements<Expression>()) {
@@ -87,32 +97,39 @@ namespace ExpressionTreeVisualizer {
                     break;
             }
 
+            // populate properties
             NodeType = expr.NodeType.ToString();
             ReflectionTypeName = expr.Type.FriendlyName(tree.Language);
             if (mappedSyntaxNodes.TryGetValue(expr, out var node)) {
                 Span = (node.SpanStart, node.Span.Length);
                 StringValue = node.GetAnnotations("stringValue").SingleOrDefault()?.Data;
             }
-            if (expr is ParameterExpression pexpr) {
-                Name = pexpr.Name;
+
+            // fill the Name and Closure properties
+            switch (expr) {
+                case ParameterExpression pexpr:
+                    Name = pexpr.Name;
+                    break;
+                case MemberExpression mexpr:
+                    Name = mexpr.Member.Name;
+                    if (mexpr.Expression is ConstantExpression cexpr1 && cexpr1.Type.IsClosureClass()) {
+                        Closure = cexpr1.Type.FriendlyName(tree.Language);
+                    }
+                    break;
             }
 
-            var endNodeData = new EndNodeData {
-                Name = Name,
-                Type = ReflectionTypeName,
-                Value = StringValue
-            };
             switch (expr) {
                 case ConstantExpression cexpr when !cexpr.Type.IsClosureClass():
-                    visualizerData.Constants.Add(endNodeData);
+                    EndNodeType = EndNodeTypes.Constant;
+                    visualizerData.Constants.Add(EndNodeData);
                     break;
                 case ParameterExpression pexpr1:
-                    visualizerData.Parameters.Add(endNodeData);
+                    EndNodeType = EndNodeTypes.Parameter;
+                    visualizerData.Parameters.Add(EndNodeData);
                     break;
                 case MemberExpression mexpr when mexpr.Expression is ConstantExpression cexpr1 && cexpr1.Type.IsClosureClass():
-                    endNodeData.Name = mexpr.Member.Name;
-                    endNodeData.Closure = cexpr1.Type.FriendlyName(tree.Language);
-                    visualizerData.ClosedVars.Add(endNodeData);
+                    EndNodeType = EndNodeTypes.ClosedVar;
+                    visualizerData.ClosedVars.Add(EndNodeData);
                     break;
             }
         }
@@ -124,5 +141,11 @@ namespace ExpressionTreeVisualizer {
         public string Name { get; set; }
         public string Type { get; set; }
         public string Value { get; set; }
+    }
+
+    public enum EndNodeTypes {
+        Constant,
+        Parameter,
+        ClosedVar
     }
 }
