@@ -9,12 +9,22 @@ namespace ExpressionTreeTransform.Util {
             if (predicate != null) { return !src.Any(predicate); }
             return !src.Any();
         }
+
         public static IEnumerable<T> ForEach<T>(this IEnumerable<T> src, Action<T> action) {
             foreach (var item in src) {
                 action(item);
             }
             return src;
         }
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> src, Action<T, int> action) {
+            var current = 0;
+            foreach (var item in src) {
+                action(item, current);
+                current += 1;
+            }
+            return src;
+        }
+
         public static void AddRangeTo<TKey, TValue>(this IEnumerable<(TKey, TValue)> toAdd, Dictionary<TKey, TValue> dict) => toAdd.ForEach(t=> dict.Add(t.Item1, t.Item2));
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey, TValue)> src) => src.ToDictionary(t => t.Item1, t=> t.Item2);
 

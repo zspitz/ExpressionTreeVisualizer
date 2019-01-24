@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.10.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ExpressionTreeTransform\ExpressionTreeTransform.csproj" />
   </ItemGroup>
 
