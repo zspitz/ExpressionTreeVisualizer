@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionTreeTransform", "ExpressionTreeTransform\ExpressionTreeTransform.csproj", "{1B4ABE3F-0E43-4D59-A61C-52C565BD9993}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_tests", "_tests\_tests.csproj", "{5ABA1476-E015-4021-9715-03070080AFBD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionTreeTransform.Tests", "ExpressionTreeTransform.Tests\ExpressionTreeTransform.Tests.csproj", "{366944BD-37E6-4458-AEF1-D8A541EBEDCA}"
@@ -19,16 +17,20 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "_visualizerTests.VB", "_vis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_testVisualizer", "_testVisualizer\_testVisualizer.csproj", "{373720E1-593E-4023-A60C-CD52D2DC33B9}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{89229404-E614-4495-8E2F-119FEBFBA172}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionTreeToCode", "ExpressionTreeToCode\ExpressionTreeToCode.csproj", "{9F7CB416-585B-49A7-910B-32BCC026EB6E}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared\Shared.projitems*{58706ea8-b515-41b1-b7ca-20e35530129a}*SharedItemsImports = 4
+		Shared\Shared.projitems*{89229404-e614-4495-8e2f-119febfba172}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1B4ABE3F-0E43-4D59-A61C-52C565BD9993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1B4ABE3F-0E43-4D59-A61C-52C565BD9993}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1B4ABE3F-0E43-4D59-A61C-52C565BD9993}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1B4ABE3F-0E43-4D59-A61C-52C565BD9993}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5ABA1476-E015-4021-9715-03070080AFBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5ABA1476-E015-4021-9715-03070080AFBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ABA1476-E015-4021-9715-03070080AFBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +59,10 @@ Global
 		{373720E1-593E-4023-A60C-CD52D2DC33B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{373720E1-593E-4023-A60C-CD52D2DC33B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{373720E1-593E-4023-A60C-CD52D2DC33B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F7CB416-585B-49A7-910B-32BCC026EB6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F7CB416-585B-49A7-910B-32BCC026EB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F7CB416-585B-49A7-910B-32BCC026EB6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F7CB416-585B-49A7-910B-32BCC026EB6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

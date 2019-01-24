@@ -238,10 +238,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExpressionTreeTransform\ExpressionTreeTransform.csproj">
-      <Project>{1b4abe3f-0e43-4d59-a61c-52c565bd9993}</Project>
-      <Name>ExpressionTreeTransform</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ExpressionTreeVisualizer\ExpressionTreeVisualizer.csproj">
       <Project>{58706ea8-b515-41b1-b7ca-20e35530129a}</Project>
       <Name>ExpressionTreeVisualizer</Name>

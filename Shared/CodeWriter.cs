@@ -3,9 +3,20 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using static System.Linq.Expressions.ExpressionType;
+using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeTransform {
     public abstract class CodeWriter {
+        public static CodeWriter Create(string language, Expression expr) =>
+            language == CSharp ? (CodeWriter)new CSharpCodeWriter(expr) :
+            language == VisualBasic ? new VBCodeWriter(expr) :
+            throw new NotImplementedException("Unknown language");
+
+        public static CodeWriter Create(string language, Expression expr, out Dictionary<object, (int start, int length)> visitedObjects) =>
+            language == CSharp ? (CodeWriter)new CSharpCodeWriter(expr, out visitedObjects) :
+            language == VisualBasic ? new VBCodeWriter(expr, out visitedObjects) :
+            throw new NotImplementedException("Unknown language");
+
         protected StringBuilder sb = new StringBuilder();
         Dictionary<object, (int start, int length)> visitedObjects;
 

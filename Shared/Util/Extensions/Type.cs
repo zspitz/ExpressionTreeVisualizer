@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Text;
-using ExpressionTreeTransform.Util;
-using static Microsoft.CodeAnalysis.LanguageNames;
+using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeTransform.Util {
     public static class TypeExtensions {
