@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using ExpressionTreeTransform;
+using static ExpressionTreeTransform.Util.Functions;
 
 namespace ExpressionTreeVisualizer {
     [Serializable]
@@ -101,8 +102,6 @@ namespace ExpressionTreeVisualizer {
             ReflectionTypeName = expr.Type.FriendlyName(visualizerData.Language);
             if (visitedObjects.TryGetValue(expr, out var span)) {
                 Span = span;
-                //TODO reimplement StringValue
-                //StringValue = node.GetAnnotations("stringValue").SingleOrDefault()?.Data;
             }
 
             // fill the Name and Closure properties
@@ -120,6 +119,7 @@ namespace ExpressionTreeVisualizer {
 
             switch (expr) {
                 case ConstantExpression cexpr when !cexpr.Type.IsClosureClass():
+                    StringValue = StringValue(cexpr.Value, visualizerData.Language);
                     EndNodeType = EndNodeTypes.Constant;
                     visualizerData.Constants.Add(EndNodeData);
                     break;
@@ -128,6 +128,7 @@ namespace ExpressionTreeVisualizer {
                     visualizerData.Parameters.Add(EndNodeData);
                     break;
                 case MemberExpression mexpr when mexpr.Expression is ConstantExpression cexpr1 && cexpr1.Type.IsClosureClass():
+                    StringValue = StringValue(mexpr.ExtractValue(), visualizerData.Language);
                     EndNodeType = EndNodeTypes.ClosedVar;
                     visualizerData.ClosedVars.Add(EndNodeData);
                     break;

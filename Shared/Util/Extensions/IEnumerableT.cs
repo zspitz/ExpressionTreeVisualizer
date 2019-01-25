@@ -37,5 +37,7 @@ namespace ExpressionTreeTransform.Util {
             if (selector == null) { return string.Join(delimiter, source); }
             return string.Join(delimiter, source.Select(selector));
         }
+
+        public static IEnumerable<(TFirst, TSecond)> Zip<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second) => first.Zip(second, (x, y) => (x, y));
     }
 }

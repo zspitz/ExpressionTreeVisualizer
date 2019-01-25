@@ -1,43 +1,28 @@
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
-using static Microsoft.CodeAnalysis.LanguageNames;
 using ExpressionTreeTransform.Util;
+using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeTransform.Tests {
     public class CompilerGenerated {
-        private readonly Mapper _mapper = new Mapper();
-
-        private void buildAssert<T>(Expression<Func<T>>expr, string stringExpression) {
-            var mapped = _mapper.GetSyntaxNode(expr, CSharp);
-            var node = CSharpSyntaxTree.ParseText($@"
-using System;
-using System.Linq.Expressions;
-class Class1 {{
-    void method1() {{
-        var expr = {stringExpression};
-    }}
-}}
-").GetRoot().DescendantNodes().OfType<EqualsValueClauseSyntax>().First().ChildNodes().First();
-
-            Assert.True(node.GetDiagnostics().None());
-            Assert.True(mapped.IsEquivalentTo(node, false)); //Not sure why we need false here
+        private void buildAssert<T>(Expression<Func<T>>expr, string csharp, string vb) {
+            var testCSharpCode = expr.ToCode(CSharp);
+            var testVBCode = expr.ToCode(VisualBasic);
+            Assert.True(testCSharpCode == csharp);
+            Assert.True(testVBCode == vb);
         }
 
         [Fact]
-        public void ReturnBooleanTruel() => buildAssert(() => true, "() => true");
+        public void ReturnBooleanTruel() => buildAssert(() => true, "() => true", "Function() True");
 
         [Fact]
-        public void ReturnBooleanFalse() => buildAssert(() => false, "() => false");
+        public void ReturnBooleanFalse() => buildAssert(() => false, "() => false", "Function() False");
 
         [Fact]
-        public void ReturnMemberAccess() => buildAssert(() => "abcd".Length, "() => \"abcd\".Length");
+        public void ReturnMemberAccess() => buildAssert(() => "abcd".Length, "() => \"abcd\".Length", "Function() \"abcd\".Length");
 
         [Fact]
-        public void ReturnObjectCreation() => buildAssert(() => new DateTime(1980, 1, 1), "() => new DateTime(1980, 1, 1)");
+        public void ReturnObjectCreation() => buildAssert(() => new DateTime(1980, 1, 1), "() => new DateTime(1980, 1, 1)", "Function() New Date(1980, 1, 1)");
     }
 }
