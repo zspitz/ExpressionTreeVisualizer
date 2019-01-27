@@ -4,7 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using static Microsoft.CodeAnalysis.LanguageNames;
+using static System.Linq.Expressions.Expression;
+using static ExpressionTreeTransform.Util.Globals;
 
 namespace _visualizerTests {
     class Program {
@@ -14,11 +15,11 @@ namespace _visualizerTests {
             var j = 8;
             //Expression<Func<string, int>> expr = s => (i + j) + s.ToString().ToList().Count();
 
-            Expression<Func<bool>> expr = () => i * j <= 25 || new DateTime(1, 1, 1981).Year >= j && new { DateTime.Now }.Now.Day > 10;
+            //Expression<Func<bool>> expr = () => i * j <= 25 || new DateTime(1, 1, 1981).Year >= j && new { DateTime.Now }.Now.Day > 10;
 
             //Expression<Func<int, int>> expr = x => Enumerable.Range(1, x).Select(y => x * y).Count();
 
-            //var expr1 = Lambda(Constant(new DateTime(1980, 1, 1)));
+            Expression expr = Lambda(Constant(new DateTime(1980, 1, 1)));
 
             //Expression<Func<Foo>> expr = () => new Foo("baz") { Bar = "bar" };
 

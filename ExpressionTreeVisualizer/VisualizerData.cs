@@ -115,6 +115,9 @@ namespace ExpressionTreeVisualizer {
                         Closure = cexpr1.Type.FriendlyName(visualizerData.Language);
                     }
                     break;
+                case MethodCallExpression callexpr:
+                    Name = callexpr.Method.Name;
+                    break;
             }
 
             switch (expr) {

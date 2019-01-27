@@ -1,7 +1,6 @@
 using System;
 using System.Linq.Expressions;
 using Xunit;
-using ExpressionTreeTransform.Util;
 using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeTransform.Tests {

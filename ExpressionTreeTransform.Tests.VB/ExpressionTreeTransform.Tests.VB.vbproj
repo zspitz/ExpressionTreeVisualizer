@@ -16,4 +16,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ExpressionTreeToCode\ExpressionTreeToCode.csproj" />
+  </ItemGroup>
+
 </Project>
