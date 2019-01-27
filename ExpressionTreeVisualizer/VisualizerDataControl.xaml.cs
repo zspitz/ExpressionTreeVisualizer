@@ -21,6 +21,21 @@ namespace ExpressionTreeVisualizer {
     public partial class VisualizerDataControl : AutoGrid {
         public VisualizerDataControl() {
             InitializeComponent();
+
+            Loaded += (s, e) => {
+                tree.SelectedItemChanged += (s1, e1) => {
+                    if (tree.SelectedItem==null) {
+                        source.Select(0, 0);
+                    } else {
+                        (int start, int length) = ((KeyValuePair<string, ExpressionNodeData>)tree.SelectedItem).Value.Span;
+                        source.Select(start, length);
+                    }
+                };
+
+                // if we don't do this, the selection will only be visible if the textbox currently has the focus
+                source.Focus();
+                source.SelectAll();
+            };
         }
     }
 }

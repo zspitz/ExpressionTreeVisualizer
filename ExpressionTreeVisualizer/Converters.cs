@@ -17,7 +17,7 @@ namespace ExpressionTreeVisualizer {
     }
     
     public class RootConverter : ReadOnlyConverterBase {
-        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture) => new[] { new KeyValuePair<string, object>("", value) };
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture) => new[] { new KeyValuePair<string, ExpressionNodeData>("", (ExpressionNodeData)value) };
     }
 
     public class ConditionalFormatConverter : ReadOnlyConverterBase {

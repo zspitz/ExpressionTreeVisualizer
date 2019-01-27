@@ -61,7 +61,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </ag:AutoGrid>
-        <TreeView ItemsSource="{Binding NodeData, Converter={StaticResource RootConverter}}" ItemTemplate="{StaticResource ExpressionNodeTemplate}">
+        <TreeView ItemsSource="{Binding NodeData, Converter={StaticResource RootConverter}}" ItemTemplate="{StaticResource ExpressionNodeTemplate}" Name="tree">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="True" />
@@ -72,6 +72,6 @@
     <GridSplitter HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="SlateGray" ShowsPreview="True" Width="5" Grid.Column="1" />
     <DockPanel Grid.Column="2">
         <Button Content="*" HorizontalAlignment="Right" DockPanel.Dock="Top" />
-        <TextBlock Text="{Binding Source}" TextWrapping="Wrap" FontFamily="Consolas" FontSize="14" />
+        <TextBox Text="{Binding Source}" TextWrapping="Wrap" FontFamily="Consolas" FontSize="14" Name="source" IsInactiveSelectionHighlightEnabled="True" SelectionBrush="Blue" />
     </DockPanel>
 </ag:AutoGrid>

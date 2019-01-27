@@ -12,6 +12,8 @@ namespace ExpressionTreeVisualizer {
 
             var data = (VisualizerData)objectProvider.GetObject();
 
+            FrameworkCompatibilityPreferences.AreInactiveSelectionHighlightBrushKeysSupported = false;
+
             var window = new Window {
                 Content = new VisualizerDataControl { DataContext = data },
                 Title = "Expression Tree Visualizer",
