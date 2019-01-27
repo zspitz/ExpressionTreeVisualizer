@@ -189,20 +189,61 @@ namespace ExpressionTreeTransform {
             }
         }
 
+        protected override void WriteBinding(MemberBinding binding) {
+            switch (binding) {
+                case MemberAssignment assignmentBinding:
+                    binding.Member.Name.AppendTo(sb);
+                    " = ".AppendTo(sb);
+                    Write(assignmentBinding.Expression);
+                    break;
+                case MemberListBinding listBinding:
+                    throw new NotImplementedException();
+                case MemberMemberBinding memberBinding:
+                    throw new NotImplementedException();
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         protected override void WriteMemberInit(MemberInitExpression expr) {
-            throw new NotImplementedException();
+            Write(expr.NewExpression);
+            if (expr.Bindings.Any()) {
+                " With { ".AppendTo(sb);
+                expr.Bindings.ForEach((binding, index) => {
+                    if (index > 0) { ", ".AppendTo(sb); }
+                    WriteBinding(binding);
+                });
+                " }".AppendTo(sb);
+            }
         }
 
         protected override void WriteListInit(ListInitExpression expr) {
-            throw new NotImplementedException();
-        }
-
-        protected override void WriteBinding(MemberBinding binding) {
-            throw new NotImplementedException();
+            Write(expr.NewExpression);
+            " {".AppendTo(sb);
+            expr.Initializers.ForEach((init, index) => {
+                if (index > 0) { ", ".AppendTo(sb); }
+                Write(init);
+            });
+            "}".AppendTo(sb);
         }
 
         protected override void WriteElementInit(ElementInit elementInit) {
-            throw new NotImplementedException();
+            var args = elementInit.Arguments;
+            switch (args.Count) {
+                case 0:
+                    throw new NotImplementedException();
+                case 1:
+                    Write(args.First());
+                    break;
+                default:
+                    "{".AppendTo(sb);
+                    args.ForEach((arg, index) => {
+                        if (index > 0) { ", ".AppendTo(sb); }
+                        Write(arg);
+                    });
+                    "}".AppendTo(sb);
+                    break;
+            }
         }
     }
 }

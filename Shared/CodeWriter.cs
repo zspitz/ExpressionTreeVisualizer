@@ -29,7 +29,25 @@ namespace ExpressionTreeTransform {
             visitedObjects = this.visitedObjects;
         }
 
-        protected void Write(Expression expr) {
+        protected void Write(object o) {
+            var start = sb.Length;
+            switch (o) {
+                case Expression expr:
+                    WriteExpression(expr);
+                    break;
+                case MemberBinding binding:
+                    WriteBinding(binding);
+                    break;
+                case ElementInit init:
+                    WriteElementInit(init);
+                    break;
+                // parameter declaration has to be done separately, because even though it's a parameter expression, the declaration is different
+            }
+
+            registerVisited(o, start);
+        }
+
+        private void WriteExpression(Expression expr) {
             var start = sb.Length;
 
             switch (expr.NodeType) {
@@ -222,9 +240,10 @@ namespace ExpressionTreeTransform {
         //protected abstract void Write(TryExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(TypeBinaryExpression expr) => throw new NotImplementedException();
 
-        protected abstract void WriteBinding(MemberBinding binding);
+        //protected abstract void WriteBinding(MemberBinding binding);
 
         protected abstract void WriteElementInit(ElementInit elementInit);
+        protected abstract void WriteBinding(MemberBinding binding);
 
         protected abstract void WriteParameterDeclarationImpl(ParameterExpression prm);
     }
