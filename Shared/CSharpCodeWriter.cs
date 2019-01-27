@@ -149,7 +149,7 @@ namespace ExpressionTreeTransform {
                 });
                 " }".AppendTo(sb);
             } else {
-                expr.Type.Name.AppendTo(sb);
+                expr.Type.FriendlyName(CSharp).AppendTo(sb);
                 "(".AppendTo(sb);
                 expr.Arguments.ForEach((arg, index) => {
                     if (index > 0) { ", ".AppendTo(sb); }

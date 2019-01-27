@@ -11,7 +11,7 @@ namespace _visualizerTests {
     class Program {
         [STAThread]
         static void Main(string[] args) {
-            var i = 7;
+            //var i = 7;
             var j = 8;
             //Expression<Func<string, int>> expr = s => (i + j) + s.ToString().ToList().Count();
 
@@ -19,7 +19,7 @@ namespace _visualizerTests {
 
             //Expression<Func<int, int>> expr = x => Enumerable.Range(1, x).Select(y => x * y).Count();
 
-            Expression expr = Lambda(Constant(new DateTime(1980, 1, 1)));
+            //Expression expr = Lambda(Constant(new DateTime(1980, 1, 1)));
 
             //Expression<Func<Foo>> expr = () => new Foo("baz") { Bar = "bar" };
 
@@ -28,10 +28,10 @@ namespace _visualizerTests {
             //Expression<Func<Wrapper>> expr = () => new Wrapper {
             //    {",","2"},
             //    "1",
-            //    {"3","4"} 
+            //    {"3","4"}
             //};
 
-            //Expression<Func<int, string, bool>> expr = (i, s) => (i * i + 15) >= 10 && s.Length <= 25;
+            Expression<Func<int, string, bool>> expr = (i, s) => (i * i + 15) >= 10 && s.Length <= 25;
 
             var data = new VisualizerData(expr, VisualBasic);
             var visualizerHost = new VisualizerDevelopmentHost(data, typeof(Visualizer));

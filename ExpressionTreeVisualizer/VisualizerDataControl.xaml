@@ -4,11 +4,26 @@
         <my:ConditionalFormatConverter x:Key="ConditionalFormatConverter" />
         <HierarchicalDataTemplate x:Key="ExpressionNodeTemplate" ItemsSource="{Binding Value.Children}">
             <TextBlock>
-                <Run Foreground="Gray" Text="{Binding Key, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
-                <Run Text="{Binding Value.NodeType, Mode=OneTime}" />
-                <Run Text="{Binding Value.ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter= ({0})}" Foreground="DarkGray" />
-                <Run Text="{Binding Value.Name, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter= \{0\}}" Foreground="DarkGray" />
-                <Run Text="{Binding Value.StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" Foreground="DarkGray" /></TextBlock>
+                <TextBlock.ToolTip>
+                    <ag:AutoGrid ColumnCount="2" Columns="65,Auto" RowCount="5">
+                        <TextBlock Text="Path" />
+                        <TextBlock Text="{Binding Key}" FontWeight="Bold" />
+                        <TextBlock Text="Node type" />
+                        <TextBlock Text="{Binding Value.NodeType}" FontWeight="Bold" />
+                        <TextBlock Text="Type" />
+                        <TextBlock Text="{Binding Value.ReflectionTypeName}" FontWeight="Bold" />
+                        <TextBlock Text="Name" />
+                        <TextBlock Text="{Binding Value.Name}" FontWeight="Bold" />
+                        <TextBlock Text="Value" />
+                        <TextBlock Text="{Binding Value.StringValue}" FontWeight="Bold" />
+                    </ag:AutoGrid>
+                </TextBlock.ToolTip>
+                <Run Foreground="DarkGray" Text="{Binding Key, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
+                <Run Text="{Binding Value.NodeType, Mode=OneTime}" FontWeight="Bold" />
+                <Run Text="{Binding Value.ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter= ({0})}" />
+                <Run Text="{Binding Value.Name, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter= \{0\}}" />
+                <Run Text="{Binding Value.StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" />
+            </TextBlock>
         </HierarchicalDataTemplate>
     </FrameworkElement.Resources>
     <DockPanel>
