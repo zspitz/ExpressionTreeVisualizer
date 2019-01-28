@@ -1,35 +1,38 @@
-﻿using System;
+﻿using ExpressionTreeTransform.Util;
+using ExpressionTreeVisualizer.Util;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WpfAutoGrid;
+using static ExpressionTreeVisualizer.EndNodeTypes;
 
 namespace ExpressionTreeVisualizer {
-    /// <summary>
-    /// Interaction logic for VisualizerDataControl.xaml
-    /// </summary>
     public partial class VisualizerDataControl : AutoGrid {
+        private Dictionary<EndNodeTypes?, DataGrid> endNodeContainers;
+
         public VisualizerDataControl() {
             InitializeComponent();
 
+            endNodeContainers = new Dictionary<EndNodeTypes?, DataGrid>() {
+                [ClosedVar] = dgClosedVars,
+                [Parameter] = dgParameters,
+                [Constant] = dgConstants
+            };
+
             Loaded += (s, e) => {
                 tree.SelectedItemChanged += (s1, e1) => {
-                    if (tree.SelectedItem==null) {
+                    var selected = tree.SelectedItem<KeyValuePair<string, ExpressionNodeData>?>()?.Value;
+                    if (selected == null) {
                         source.Select(0, 0);
-                    } else {
-                        (int start, int length) = ((KeyValuePair<string, ExpressionNodeData>)tree.SelectedItem).Value.Span;
-                        source.Select(start, length);
+                        return;
                     }
+                    (int start, int length) = selected.Span;
+                    source.Select(start, length);
+
+                    DataGrid container = null;
+                    if (selected.EndNodeType != null) { endNodeContainers.TryGetValue(selected.EndNodeType, out container); }
+                    agEndNodes.FindVisualChildren<DataGrid>().Where(x => x != container).ForEach(x => x.SelectedItem = null);
+                    if (container != null) { container.SelectedItem = selected.EndNodeData; }
                 };
 
                 // if we don't do this, the selection will only be visible if the textbox currently has the focus
@@ -37,5 +40,7 @@ namespace ExpressionTreeVisualizer {
                 source.SelectAll();
             };
         }
+
+        private VisualizerData visualizerData => (VisualizerData)DataContext;
     }
 }

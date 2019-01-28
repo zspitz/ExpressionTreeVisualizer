@@ -27,7 +27,7 @@
         </HierarchicalDataTemplate>
     </FrameworkElement.Resources>
     <DockPanel>
-        <ag:AutoGrid ColumnCount="3" RowCount="2" Orientation="Vertical" Columns="*,*,2*" DockPanel.Dock="Bottom">
+        <ag:AutoGrid ColumnCount="3" RowCount="2" Orientation="Vertical" Columns="*,*,2*" DockPanel.Dock="Bottom" x:Name="agEndNodes">
             <ag:AutoGrid.Resources>
                 <Style TargetType="Label">
                     <Setter Property="Background" Value="Gray" />
@@ -36,23 +36,29 @@
                     <Setter Property="IsReadOnly" Value="True" />
                     <Setter Property="AutoGenerateColumns" Value="False" />
                 </Style>
+                <Style TargetType="DataGridRow">
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="{x:Static SystemColors.HighlightColor}" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}" />
+                    </Style.Resources>
+                </Style>
             </ag:AutoGrid.Resources>
             <Label Content="Constants" />
-            <DataGrid ItemsSource="{Binding Constants}">
+            <DataGrid ItemsSource="{Binding Constants}" Name="dgConstants">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Type}" Header="Type" />
                     <DataGridTextColumn Binding="{Binding Value}" Header="Value" />
                 </DataGrid.Columns>
             </DataGrid>
             <Label Content="Parameters" />
-            <DataGrid ItemsSource="{Binding Parameters}">
+            <DataGrid ItemsSource="{Binding Parameters}" Name="dgParameters">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
                     <DataGridTextColumn Binding="{Binding Type}" Header="Type" />
                 </DataGrid.Columns>
             </DataGrid>
             <Label Content="Closed-over variables" />
-            <DataGrid ItemsSource="{Binding ClosedVars}">
+            <DataGrid ItemsSource="{Binding ClosedVars}" Name="dgClosedVars">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Closure}" Header="Closure" />
                     <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
