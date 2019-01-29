@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 namespace ExpressionTreeTransform {
     public class VBCodeWriter : CodeWriter {
         public VBCodeWriter(Expression expr) : base(expr) { }
-        public VBCodeWriter(Expression expr, out Dictionary<object, (int start, int length)> visitedObjects) : base(expr, out visitedObjects) { }
+        public VBCodeWriter(Expression expr, out Dictionary<object, List<(int start, int length)>> visitedObjects) : base(expr, out visitedObjects) { }
 
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
             [Add] = "+",

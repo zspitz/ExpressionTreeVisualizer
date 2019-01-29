@@ -8,7 +8,7 @@ namespace ExpressionTreeTransform {
         public static string ToCode(this Expression expr, string language) =>
             CodeWriter.Create(language, expr).ToString();
 
-        public static string ToCode(this Expression expr, string language, out Dictionary<object, (int start, int length)> visitedParts) =>
+        public static string ToCode(this Expression expr, string language, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
             CodeWriter.Create(language, expr, out visitedParts).ToString();
 
         internal static object ExtractValue(this Expression expr) =>

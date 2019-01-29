@@ -12,19 +12,19 @@ namespace ExpressionTreeTransform {
             language == VisualBasic ? new VBCodeWriter(expr) :
             throw new NotImplementedException("Unknown language");
 
-        public static CodeWriter Create(string language, Expression expr, out Dictionary<object, (int start, int length)> visitedObjects) =>
+        public static CodeWriter Create(string language, Expression expr, out Dictionary<object, List<(int start, int length)>> visitedObjects) =>
             language == CSharp ? (CodeWriter)new CSharpCodeWriter(expr, out visitedObjects) :
             language == VisualBasic ? new VBCodeWriter(expr, out visitedObjects) :
             throw new NotImplementedException("Unknown language");
 
         protected StringBuilder sb = new StringBuilder();
-        Dictionary<object, (int start, int length)> visitedObjects;
+        Dictionary<object, List<(int start, int length)>> visitedObjects;
 
         public CodeWriter(Expression expr) {
             Write(expr);
         }
-        public CodeWriter(Expression expr, out Dictionary<object, (int start, int length)> visitedObjects) {
-            this.visitedObjects = new Dictionary<object, (int start, int length)>();
+        public CodeWriter(Expression expr, out Dictionary<object, List<(int start, int length)>> visitedObjects) {
+            this.visitedObjects = new Dictionary<object, List<(int start, int length)>>();
             Write(expr);
             visitedObjects = this.visitedObjects;
         }
@@ -48,8 +48,6 @@ namespace ExpressionTreeTransform {
         }
 
         private void WriteExpression(Expression expr) {
-            var start = sb.Length;
-
             switch (expr.NodeType) {
 
                 #region BinaryExpression
@@ -195,8 +193,6 @@ namespace ExpressionTreeTransform {
                     */
                     #endregion
             }
-
-            registerVisited(expr, start);
         }
 
         protected void WriteParameterDeclaration(ParameterExpression prm) {
@@ -206,9 +202,12 @@ namespace ExpressionTreeTransform {
         }
 
         private void registerVisited(object o, int start) {
-            // TODO allow for when the same node is reused at multiple points in the tree -- https://github.com/zspitz/ExpressionToSyntaxNode/issues/16
-            if (visitedObjects==null || visitedObjects.ContainsKey(o)) { return; }
-            visitedObjects[o] = (start, sb.Length - start);
+            if (visitedObjects == null) { return; }
+            if (!visitedObjects.TryGetValue(o, out var spans)) {
+                spans = new List<(int start, int length)>();
+                visitedObjects[o] = spans;
+            }
+            spans.Add((start, sb.Length - start));
         }
 
         public override string ToString() => sb.ToString();

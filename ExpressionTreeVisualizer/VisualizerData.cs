@@ -1,9 +1,9 @@
-﻿using ExpressionTreeTransform.Util;
+﻿using ExpressionTreeTransform;
+using ExpressionTreeTransform.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using ExpressionTreeTransform;
 using static ExpressionTreeTransform.Util.Functions;
 
 namespace ExpressionTreeVisualizer {
@@ -36,38 +36,42 @@ namespace ExpressionTreeVisualizer {
         public string Name { get; set; }
         public string Closure { get; set; }
         public EndNodeTypes? EndNodeType { get; set; }
+        public bool IsDeclaration { get; set; }
 
         public EndNodeData EndNodeData => new EndNodeData {
             Closure = Closure,
-            Name=Name,
-            Type=ReflectionTypeName,
+            Name = Name,
+            Type = ReflectionTypeName,
             Value = StringValue
         };
 
         // for deserialization
         public ExpressionNodeData() { }
 
-        public ExpressionNodeData(ElementInit init, Dictionary<object, (int start, int length)> visitedObjects, VisualizerData visualizerData) {
+        internal ExpressionNodeData(ElementInit init, Dictionary<object, List<(int start, int length)>> visitedObjects, VisualizerData visualizerData, (int start, int length) parentSpan) {
             NodeType = "ElementInit";
+            if (visitedObjects.TryGetValue(init, out var spans)) {
+                Span = spans.Single();
+            }
             Children = init.Arguments.Select((x, index) => {
-                return ($"Argument[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData));
+                return ($"Argument[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData, false, Span));
             }).ToDictionary();
         }
 
-        public ExpressionNodeData(MemberBinding binding, Dictionary<object, (int start, int length)> visitedObjects, VisualizerData visualizerData) {
+        internal ExpressionNodeData(MemberBinding binding, Dictionary<object, List<(int start, int length)>> visitedObjects, VisualizerData visualizerData, (int start, int length) parentSpan) {
             Name = binding.Member.Name;
             NodeType = binding.BindingType.ToString();
-            if (visitedObjects.TryGetValue(binding, out var span)) {
-                Span = span;
+            if (visitedObjects.TryGetValue(binding, out var spans)) {
+                Span = spans.Single();
             }
             switch (binding) {
                 case MemberAssignment assignmentBinding:
                     Children = new[] {
-                        ( "Expression", new ExpressionNodeData(assignmentBinding.Expression, visitedObjects, visualizerData) )
+                        ( "Expression", new ExpressionNodeData(assignmentBinding.Expression, visitedObjects, visualizerData, false, Span) )
                     }.ToDictionary();
                     break;
                 case MemberListBinding listBinding:
-                    Children = listBinding.Initializers.Select((x, index) => ($"Iinitializers[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData))).ToDictionary();
+                    Children = listBinding.Initializers.Select((x, index) => ($"Iinitializers[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData, Span))).ToDictionary();
                     break;
                 case MemberMemberBinding memberBinding:
                     throw new NotImplementedException("MemberMemberBinding");
@@ -76,33 +80,18 @@ namespace ExpressionTreeVisualizer {
             }
         }
 
-        public ExpressionNodeData(Expression expr, Dictionary<object, (int start, int length)> visitedObjects, VisualizerData visualizerData) {
-            // populate child nodes
-            Children = expr.GetType().GetProperties().SelectMany(prp => {
-                IEnumerable<(string, Expression)> ret = Enumerable.Empty<(string, Expression)>();
-                if (prp.PropertyType.InheritsFromOrImplements<Expression>()) {
-                    ret = new[] { (prp.Name, prp.GetValue(expr) as Expression) };
-                } else if (prp.PropertyType.InheritsFromOrImplements<IEnumerable<Expression>>()) {
-                    ret = (prp.GetValue(expr) as IEnumerable<Expression>).Select((x, index) => ($"{prp.Name}[{index}]", x));
-                }
-                return ret.Where(x => x.Item2 != null);
-            }).Select(x => (x.Item1, new ExpressionNodeData(x.Item2, visitedObjects, visualizerData))).ToDictionary();
-
-            switch (expr) {
-                case MemberInitExpression initexpr:
-                    initexpr.Bindings.Select((x, index) => ($"Binding[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData))).AddRangeTo(Children);
-                    break;
-                case ListInitExpression listinitexpr:
-                    listinitexpr.Initializers.Select((x, index) => ($"Initializer[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData))).AddRangeTo(Children);
-                    break;
-            }
-
+        internal ExpressionNodeData(Expression expr, Dictionary<object, List<(int start, int length)>> visitedObjects, VisualizerData visualizerData, bool isParameterDeclaration = false, (int start, int length) parentSpan = default) {
             // populate properties
             NodeType = expr.NodeType.ToString();
             ReflectionTypeName = expr.Type.FriendlyName(visualizerData.Language);
-            if (visitedObjects.TryGetValue(expr, out var span)) {
-                Span = span;
+            if (visitedObjects.TryGetValue(expr, out var spans)) {
+                if (expr is ParameterExpression pexpr1) {
+                    Span = spans.Where(x => x.start >= parentSpan.start && (x.start + x.length) <= (parentSpan.start + parentSpan.length)).OrderBy(x => x.start).FirstOrDefault();
+                } else {
+                    Span = spans.Single();
+                }
             }
+            IsDeclaration = isParameterDeclaration;
 
             // fill the Name and Closure properties
             switch (expr) {
@@ -136,6 +125,34 @@ namespace ExpressionTreeVisualizer {
                     visualizerData.ClosedVars.Add(EndNodeData);
                     break;
             }
+
+
+            // populate child nodes
+            if (expr is LambdaExpression lambda) {
+                // lambda expression needs special handling, because there is no other way to distinguish between parameter declaration and usage
+                Children = lambda.Parameters.Select((x, index) => ($"Parameter[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData, true, Span))).ToDictionary();
+                Children["Body"] = new ExpressionNodeData(lambda.Body, visitedObjects, visualizerData, false, Span);
+            } else {
+                Children = expr.GetType().GetProperties().OrderBy(x => x.Name).SelectMany(prp => {
+                    IEnumerable<(string, Expression)> ret = Enumerable.Empty<(string, Expression)>();
+                    if (prp.PropertyType.InheritsFromOrImplements<Expression>()) {
+                        ret = new[] { (prp.Name, prp.GetValue(expr) as Expression) };
+                    } else if (prp.PropertyType.InheritsFromOrImplements<IEnumerable<Expression>>()) {
+                        ret = (prp.GetValue(expr) as IEnumerable<Expression>).Select((x, index) => ($"{prp.Name}[{index}]", x));
+                    }
+                    return ret.Where(x => x.Item2 != null);
+                }).Select(x => (x.Item1, new ExpressionNodeData(x.Item2, visitedObjects, visualizerData, false, Span))).ToDictionary();
+
+                switch (expr) {
+                    case MemberInitExpression initexpr:
+                        initexpr.Bindings.Select((x, index) => ($"Binding[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData, Span))).AddRangeTo(Children);
+                        break;
+                    case ListInitExpression listinitexpr:
+                        listinitexpr.Initializers.Select((x, index) => ($"Initializer[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData, Span))).AddRangeTo(Children);
+                        break;
+                }
+            }
+
         }
     }
 

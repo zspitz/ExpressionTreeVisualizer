@@ -31,7 +31,7 @@ namespace _visualizerTests {
             //    {"3","4"}
             //};
 
-            Expression<Func<int, string, bool>> expr = (i, s) => (i * i + 15) >= 10 && s.Length <= 25;
+            Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25;
 
             var data = new VisualizerData(expr, VisualBasic);
             var visualizerHost = new VisualizerDevelopmentHost(data, typeof(Visualizer));

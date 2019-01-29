@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 namespace ExpressionTreeTransform {
     public class CSharpCodeWriter : CodeWriter {
         public CSharpCodeWriter(Expression expr) : base(expr) { }
-        public CSharpCodeWriter(Expression expr, out Dictionary<object, (int start, int length)> visitedObjects) : base(expr, out visitedObjects) { }
+        public CSharpCodeWriter(Expression expr, out Dictionary<object, List<(int start, int length)>> visitedObjects) : base(expr, out visitedObjects) { }
 
         // TODO handle order of operations -- https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/
 
