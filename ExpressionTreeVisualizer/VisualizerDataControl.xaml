@@ -44,21 +44,21 @@
                 </Style>
             </ag:AutoGrid.Resources>
             <Label Content="Constants" />
-            <DataGrid ItemsSource="{Binding Constants}" Name="dgConstants">
+            <DataGrid ItemsSource="{Binding Constants.Keys}" Name="dgConstants">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Type}" Header="Type" />
                     <DataGridTextColumn Binding="{Binding Value}" Header="Value" />
                 </DataGrid.Columns>
             </DataGrid>
             <Label Content="Parameters" />
-            <DataGrid ItemsSource="{Binding Parameters}" Name="dgParameters">
+            <DataGrid ItemsSource="{Binding Parameters.Keys}" Name="dgParameters">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
                     <DataGridTextColumn Binding="{Binding Type}" Header="Type" />
                 </DataGrid.Columns>
             </DataGrid>
             <Label Content="Closed-over variables" />
-            <DataGrid ItemsSource="{Binding ClosedVars}" Name="dgClosedVars">
+            <DataGrid ItemsSource="{Binding ClosedVars.Keys}" Name="dgClosedVars">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Closure}" Header="Closure" />
                     <DataGridTextColumn Binding="{Binding Name}" Header="Name" />

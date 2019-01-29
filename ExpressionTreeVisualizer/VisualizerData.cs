@@ -5,16 +5,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using static ExpressionTreeTransform.Util.Functions;
-
+using static ExpressionTreeVisualizer.EndNodeTypes;
+   
 namespace ExpressionTreeVisualizer {
     [Serializable]
     public class VisualizerData {
         public string Source { get; set; }
-        public ExpressionNodeData NodeData { get; set; }
-        public HashSet<EndNodeData> Constants { get; } = new HashSet<EndNodeData>();
-        public HashSet<EndNodeData> Parameters { get; } = new HashSet<EndNodeData>();
-        public HashSet<EndNodeData> ClosedVars { get; } = new HashSet<EndNodeData>();
         public string Language { get; set; }
+        public ExpressionNodeData NodeData { get; set; }
+
+        [NonSerialized] // the items in this List are grouped and serialized into separate collections
+        public List<ExpressionNodeData> CollectedEndNodes;
+
+        public Dictionary<EndNodeData, List<ExpressionNodeData>> Constants { get; }
+        public Dictionary<EndNodeData, List<ExpressionNodeData>> Parameters { get; }
+        public Dictionary<EndNodeData, List<ExpressionNodeData>> ClosedVars { get; }
 
         // for deserialization
         public VisualizerData() { }
@@ -22,7 +27,35 @@ namespace ExpressionTreeVisualizer {
         public VisualizerData(Expression expr, string language) {
             Source = expr.ToCode(language, out var visitedObjects);
             Language = language;
+            CollectedEndNodes = new List<ExpressionNodeData>();
             NodeData = new ExpressionNodeData(expr, visitedObjects, this);
+
+            // TODO it should be possible to write the following using LINQ
+            Constants = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
+            Parameters = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
+            ClosedVars = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
+            foreach (var x in CollectedEndNodes) {
+                Dictionary<EndNodeData, List<ExpressionNodeData>> dict;
+                switch (x.EndNodeType) {
+                    case Constant:
+                        dict = Constants;
+                        break;
+                    case Parameter:
+                        dict = Parameters;
+                        break;
+                    case ClosedVar:
+                        dict = ClosedVars;
+                        break;
+                    default:
+                        throw new InvalidOperationException();
+                }
+
+                if (!dict.TryGetValue(x.EndNodeData, out var lst)) {
+                    lst = new List<ExpressionNodeData>();
+                    dict[x.EndNodeData] = lst;
+                }
+                lst.Add(x);
+            }
         }
     }
 
@@ -109,23 +142,21 @@ namespace ExpressionTreeVisualizer {
                     break;
             }
 
+            // fill StringValue and EndNodeType properties
             switch (expr) {
                 case ConstantExpression cexpr when !cexpr.Type.IsClosureClass():
                     StringValue = StringValue(cexpr.Value, visualizerData.Language);
-                    EndNodeType = EndNodeTypes.Constant;
-                    visualizerData.Constants.Add(EndNodeData);
+                    EndNodeType = Constant;
                     break;
                 case ParameterExpression pexpr1:
-                    EndNodeType = EndNodeTypes.Parameter;
-                    visualizerData.Parameters.Add(EndNodeData);
+                    EndNodeType = Parameter;
                     break;
                 case MemberExpression mexpr when mexpr.Expression is ConstantExpression cexpr1 && cexpr1.Type.IsClosureClass():
                     StringValue = StringValue(mexpr.ExtractValue(), visualizerData.Language);
-                    EndNodeType = EndNodeTypes.ClosedVar;
-                    visualizerData.ClosedVars.Add(EndNodeData);
+                    EndNodeType = ClosedVar;
                     break;
             }
-
+            if (EndNodeType != null) { visualizerData.CollectedEndNodes.Add(this); }
 
             // populate child nodes
             if (expr is LambdaExpression lambda) {
@@ -152,7 +183,6 @@ namespace ExpressionTreeVisualizer {
                         break;
                 }
             }
-
         }
     }
 
@@ -170,3 +200,7 @@ namespace ExpressionTreeVisualizer {
         ClosedVar
     }
 }
+
+
+// TODO write method to load span into this ExpressionNodeData
+// TODO attach visitedObjects to visualizerData in VisualizerData constructor, and remove once ExpressionNodeData tree has been constructed; instead of passing into constructor of ExpressionNodeData
