@@ -20,7 +20,7 @@ namespace ExpressionTreeVisualizer {
             };
 
             Loaded += (s, e) => {
-                tree.SelectedItemChanged += (s1, e1) => {
+                tree.SelectionChanged += (s1, e1) => {
                     if (selected == null) {
                         source.Select(0, 0);
                         return;
@@ -41,6 +41,6 @@ namespace ExpressionTreeVisualizer {
         }
 
         private VisualizerData visualizerData => (VisualizerData)DataContext;
-        private ExpressionNodeData selected => tree.SelectedItem<KeyValuePair<string, ExpressionNodeData>?>()?.Value;
+        private ExpressionNodeData selected => tree.SelectedItems<KeyValuePair<string, ExpressionNodeData>?>().FirstOrDefault()?.Value;
     }
 }
