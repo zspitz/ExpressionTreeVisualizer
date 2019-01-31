@@ -5,15 +5,27 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using static ExpressionTreeTransform.Util.Functions;
 using static ExpressionTreeVisualizer.EndNodeTypes;
+using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeVisualizer {
     [Serializable]
+    public class VisualizerDataOptions : INotifyPropertyChanged {
+        private string _language = CSharp;
+        public string Language {
+            get => _language;
+            set => this.NotifyChanged(ref _language, value, args => PropertyChanged?.Invoke(this, args));
+        }
+
+        [field:NonSerialized]
+        public event PropertyChangedEventHandler PropertyChanged;
+    }
+
+    [Serializable]
     public class VisualizerData {
         public string Source { get; set; }
-        public string Language { get; set; }
+        public VisualizerDataOptions Options { get; set; }
         public ExpressionNodeData NodeData { get; set; }
 
         [NonSerialized] // the items in this List are grouped and serialized into separate collections
@@ -41,9 +53,9 @@ namespace ExpressionTreeVisualizer {
         // for deserialization
         public VisualizerData() { }
 
-        public VisualizerData(Expression expr, string language) {
-            Language = language;
-            Source = expr.ToCode(language, out var visitedObjects);
+        public VisualizerData(Expression expr, VisualizerDataOptions options = null) {
+            Options = options ?? new VisualizerDataOptions(); 
+            Source = expr.ToCode(Options.Language, out var visitedObjects);
             VisitedObjects = visitedObjects;
             CollectedEndNodes = new List<ExpressionNodeData>();
             NodeData = new ExpressionNodeData(expr, this);
@@ -133,9 +145,11 @@ namespace ExpressionTreeVisualizer {
         }
 
         internal ExpressionNodeData(Expression expr, VisualizerData visualizerData, bool isParameterDeclaration = false, (int start, int length) parentSpan = default) {
+            var language = visualizerData.Options.Language;
+
             // populate properties
             NodeType = expr.NodeType.ToString();
-            ReflectionTypeName = expr.Type.FriendlyName(visualizerData.Language);
+            ReflectionTypeName = expr.Type.FriendlyName(language);
             if (visualizerData.VisitedObjects.TryGetValue(expr, out var spans)) {
                 if (expr is ParameterExpression pexpr1) {
                     Span = spans.Where(x => x.start >= parentSpan.start && (x.start + x.length) <= (parentSpan.start + parentSpan.length)).OrderBy(x => x.start).FirstOrDefault();
@@ -153,7 +167,7 @@ namespace ExpressionTreeVisualizer {
                 case MemberExpression mexpr:
                     Name = mexpr.Member.Name;
                     if (mexpr.Expression is ConstantExpression cexpr1 && cexpr1.Type.IsClosureClass()) {
-                        Closure = cexpr1.Type.FriendlyName(visualizerData.Language);
+                        Closure = cexpr1.Type.FriendlyName(language);
                     }
                     break;
                 case MethodCallExpression callexpr:
@@ -164,14 +178,14 @@ namespace ExpressionTreeVisualizer {
             // fill StringValue and EndNodeType properties
             switch (expr) {
                 case ConstantExpression cexpr when !cexpr.Type.IsClosureClass():
-                    StringValue = StringValue(cexpr.Value, visualizerData.Language);
+                    StringValue = StringValue(cexpr.Value, language);
                     EndNodeType = Constant;
                     break;
                 case ParameterExpression pexpr1:
                     EndNodeType = Parameter;
                     break;
                 case MemberExpression mexpr when mexpr.Expression is ConstantExpression cexpr1 && cexpr1.Type.IsClosureClass():
-                    StringValue = StringValue(mexpr.ExtractValue(), visualizerData.Language);
+                    StringValue = StringValue(mexpr.ExtractValue(), language);
                     EndNodeType = ClosedVar;
                     break;
             }
@@ -205,16 +219,11 @@ namespace ExpressionTreeVisualizer {
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyChanged<T>(ref T current, T newValue, [CallerMemberName] string name = null) where T : IEquatable<T> {
-            if (current.Equals(newValue)) { return; }
-            current = newValue;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
 
         private bool _isSelected;
         public bool IsSelected {
             get => _isSelected;
-            set => NotifyChanged(ref _isSelected, value);
+            set => this.NotifyChanged(ref _isSelected, value, args => PropertyChanged?.Invoke(this, args));
         }
 
         public void ClearSelection() {

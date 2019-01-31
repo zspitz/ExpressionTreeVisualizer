@@ -9,7 +9,7 @@ Module Module1
         Dim i = 7
         Dim j = 5
         Dim expr As Expression(Of Func(Of Integer)) = Function() i * j
-        Dim data = New VisualizerData(expr, "C#")
+        Dim data = New VisualizerData(expr)
         Dim visualizerHost = New VisualizerDevelopmentHost(data, GetType(Visualizer))
         visualizerHost.ShowVisualizer()
     End Sub

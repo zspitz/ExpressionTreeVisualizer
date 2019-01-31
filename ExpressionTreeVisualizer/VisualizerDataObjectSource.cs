@@ -1,14 +1,14 @@
 ﻿using Microsoft.VisualStudio.DebuggerVisualizers;
 using System.IO;
 using System.Linq.Expressions;
-using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeVisualizer {
-    class VisualizerDataObjectSource : VisualizerObjectSource {
-        public override void GetData(object target, Stream outgoingData) {
+    public class VisualizerDataObjectSource : VisualizerObjectSource {
+        public override void TransferData(object target, Stream incomingData, Stream outgoingData) {
             var expr = (Expression)target;
-            var visualizerData = new VisualizerData(expr, CSharp);
-            base.GetData(visualizerData, outgoingData);
+            var options = (VisualizerDataOptions)Deserialize(incomingData);
+            var visualizerData = new VisualizerData(expr, options);
+            Serialize(outgoingData, visualizerData);
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using ExpressionTreeTransform.Util;
 using ExpressionTreeVisualizer.Util;
+using Microsoft.VisualStudio.DebuggerVisualizers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using WpfAutoGrid;
+using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeVisualizer {
     public partial class VisualizerDataControl : AutoGrid {
@@ -15,6 +17,8 @@ namespace ExpressionTreeVisualizer {
             endNodeContainers = agEndNodes.FindVisualChildren<DataGrid>().ToList();
 
             Loaded += (s, e) => {
+                Options = Options ?? new VisualizerDataOptions();
+
                 tree.SelectionChanged += (s1, e1) => changeSelection(s1);
                 source.SelectionChanged += (s1, e1) => changeSelection(s1);
                 endNodeContainers.ForEach(x => x.SelectionChanged += (s1, e1) => changeSelection(s1));
@@ -23,6 +27,8 @@ namespace ExpressionTreeVisualizer {
                 source.Focus();
                 source.SelectAll();
             };
+
+            cmbLanguages.ItemsSource = new[] { CSharp, VisualBasic };
         }
 
         private VisualizerData visualizerData => (VisualizerData)DataContext;
@@ -74,5 +80,20 @@ namespace ExpressionTreeVisualizer {
 
             inChangeSelection = false;
         }
+
+        public IVisualizerObjectProvider ObjectProvider { get; set; }
+
+        private VisualizerDataOptions _options;
+        public VisualizerDataOptions Options {
+            get => _options;
+            set {
+                if (value == null || value == _options) { return; }
+                _options = value;
+                cmbLanguages.DataContext = _options;
+                _options.PropertyChanged += (s, e) => LoadDataContext();
+                LoadDataContext();
+            }
+        }
+        public void LoadDataContext() =>DataContext = ObjectProvider.TransferObject(Options);
     }
 }

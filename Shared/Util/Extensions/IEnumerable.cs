@@ -13,5 +13,11 @@ namespace ExpressionTreeTransform.Util {
             return false;
         }
         public static bool None(this IEnumerable src) => !src.Any();
+        public static object First(this IEnumerable src) {
+            foreach (var item in src) {
+                return item;
+            }
+            return null;
+        }
     }
 }

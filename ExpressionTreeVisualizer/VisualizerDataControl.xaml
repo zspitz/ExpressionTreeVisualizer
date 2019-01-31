@@ -77,6 +77,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </ag:AutoGrid>
+        <ComboBox Name="cmbLanguages" DockPanel.Dock="Top" HorizontalAlignment="Right" SelectedItem="{Binding Language}" />
         <TextBox Text="{Binding Source}" TextWrapping="Wrap" FontFamily="Consolas" FontSize="14" Name="source" IsInactiveSelectionHighlightEnabled="True" SelectionBrush="Blue" />
     </DockPanel>
 </ag:AutoGrid>

@@ -33,13 +33,13 @@ namespace _visualizerTests {
 
             Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100);
 
-            var data = new VisualizerData(expr, VisualBasic);
-            var visualizerHost = new VisualizerDevelopmentHost(data, typeof(Visualizer));
+            var data = new VisualizerData(expr);
+            var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer),typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
 
-            data = new VisualizerData(expr, CSharp);
-            visualizerHost = new VisualizerDevelopmentHost(data, typeof(Visualizer));
-            visualizerHost.ShowVisualizer();
+            //data = new VisualizerData(expr);
+            //visualizerHost = new VisualizerDevelopmentHost(data, typeof(Visualizer));
+            //visualizerHost.ShowVisualizer();
 
             Console.ReadKey(true);
         }
