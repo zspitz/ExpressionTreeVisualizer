@@ -12,5 +12,6 @@ namespace ExpressionTreeTransform.Util {
             }
             return false;
         }
+        public static bool None(this IEnumerable src) => !src.Any();
     }
 }

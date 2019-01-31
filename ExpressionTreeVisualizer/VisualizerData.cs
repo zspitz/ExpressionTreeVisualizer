@@ -2,11 +2,13 @@
 using ExpressionTreeTransform.Util;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using static ExpressionTreeTransform.Util.Functions;
 using static ExpressionTreeVisualizer.EndNodeTypes;
-   
+
 namespace ExpressionTreeVisualizer {
     [Serializable]
     public class VisualizerData {
@@ -16,19 +18,35 @@ namespace ExpressionTreeVisualizer {
 
         [NonSerialized] // the items in this List are grouped and serialized into separate collections
         public List<ExpressionNodeData> CollectedEndNodes;
+        [NonSerialized]
+        public Dictionary<object, List<(int start, int length)>> VisitedObjects;
 
         public Dictionary<EndNodeData, List<ExpressionNodeData>> Constants { get; }
         public Dictionary<EndNodeData, List<ExpressionNodeData>> Parameters { get; }
         public Dictionary<EndNodeData, List<ExpressionNodeData>> ClosedVars { get; }
 
+        public ExpressionNodeData FindNodeBySpan(int start, int length) {
+            var end = start + length;
+            if (start < NodeData.Span.start || end > NodeData.SpanEnd) { throw new ArgumentOutOfRangeException(); }
+            var current = NodeData;
+            while (true) {
+                // we should really use SingleOrDefault, except that multiple instances of the same ParameterExpression might be returned, because we can't figure out the right start and end for multiple ParameterExpression
+                var child = current.Children.Values.FirstOrDefault(x => x.Span.start <= start && x.SpanEnd >= end);
+                if (child == null) { break; }
+                current = child;
+            }
+            return current;
+        }
+
         // for deserialization
         public VisualizerData() { }
 
         public VisualizerData(Expression expr, string language) {
-            Source = expr.ToCode(language, out var visitedObjects);
             Language = language;
+            Source = expr.ToCode(language, out var visitedObjects);
+            VisitedObjects = visitedObjects;
             CollectedEndNodes = new List<ExpressionNodeData>();
-            NodeData = new ExpressionNodeData(expr, visitedObjects, this);
+            NodeData = new ExpressionNodeData(expr, this);
 
             // TODO it should be possible to write the following using LINQ
             Constants = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
@@ -60,11 +78,12 @@ namespace ExpressionTreeVisualizer {
     }
 
     [Serializable]
-    public class ExpressionNodeData {
+    public class ExpressionNodeData : INotifyPropertyChanged {
         public Dictionary<string, ExpressionNodeData> Children { get; set; }
         public string NodeType { get; set; } // ideally this should be an intersection type of multiple enums
         public string ReflectionTypeName { get; set; }
         public (int start, int length) Span { get; set; }
+        public int SpanEnd => Span.start + Span.length;
         public string StringValue { get; set; }
         public string Name { get; set; }
         public string Closure { get; set; }
@@ -81,30 +100,30 @@ namespace ExpressionTreeVisualizer {
         // for deserialization
         public ExpressionNodeData() { }
 
-        internal ExpressionNodeData(ElementInit init, Dictionary<object, List<(int start, int length)>> visitedObjects, VisualizerData visualizerData, (int start, int length) parentSpan) {
+        internal ExpressionNodeData(ElementInit init, VisualizerData visualizerData, (int start, int length) parentSpan) {
             NodeType = "ElementInit";
-            if (visitedObjects.TryGetValue(init, out var spans)) {
+            if (visualizerData.VisitedObjects.TryGetValue(init, out var spans)) {
                 Span = spans.Single();
             }
             Children = init.Arguments.Select((x, index) => {
-                return ($"Argument[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData, false, Span));
+                return ($"Argument[{index}]", new ExpressionNodeData(x, visualizerData, false, Span));
             }).ToDictionary();
         }
 
-        internal ExpressionNodeData(MemberBinding binding, Dictionary<object, List<(int start, int length)>> visitedObjects, VisualizerData visualizerData, (int start, int length) parentSpan) {
+        internal ExpressionNodeData(MemberBinding binding, VisualizerData visualizerData, (int start, int length) parentSpan) {
             Name = binding.Member.Name;
             NodeType = binding.BindingType.ToString();
-            if (visitedObjects.TryGetValue(binding, out var spans)) {
+            if (visualizerData.VisitedObjects.TryGetValue(binding, out var spans)) {
                 Span = spans.Single();
             }
             switch (binding) {
                 case MemberAssignment assignmentBinding:
                     Children = new[] {
-                        ( "Expression", new ExpressionNodeData(assignmentBinding.Expression, visitedObjects, visualizerData, false, Span) )
+                        ( "Expression", new ExpressionNodeData(assignmentBinding.Expression, visualizerData, false, Span) )
                     }.ToDictionary();
                     break;
                 case MemberListBinding listBinding:
-                    Children = listBinding.Initializers.Select((x, index) => ($"Iinitializers[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData, Span))).ToDictionary();
+                    Children = listBinding.Initializers.Select((x, index) => ($"Iinitializers[{index}]", new ExpressionNodeData(x, visualizerData, Span))).ToDictionary();
                     break;
                 case MemberMemberBinding memberBinding:
                     throw new NotImplementedException("MemberMemberBinding");
@@ -113,11 +132,11 @@ namespace ExpressionTreeVisualizer {
             }
         }
 
-        internal ExpressionNodeData(Expression expr, Dictionary<object, List<(int start, int length)>> visitedObjects, VisualizerData visualizerData, bool isParameterDeclaration = false, (int start, int length) parentSpan = default) {
+        internal ExpressionNodeData(Expression expr, VisualizerData visualizerData, bool isParameterDeclaration = false, (int start, int length) parentSpan = default) {
             // populate properties
             NodeType = expr.NodeType.ToString();
             ReflectionTypeName = expr.Type.FriendlyName(visualizerData.Language);
-            if (visitedObjects.TryGetValue(expr, out var spans)) {
+            if (visualizerData.VisitedObjects.TryGetValue(expr, out var spans)) {
                 if (expr is ParameterExpression pexpr1) {
                     Span = spans.Where(x => x.start >= parentSpan.start && (x.start + x.length) <= (parentSpan.start + parentSpan.length)).OrderBy(x => x.start).FirstOrDefault();
                 } else {
@@ -161,8 +180,8 @@ namespace ExpressionTreeVisualizer {
             // populate child nodes
             if (expr is LambdaExpression lambda) {
                 // lambda expression needs special handling, because there is no other way to distinguish between parameter declaration and usage
-                Children = lambda.Parameters.Select((x, index) => ($"Parameter[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData, true, Span))).ToDictionary();
-                Children["Body"] = new ExpressionNodeData(lambda.Body, visitedObjects, visualizerData, false, Span);
+                Children = lambda.Parameters.Select((x, index) => ($"Parameter[{index}]", new ExpressionNodeData(x, visualizerData, true, Span))).ToDictionary();
+                Children["Body"] = new ExpressionNodeData(lambda.Body, visualizerData, false, Span);
             } else {
                 Children = expr.GetType().GetProperties().OrderBy(x => x.Name).SelectMany(prp => {
                     IEnumerable<(string, Expression)> ret = Enumerable.Empty<(string, Expression)>();
@@ -172,17 +191,35 @@ namespace ExpressionTreeVisualizer {
                         ret = (prp.GetValue(expr) as IEnumerable<Expression>).Select((x, index) => ($"{prp.Name}[{index}]", x));
                     }
                     return ret.Where(x => x.Item2 != null);
-                }).Select(x => (x.Item1, new ExpressionNodeData(x.Item2, visitedObjects, visualizerData, false, Span))).ToDictionary();
+                }).Select(x => (x.Item1, new ExpressionNodeData(x.Item2, visualizerData, false, Span))).ToDictionary();
 
                 switch (expr) {
                     case MemberInitExpression initexpr:
-                        initexpr.Bindings.Select((x, index) => ($"Binding[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData, Span))).AddRangeTo(Children);
+                        initexpr.Bindings.Select((x, index) => ($"Binding[{index}]", new ExpressionNodeData(x, visualizerData, Span))).AddRangeTo(Children);
                         break;
                     case ListInitExpression listinitexpr:
-                        listinitexpr.Initializers.Select((x, index) => ($"Initializer[{index}]", new ExpressionNodeData(x, visitedObjects, visualizerData, Span))).AddRangeTo(Children);
+                        listinitexpr.Initializers.Select((x, index) => ($"Initializer[{index}]", new ExpressionNodeData(x, visualizerData, Span))).AddRangeTo(Children);
                         break;
                 }
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyChanged<T>(ref T current, T newValue, [CallerMemberName] string name = null) where T : IEquatable<T> {
+            if (current.Equals(newValue)) { return; }
+            current = newValue;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private bool _isSelected;
+        public bool IsSelected {
+            get => _isSelected;
+            set => NotifyChanged(ref _isSelected, value);
+        }
+
+        public void ClearSelection() {
+            IsSelected = false;
+            Children.ForEach(x => x.Value.ClearSelection());
         }
     }
 
@@ -203,4 +240,3 @@ namespace ExpressionTreeVisualizer {
 
 
 // TODO write method to load span into this ExpressionNodeData
-// TODO attach visitedObjects to visualizerData in VisualizerData constructor, and remove once ExpressionNodeData tree has been constructed; instead of passing into constructor of ExpressionNodeData

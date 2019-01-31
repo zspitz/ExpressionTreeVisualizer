@@ -61,9 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters.cs" />
-    <Compile Include="Extensions\DependencyObject.cs" />
-    <Compile Include="Extensions\MultiSelectTreeView.cs" />
-    <Compile Include="Extensions\TreeView.cs" />
+    <Compile Include="Util\Extensions\DependencyObject.cs" />
+    <Compile Include="Util\Extensions\Selector.cs" />
+    <Compile Include="Util\Extensions\MultiSelector.cs" />
+    <Compile Include="Util\Extensions\MultiSelectTreeView.cs" />
+    <Compile Include="Util\Extensions\TreeView.cs" />
+    <Compile Include="Util\Functions.cs" />
     <Compile Include="Visualizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VisualizerData.cs" />
