@@ -10,11 +10,14 @@ namespace ExpressionTreeTransform.Util {
             if (language.NotIn(CSharp, VisualBasic)) { throw new NotImplementedException("Invalid language"); }
 
             if (o == null) { return language == CSharp ? "null" : "Nothing"; }
-            if (language==CSharp && o is bool b) { return b ? "true" : "false"; }
+            if (o is bool b) {
+                if (language==CSharp) { return b ? "true" : "false"; }
+                return b ? "True" : "False";
+            }
             var type = o.GetType().UnderlyingIfNullable();
             if (type == typeof(string)) { return $"\"{o.ToString()}\""; }
             if (type.IsNumeric()) { return o.ToString(); }
-            if (language == VisualBasic && type.In(typeof(DateTime), typeof(TimeSpan))) {
+            if (language == VisualBasic && type.In(typeof(DateTime), typeof(TimeSpan), typeof(bool))) {
                 return $"#{o.ToString()}#";
             }
             rendered = false;

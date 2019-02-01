@@ -11,11 +11,13 @@ namespace _visualizerTests {
     class Program {
         [STAThread]
         static void Main(string[] args) {
-            //var i = 7;
+            var i = 7;
             var j = 8;
+            //Expression<Func<int>> expr = () => i + j;
+
             //Expression<Func<string, int>> expr = s => (i + j) + s.ToString().ToList().Count();
 
-            //Expression<Func<bool>> expr = () => i * j <= 25 || new DateTime(1, 1, 1981).Year >= j && new { DateTime.Now }.Now.Day > 10;
+            Expression<Func<bool>> expr = () => i * j <= 25 || new DateTime(1, 1, 1981).Year >= j && new { DateTime.Now }.Now.Day > 10;
 
             //Expression<Func<int, int>> expr = x => Enumerable.Range(1, x).Select(y => x * y).Count();
 
@@ -31,7 +33,12 @@ namespace _visualizerTests {
             //    {"3","4"}
             //};
 
-            Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100);
+            //Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100);
+
+            //var i = 5;
+            //Expression<Func<int, int>> expr = j => (i + j + 17) * (i + j + 17);
+
+            //Expression<Func<bool>> expr = () => true;
 
             var data = new VisualizerData(expr);
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer),typeof(VisualizerDataObjectSource));

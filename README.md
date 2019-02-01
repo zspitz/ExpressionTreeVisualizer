@@ -1,24 +1,79 @@
-# ExpressionToSyntaxNode
-Maps expression trees to Roslyn Syntax Node trees, using the SyntaxNode API for cross-language support
+# Expression To Code and Expression Tree Visualizer
+This project provides the following:
 
-This is inspired by the excellent [ReadableExpressions](https://github.com/agileobjects/ReadableExpressions) project. However, it has the following limitations:
+* Extension methods to create a code-like string representation in C# or VB.NET
+* A debugging visualizer for expression trees
 
-1. code output is only in C#
-2. closed-over variables in VB.NET expressions are not handled
+---
 
-The goals of this project are:
+## Expression To Code
+```csharp
+Expression<Func<bool>> expr = () => true;
 
-1. Provide an extension method on expressions that returns a Roslyn syntax tree, in either C# or VB.NET, using the language-independent `SyntaxNode` API as much as possible, and dropping down to the language-specific `SyntaxFactory` as needed.
-2. Provide an extension method on expressions that returns a string representation of that tree, with optional trivia insertion.
-3. Provide a visualizer with a tree representation of the expression, alongside the code
-    * Ideally the trivia insertion within the visualizer will be based on project settings, or the user's IDE settings, if possible
+// output -- () => true
+Console.WriteLine(expr.ToCode("C#")); 
 
-Note that expression support is incomplete -- lots of `NotImplementedException`.
+// output -- Function() True
+Console.WriteLine(expr.ToCode("Visual Basic"));
+```
 
-Screenshot of the visualizer -- VB output, and highlighting a parameter and closed-over variables
+Features:
 
-![Screenshot](screenshot-vb.jpg)
+* Support for outputting both C# and VB.NET
+* Extension methods are rendered as instance methods
 
-Slightly more complicated expression -- C# output and some constants, in addition to the same closed-over variables:
+    ```csharp
+    Expression<Func<int, int>> expr = x => Enumerable.Range(1, x).Select(y => x * y).Count();
+    Console.WriteLine(expr.ToCode("C#"));
+    // output -- (int x) => Enumerable.Range(1, x).Select((int y) => x * y).Count()
+    ```
 
-![Screenshot](screenshot-csharp.jpg)
+* Closed-over variables are rendered as simple identifiers (instead of member access on the hidden compiler-generated class)
+
+    ```csharp
+    var i = 7;
+    var j = 8;
+    Expression<Func<int>> expr = () => i + j;
+    Console.WriteLine(expr.ToCode("C#"));
+    // output -- () => i + j
+    ```
+
+Note that support for the full range of types in `System.Linq.Expressions` is incomplete, but progressing.
+
+---
+
+## Expression Tree Visualizer
+
+![Screenshot](screenshot-01.png)
+
+The UI consists of three parts:
+
+1. Tree view of the various parts of an expression tree
+2. Source code view, using the above `ExpressionToCode` library
+3. End nodes -- nodes in the expression tree which are not composed of other expressions
+
+## Visualizer features
+
+* Live switching between C# and VB.NET
+
+    ![Language switch](language-switch.gif)
+    
+* Selection syncing when selecting from the tree:
+
+  ![Selection sync from tree](sync-from-tree.gif)
+
+  from source code:
+
+  ![Selection sync from source code](sync-from-code.gif)
+
+  and from end nodes:
+
+  ![Selection sync from end nodes](sync-from-endnodes.gif)
+
+# Credits
+
+* John M. Wright's series on [writing debugger visualizers](https://wrightfully.com/writing-a-readonly-debugger-visualizer)
+* [WPF AutoGrid](https://github.com/carbonrobot/wpf-autogrid)
+* Multiple-selection treeview is provided by [MultiSelectTreeView](https://github.com/ygoe/MultiSelectTreeView)
+* [ReadableExpressions](https://github.com/agileobjects/ReadableExpressions)
+* [Greenshot](https://getgreenshot.org/) and [ScreenToGIF](https://www.screentogif.com/) for the screenshots
