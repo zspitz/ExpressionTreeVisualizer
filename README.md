@@ -40,7 +40,7 @@ Features:
     // output -- () => i + j
     ```
 
-Note that support for the full range of types in `System.Linq.Expressions` is incomplete, but progressing.
+Note that support for the full range of types in `System.Linq.Expressions` is incomplete, but [progressing](https://github.com/zspitz/ExpressionToCode/issues/32).
 
 ---
 
