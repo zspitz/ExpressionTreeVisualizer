@@ -1,8 +1,8 @@
 # Expression To Code and Expression Tree Visualizer
 This project provides the following:
 
-* Extension methods to create a code-like string representation in C# or VB.NET
-* A debugging visualizer for expression trees
+* Extension methods to create a C# or VB.NET code-like string representation, of expression trees or expression tree parts
+* A debugging visualizer for expression trees / expression tree parts
 
 Currently, you have to compile in order to use. The visualizer DLL needs to be placed in the appropriate folder, as outlined [here](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2017). Eventually there'll be a NuGet package for the extension methods library, and a VSIX package for the visualizer.
 
