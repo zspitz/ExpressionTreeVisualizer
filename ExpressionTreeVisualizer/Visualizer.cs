@@ -15,7 +15,7 @@ namespace ExpressionTreeVisualizer {
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) {
             if (windowService == null) { throw new ArgumentNullException(nameof(windowService)); }
 
-            FrameworkCompatibilityPreferences.AreInactiveSelectionHighlightBrushKeysSupported = false;
+            //FrameworkCompatibilityPreferences.AreInactiveSelectionHighlightBrushKeysSupported = false;
 
             var control = new VisualizerDataControl {
                 ObjectProvider = objectProvider,

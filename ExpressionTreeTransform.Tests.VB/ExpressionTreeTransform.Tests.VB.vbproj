@@ -20,4 +20,9 @@
     <ProjectReference Include="..\ExpressionTreeToCode\ExpressionTreeToCode.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Import Include="System.Linq.Expressions.Expression" />
+    <Import Include="Xunit" />
+  </ItemGroup>
+
 </Project>

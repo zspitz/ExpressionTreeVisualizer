@@ -41,9 +41,9 @@ namespace ExpressionTreeTransform {
         };
 
         protected override void WriteBinary(BinaryExpression expr) {
-            if (simpleBinaryOperators.TryGetValue(expr.NodeType, out var operand)) {
+            if (simpleBinaryOperators.TryGetValue(expr.NodeType, out var @operator)) {
                 Write(expr.Left);
-                $" {operand} ".AppendTo(sb);
+                $" {@operator} ".AppendTo(sb);
                 Write(expr.Right);
                 return;
             }

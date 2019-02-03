@@ -14,7 +14,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="65" />
-                            <ColumnDefinition Width="Auto" TextBlock.FontWeight="Bold" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -25,15 +25,15 @@
                         </Grid.RowDefinitions>
                         
                         <TextBlock Text="Path" />
-                        <TextBlock Text="{Binding Key}" Grid.Column="1" />
+                        <TextBlock Text="{Binding Key}" Grid.Column="1" FontWeight="Bold" />
                         <TextBlock Text="Node type" Grid.Row="1" />
-                        <TextBlock Text="{Binding Value.NodeType}" Grid.Column="1" Grid.Row="1" />
+                        <TextBlock Text="{Binding Value.NodeType}" Grid.Column="1" Grid.Row="1" FontWeight="Bold" />
                         <TextBlock Text="Type" Grid.Row="2"  />
-                        <TextBlock Text="{Binding Value.ReflectionTypeName}" Grid.Column="1" Grid.Row="2" />
+                        <TextBlock Text="{Binding Value.ReflectionTypeName}" Grid.Column="1" Grid.Row="2" FontWeight="Bold" />
                         <TextBlock Text="Name" Grid.Row="3"  />
-                        <TextBlock Text="{Binding Value.Name}" Grid.Column="1" Grid.Row="3" />
+                        <TextBlock Text="{Binding Value.Name}" Grid.Column="1" Grid.Row="3" FontWeight="Bold" />
                         <TextBlock Text="Value" Grid.Row="4"  />
-                        <TextBlock Text="{Binding Value.StringValue}" Grid.Column="1" Grid.Row="4" />
+                        <TextBlock Text="{Binding Value.StringValue}" Grid.Column="1" Grid.Row="4" FontWeight="Bold" />
                     </Grid>
                 </TextBlock.ToolTip>
                 <Run Foreground="DarkGray" Text="{Binding Key, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
