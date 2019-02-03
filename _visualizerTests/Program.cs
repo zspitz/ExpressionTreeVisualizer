@@ -40,13 +40,8 @@ namespace _visualizerTests {
 
             //Expression<Func<bool>> expr = () => true;
 
-            var data = new VisualizerData(expr);
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer),typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
-
-            //data = new VisualizerData(expr);
-            //visualizerHost = new VisualizerDevelopmentHost(data, typeof(Visualizer));
-            //visualizerHost.ShowVisualizer();
 
             Console.ReadKey(true);
         }

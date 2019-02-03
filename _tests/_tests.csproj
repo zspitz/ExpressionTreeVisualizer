@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="OneOf" Version="2.1.127" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ExpressionTreeToCode\ExpressionTreeToCode.csproj" />
   </ItemGroup>
 

@@ -4,17 +4,16 @@ using Microsoft.VisualStudio.DebuggerVisualizers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using WpfAutoGrid;
 using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeVisualizer {
-    public partial class VisualizerDataControl : AutoGrid {
+    public partial class VisualizerDataControl {
         private readonly List<DataGrid> endNodeContainers;
 
         public VisualizerDataControl() {
             InitializeComponent();
 
-            endNodeContainers = agEndNodes.FindVisualChildren<DataGrid>().ToList();
+            endNodeContainers = endNodes.FindVisualChildren<DataGrid>().ToList();
 
             Loaded += (s, e) => {
                 Options = Options ?? new VisualizerDataOptions();

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeTransform.Util {
@@ -11,7 +9,7 @@ namespace ExpressionTreeTransform.Util {
 
             if (o == null) { return language == CSharp ? "null" : "Nothing"; }
             if (o is bool b) {
-                if (language==CSharp) { return b ? "true" : "false"; }
+                if (language == CSharp) { return b ? "true" : "false"; }
                 return b ? "True" : "False";
             }
             var type = o.GetType().UnderlyingIfNullable();
