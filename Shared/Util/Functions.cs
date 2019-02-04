@@ -3,31 +3,32 @@ using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeTransform.Util {
     public static class Functions {
-        public static string RenderLiteral(object o, string language, out bool rendered) {
-            rendered = true;
+        public static (bool isLiteral, string repr) TryRenderLiteral(object o, string language) {
             if (language.NotIn(CSharp, VisualBasic)) { throw new NotImplementedException("Invalid language"); }
 
-            if (o == null) { return language == CSharp ? "null" : "Nothing"; }
+            if (o == null) { return (true, language == CSharp ? "null" : "Nothing"); }
             if (o is bool b) {
-                if (language == CSharp) { return b ? "true" : "false"; }
-                return b ? "True" : "False";
+                if (language == CSharp) { return (true, b ? "true" : "false"); }
+                return (true, b ? "True" : "False");
             }
             var type = o.GetType().UnderlyingIfNullable();
-            if (type == typeof(string)) { return $"\"{o.ToString()}\""; }
-            if (type.IsNumeric()) { return o.ToString(); }
-            if (language == VisualBasic && type.In(typeof(DateTime), typeof(TimeSpan), typeof(bool))) {
-                return $"#{o.ToString()}#";
+            if (type == typeof(string)) { return (true, $"\"{o.ToString()}\""); }
+            if (type.IsNumeric()) { return (true, o.ToString()); }
+            if (language == VisualBasic && type.In(typeof(DateTime), typeof(TimeSpan))) {
+                return (true, $"#{o.ToString()}#");
             }
-            rendered = false;
-            return $"#{type.FriendlyName(language)}";
+            return (false, $"#{type.FriendlyName(language)}");
         }
-        public static string RenderLiteral(object o, string language) => RenderLiteral(o, language, out var rendered);
+
+        public static string RenderLiteral(object o, string language) => TryRenderLiteral(o, language).repr;
+
+        /// <summary>Returns a string representation of the value, which may or may not be a valid literal in the language</summary>
         public static string StringValue(object o, string language) {
-            var asLiteral = RenderLiteral(o, language, out var rendered);
-            if (!rendered && o.GetType().UnderlyingIfNullable().In(typeof(DateTime), typeof(TimeSpan))) {
+            var (isLiteral, repr) = TryRenderLiteral(o, language);
+            if (!isLiteral && o.GetType().GetMethod("ToString").DeclaringType != typeof(object)) {
                 return o.ToString();
             }
-            return asLiteral;
+            return repr;
         }
     }
 }
