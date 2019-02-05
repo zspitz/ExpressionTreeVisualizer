@@ -137,16 +137,28 @@
         BuildAssert(Function() If(s1, s2), "() => s1 ?? s2", "Function() If(s1, s2)")
     End Sub
 
+    ' https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/operators/left-shift-operator#remarks
+    Shared sizeMasks As New Dictionary(Of Type, Integer) From {
+        {GetType(SByte), 7},
+        {GetType(Byte), 7},
+        {GetType(Short), 15},
+        {GetType(UShort), 15},
+        {GetType(Integer), 31},
+        {GetType(UInteger), 31},
+        {GetType(Long), 63},
+        {GetType(ULong), 63}
+    }
+
     <Fact>
     Public Sub LeftShift()
         Dim i As Integer = 0, j As Integer = 0
-        BuildAssert(Function() i << j, "() => i << j", "Function() i << j")
+        BuildAssert(Function() i << j, $"() => i << j & {sizeMasks(i.GetType())}", $"Function() i << j And {sizeMasks(i.GetType())}")
     End Sub
 
     <Fact>
     Public Sub RightShift()
         Dim i As Integer = 0, j As Integer = 0
-        BuildAssert(Function() i >> j, "() => i >> j", "Function() i >> j")
+        BuildAssert(Function() i >> j, $"() => i >> j & {sizeMasks(i.GetType())}", $"Function() i >> j And {sizeMasks(i.GetType())}")
     End Sub
 
     <Fact> Public Sub ArrayIndex()
