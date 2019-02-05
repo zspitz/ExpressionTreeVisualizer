@@ -2,8 +2,10 @@
 using static System.Linq.Expressions.Expression;
 using Xunit;
 using static ExpressionTreeTransform.Tests.Runners;
+using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeTransform.Tests {
+    [Trait("Source", CSharpCompiler)]
     public class Literals {
         [Fact]
         public void True() => BuildAssert(() => true, "() => true", "Function() True");
@@ -24,12 +26,14 @@ namespace ExpressionTreeTransform.Tests {
         public void String() => BuildAssert(() => "abcd", "() => \"abcd\"", "Function() \"abcd\"");
 
         #region VB-only literals
+        [Trait("Source", FactoryMethods)]
         [Fact]
         public void DateTime() {
             var dte = new DateTime(1981, 1, 1);
             BuildAssert(Constant(dte), "#DateTime", $"#{dte.ToString()}#");
         }
 
+        [Trait("Source", FactoryMethods)]
         [Fact]
         public void TimeSpan() {
             var ts = new TimeSpan(5, 4, 3, 2);

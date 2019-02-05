@@ -6,11 +6,9 @@ Imports System.Linq.Expressions.Expression
 Module Module1
 
     Sub Main()
-        Dim i = 7
-        Dim j = 5
-        Dim expr As Expression(Of Func(Of Integer)) = Function() i * j
-        Dim data = New VisualizerData(expr)
-        Dim visualizerHost = New VisualizerDevelopmentHost(data, GetType(Visualizer))
+        Dim i = 13, j = 22
+        Dim expr As Expression(Of Func(Of Integer)) = Function() i >> j
+        Dim visualizerHost = New VisualizerDevelopmentHost(expr, GetType(Visualizer), GetType(VisualizerDataObjectSource))
         visualizerHost.ShowVisualizer()
     End Sub
 

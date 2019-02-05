@@ -1,5 +1,6 @@
 ﻿Imports System.Linq.Expressions
-Imports ExpressionTreeTransform.Util.Globals
+
+<Assembly: AssemblyTrait("Source", VBCompiler)>
 
 Public Module Runners
     Sub BuildAssert(Of T)(expr As Expression(Of Func(Of T)), CSharpResult As String, VBResult As String)

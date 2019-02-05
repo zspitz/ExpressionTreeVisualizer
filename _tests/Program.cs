@@ -3,6 +3,8 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using OneOf;
+using System.Collections.Generic;
+using static System.Linq.Expressions.Expression;
 
 namespace _tests {
     public static class _testsExtensions {
@@ -19,6 +21,11 @@ namespace _tests {
                 Console.WriteLine(kvp.Value);
                 Console.WriteLine();
             }
+
+            var lst = new List<object>();
+            Expression expr1 = MakeMemberAccess(Constant(new List<object>()), typeof(List<object>).GetMember("Count").First());
+            writer = new CSharpCodeWriter(expr1);
+            Console.WriteLine(writer.ToString());
 
             Console.ReadKey(true);
         }

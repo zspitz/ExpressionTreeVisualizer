@@ -1,9 +1,10 @@
 using System;
-using System.Linq.Expressions;
 using Xunit;
 using static ExpressionTreeTransform.Tests.Runners;
+using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeTransform.Tests {
+    [Trait("Source", CSharpCompiler)]
     public class Unsorted {
         [Fact]
         public void ReturnMemberAccess() => BuildAssert(() => "abcd".Length, "() => \"abcd\".Length", "Function() \"abcd\".Length");
