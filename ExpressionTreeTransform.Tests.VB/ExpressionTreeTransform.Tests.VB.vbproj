@@ -30,10 +30,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExpressionTreeToCode\ExpressionTreeToCode.csproj" />
+    <ProjectReference Include="..\ExpressionTreeTransform.Tests\ExpressionTreeTransform.Tests.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Import Include="ExpressionTreeTransform.Util.Globals" />
+    <Import Include="ExpressionTreeTransform.Tests.Globals" />
+    <Import Include="ExpressionTreeTransform.Tests.Runners" />
     <Import Include="System.Linq.Expressions.Expression" />
     <Import Include="Xunit" />
   </ItemGroup>

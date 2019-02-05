@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 using static ExpressionTreeTransform.Tests.Runners;
-using static ExpressionTreeTransform.Util.Globals;
+using static ExpressionTreeTransform.Tests.Globals;
 
 namespace ExpressionTreeTransform.Tests {
     [Trait("Source", CSharpCompiler)]

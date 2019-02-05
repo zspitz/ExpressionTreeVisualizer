@@ -2,21 +2,11 @@
 using Xunit;
 using static ExpressionTreeTransform.Tests.Runners;
 using static System.Linq.Expressions.Expression;
-using static ExpressionTreeTransform.Util.Globals;
+using static ExpressionTreeTransform.Tests.Globals;
 
 namespace ExpressionTreeTransform.Tests {
     [Trait("Source", FactoryMethods)]
     public class MakeBinary {
-        readonly ParameterExpression i = Parameter(typeof(int), "i");
-        readonly ParameterExpression j = Parameter(typeof(int), "j");
-        readonly ParameterExpression x = Parameter(typeof(double), "x");
-        readonly ParameterExpression y = Parameter(typeof(double), "y");
-        readonly ParameterExpression b1 = Parameter(typeof(bool), "b1");
-        readonly ParameterExpression b2 = Parameter(typeof(bool), "b2");
-        readonly ParameterExpression s1 = Parameter(typeof(string), "s1");
-        readonly ParameterExpression s2 = Parameter(typeof(string), "s2");
-        readonly ParameterExpression arr = Parameter(typeof(string[]), "arr");
-
         [Fact]
         public void ConstructAdd() => BuildAssert(Add(x, y), "x + y", "x + y");
 

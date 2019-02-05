@@ -87,9 +87,9 @@ namespace ExpressionTreeTransform {
                     break;
                 case Not:
                     if (expr.Type == typeof(bool)) {
-                        "~".AppendTo(sb);
-                    } else {
                         "!".AppendTo(sb);
+                    } else {
+                        "~".AppendTo(sb);
                     }
                     Write(expr.Operand);
                     break;

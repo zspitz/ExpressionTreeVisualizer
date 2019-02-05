@@ -2,7 +2,7 @@
 using Xunit;
 using static ExpressionTreeTransform.Tests.Runners;
 using static System.Linq.Expressions.Expression;
-using static ExpressionTreeTransform.Util.Globals;
+using static ExpressionTreeTransform.Tests.Globals;
 
 namespace ExpressionTreeTransform.Tests {
     [Trait("Source", FactoryMethods)]

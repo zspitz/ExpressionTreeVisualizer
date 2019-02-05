@@ -65,6 +65,25 @@ namespace ExpressionTreeTransform {
             throw new NotImplementedException();
         }
 
+        private static Dictionary<Type, string> conversionFunctions = new Dictionary<Type, string>() {
+            {typeof(bool), "CBool"},
+            {typeof(byte), "CByte"},
+            {typeof(char), "CChar"},
+            {typeof(DateTime), "CDate"},
+            {typeof(double), "CDbl"},
+            {typeof(decimal), "CDec"},
+            {typeof(int), "CInt"},
+            {typeof(long), "CLng"},
+            {typeof(object), "CObj"},
+            {typeof(sbyte), "CSByte"},
+            {typeof(short), "CShort"},
+            {typeof(float), "CSng"},
+            {typeof(string), "CStr"},
+            {typeof(uint), "CUInt"},
+            {typeof(ulong), "CULng"},
+            {typeof(ushort), "CUShort" }
+        };
+
         protected override void WriteUnary(UnaryExpression expr) {
             switch (expr.NodeType) {
                 case ArrayLength:
@@ -73,11 +92,18 @@ namespace ExpressionTreeTransform {
                     break;
                 case ExpressionType.Convert:
                 case ConvertChecked:
-                    "CType(".AppendTo(sb);
-                    Write(expr.Operand);
-                    ", ".AppendTo(sb);
-                    expr.Type.FriendlyName(CSharp).AppendTo(sb);
-                    ")".AppendTo(sb);
+                    if (conversionFunctions.TryGetValue(expr.Type, out var conversionFunction)) {
+                        conversionFunction.AppendTo(sb);
+                        "(".AppendTo(sb);
+                        Write(expr.Operand);
+                        ")".AppendTo(sb);
+                    } else {
+                        "CType(".AppendTo(sb);
+                        Write(expr.Operand);
+                        ", ".AppendTo(sb);
+                        expr.Type.FriendlyName(CSharp).AppendTo(sb);
+                        ")".AppendTo(sb);
+                    }
                     break;
                 case Negate:
                 case NegateChecked:
