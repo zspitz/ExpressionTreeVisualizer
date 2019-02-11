@@ -2,24 +2,48 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using static ExpressionTreeTransform.Util.Globals;
+using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ExpressionTreeTransform.Util {
     public static class Functions {
         public static (bool isLiteral, string repr) TryRenderLiteral(object o, string language) {
             if (language.NotIn(CSharp, VisualBasic)) { throw new NotImplementedException("Invalid language"); }
 
-            if (o == null) { return (true, language == CSharp ? "null" : "Nothing"); }
-            if (o is bool b) {
-                if (language == CSharp) { return (true, b ? "true" : "false"); }
-                return (true, b ? "True" : "False");
+            var type = o?.GetType().UnderlyingIfNullable();
+            bool rendered = true;
+            string ret = null;
+
+            if (o == null) {
+                ret = language == CSharp ? "null" : "Nothing";
+            } else if (o is bool b) {
+                if (language == CSharp) {
+                    ret = b ? "true" : "false";
+                } else {
+                    ret = b ? "True" : "False";
+                }
+            } else if (o is char c) {
+                if (language == CSharp) {
+                    ret = $"'{c}'";
+                } else {
+                    ret = $"\"{c}\"C";
+                }
+            } else if ((o is DateTime || o is TimeSpan) && language == VisualBasic) {
+                ret = $"#{o.ToString()}#";
+            } else if (o is string) {
+                ret = $"\"{o.ToString()}\"";
+            } else if (o is Enum e) {
+                ret = $"{e.GetType().Name}.{e.ToString()}";
+            } else if (type.IsTupleType()) {
+                ret = "(" + TupleValues(o).Select(x => RenderLiteral(x, language)).Joined(", ") + ")";
+            } else if (type.IsNumeric()) {
+                ret = o.ToString();
+            } else {
+                rendered = false;
+                ret = $"#{type.FriendlyName(language)}";
             }
-            var type = o.GetType().UnderlyingIfNullable();
-            if (type == typeof(string)) { return (true, $"\"{o.ToString()}\""); }
-            if (type.IsNumeric()) { return (true, o.ToString()); }
-            if (language == VisualBasic && type.In(typeof(DateTime), typeof(TimeSpan))) {
-                return (true, $"#{o.ToString()}#");
-            }
-            return (false, $"#{type.FriendlyName(language)}");
+            return (rendered, ret);
         }
 
         public static string RenderLiteral(object o, string language) => TryRenderLiteral(o, language).repr;
@@ -39,6 +63,14 @@ namespace ExpressionTreeTransform.Util {
                 ret = ret.GetGenericMethodDefinition().MakeGenericMethod(typeargs);
             }
             return ret;
+        }
+
+        // TODO handle more than 8 values
+        public static object[] TupleValues(object tuple) {
+            if (!tuple.GetType().IsTupleType()) { throw new InvalidOperationException(); }
+            var fields = tuple.GetType().GetFields();
+            if(fields.Any()) { return tuple.GetType().GetFields().Select(x => x.GetValue(tuple)).ToArray(); }
+            return tuple.GetType().GetProperties().Select(x => x.GetValue(tuple)).ToArray();
         }
     }
 }
