@@ -16,8 +16,8 @@ namespace ExpressionTreeTransform.Tests {
         public static void BuildAssert(Expression expr, string csharp, string vb) {
             var testCSharpCode = expr.ToCode(CSharp);
             var testVBCode = expr.ToCode(VisualBasic);
-            Assert.True(testCSharpCode == csharp);
-            Assert.True(testVBCode == vb);
+            Assert.Equal(csharp, testCSharpCode);
+            Assert.Equal(vb, testVBCode);
         }
     }
 }

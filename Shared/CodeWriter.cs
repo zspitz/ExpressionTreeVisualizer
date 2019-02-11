@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Text;
 using static System.Linq.Expressions.ExpressionType;
 using static ExpressionTreeTransform.Util.Globals;
+using ExpressionTreeTransform.Util;
 
 namespace ExpressionTreeTransform {
     public abstract class CodeWriter {
@@ -142,6 +143,10 @@ namespace ExpressionTreeTransform {
                     WriteListInit(expr as ListInitExpression);
                     break;
 
+                case NewArrayInit:
+                    WriteNewArray(expr as NewArrayExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
@@ -201,6 +206,13 @@ namespace ExpressionTreeTransform {
             registerVisited(prm, start);
         }
 
+        protected void WriteList<T>(IEnumerable<T> items, string delimiter = ", ") {
+            items.ForEach((arg, index) => {
+                if (index > 0) { delimiter.AppendTo(sb); }
+                Write(arg);
+            });
+        }
+
         private void registerVisited(object o, int start) {
             if (visitedObjects == null) { return; }
             if (!visitedObjects.TryGetValue(o, out var spans)) {
@@ -222,6 +234,7 @@ namespace ExpressionTreeTransform {
         protected abstract void WriteCall(MethodCallExpression expr);
         protected abstract void WriteMemberInit(MemberInitExpression expr);
         protected abstract void WriteListInit(ListInitExpression expr);
+        protected abstract void WriteNewArray(NewArrayExpression expr);
 
         //protected abstract void Write(BlockExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(ConditionalExpression expr) => throw new NotImplementedException();

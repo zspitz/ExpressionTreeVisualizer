@@ -241,5 +241,11 @@ namespace ExpressionTreeTransform {
                     break;
             }
         }
+
+        protected override void WriteNewArray(NewArrayExpression expr) {
+            "new [] {".AppendTo(sb);
+            WriteList(expr.Expressions);
+            "}".AppendTo(sb);
+        }
     }
 }
