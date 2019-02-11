@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq.Expressions;
+using System.Reflection;
 using static ExpressionTreeTransform.Util.Globals;
 
 namespace ExpressionTreeTransform.Util {
@@ -29,6 +31,14 @@ namespace ExpressionTreeTransform.Util {
                 return o.ToString();
             }
             return repr;
+        }
+
+        public static MethodInfo GetMethod(Expression<Action> expr, params Type[] typeargs) {
+            var ret = (expr.Body as MethodCallExpression).Method;
+            if (ret.IsGenericMethod) {
+                ret = ret.GetGenericMethodDefinition().MakeGenericMethod(typeargs);
+            }
+            return ret;
         }
     }
 }

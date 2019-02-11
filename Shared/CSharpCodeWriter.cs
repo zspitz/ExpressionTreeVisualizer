@@ -109,7 +109,6 @@ namespace ExpressionTreeTransform {
                 WriteParameterDeclaration(prm);
             });
             ") => ".AppendTo(sb);
-            // TODO handle multiline lambdas
             Write(expr.Body);
         }
 

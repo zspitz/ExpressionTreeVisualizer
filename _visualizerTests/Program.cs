@@ -11,9 +11,9 @@ namespace _visualizerTests {
     class Program {
         [STAThread]
         static void Main(string[] args) {
-            var i = 7;
-            var j = 8;
-            Expression<Func<int>> expr = () => i << j;
+            //var i = 7;
+            //var j = 8;
+            //Expression<Func<int>> expr = () => i << j;
 
             //Expression<Func<string, int>> expr = s => (i + j) + s.ToString().ToList().Count();
 
@@ -39,6 +39,8 @@ namespace _visualizerTests {
             //Expression<Func<int, int>> expr = j => (i + j + 17) * (i + j + 17);
 
             //Expression<Func<bool>> expr = () => true;
+
+            Expression<Func<string, int, string>> expr = (s, i) => $"{s}, {i}";
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer),typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();

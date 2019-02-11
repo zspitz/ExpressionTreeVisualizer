@@ -101,7 +101,7 @@ namespace ExpressionTreeTransform {
                         "CType(".AppendTo(sb);
                         Write(expr.Operand);
                         ", ".AppendTo(sb);
-                        expr.Type.FriendlyName(CSharp).AppendTo(sb);
+                        expr.Type.FriendlyName(VisualBasic).AppendTo(sb);
                         ")".AppendTo(sb);
                     }
                     break;
@@ -125,7 +125,7 @@ namespace ExpressionTreeTransform {
         }
 
         protected override void WriteLambda(LambdaExpression expr) {
-            if (expr.Type == typeof(void)) {
+            if (expr.ReturnType == typeof(void)) {
                 "Sub".AppendTo(sb);
             } else {
                 "Function".AppendTo(sb);
@@ -199,7 +199,7 @@ namespace ExpressionTreeTransform {
             }
 
             if (instance == null) {
-                expr.Method.ReflectedType.FriendlyName(CSharp).AppendTo(sb);
+                expr.Method.ReflectedType.FriendlyName(VisualBasic).AppendTo(sb);
             } else {
                 Write(instance);
             }
