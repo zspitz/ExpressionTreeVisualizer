@@ -43,7 +43,10 @@ namespace ExpressionTreeTransform.Util {
 
         public static void AddRangeTo<T>(this IEnumerable<T> src, ICollection<T> dest) => dest.AddRange(src);
 
-        /// <summary>Returns an element If the sequence has exactly one element. Returns the default of T if there is more or less than one element.</summary>
+        /// <summary>
+        /// Returns an element If the sequence has exactly one element; otherwise returns the default of T
+        /// (unlike the standard SingleOrDefault, which will throw an exception on multiple elements).
+        /// </summary>
         public static T SingleOrDefaultExt<T>(this IEnumerable<T> src) {
             if (src == null) { return default; }
             T ret = default;
@@ -55,5 +58,7 @@ namespace ExpressionTreeTransform.Util {
             }
             return ret;
         }
+
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> src, IEqualityComparer<T> comparer = null) => new HashSet<T>(src, comparer);
     }
 }

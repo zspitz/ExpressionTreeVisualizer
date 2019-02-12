@@ -24,13 +24,11 @@ namespace ExpressionTreeTransform.Tests {
         }
 
         [Fact]
-        public void StaticMethod0Arguments() {
-            BuildAssert(
-                () => Dummy.DummyMethod(),
-                "() => Dummy.DummyMethod()",
-                "Sub() Dummy.DummyMethod"
-            );
-        }
+        public void StaticMethod0Arguments() => BuildAssert(
+            () => Dummy.DummyMethod(),
+            "() => Dummy.DummyMethod()",
+            "Sub() Dummy.DummyMethod"
+        );
 
         [Fact]
         public void ExtensionMethod0Arguments() {
@@ -53,13 +51,11 @@ namespace ExpressionTreeTransform.Tests {
         }
 
         [Fact]
-        public void StaticMethod1Argument() {
-            BuildAssert(
-                () => string.Intern(""),
-                "() => string.Intern(\"\")",
-                "Function() String.Intern(\"\")"
-            );
-        }
+        public void StaticMethod1Argument() => BuildAssert(
+            () => string.Intern(""),
+            "() => string.Intern(\"\")",
+            "Function() String.Intern(\"\")"
+        );
 
         [Fact]
         public void ExtensionMethod1Argument() {
@@ -82,13 +78,11 @@ namespace ExpressionTreeTransform.Tests {
         }
 
         [Fact]
-        public void StaticMethod2Arguments() {
-            BuildAssert(
-                () => string.Join(',', new[] { 'a', 'b' }),
-                "() => string.Join(',', new [] {'a', 'b'})",
-                "Function() String.Join(\",\"C, { \"a\"C, \"b\"C })"
-            );
-        }
+        public void StaticMethod2Arguments() => BuildAssert(
+            () => string.Join(',', new[] { 'a', 'b' }),
+            "() => string.Join(',', new [] {'a', 'b'})",
+            "Function() String.Join(\",\"C, { \"a\"C, \"b\"C })"
+        );
 
         [Fact]
         public void ExtensionMethod2Arguments() {
@@ -99,5 +93,12 @@ namespace ExpressionTreeTransform.Tests {
                 "Function() lst.OrderBy(Function(x As String) x, StringComparer.OrdinalIgnoreCase)"
             );
         }
+
+        [Fact]
+        public void StringConcat() => BuildAssert(
+            (string s1, string s2) => string.Concat(s1, s2),
+            "(string s1, string s2) => s1 + s2",
+            "Function(s1 As String, s2 As String) s1 + s2"
+        );
     }
 }

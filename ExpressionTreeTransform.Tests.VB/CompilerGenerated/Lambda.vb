@@ -15,7 +15,7 @@
         )
     End Sub
 
-    <Fact(Skip:="Needs MethodCall to check for String.Concat")> Public Sub TwoParametersVoidReturn()
+    <Fact> Public Sub TwoParametersVoidReturn()
         BuildAssert(Of String, String)(
             Sub(s1, s2) Console.WriteLine(s1 + s2),
             "(string s1, string s2) => Console.WriteLine(s1 + s2)",
@@ -39,7 +39,7 @@
         )
     End Sub
 
-    <Fact(Skip:="Needs MethodCall to check for String.Concat")> Public Sub TwoParametersNonVoidReturn()
+    <Fact> Public Sub TwoParametersNonVoidReturn()
         BuildAssert(Of String, String, String)(
             Function(s1, s2) s1 + s2,
             "(string s1, string s2) => s1 + s2",

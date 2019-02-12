@@ -1,12 +1,13 @@
 ﻿using ExpressionTreeTransform.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using static ExpressionTreeTransform.Util.Functions;
 using static ExpressionTreeTransform.Util.Globals;
 using static System.Linq.Expressions.ExpressionType;
-using static ExpressionTreeTransform.Util.Functions;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace ExpressionTreeTransform {
     public class CSharpCodeWriter : CodeWriter {
@@ -141,8 +142,8 @@ namespace ExpressionTreeTransform {
             "new ".AppendTo(sb);
             if (expr.Type.IsAnonymous()) {
                 "{ ".AppendTo(sb);
-                expr.Constructor.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg,index) => {
-                    if (index>0) { ", ".AppendTo(sb); }
+                expr.Constructor.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
+                    if (index > 0) { ", ".AppendTo(sb); }
                     $"{name} = ".AppendTo(sb);
                     Write(arg);
                 });
@@ -158,7 +159,27 @@ namespace ExpressionTreeTransform {
             }
         }
 
+        static HashSet<MethodInfo> stringConcats = typeof(string)
+            .GetMethods()
+            .Where(x => x.Name == "Concat" && x.GetParameters().All(
+                y => y.ParameterType.In(typeof(string), typeof(string[])))
+            ).ToHashSet();
+
         protected override void WriteCall(MethodCallExpression expr) {
+            if (expr.Method.In(stringConcats)) {
+                var firstArg = expr.Arguments[0];
+                IEnumerable<Expression> argsToWrite = null;
+                if (firstArg is NewArrayExpression newArray && firstArg.NodeType == NewArrayInit) {
+                    argsToWrite = newArray.Expressions;
+                } else if (expr.Arguments.All(x => x.Type == typeof(string))) {
+                    argsToWrite = expr.Arguments;
+                }
+                if (argsToWrite != null) {
+                    WriteList(argsToWrite, " + ");
+                    return;
+                }
+            }
+
             Expression instance = null;
             IEnumerable<Expression> arguments = expr.Arguments;
 
@@ -206,7 +227,7 @@ namespace ExpressionTreeTransform {
             if (expr.Bindings.Any()) {
                 " { ".AppendTo(sb);
                 expr.Bindings.ForEach((binding, index) => {
-                    if (index>0) { ", ".AppendTo(sb); }
+                    if (index > 0) { ", ".AppendTo(sb); }
                     WriteBinding(binding);
                 });
                 " }".AppendTo(sb);

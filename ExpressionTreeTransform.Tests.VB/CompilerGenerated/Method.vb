@@ -83,4 +83,28 @@ Public Class Method
             "Function() lst.OrderBy(Function(x As String) x, comparer)"
         )
     End Sub
+
+    <Fact> Public Sub StringConcat()
+        BuildAssert(
+            Function(s1 As String, s2 As String) String.Concat(s1, s2),
+            "(string s1, string s2) => s1 + s2",
+            "Function(s1 As String, s2 As String) s1 + s2"
+        )
+    End Sub
+
+    <Fact> Public Sub StringConcatOperator()
+        BuildAssert(
+            Function(s1 As String, s2 As String) s1 + s2,
+            "(string s1, string s2) => s1 + s2",
+            "Function(s1 As String, s2 As String) s1 + s2"
+        )
+    End Sub
+
+    <Fact> Public Sub StringConcatOperatorParamArray()
+        BuildAssert(
+            Function(s1 As String, s2 As String) s1 + s2 + s1 + s2 + s1 + s2,
+            "(string s1, string s2) => s1 + s2 + s1 + s2 + s1 + s2",
+            "Function(s1 As String, s2 As String) s1 + s2 + s1 + s2 + s1 + s2"
+        )
+    End Sub
 End Class

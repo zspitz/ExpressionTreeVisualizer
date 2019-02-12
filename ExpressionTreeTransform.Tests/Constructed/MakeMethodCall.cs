@@ -13,6 +13,8 @@ namespace ExpressionTreeTransform.Tests.Constructed {
     public class MakeMethodCall {
         ParameterExpression s = Parameter(typeof(string), "s");
         ParameterExpression lst = Parameter(typeof(List<string>), "lst");
+        ParameterExpression s1 = Parameter(typeof(string), "s1");
+        ParameterExpression s2 = Parameter(typeof(string), "s2");
 
         [Fact]
         public void InstanceMethod0Arguments() => BuildAssert(
@@ -94,5 +96,16 @@ namespace ExpressionTreeTransform.Tests.Constructed {
                 "lst.OrderBy(Function(x As String) x, StringComparer.OrdinalIgnoreCase)"
             );
         }
+
+        [Fact]
+        public void StringConcat() => BuildAssert(
+            Call(
+                GetMethod(() => string.Concat("", "")),
+                s1,
+                s2
+            ),
+            "s1 + s2",
+            "s1 + s2"
+        );
     }
 }
