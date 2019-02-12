@@ -59,7 +59,8 @@ namespace ExpressionTreeTransform.Util {
 
         public static MethodInfo GetMethod(Expression<Action> expr, params Type[] typeargs) {
             var ret = (expr.Body as MethodCallExpression).Method;
-            if (ret.IsGenericMethod) {
+            // TODO handle partially open generic methods
+            if (typeargs.Any() && ret.IsGenericMethod) {
                 ret = ret.GetGenericMethodDefinition().MakeGenericMethod(typeargs);
             }
             return ret;
