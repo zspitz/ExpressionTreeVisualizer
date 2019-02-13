@@ -80,7 +80,7 @@ namespace ExpressionTreeTransform.Tests {
         [Fact]
         public void StaticMethod2Arguments() => BuildAssert(
             () => string.Join(',', new[] { 'a', 'b' }),
-            "() => string.Join(',', new [] {'a', 'b'})",
+            "() => string.Join(',', new [] { 'a', 'b' })",
             "Function() String.Join(\",\"C, { \"a\"C, \"b\"C })"
         );
 

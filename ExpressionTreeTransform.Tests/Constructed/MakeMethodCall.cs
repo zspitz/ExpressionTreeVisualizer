@@ -78,7 +78,7 @@ namespace ExpressionTreeTransform.Tests.Constructed {
                 Constant(','),
                 NewArrayInit(typeof(char), Constant('a'), Constant('b'))
             ),
-            "string.Join(',', new [] {'a', 'b'})",
+            "string.Join(',', new [] { 'a', 'b' })",
             "String.Join(\",\"C, { \"a\"C, \"b\"C })"
         );
 

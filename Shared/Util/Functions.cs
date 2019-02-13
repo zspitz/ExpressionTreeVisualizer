@@ -39,6 +39,9 @@ namespace ExpressionTreeTransform.Util {
                 ret = "(" + TupleValues(o).Select(x => RenderLiteral(x, language)).Joined(", ") + ")";
             } else if (type.IsNumeric()) {
                 ret = o.ToString();
+            // TODO render single-dimensional arrays
+            // TODO render 2-level jagged arrays
+            // TODO render multidimensional arrays
             } else {
                 rendered = false;
                 ret = $"#{type.FriendlyName(language)}";

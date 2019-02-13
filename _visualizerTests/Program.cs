@@ -40,12 +40,16 @@ namespace _visualizerTests {
 
             //Expression<Func<bool>> expr = () => true;
 
-            Expression<Func<string, int, string>> expr = (s, i) => $"{s}, {i}";
+            //Expression<Func<string, int, string>> expr = (s, i) => $"{s}, {i}";
+
+            //Expression<Func<object[]>> expr = () => new object[] { "" };
+
+            Expression<Func<string[][]>> expr = () => new string[5][];
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer),typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
 
-            Console.ReadKey(true);
+            //Console.ReadKey(true);
         }
     }
 

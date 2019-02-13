@@ -1,5 +1,6 @@
 ﻿Public Class Member
-    <Fact> Public Sub InstanceMember()
+    <Fact>
+    Sub InstanceMember()
         Dim s = ""
         BuildAssert(
             Function() s.Length,
@@ -8,7 +9,8 @@
         )
     End Sub
 
-    <Fact> Public Sub ClosedVariable()
+    <Fact>
+    Sub ClosedVariable()
         Dim s = ""
         BuildAssert(
             Function() s,
@@ -17,7 +19,8 @@
         )
     End Sub
 
-    <Fact> Public Sub StaticMember()
+    <Fact>
+    Sub StaticMember()
         BuildAssert(
             Function() String.Empty,
             "() => string.Empty",

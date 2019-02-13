@@ -1,5 +1,6 @@
 ﻿Public Class Lambda
-    <Fact> Public Sub NoParametersVoidReturn()
+    <Fact>
+    Sub NoParametersVoidReturn()
         BuildAssert(
             Sub() Console.WriteLine(),
             "() => Console.WriteLine()",
@@ -7,7 +8,8 @@
         )
     End Sub
 
-    <Fact> Public Sub OneParameterVoidReturn()
+    <Fact>
+    Sub OneParameterVoidReturn()
         BuildAssert(Of String)(
             Sub(s) Console.WriteLine(s),
             "(string s) => Console.WriteLine(s)",
@@ -15,7 +17,8 @@
         )
     End Sub
 
-    <Fact> Public Sub TwoParametersVoidReturn()
+    <Fact>
+    Sub TwoParametersVoidReturn()
         BuildAssert(Of String, String)(
             Sub(s1, s2) Console.WriteLine(s1 + s2),
             "(string s1, string s2) => Console.WriteLine(s1 + s2)",
@@ -23,7 +26,8 @@
         )
     End Sub
 
-    <Fact> Public Sub NoParametersNonVoidReturn()
+    <Fact>
+    Sub NoParametersNonVoidReturn()
         BuildAssert(
             Function() "abcd",
             "() => ""abcd""",
@@ -31,7 +35,8 @@
         )
     End Sub
 
-    <Fact> Public Sub OneParameterNonVoidReturn()
+    <Fact>
+    Sub OneParameterNonVoidReturn()
         BuildAssert(Of String, String)(
             Function(s) s,
             "(string s) => s",
@@ -39,7 +44,8 @@
         )
     End Sub
 
-    <Fact> Public Sub TwoParametersNonVoidReturn()
+    <Fact>
+    Sub TwoParametersNonVoidReturn()
         BuildAssert(Of String, String, String)(
             Function(s1, s2) s1 + s2,
             "(string s1, string s2) => s1 + s2",

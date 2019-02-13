@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using static ExpressionTreeTransform.Util.Functions;
 using static ExpressionTreeTransform.Util.Globals;
 using static System.Linq.Expressions.ExpressionType;
+using static System.Linq.Enumerable;
 
 namespace ExpressionTreeTransform {
     public class CSharpCodeWriter : CodeWriter {
@@ -264,9 +265,36 @@ namespace ExpressionTreeTransform {
         }
 
         protected override void WriteNewArray(NewArrayExpression expr) {
-            "new [] {".AppendTo(sb);
-            WriteList(expr.Expressions);
-            "}".AppendTo(sb);
+            switch (expr.NodeType) {
+                case NewArrayInit:
+                    var elementType = expr.Type.GetElementType();
+                    "new ".AppendTo(sb);
+                    if (elementType.IsArray || expr.Expressions.None() || expr.Expressions.Any(x => x.Type != elementType)) {
+                        expr.Type.FriendlyName(CSharp).AppendTo(sb);
+                    } else {
+                        "[]".AppendTo(sb);
+                    }
+                    " { ".AppendTo(sb);
+                    WriteList(expr.Expressions);
+                    " }".AppendTo(sb);
+                    break;
+                case NewArrayBounds:
+                    (string left, string right) specifierChars = ("[", "]");
+                    var nestedArrayTypes = expr.Type.NestedArrayTypes().ToList();
+                    $"new {nestedArrayTypes.Last().root.FriendlyName(CSharp)}".AppendTo(sb);
+                    nestedArrayTypes.ForEachT((current, _, index) => {
+                        specifierChars.left.AppendTo(sb);
+                        if (index == 0) {
+                            WriteList(expr.Expressions);
+                        } else {
+                            Repeat("", current.GetArrayRank()).Joined().AppendTo(sb);
+                        }
+                        specifierChars.right.AppendTo(sb);
+                    });
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
     }
 }

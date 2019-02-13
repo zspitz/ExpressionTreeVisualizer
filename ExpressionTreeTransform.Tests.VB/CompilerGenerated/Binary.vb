@@ -1,138 +1,138 @@
 ﻿Public Class Binary
     <Fact>
-    Public Sub Add()
+    Sub Add()
         Dim x As Double = 0, y As Double = 0
         BuildAssert(Function() x + y, "() => x + y", "Function() x + y")
     End Sub
 
     <Fact>
-    Public Sub AddChecked()
+    Sub AddChecked()
         Dim x As Double = 0, y As Double = 0
         BuildAssert(Function() x + y, "() => x + y", "Function() x + y")
     End Sub
 
     <Fact>
-    Public Sub Divide()
+    Sub Divide()
         Dim x As Double = 0, y As Double = 0
         BuildAssert(Function() x / y, "() => x / y", "Function() x / y")
     End Sub
 
     <Fact>
-    Public Sub Modulo()
+    Sub Modulo()
         Dim x As Double = 0, y As Double = 0
         BuildAssert(Function() x Mod y, "() => x % y", "Function() x Mod y")
     End Sub
 
     <Fact>
-    Public Sub Multiply()
+    Sub Multiply()
         Dim x As Double = 0, y As Double = 0
         BuildAssert(Function() x * y, "() => x * y", "Function() x * y")
     End Sub
 
     <Fact>
-    Public Sub MultiplyChecked()
+    Sub MultiplyChecked()
         Dim x As Double = 0, y As Double = 0
         BuildAssert(Function() x * y, "() => x * y", "Function() x * y")
     End Sub
 
     <Fact>
-    Public Sub Subtract()
+    Sub Subtract()
         Dim x As Double = 0, y As Double = 0
         BuildAssert(Function() x - y, "() => x - y", "Function() x - y")
     End Sub
 
     <Fact>
-    Public Sub SubtractChecked()
+    Sub SubtractChecked()
         Dim x As Double = 0, y As Double = 0
         BuildAssert(Function() x - y, "() => x - y", "Function() x - y")
     End Sub
 
     <Fact>
-    Public Sub AndBitwise()
+    Sub AndBitwise()
         Dim i As Integer = 0, j As Integer = 0
         BuildAssert(Function() i And j, "() => i & j", "Function() i And j")
     End Sub
 
     <Fact>
-    Public Sub OrBitwise()
+    Sub OrBitwise()
         Dim i As Integer = 0, j As Integer = 0
         BuildAssert(Function() i Or j, "() => i | j", "Function() i Or j")
     End Sub
 
     <Fact>
-    Public Sub ExclusiveOrBitwise()
+    Sub ExclusiveOrBitwise()
         Dim i As Integer = 0, j As Integer = 0
         BuildAssert(Function() i Xor j, "() => i ^ j", "Function() i Xor j")
     End Sub
 
     <Fact>
-    Public Sub AndLogical()
+    Sub AndLogical()
         Dim b1 As Boolean = True, b2 As Boolean = True
         BuildAssert(Function() b1 And b2, "() => b1 & b2", "Function() b1 And b2")
     End Sub
 
     <Fact>
-    Public Sub OrLogical()
+    Sub OrLogical()
         Dim b1 As Boolean = True, b2 As Boolean = True
         BuildAssert(Function() b1 Or b2, "() => b1 | b2", "Function() b1 Or b2")
     End Sub
 
     <Fact>
-    Public Sub ExclusiveOrLogical()
+    Sub ExclusiveOrLogical()
         Dim b1 As Boolean = True, b2 As Boolean = True
         BuildAssert(Function() b1 Xor b2, "() => b1 ^ b2", "Function() b1 Xor b2")
     End Sub
 
     <Fact>
-    Public Sub [AndAlso]()
+    Sub [AndAlso]()
         Dim b1 As Boolean = True, b2 As Boolean = True
         BuildAssert(Function() b1 AndAlso b2, "() => b1 && b2", "Function() b1 AndAlso b2")
     End Sub
 
     <Fact>
-    Public Sub [OrElse]()
+    Sub [OrElse]()
         Dim b1 As Boolean = True, b2 As Boolean = True
         BuildAssert(Function() b1 OrElse b2, "() => b1 || b2", "Function() b1 OrElse b2")
     End Sub
 
     <Fact>
-    Public Sub Equal()
+    Sub Equal()
         Dim i As Integer = 0, j As Integer = 0
         BuildAssert(Function() i = j, "() => i == j", "Function() i = j")
     End Sub
 
     <Fact>
-    Public Sub NotEqual()
+    Sub NotEqual()
         Dim i As Integer = 0, j As Integer = 0
         BuildAssert(Function() i <> j, "() => i != j", "Function() i <> j")
     End Sub
 
     <Fact>
-    Public Sub GreaterThanOrEqual()
+    Sub GreaterThanOrEqual()
         Dim i As Integer = 0, j As Integer = 0
         BuildAssert(Function() i >= j, "() => i >= j", "Function() i >= j")
     End Sub
 
     <Fact>
-    Public Sub GreaterThan()
+    Sub GreaterThan()
         Dim i As Integer = 0, j As Integer = 0
         BuildAssert(Function() i > j, "() => i > j", "Function() i > j")
     End Sub
 
     <Fact>
-    Public Sub LessThan()
+    Sub LessThan()
         Dim i As Integer = 0, j As Integer = 0
         BuildAssert(Function() i < j, "() => i < j", "Function() i < j")
     End Sub
 
     <Fact>
-    Public Sub LessThanOrEqual()
+    Sub LessThanOrEqual()
         Dim i As Integer = 0, j As Integer = 0
         BuildAssert(Function() i <= j, "() => i <= j", "Function() i <= j")
     End Sub
 
     <Fact>
-    Public Sub Coalesce()
+    Sub Coalesce()
         Dim s1 As String = Nothing, s2 As String = Nothing
         BuildAssert(Function() If(s1, s2), "() => s1 ?? s2", "Function() If(s1, s2)")
     End Sub
@@ -150,23 +150,25 @@
     }
 
     <Fact>
-    Public Sub LeftShift()
+    Sub LeftShift()
         Dim i As Integer = 0, j As Integer = 0
         BuildAssert(Function() i << j, $"() => i << j & {sizeMasks(i.GetType())}", $"Function() i << j And {sizeMasks(i.GetType())}")
     End Sub
 
     <Fact>
-    Public Sub RightShift()
+    Sub RightShift()
         Dim i As Integer = 0, j As Integer = 0
         BuildAssert(Function() i >> j, $"() => i >> j & {sizeMasks(i.GetType())}", $"Function() i >> j And {sizeMasks(i.GetType())}")
     End Sub
 
-    <Fact> Public Sub ArrayIndex()
+    <Fact>
+    Sub ArrayIndex()
         Dim arr = New String() {}
         BuildAssert(Function() arr(0), "() => arr[0]", "Function() arr(0)")
     End Sub
 
-    <Fact> Public Sub Power()
+    <Fact>
+    Sub Power()
         Dim x As Double = 0, y As Double = 0
         BuildAssert(Function() x ^ y, "() => Math.Pow(x, y)", "Function() x ^ y")
     End Sub

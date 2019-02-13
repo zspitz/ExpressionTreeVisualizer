@@ -144,6 +144,7 @@ namespace ExpressionTreeTransform {
                     break;
 
                 case NewArrayInit:
+                case NewArrayBounds:
                     WriteNewArray(expr as NewArrayExpression);
                     break;
 

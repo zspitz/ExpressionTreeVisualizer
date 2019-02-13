@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using static ExpressionTreeTransform.Util.Globals;
+using static System.Linq.Enumerable;
 
 namespace ExpressionTreeTransform.Util {
     public static class TypeExtensions {
@@ -72,6 +73,17 @@ namespace ExpressionTreeTransform.Util {
 
         public static string FriendlyName(this Type type, string language) {
             if (type.IsAnonymous()) { return ""; }
+            if (type.IsArray) {
+                (string left, string right) specifierChars =
+                    language == CSharp ? ("[", "]") :
+                    language == VisualBasic ? ("(", ")") :
+                    throw new ArgumentException("Invalid language");
+                var nestedArrayTypes = type.NestedArrayTypes().ToList();
+                string arraySpecifiers = nestedArrayTypes.Joined("",
+                    (current, _, index) => specifierChars.left + Repeat("", current.GetArrayRank()).Joined() + specifierChars.right
+                );
+                return nestedArrayTypes.Last().root.FriendlyName(language) + arraySpecifiers;
+            }
             if (!type.IsGenericType) {
                 var dict = language == CSharp ? CSKeywordTypes :
                     language == VisualBasic ? VBKeywordTypes :
@@ -119,6 +131,20 @@ namespace ExpressionTreeTransform.Util {
             }
             return (openType.In(typeof(ValueTuple<,,,,,,,>), typeof(Tuple<,,,,,,,>)) 
                 && type.GetGenericArguments()[7].IsTupleType());
+        }
+
+        public static IEnumerable<(Type current, Type root)> NestedArrayTypes(this Type type) {
+            var currentType = type;
+            while (currentType.IsArray) {
+                var nextType = currentType.GetElementType();
+                if (nextType.IsArray) {
+                    yield return (currentType, null);
+                } else {
+                    yield return (currentType, nextType);
+                    break;
+                }
+                currentType = nextType;
+            }
         }
     }
 }

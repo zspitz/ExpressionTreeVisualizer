@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Dictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Expression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\ICollectionT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\IEnumerableKVP.cs" />

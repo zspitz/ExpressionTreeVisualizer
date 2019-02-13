@@ -1,13 +1,14 @@
 ﻿using ExpressionTreeTransform.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using static ExpressionTreeTransform.Util.Functions;
 using static ExpressionTreeTransform.Util.Globals;
 using static System.Linq.Expressions.ExpressionType;
-using static ExpressionTreeTransform.Util.Functions;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Reflection;
+using static System.Linq.Enumerable;
 
 namespace ExpressionTreeTransform {
     public class VBCodeWriter : CodeWriter {
@@ -133,7 +134,7 @@ namespace ExpressionTreeTransform {
             }
             "(".AppendTo(sb);
             expr.Parameters.ForEach((prm, index) => {
-                if (index>0) { ", ".AppendTo(sb); }
+                if (index > 0) { ", ".AppendTo(sb); }
                 WriteParameterDeclaration(prm);
             });
             ") ".AppendTo(sb);
@@ -294,9 +295,48 @@ namespace ExpressionTreeTransform {
         }
 
         protected override void WriteNewArray(NewArrayExpression expr) {
-            "{ ".AppendTo(sb);
-            WriteList(expr.Expressions);
-            " }".AppendTo(sb);
+            switch (expr.NodeType) {
+                case NewArrayInit:
+                    var elementType = expr.Type.GetElementType();
+                    if (expr.Expressions.None() || expr.Expressions.Any(x => x.Type != elementType)) {
+                        $"New {expr.Type.FriendlyName(VisualBasic)} ".AppendTo(sb);
+                    }
+                    "{ ".AppendTo(sb);
+                    expr.Expressions.ForEach((arg, index) => {
+                        if (index > 0) { ", ".AppendTo(sb); }
+                        if (arg.NodeType == NewArrayInit) { "(".AppendTo(sb); }
+                        Write(arg);
+                        if (arg.NodeType == NewArrayInit) { ")".AppendTo(sb); }
+                    });
+                    " }".AppendTo(sb);
+                    break;
+                case NewArrayBounds:
+                    (string left, string right) specifierChars = ("(", ")");
+                    var nestedArrayTypes = expr.Type.NestedArrayTypes().ToList();
+                    $"New {nestedArrayTypes.Last().root.FriendlyName(VisualBasic)}".AppendTo(sb);
+                    nestedArrayTypes.ForEachT((current, _, arrayTypeIndex) => {
+                        specifierChars.left.AppendTo(sb);
+                        if (arrayTypeIndex == 0) {
+                            expr.Expressions.ForEach((x, index) => {
+                                if (index > 0) { ", ".AppendTo(sb); }
+                                // because in VB.NET the upper bound of an array is specified, not the numbe of items
+                                if (x is ConstantExpression cexpr) {
+                                    string newValue = (((dynamic)cexpr.Value) - 1).ToString();
+                                    newValue.AppendTo(sb);
+                                } else {
+                                    Write(Expression.SubtractChecked(x, Expression.Constant(1)));
+                                }
+                            });
+                        } else {
+                            Repeat("", current.GetArrayRank()).Joined().AppendTo(sb);
+                        }
+                        specifierChars.right.AppendTo(sb);
+                    });
+                    " {}".AppendTo(sb);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
     }
 }

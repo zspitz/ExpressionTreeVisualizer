@@ -4,7 +4,8 @@
 End Module
 
 Public Class Method
-    <Fact> Public Sub InstanceMethod0Arguments()
+    <Fact>
+    Sub InstanceMethod0Arguments()
         Dim s = ""
         BuildAssert(
             Function() s.ToString(),
@@ -13,7 +14,8 @@ Public Class Method
         )
     End Sub
 
-    <Fact> Public Sub StaticMethod0Arguments()
+    <Fact>
+    Sub StaticMethod0Arguments()
         BuildAssert(
             Sub() DummyMethod(),
             "() => Dummy.DummyMethod()",
@@ -21,7 +23,8 @@ Public Class Method
         )
     End Sub
 
-    <Fact> Public Sub ExtensionMethod0Arguments()
+    <Fact>
+    Sub ExtensionMethod0Arguments()
         Dim lst As IEnumerable(Of String) = New List(Of String)()
         BuildAssert(
             Function() lst.Distinct,
@@ -30,7 +33,8 @@ Public Class Method
         )
     End Sub
 
-    <Fact> Public Sub InstanceMethod1Argument()
+    <Fact>
+    Sub InstanceMethod1Argument()
         Dim s = ""
         BuildAssert(
             Function() s.CompareTo(""),
@@ -39,7 +43,8 @@ Public Class Method
         )
     End Sub
 
-    <Fact> Public Sub StaticMethod1Argument()
+    <Fact>
+    Sub StaticMethod1Argument()
         BuildAssert(
             Function() String.Intern(""),
             "() => string.Intern("""")",
@@ -47,7 +52,8 @@ Public Class Method
         )
     End Sub
 
-    <Fact> Public Sub ExtensionMethod1Argument()
+    <Fact>
+    Sub ExtensionMethod1Argument()
         Dim lst As IEnumerable(Of String) = New List(Of String)()
         BuildAssert(
             Function() lst.Take(1),
@@ -56,7 +62,8 @@ Public Class Method
         )
     End Sub
 
-    <Fact> Public Sub InstanceMethod2Arguments()
+    <Fact>
+    Sub InstanceMethod2Arguments()
         Dim s = ""
         BuildAssert(
             Function() s.Contains("a"c, StringComparison.InvariantCultureIgnoreCase),
@@ -65,7 +72,8 @@ Public Class Method
         )
     End Sub
 
-    <Fact> Public Sub StaticMethod2Arguments()
+    <Fact>
+    Sub StaticMethod2Arguments()
         Dim arr As IEnumerable(Of Char) = New Char() {"a"c, "b"c}
         BuildAssert(
             Function() String.Join(","c, arr),
@@ -74,7 +82,8 @@ Public Class Method
         )
     End Sub
 
-    <Fact> Public Sub ExtensionMethod2Arguments()
+    <Fact>
+    Sub ExtensionMethod2Arguments()
         Dim lst As IEnumerable(Of String) = New List(Of String)()
         Dim comparer As IComparer(Of String) = StringComparer.OrdinalIgnoreCase
         BuildAssert(
@@ -84,7 +93,8 @@ Public Class Method
         )
     End Sub
 
-    <Fact> Public Sub StringConcat()
+    <Fact>
+    Sub StringConcat()
         BuildAssert(
             Function(s1 As String, s2 As String) String.Concat(s1, s2),
             "(string s1, string s2) => s1 + s2",
@@ -92,7 +102,8 @@ Public Class Method
         )
     End Sub
 
-    <Fact> Public Sub StringConcatOperator()
+    <Fact>
+    Sub StringConcatOperator()
         BuildAssert(
             Function(s1 As String, s2 As String) s1 + s2,
             "(string s1, string s2) => s1 + s2",
@@ -100,7 +111,8 @@ Public Class Method
         )
     End Sub
 
-    <Fact> Public Sub StringConcatOperatorParamArray()
+    <Fact>
+    Sub StringConcatOperatorParamArray()
         BuildAssert(
             Function(s1 As String, s2 As String) s1 + s2 + s1 + s2 + s1 + s2,
             "(string s1, string s2) => s1 + s2 + s1 + s2 + s1 + s2",
