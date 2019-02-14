@@ -1,8 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <PackageId>ExpressionTreeToString</PackageId>
+    <Authors>Zev Spitz</Authors>
+    <Company />
+    <Product>ExpressionTreeToString</Product>
+    <Description>String representations of expression trees or expression tree parts - C#, Visual Basic, Expression factory method calls, DebugView</Description>
+    <Copyright>Copyright (c) 2019 Zev Spitz</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/zspitz/ExpressionToString</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/zspitz/ExpressionToString.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>expression-tree code-generation visual-basic.net vb.net csharp</PackageTags>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <AssemblyName>ExpressionTreeToString</AssemblyName>
+    <RootNamespace>ExpressionTreeToString</RootNamespace>
   </PropertyGroup>
 
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
