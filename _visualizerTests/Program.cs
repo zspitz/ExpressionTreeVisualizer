@@ -12,9 +12,9 @@ namespace _visualizerTests {
         [STAThread]
         static void Main(string[] args) {
             //var i = 7;
-            var j = 8;
+            //var j = 8;
 
-            Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100);
+            //Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100);
 
             //var i = 5;
             //Expression<Func<int, int>> expr = j => (i + j + 17) * (i + j + 17);
@@ -26,6 +26,8 @@ namespace _visualizerTests {
             //Expression<Func<object[]>> expr = () => new object[] { "" };
 
             //Expression<Func<string[][]>> expr = () => new string[5][];
+
+            Expression<Func<int, int, string>> expr = (i, j) => (i + j + 5).ToString();
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();

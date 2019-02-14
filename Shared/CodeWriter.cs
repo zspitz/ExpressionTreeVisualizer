@@ -32,17 +32,22 @@ namespace ExpressionToString {
 
         protected void Write(object o) {
             var start = sb.Length;
-            switch (o) {
-                case Expression expr:
-                    WriteExpression(expr);
-                    break;
-                case MemberBinding binding:
-                    WriteBinding(binding);
-                    break;
-                case ElementInit init:
-                    WriteElementInit(init);
-                    break;
-                // parameter declaration has to be done separately, because even though it's a parameter expression, the declaration is different
+            try {
+                switch (o) {
+                    case Expression expr:
+                        WriteExpression(expr);
+                        break;
+                    case MemberBinding binding:
+                        WriteBinding(binding);
+                        break;
+                    case ElementInit init:
+                        WriteElementInit(init);
+                        break;
+                        // parameter declaration has to be done separately, because even though it's a parameter expression, the declaration is different
+                }
+            } catch (Exception ex) {
+                sb.AppendLine();
+                $"------- {ex.GetType().Name} -- {ex.Message}".AppendLineTo(sb);
             }
 
             registerVisited(o, start);
