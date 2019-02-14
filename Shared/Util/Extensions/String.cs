@@ -1,12 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using static ExpressionToString.Util.FormatterNames;
 
 namespace ExpressionToString.Util {
     public static class StringExtensions {
         public static bool IsNullOrWhitespace(this string s) => string.IsNullOrWhiteSpace(s);
         public static bool ContainsAny(this string s, params string[] testStrings) => testStrings.Any(x => s.Contains(x));
         public static void AppendTo(this string s, StringBuilder sb) => sb.Append(s);
+
+        // https://stackoverflow.com/a/14502246/111794
+        private static string ToCSharpLiteral(this string input) {
+            var literal = new StringBuilder("\"", input.Length + 2);
+            foreach (var c in input) {
+                switch (c) {
+                    case '\'': literal.Append(@"\'"); break;
+                    case '\"': literal.Append("\\\""); break;
+                    case '\\': literal.Append(@"\\"); break;
+                    case '\0': literal.Append(@"\0"); break;
+                    case '\a': literal.Append(@"\a"); break;
+                    case '\b': literal.Append(@"\b"); break;
+                    case '\f': literal.Append(@"\f"); break;
+                    case '\n': literal.Append(@"\n"); break;
+                    case '\r': literal.Append(@"\r"); break;
+                    case '\t': literal.Append(@"\t"); break;
+                    case '\v': literal.Append(@"\v"); break;
+                    default:
+                        if (char.GetUnicodeCategory(c) != UnicodeCategory.Control) {
+                            literal.Append(c);
+                        } else {
+                            literal.Append(@"\u");
+                            literal.Append(((ushort)c).ToString("x4"));
+                        }
+                        break;
+                }
+            }
+            literal.Append("\"");
+            return literal.ToString();
+        }
+
+        public static string ToVerbatimString(this string s, string language) {
+            switch (language) {
+                case CSharp:
+                    return s.ToCSharpLiteral();
+                case VisualBasic:
+                    return $"\"{s.Replace("\"", "\"\"")}\"";
+                default:
+                    throw new ArgumentException("Invalid language");
+            }
+        }
+
+        public static void AppendLineTo(this string s, StringBuilder sb, int indentationLevel = 0) {
+            s = (s ?? "").TrimEnd();
+            var toAppend = new string(' ', indentationLevel * 4) + s.TrimEnd();
+            sb.AppendLine(toAppend);
+        }
     }
 }

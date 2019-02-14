@@ -31,8 +31,8 @@ namespace ExpressionToString.Util {
                 }
             } else if ((o is DateTime || o is TimeSpan) && language == VisualBasic) {
                 ret = $"#{o.ToString()}#";
-            } else if (o is string) {
-                ret = $"\"{o.ToString()}\"";
+            } else if (o is string s) {
+                ret = s.ToVerbatimString(language);
             } else if (o is Enum e) {
                 ret = $"{e.GetType().Name}.{e.ToString()}";
             } else if (type.IsTupleType()) {

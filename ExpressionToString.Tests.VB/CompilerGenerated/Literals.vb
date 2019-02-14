@@ -41,4 +41,13 @@ Public Class Literals
         Dim ts = New TimeSpan(5, 4, 3, 2, 1)
         BuildAssert(Constant(ts), "#TimeSpan", $"#{ts.ToString()}#")
     End Sub
+
+    <Fact>
+    Sub EscapedString()
+        BuildAssert(
+            Function() """",
+            "() => ""\""""",
+            "Function() """""""
+        )
+    End Sub
 End Class

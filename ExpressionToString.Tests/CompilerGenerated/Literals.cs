@@ -25,21 +25,11 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void String() => BuildAssert(() => "abcd", "() => \"abcd\"", "Function() \"abcd\"");
 
-        #region VB-only literals
-        [Trait("Source", FactoryMethods)]
         [Fact]
-        public void DateTime() {
-            var dte = new DateTime(1981, 1, 1);
-            BuildAssert(Constant(dte), "#DateTime", $"#{dte.ToString()}#");
-        }
-
-        [Trait("Source", FactoryMethods)]
-        [Fact]
-        public void TimeSpan() {
-            var ts = new TimeSpan(5, 4, 3, 2);
-            BuildAssert(Constant(ts), "#TimeSpan", $"#{ts.ToString()}#");
-        }
-        #endregion
-
+        public void EscapedString() => BuildAssert(
+            () => "\'\"\\\0\a\b\f\n\r\t\v",
+            @"() => ""\'\""\\\0\a\b\f\n\r\t\v""",
+            "Function() \"\'\"\"\\\0\a\b\f\n\r\t\v\""
+        );
     }
 }
