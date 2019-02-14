@@ -72,7 +72,16 @@ namespace ExpressionTreeTransform.Util {
         };
 
         public static string FriendlyName(this Type type, string language) {
-            if (type.IsAnonymous()) { return ""; }
+            if (type.IsAnonymous()) {
+                return "{ " + type.GetProperties().Joined(", ", p => {
+                    var name = p.Name;
+                    var typename = p.PropertyType.FriendlyName(language);
+                    return language == CSharp ? $"{typename} {name}" :
+                    language == VisualBasic ? $"{name} As {typename}" :
+                    throw new ArgumentException("Invalid language");
+                }) + " }";
+            }
+
             if (type.IsArray) {
                 (string left, string right) specifierChars =
                     language == CSharp ? ("[", "]") :
@@ -84,6 +93,7 @@ namespace ExpressionTreeTransform.Util {
                 );
                 return nestedArrayTypes.Last().root.FriendlyName(language) + arraySpecifiers;
             }
+
             if (!type.IsGenericType) {
                 var dict = language == CSharp ? CSKeywordTypes :
                     language == VisualBasic ? VBKeywordTypes :
@@ -91,10 +101,13 @@ namespace ExpressionTreeTransform.Util {
                 if (dict.TryGetValue(type, out var ret)) { return ret; }
                 return type.Name;
             }
+
             if (type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
                 return type.UnderlyingIfNullable().FriendlyName(language) + "?";
             }
+
             if (type.IsGenericParameter) { return type.Name; }
+
             var parts = type.GetGenericArguments().Joined(", ", t => t.FriendlyName(language));
             var backtickIndex = type.Name.IndexOf('`');
             var nongenericName = type.Name.Substring(0, backtickIndex);
