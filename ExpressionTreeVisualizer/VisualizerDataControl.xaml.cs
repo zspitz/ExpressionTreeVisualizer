@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.DebuggerVisualizers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using static ExpressionToString.Util.FormatterNames;
+using static ExpressionToString.FormatterNames;
 
 namespace ExpressionTreeVisualizer {
     public partial class VisualizerDataControl {

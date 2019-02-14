@@ -50,5 +50,11 @@ namespace ExpressionToString.Tests.Constructed {
             );
         }
 
+        [Fact]
+        public void Array() => BuildAssert(
+            Constant(new object[] { "abcd", 5, new Random() }),
+            "new [] { \"abcd\", 5, #Random }",
+            "{ \"abcd\", 5, #Random }"
+        );
     }
 }

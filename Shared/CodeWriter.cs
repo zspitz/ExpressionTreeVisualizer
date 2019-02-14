@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using static System.Linq.Expressions.ExpressionType;
-using static ExpressionToString.Util.FormatterNames;
+using static ExpressionToString.FormatterNames;
 using ExpressionToString.Util;
 
 namespace ExpressionToString {

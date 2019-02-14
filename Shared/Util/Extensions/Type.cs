@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using static ExpressionToString.Util.FormatterNames;
+using static ExpressionToString.FormatterNames;
 using static System.Linq.Enumerable;
 
 namespace ExpressionToString.Util {

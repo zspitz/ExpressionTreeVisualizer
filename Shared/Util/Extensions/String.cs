@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using static ExpressionToString.Util.FormatterNames;
+using static ExpressionToString.FormatterNames;
 
 namespace ExpressionToString.Util {
     public static class StringExtensions {

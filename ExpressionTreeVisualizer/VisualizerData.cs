@@ -7,7 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using static ExpressionToString.Util.Functions;
 using static ExpressionTreeVisualizer.EndNodeTypes;
-using static ExpressionToString.Util.FormatterNames;
+using static ExpressionToString.FormatterNames;
 
 namespace ExpressionTreeVisualizer {
     [Serializable]

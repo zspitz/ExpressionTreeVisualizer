@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using static ExpressionToString.Util.Functions;
-using static ExpressionToString.Util.FormatterNames;
+using static ExpressionToString.FormatterNames;
 using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Enumerable;
 

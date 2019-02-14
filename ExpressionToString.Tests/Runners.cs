@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Xunit;
-using static ExpressionToString.Util.FormatterNames;
+using static ExpressionToString.FormatterNames;
 
 namespace ExpressionToString.Tests {
     public static class Runners {

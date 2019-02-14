@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using static ExpressionToString.Util.FormatterNames;
+using static ExpressionToString.FormatterNames;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,13 +35,17 @@ namespace ExpressionToString.Util {
                 ret = s.ToVerbatimString(language);
             } else if (o is Enum e) {
                 ret = $"{e.GetType().Name}.{e.ToString()}";
+            } else if (type.IsArray && !type.GetElementType().IsArray && type.GetArrayRank() == 1) {
+                var values = (o as dynamic[]).Joined(", ", x => RenderLiteral(x, language));
+                if (language == CSharp) {
+                    ret = $"new [] {{ {values} }}";
+                } else {
+                    ret = $"{{ {values} }}";
+                }
             } else if (type.IsTupleType()) {
                 ret = "(" + TupleValues(o).Select(x => RenderLiteral(x, language)).Joined(", ") + ")";
             } else if (type.IsNumeric()) {
                 ret = o.ToString();
-            // TODO render single-dimensional arrays
-            // TODO render 2-level jagged arrays
-            // TODO render multidimensional arrays
             } else {
                 rendered = false;
                 ret = $"#{type.FriendlyName(language)}";
