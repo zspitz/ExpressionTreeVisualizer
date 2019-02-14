@@ -172,18 +172,19 @@ namespace ExpressionTreeTransform {
                 "With {".AppendTo(sb);
                 expr.Constructor.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
                     if (index > 0) { ", ".AppendTo(sb); }
-                    $".{name} = ".AppendTo(sb);
+                    if (!(arg is MemberExpression mexpr && mexpr.Member.Name.Replace("$VB$Local_", "") == name)) {
+                        $".{name} = ".AppendTo(sb);
+                    }
                     Write(arg);
                 });
-                " }".AppendTo(sb);
+                "}".AppendTo(sb);
             } else {
                 expr.Type.FriendlyName(VisualBasic).AppendTo(sb);
-                "(".AppendTo(sb);
-                expr.Arguments.ForEach((arg, index) => {
-                    if (index > 0) { ", ".AppendTo(sb); }
-                    Write(arg);
-                });
-                ")".AppendTo(sb);
+                if (expr.Arguments.Any()) {
+                    "(".AppendTo(sb);
+                    WriteList(expr.Arguments);
+                    ")".AppendTo(sb);
+                }
             }
         }
 
@@ -229,10 +230,7 @@ namespace ExpressionTreeTransform {
             $".{expr.Method.Name}".AppendTo(sb);
             if (arguments.Any()) {
                 "(".AppendTo(sb);
-                arguments.ForEach((arg, index) => {
-                    if (index > 0) { ", ".AppendTo(sb); }
-                    Write(arg);
-                });
+                WriteList(arguments);
                 ")".AppendTo(sb);
             }
         }
@@ -240,6 +238,7 @@ namespace ExpressionTreeTransform {
         protected override void WriteBinding(MemberBinding binding) {
             switch (binding) {
                 case MemberAssignment assignmentBinding:
+                    ".".AppendTo(sb);
                     binding.Member.Name.AppendTo(sb);
                     " = ".AppendTo(sb);
                     Write(assignmentBinding.Expression);
@@ -256,18 +255,15 @@ namespace ExpressionTreeTransform {
         protected override void WriteMemberInit(MemberInitExpression expr) {
             Write(expr.NewExpression);
             if (expr.Bindings.Any()) {
-                " With { ".AppendTo(sb);
-                expr.Bindings.ForEach((binding, index) => {
-                    if (index > 0) { ", ".AppendTo(sb); }
-                    WriteBinding(binding);
-                });
-                " }".AppendTo(sb);
+                " With {".AppendTo(sb);
+                WriteList(expr.Bindings);
+                "}".AppendTo(sb);
             }
         }
 
         protected override void WriteListInit(ListInitExpression expr) {
             Write(expr.NewExpression);
-            " {".AppendTo(sb);
+            " From {".AppendTo(sb);
             expr.Initializers.ForEach((init, index) => {
                 if (index > 0) { ", ".AppendTo(sb); }
                 Write(init);
@@ -285,10 +281,7 @@ namespace ExpressionTreeTransform {
                     break;
                 default:
                     "{".AppendTo(sb);
-                    args.ForEach((arg, index) => {
-                        if (index > 0) { ", ".AppendTo(sb); }
-                        Write(arg);
-                    });
+                    WriteList(args);
                     "}".AppendTo(sb);
                     break;
             }

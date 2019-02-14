@@ -106,6 +106,7 @@ namespace ExpressionTreeTransform {
 
         protected override void WriteLambda(LambdaExpression expr) {
             "(".AppendTo(sb);
+            // we can't use WriteList here, because we have to call WriteParameterDeclaration
             expr.Parameters.ForEach((prm, index) => {
                 if (index > 0) { ", ".AppendTo(sb); }
                 WriteParameterDeclaration(prm);
@@ -145,17 +146,16 @@ namespace ExpressionTreeTransform {
                 "{ ".AppendTo(sb);
                 expr.Constructor.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
                     if (index > 0) { ", ".AppendTo(sb); }
-                    $"{name} = ".AppendTo(sb);
+                    if (!(arg is MemberExpression mexpr && mexpr.Member.Name.Replace("$VB$Local_", "") == name)) {
+                        $"{name} = ".AppendTo(sb);
+                    }
                     Write(arg);
                 });
                 " }".AppendTo(sb);
             } else {
                 expr.Type.FriendlyName(CSharp).AppendTo(sb);
                 "(".AppendTo(sb);
-                expr.Arguments.ForEach((arg, index) => {
-                    if (index > 0) { ", ".AppendTo(sb); }
-                    Write(arg);
-                });
+                WriteList(expr.Arguments);
                 ")".AppendTo(sb);
             }
         }
@@ -200,10 +200,7 @@ namespace ExpressionTreeTransform {
             }
 
             $".{expr.Method.Name}(".AppendTo(sb);
-            arguments.ForEach((arg, index) => {
-                if (index > 0) { ", ".AppendTo(sb); }
-                Write(arg);
-            });
+            WriteList(arguments);
             ")".AppendTo(sb);
         }
 
@@ -227,22 +224,16 @@ namespace ExpressionTreeTransform {
             Write(expr.NewExpression);
             if (expr.Bindings.Any()) {
                 " { ".AppendTo(sb);
-                expr.Bindings.ForEach((binding, index) => {
-                    if (index > 0) { ", ".AppendTo(sb); }
-                    WriteBinding(binding);
-                });
+                WriteList(expr.Bindings);
                 " }".AppendTo(sb);
             }
         }
 
         protected override void WriteListInit(ListInitExpression expr) {
             Write(expr.NewExpression);
-            " {".AppendTo(sb);
-            expr.Initializers.ForEach((init, index) => {
-                if (index > 0) { ", ".AppendTo(sb); }
-                Write(init);
-            });
-            "}".AppendTo(sb);
+            " { ".AppendTo(sb);
+            WriteList(expr.Initializers);
+            " }".AppendTo(sb);
         }
 
         protected override void WriteElementInit(ElementInit elementInit) {
@@ -254,12 +245,9 @@ namespace ExpressionTreeTransform {
                     Write(args.First());
                     break;
                 default:
-                    "{".AppendTo(sb);
-                    args.ForEach((arg, index) => {
-                        if (index > 0) { ", ".AppendTo(sb); }
-                        Write(arg);
-                    });
-                    "}".AppendTo(sb);
+                    "{ ".AppendTo(sb);
+                    WriteList(args);
+                    " }".AppendTo(sb);
                     break;
             }
         }

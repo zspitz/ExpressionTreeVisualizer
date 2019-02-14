@@ -4,7 +4,7 @@ using static ExpressionTreeTransform.Tests.Runners;
 using static System.Linq.Expressions.Expression;
 using static ExpressionTreeTransform.Tests.Globals;
 
-namespace ExpressionTreeTransform.Tests {
+namespace ExpressionTreeTransform.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class MakeBinary {
         [Fact]

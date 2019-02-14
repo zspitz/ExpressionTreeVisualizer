@@ -3,7 +3,7 @@ using static ExpressionTreeTransform.Tests.Globals;
 using static ExpressionTreeTransform.Tests.Runners;
 using static System.Linq.Expressions.Expression;
 
-namespace ExpressionTreeTransform.Tests {
+namespace ExpressionTreeTransform.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class MakeNewArray {
         [Fact]

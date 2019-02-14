@@ -13,10 +13,6 @@ namespace _visualizerTests {
         static void Main(string[] args) {
             //var i = 7;
             //var j = 8;
-            //Expression<Func<int>> expr = () => i << j;
-
-            //Expression<Func<string, int>> expr = s => (i + j) + s.ToString().ToList().Count();
-
             //Expression<Func<bool>> expr = () => i * j <= 25 || new DateTime(1, 1, 1981).Year >= j && new { DateTime.Now }.Now.Day > 10;
 
             //Expression<Func<int, int>> expr = x => Enumerable.Range(1, x).Select(y => x * y).Count();
@@ -44,7 +40,11 @@ namespace _visualizerTests {
 
             //Expression<Func<object[]>> expr = () => new object[] { "" };
 
-            Expression<Func<string[][]>> expr = () => new string[5][];
+            //Expression<Func<string[][]>> expr = () => new string[5][];
+
+            var Bar = "abcd";
+            var Baz = "efgh";
+            Expression<Func<object>> expr = () => new { Bar, Baz };
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer),typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
@@ -55,9 +55,7 @@ namespace _visualizerTests {
 
     class Foo {
         public string Bar { get; set; }
-        public Foo(string baz) {
-
-        }
+        public Foo(string baz) { }
     }
 
     class Wrapper : List<string> {

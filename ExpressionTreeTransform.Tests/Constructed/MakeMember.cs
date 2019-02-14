@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
+﻿using System.Linq;
 using Xunit;
 using static ExpressionTreeTransform.Tests.Globals;
 using static ExpressionTreeTransform.Tests.Runners;
-using static ExpressionTreeTransform.Util.Functions;
 using static System.Linq.Expressions.Expression;
 
 namespace ExpressionTreeTransform.Tests.Constructed {
