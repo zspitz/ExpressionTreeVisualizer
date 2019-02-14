@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using static System.Linq.Expressions.ExpressionType;
-using static ExpressionTreeTransform.Util.Globals;
-using ExpressionTreeTransform.Util;
+using static ExpressionToString.Util.FormatterNames;
+using ExpressionToString.Util;
 
-namespace ExpressionTreeTransform {
+namespace ExpressionToString {
     public abstract class CodeWriter {
         public static CodeWriter Create(string language, Expression expr) =>
             language == CSharp ? (CodeWriter)new CSharpCodeWriter(expr) :

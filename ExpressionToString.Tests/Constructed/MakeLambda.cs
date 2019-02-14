@@ -2,12 +2,12 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using Xunit;
-using static ExpressionTreeTransform.Tests.Globals;
-using static ExpressionTreeTransform.Tests.Runners;
-using static ExpressionTreeTransform.Util.Functions;
+using static ExpressionToString.Tests.Globals;
+using static ExpressionToString.Tests.Runners;
+using static ExpressionToString.Util.Functions;
 using static System.Linq.Expressions.Expression;
 
-namespace ExpressionTreeTransform.Tests.Constructed {
+namespace ExpressionToString.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class MakeLambda {
         MethodInfo writeline0 = GetMethod(() => Console.WriteLine());

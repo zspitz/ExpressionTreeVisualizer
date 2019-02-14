@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Text;
 using static System.Linq.Expressions.Expression;
 
-namespace ExpressionTreeTransform.Tests {
+namespace ExpressionToString.Tests {
     public static class Globals {
         public const string CSharpCompiler = "C# compiler-generated";
         public const string VBCompiler = "VB.NET compiler-generated";

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
-using static ExpressionTreeTransform.Tests.Globals;
-using static ExpressionTreeTransform.Tests.Runners;
-using static ExpressionTreeTransform.Util.Functions;
+using static ExpressionToString.Tests.Globals;
+using static ExpressionToString.Tests.Runners;
+using static ExpressionToString.Util.Functions;
 using static System.Linq.Expressions.Expression;
 
-namespace ExpressionTreeTransform.Tests.Constructed {
+namespace ExpressionToString.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class MakeMethodCall {
         ParameterExpression s = Parameter(typeof(string), "s");

@@ -1,16 +1,16 @@
-﻿using ExpressionTreeTransform.Util;
+﻿using ExpressionToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using static ExpressionTreeTransform.Util.Functions;
-using static ExpressionTreeTransform.Util.Globals;
+using static ExpressionToString.Util.Functions;
+using static ExpressionToString.Util.FormatterNames;
 using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Enumerable;
 
-namespace ExpressionTreeTransform {
+namespace ExpressionToString {
     public class VBCodeWriter : CodeWriter {
         public VBCodeWriter(Expression expr) : base(expr) { }
         public VBCodeWriter(Expression expr, out Dictionary<object, List<(int start, int length)>> visitedObjects) : base(expr, out visitedObjects) { }

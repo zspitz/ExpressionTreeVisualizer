@@ -1,8 +1,8 @@
 ﻿using Xunit;
-using static ExpressionTreeTransform.Tests.Globals;
-using static ExpressionTreeTransform.Tests.Runners;
+using static ExpressionToString.Tests.Globals;
+using static ExpressionToString.Tests.Runners;
 
-namespace ExpressionTreeTransform.Tests {
+namespace ExpressionToString.Tests {
     [Trait("Source", CSharpCompiler)]
     public class NewArray {
         [Fact]

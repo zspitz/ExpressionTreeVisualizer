@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using static System.Linq.Expressions.Expression;
 
-namespace ExpressionTreeTransform {
+namespace ExpressionToString {
     public static class ExpressionExtension {
         public static string ToCode(this Expression expr, string language) =>
             CodeWriter.Create(language, expr).ToString();

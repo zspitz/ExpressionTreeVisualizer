@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using static ExpressionTreeTransform.Util.Globals;
+using static ExpressionToString.Util.FormatterNames;
 using static System.Linq.Enumerable;
 
-namespace ExpressionTreeTransform.Util {
+namespace ExpressionToString.Util {
     public static class TypeExtensions {
         public static Type UnderlyingIfNullable(this Type type) => Nullable.GetUnderlyingType(type) ?? type;
 

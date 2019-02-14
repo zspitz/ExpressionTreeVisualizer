@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ExpressionTreeTransform.Util {
-    public static class Globals {
+﻿namespace ExpressionToString.Util {
+    public static class FormatterNames {
         public const string CSharp = "C#";
         public const string VisualBasic = "Visual Basic";
     }

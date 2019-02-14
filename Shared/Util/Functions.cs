@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using static ExpressionTreeTransform.Util.Globals;
+using static ExpressionToString.Util.FormatterNames;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ExpressionTreeTransform.Util {
+namespace ExpressionToString.Util {
     public static class Functions {
         public static (bool isLiteral, string repr) TryRenderLiteral(object o, string language) {
             if (language.NotIn(CSharp, VisualBasic)) { throw new NotImplementedException("Invalid language"); }

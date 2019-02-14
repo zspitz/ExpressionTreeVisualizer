@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
-using static ExpressionTreeTransform.Tests.Globals;
-using static ExpressionTreeTransform.Tests.Runners;
+using static ExpressionToString.Tests.Globals;
+using static ExpressionToString.Tests.Runners;
 
-namespace ExpressionTreeTransform.Tests {
+namespace ExpressionToString.Tests {
     static class Dummy {
         internal static void DummyMethod() { }
     }

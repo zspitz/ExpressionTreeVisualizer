@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
 using Xunit;
-using static ExpressionTreeTransform.Tests.Runners;
+using static ExpressionToString.Tests.Runners;
 using static System.Linq.Expressions.Expression;
-using static ExpressionTreeTransform.Tests.Globals;
+using static ExpressionToString.Tests.Globals;
 
-namespace ExpressionTreeTransform.Tests.Constructed {
+namespace ExpressionToString.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class MakeBinary {
         [Fact]

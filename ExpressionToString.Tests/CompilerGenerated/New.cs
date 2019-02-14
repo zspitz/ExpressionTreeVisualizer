@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xunit;
-using static ExpressionTreeTransform.Tests.Globals;
-using static ExpressionTreeTransform.Tests.Runners;
+using static ExpressionToString.Tests.Globals;
+using static ExpressionToString.Tests.Runners;
 
-namespace ExpressionTreeTransform.Tests {
+namespace ExpressionToString.Tests {
     class Foo {
         public string Bar { get; set; }
         public string Baz { get; set; }

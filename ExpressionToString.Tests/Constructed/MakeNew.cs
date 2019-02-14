@@ -6,12 +6,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using static ExpressionTreeTransform.Tests.Globals;
-using static ExpressionTreeTransform.Tests.Runners;
+using static ExpressionToString.Tests.Globals;
+using static ExpressionToString.Tests.Runners;
 using static System.Linq.Expressions.Expression;
-using static ExpressionTreeTransform.Util.Functions;
+using static ExpressionToString.Util.Functions;
 
-namespace ExpressionTreeTransform.Tests.Constructed
+namespace ExpressionToString.Tests.Constructed
 {
     [Trait("Source", CSharpCompiler)]
     public class MakeNew

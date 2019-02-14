@@ -1,9 +1,9 @@
 using System;
 using Xunit;
-using static ExpressionTreeTransform.Tests.Runners;
-using static ExpressionTreeTransform.Tests.Globals;
+using static ExpressionToString.Tests.Runners;
+using static ExpressionToString.Tests.Globals;
 
-namespace ExpressionTreeTransform.Tests {
+namespace ExpressionToString.Tests {
     [Trait("Source", CSharpCompiler)]
     public class Unsorted {
         [Fact]

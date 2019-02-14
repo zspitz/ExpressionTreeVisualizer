@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Xunit;
-using static ExpressionTreeTransform.Util.Globals;
+using static ExpressionToString.Util.FormatterNames;
 
-namespace ExpressionTreeTransform.Tests {
+namespace ExpressionToString.Tests {
     public static class Runners {
         public static void BuildAssert(Expression<Action> expr, string csharp, string vb)  => BuildAssert(expr as Expression, csharp, vb);
         public static void BuildAssert<T>(Expression<Action<T>> expr, string csharp, string vb) => BuildAssert(expr as Expression, csharp, vb);

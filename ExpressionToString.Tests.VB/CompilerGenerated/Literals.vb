@@ -1,4 +1,6 @@
-﻿Public Class Literals
+﻿Imports System.Linq.Expressions.Expression
+
+Public Class Literals
     <Fact>
     Sub [True]()
         BuildAssert(Function() True, "() => true", "Function() True")

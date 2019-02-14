@@ -3,16 +3,15 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>89229404-e614-4495-8e2f-119febfba172</SharedGUID>
+    <SharedGUID>64f97e9a-910e-44b2-bc72-60be676bcbb7</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Shared</Import_RootNamespace>
+    <Import_RootNamespace>ExpressionToString</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CSharpCodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionExtension.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Dictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Expression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\ICollectionT.cs" />
