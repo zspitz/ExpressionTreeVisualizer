@@ -83,13 +83,13 @@ namespace ExpressionToString.Util {
             }
 
             if (type.IsArray) {
-                (string left, string right) specifierChars =
+                (string left, string right) =
                     language == CSharp ? ("[", "]") :
                     language == VisualBasic ? ("(", ")") :
                     throw new ArgumentException("Invalid language");
                 var nestedArrayTypes = type.NestedArrayTypes().ToList();
                 string arraySpecifiers = nestedArrayTypes.Joined("",
-                    (current, _, index) => specifierChars.left + Repeat("", current.GetArrayRank()).Joined() + specifierChars.right
+                    (current, _, index) => left + Repeat("", current.GetArrayRank()).Joined() + right
                 );
                 return nestedArrayTypes.Last().root.FriendlyName(language) + arraySpecifiers;
             }

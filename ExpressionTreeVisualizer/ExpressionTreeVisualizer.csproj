@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{58706EA8-B515-41B1-B7CA-20E35530129A}</ProjectGuid>
+    <ProjectGuid>{23EFE8A0-FE43-41B9-8097-8EC13989539B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ExpressionTreeVisualizer</RootNamespace>
@@ -12,8 +12,6 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,7 +42,6 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Xaml" />
@@ -58,14 +55,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Extensions\DependencyObject.cs" />
-    <Compile Include="Util\Extensions\Selector.cs" />
     <Compile Include="Util\Extensions\MultiSelector.cs" />
     <Compile Include="Util\Extensions\MultiSelectTreeView.cs" />
+    <Compile Include="Util\Extensions\Selector.cs" />
     <Compile Include="Util\Extensions\TreeView.cs" />
     <Compile Include="Util\Functions.cs" />
     <Compile Include="Visualizer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VisualizerData.cs" />
     <Compile Include="VisualizerDataControl.xaml.cs">
       <DependentUpon>VisualizerDataControl.xaml</DependentUpon>
@@ -73,14 +70,13 @@
     <Compile Include="VisualizerDataObjectSource.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <Page Include="VisualizerDataControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="VisualizerDataControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

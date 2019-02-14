@@ -1,4 +1,4 @@
-# Expression To Code and Expression Tree Visualizer
+# Expression To String and Expression Tree Visualizer
 This project provides the following:
 
 * Extension methods to create a C# or VB.NET code-like string representation, of expression trees or expression tree parts
@@ -8,15 +8,15 @@ Currently, you have to compile in order to use. The visualizer DLL and dependent
 
 ---
 
-## Expression To Code
+## Expression To String
 ```csharp
 Expression<Func<bool>> expr = () => true;
 
-// output -- () => true
-Console.WriteLine(expr.ToCode("C#")); 
+Console.WriteLine(expr.ToString("C#")); 
+// prints: () => true
 
-// output -- Function() True
-Console.WriteLine(expr.ToCode("Visual Basic"));
+Console.WriteLine(expr.ToString("Visual Basic"));
+// prints: Function() True
 ```
 
 Features:
@@ -26,8 +26,8 @@ Features:
 
     ```csharp
     Expression<Func<int, int>> expr = x => Enumerable.Range(1, x).Select(y => x * y).Count();
-    Console.WriteLine(expr.ToCode("C#"));
-    // output -- (int x) => Enumerable.Range(1, x).Select((int y) => x * y).Count()
+    Console.WriteLine(expr.ToString("C#"));
+    // prints: (int x) => Enumerable.Range(1, x).Select((int y) => x * y).Count()
     ```
 
 * Closed-over variables are rendered as simple identifiers (instead of member access on the hidden compiler-generated class)
@@ -36,8 +36,8 @@ Features:
     var i = 7;
     var j = 8;
     Expression<Func<int>> expr = () => i + j;
-    Console.WriteLine(expr.ToCode("C#"));
-    // output -- () => i + j
+    Console.WriteLine(expr.ToString("C#"));
+    // prints: () => i + j
     ```
 
 Note that support for the full range of types in `System.Linq.Expressions` is incomplete, but [progressing](https://github.com/zspitz/ExpressionToCode/issues/32).
@@ -51,7 +51,7 @@ Note that support for the full range of types in `System.Linq.Expressions` is in
 The UI consists of three parts:
 
 1. Tree view of the various parts of an expression tree
-2. Source code view, using the above `ExpressionToCode` library
+2. Source code view, using the above `ExpressionToString` library
 3. End nodes -- nodes in the expression tree which are not composed of other expressions
 
 ## Visualizer features
@@ -75,7 +75,6 @@ The UI consists of three parts:
 # Credits
 
 * John M. Wright's series on [writing debugger visualizers](https://wrightfully.com/writing-a-readonly-debugger-visualizer)
-* [WPF AutoGrid](https://github.com/carbonrobot/wpf-autogrid)
 * Multiple-selection treeview is provided by [MultiSelectTreeView](https://github.com/ygoe/MultiSelectTreeView)
 * [ReadableExpressions](https://github.com/agileobjects/ReadableExpressions)
 * [Greenshot](https://getgreenshot.org/) and [ScreenToGIF](https://www.screentogif.com/) for the screenshots

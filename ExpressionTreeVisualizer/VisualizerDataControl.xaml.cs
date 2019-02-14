@@ -1,10 +1,10 @@
-﻿using ExpressionTreeTransform.Util;
+﻿using ExpressionToString.Util;
 using ExpressionTreeVisualizer.Util;
 using Microsoft.VisualStudio.DebuggerVisualizers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using static ExpressionTreeTransform.Util.Globals;
+using static ExpressionToString.Util.FormatterNames;
 
 namespace ExpressionTreeVisualizer {
     public partial class VisualizerDataControl {

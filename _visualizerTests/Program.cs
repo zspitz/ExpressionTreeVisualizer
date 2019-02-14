@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using static System.Linq.Expressions.Expression;
-using static ExpressionTreeTransform.Util.Globals;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace _visualizerTests {
     class Program {
@@ -27,7 +27,7 @@ namespace _visualizerTests {
 
             //Expression<Func<string[][]>> expr = () => new string[5][];
 
-            var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer),typeof(VisualizerDataObjectSource));
+            var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
 
             //Console.ReadKey(true);

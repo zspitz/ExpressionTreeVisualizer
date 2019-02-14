@@ -2,7 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Windows;
-using static ExpressionTreeTransform.Util.Globals;
+using static ExpressionToString.Util.FormatterNames;
 
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer), 

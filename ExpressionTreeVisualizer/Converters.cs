@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using static System.Windows.DependencyProperty;
-using ExpressionTreeTransform.Util;
+using ExpressionToString.Util;
 using static System.Windows.Visibility;
 
 namespace ExpressionTreeVisualizer {

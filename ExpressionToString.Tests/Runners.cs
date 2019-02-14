@@ -14,8 +14,8 @@ namespace ExpressionToString.Tests {
         public static void BuildAssert<T1, T2, T3>(Expression<Func<T1, T2, T3>> expr, string csharp, string vb) => BuildAssert(expr as Expression, csharp, vb);
 
         public static void BuildAssert(Expression expr, string csharp, string vb) {
-            var testCSharpCode = expr.ToCode(CSharp);
-            var testVBCode = expr.ToCode(VisualBasic);
+            var testCSharpCode = expr.ToString(CSharp);
+            var testVBCode = expr.ToString(VisualBasic);
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
         }

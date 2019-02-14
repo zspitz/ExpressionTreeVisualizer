@@ -1,13 +1,13 @@
-﻿using ExpressionTreeTransform;
-using ExpressionTreeTransform.Util;
+﻿using ExpressionToString;
+using ExpressionToString.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using static ExpressionTreeTransform.Util.Functions;
+using static ExpressionToString.Util.Functions;
 using static ExpressionTreeVisualizer.EndNodeTypes;
-using static ExpressionTreeTransform.Util.Globals;
+using static ExpressionToString.Util.FormatterNames;
 
 namespace ExpressionTreeVisualizer {
     [Serializable]
@@ -55,7 +55,7 @@ namespace ExpressionTreeVisualizer {
 
         public VisualizerData(Expression expr, VisualizerDataOptions options = null) {
             Options = options ?? new VisualizerDataOptions(); 
-            Source = expr.ToCode(Options.Language, out var visitedObjects);
+            Source = expr.ToString(Options.Language, out var visitedObjects);
             VisitedObjects = visitedObjects;
             CollectedEndNodes = new List<ExpressionNodeData>();
             NodeData = new ExpressionNodeData(expr, this);

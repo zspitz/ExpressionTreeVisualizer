@@ -3,16 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionToString", "ExpressionToString\ExpressionToString.csproj", "{909307C8-6E39-43B8-A0C9-6AB9FC42D1B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionToString", "ExpressionToString\ExpressionToString.csproj", "{909307C8-6E39-43B8-A0C9-6AB9FC42D1B1}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{64F97E9A-910E-44B2-BC72-60BE676BCBB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionToString.Tests", "ExpressionToString.Tests\ExpressionToString.Tests.csproj", "{541195C7-8DAB-45DC-A605-3139759E473F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionToString.Tests", "ExpressionToString.Tests\ExpressionToString.Tests.csproj", "{541195C7-8DAB-45DC-A605-3139759E473F}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ExpressionToString.Tests.VB", "ExpressionToString.Tests.VB\ExpressionToString.Tests.VB.vbproj", "{1299E8F4-9854-4104-99F6-34B13F1DE450}"
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "ExpressionToString.Tests.VB", "ExpressionToString.Tests.VB\ExpressionToString.Tests.VB.vbproj", "{1299E8F4-9854-4104-99F6-34B13F1DE450}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionTreeVisualizer", "ExpressionTreeVisualizer\ExpressionTreeVisualizer.csproj", "{23EFE8A0-FE43-41B9-8097-8EC13989539B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_visualizerTests", "_visualizerTests\_visualizerTests.csproj", "{8F297AFA-67DE-44C9-B018-38DCBD6F3B4C}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared\Shared.projitems*{23efe8a0-fe43-41b9-8097-8ec13989539b}*SharedItemsImports = 4
 		Shared\Shared.projitems*{64f97e9a-910e-44b2-bc72-60be676bcbb7}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +37,14 @@ Global
 		{1299E8F4-9854-4104-99F6-34B13F1DE450}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1299E8F4-9854-4104-99F6-34B13F1DE450}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1299E8F4-9854-4104-99F6-34B13F1DE450}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23EFE8A0-FE43-41B9-8097-8EC13989539B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23EFE8A0-FE43-41B9-8097-8EC13989539B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23EFE8A0-FE43-41B9-8097-8EC13989539B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23EFE8A0-FE43-41B9-8097-8EC13989539B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F297AFA-67DE-44C9-B018-38DCBD6F3B4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F297AFA-67DE-44C9-B018-38DCBD6F3B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F297AFA-67DE-44C9-B018-38DCBD6F3B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F297AFA-67DE-44C9-B018-38DCBD6F3B4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
