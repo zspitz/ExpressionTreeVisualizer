@@ -284,5 +284,13 @@ namespace ExpressionToString {
                     throw new NotImplementedException();
             }
         }
+
+        protected override void WriteConditional(ConditionalExpression expr) {
+            Write(expr.Test);
+            " ? ".AppendTo(sb);
+            Write(expr.IfTrue);
+            " : ".AppendTo(sb);
+            Write(expr.IfFalse);
+        }
     }
 }

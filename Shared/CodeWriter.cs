@@ -153,6 +153,10 @@ namespace ExpressionToString {
                     WriteNewArray(expr as NewArrayExpression);
                     break;
 
+                case Conditional:
+                    WriteConditional(expr as ConditionalExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
@@ -162,7 +166,6 @@ namespace ExpressionToString {
                     case AndAssign:
                     case Assign:
                     case Block:
-                    case Conditional:
                     case DebugInfo:
                     case Decrement:
                     case Default:
@@ -241,9 +244,9 @@ namespace ExpressionToString {
         protected abstract void WriteMemberInit(MemberInitExpression expr);
         protected abstract void WriteListInit(ListInitExpression expr);
         protected abstract void WriteNewArray(NewArrayExpression expr);
+        protected abstract void WriteConditional(ConditionalExpression expr);
 
         //protected abstract void Write(BlockExpression expr) => throw new NotImplementedException();
-        //protected abstract void Write(ConditionalExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(DefaultExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();

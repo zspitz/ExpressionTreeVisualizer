@@ -47,7 +47,7 @@ Public Class Literals
         BuildAssert(
             Function() """",
             "() => ""\""""",
-            "Function() """""""
+            "Function() """""""""
         )
     End Sub
 End Class

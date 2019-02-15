@@ -1,6 +1,11 @@
 Public Class Unsorted
-    <Fact> Sub ReturnObjectCreation()
-        BuildAssert(Function() New Date(1981, 1, 1), "() => new DateTime(1981, 1, 1)", "Function() New Date(1981, 1, 1)")
+    <Fact>
+    Public Sub Conditional()
+        BuildAssert(
+            Function(i As Integer) If(i > 10, i, i + 10),
+            "(int i) => i > 10 ? i : i + 10",
+            "Function(i As Integer) If(i > 10, i, i + 10)"
+        )
     End Sub
 End Class
 

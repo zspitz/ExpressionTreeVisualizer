@@ -1,15 +1,31 @@
-using System;
 using Xunit;
-using static ExpressionToString.Tests.Runners;
 using static ExpressionToString.Tests.Globals;
+using static ExpressionToString.Tests.Runners;
+using static System.Linq.Expressions.Expression;
 
 namespace ExpressionToString.Tests {
-    [Trait("Source", CSharpCompiler)]
     public class Unsorted {
+        [Trait("Source", CSharpCompiler)]
         [Fact]
-        public void ReturnMemberAccess() => BuildAssert(() => "abcd".Length, "() => \"abcd\".Length", "Function() \"abcd\".Length");
+        public void Conditional() => BuildAssert(
+            (int i) => i > 10 ? i : i + 10,
+            "(int i) => i > 10 ? i : i + 10",
+            "Function(i As Integer) If(i > 10, i, i + 10)"
+        );
 
+        [Trait("Source", FactoryMethods)]
         [Fact]
-        public void ReturnObjectCreation() => BuildAssert(() => new DateTime(1980, 1, 1), "() => new DateTime(1980, 1, 1)", "Function() New Date(1980, 1, 1)");
+        public void MakeConditional() {
+            var i = Parameter(typeof(int), "i");
+            BuildAssert(
+                Condition(
+                    GreaterThan(i, Constant(10)),
+                    i,
+                    Add(i, Constant(10))
+                ),
+                "i > 10 ? i : i + 10",
+                "If(i > 10, i, i + 10)"
+            );
+        }
     }
 }
