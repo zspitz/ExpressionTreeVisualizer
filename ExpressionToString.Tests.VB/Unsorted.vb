@@ -34,5 +34,14 @@ Public Class Unsorted
             "Function() 0"
         )
     End Sub
+
+    <Fact>
+    Public Sub TypeCheck()
+        BuildAssert(
+            Function() TypeOf "" Is String,
+            "() => """" is string",
+            "Function() TypeOf """" Is String"
+        )
+    End Sub
 End Class
 

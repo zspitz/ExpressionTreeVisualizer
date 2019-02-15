@@ -161,6 +161,10 @@ namespace ExpressionToString {
                     WriteDefault(expr as DefaultExpression);
                     break;
 
+                case TypeIs:
+                    WriteTypeBinary(expr as TypeBinaryExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
@@ -172,7 +176,6 @@ namespace ExpressionToString {
                     case Block:
                     case DebugInfo:
                     case Decrement:
-
                     case DivideAssign:
                     case Dynamic:
                     case ExclusiveOrAssign:
@@ -206,7 +209,6 @@ namespace ExpressionToString {
                     case Throw:
                     case Try:
                     case TypeEqual:
-                    case TypeIs:
                     case Unbox:
                     */
                     #endregion
@@ -250,6 +252,7 @@ namespace ExpressionToString {
         protected abstract void WriteNewArray(NewArrayExpression expr);
         protected abstract void WriteConditional(ConditionalExpression expr);
         protected abstract void WriteDefault(DefaultExpression expr);
+        protected abstract void WriteTypeBinary(TypeBinaryExpression expr);
 
         //protected abstract void Write(BlockExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();
@@ -263,7 +266,6 @@ namespace ExpressionToString {
         //protected abstract void Write(RuntimeVariablesExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(SwitchExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(TryExpression expr) => throw new NotImplementedException();
-        //protected abstract void Write(TypeBinaryExpression expr) => throw new NotImplementedException();
 
         //protected abstract void WriteBinding(MemberBinding binding);
 

@@ -295,5 +295,10 @@ namespace ExpressionToString {
 
         protected override void WriteDefault(DefaultExpression expr) => 
             $"default({expr.Type.FriendlyName(CSharp)})".AppendTo(sb);
+
+        protected override void WriteTypeBinary(TypeBinaryExpression expr) {
+            Write(expr.Expression);
+            $" is {expr.TypeOperand.FriendlyName(CSharp)}".AppendTo(sb);
+        }
     }
 }

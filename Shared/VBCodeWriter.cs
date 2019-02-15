@@ -344,5 +344,11 @@ namespace ExpressionToString {
 
         protected override void WriteDefault(DefaultExpression expr) =>
             $"CType(Nothing, {expr.Type.FriendlyName(VisualBasic)})".AppendTo(sb);
+
+        protected override void WriteTypeBinary(TypeBinaryExpression expr) {
+            "TypeOf ".AppendTo(sb);
+            Write(expr.Expression);
+            $" Is {expr.TypeOperand.FriendlyName(VisualBasic)}".AppendTo(sb);
+        }
     }
 }
