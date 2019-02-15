@@ -292,5 +292,8 @@ namespace ExpressionToString {
             " : ".AppendTo(sb);
             Write(expr.IfFalse);
         }
+
+        protected override void WriteDefault(DefaultExpression expr) => 
+            $"default({expr.Type.FriendlyName(CSharp)})".AppendTo(sb);
     }
 }

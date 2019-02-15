@@ -341,5 +341,8 @@ namespace ExpressionToString {
             Write(expr.IfFalse);
             ")".AppendTo(sb);
         }
+
+        protected override void WriteDefault(DefaultExpression expr) =>
+            $"CType(Nothing, {expr.Type.FriendlyName(VisualBasic)})".AppendTo(sb);
     }
 }
