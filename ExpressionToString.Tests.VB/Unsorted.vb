@@ -43,5 +43,25 @@ Public Class Unsorted
             "Function() TypeOf """" Is String"
         )
     End Sub
+
+    <Fact>
+    Public Sub InvocationNoArguments()
+        Dim del = Function() Date.Now.Day
+        BuildAssert(
+            Function() del(),
+            "() => del()",
+            "Function() del()"
+        )
+    End Sub
+
+    <Fact>
+    Public Sub InvocationOneArgument()
+        Dim del = Function(i As Integer) Date.Now.Day
+        BuildAssert(
+            Function() del(5),
+            "() => del(5)",
+            "Function() del(5)"
+        )
+    End Sub
 End Class
 

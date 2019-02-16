@@ -209,6 +209,21 @@ namespace ExpressionToString {
                 }
             }
 
+            bool isIndexer = false;
+            if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
+                isIndexer = true;
+            } else {
+                var indexerMethods = expr.Method.ReflectedType.GetIndexers(true).SelectMany(x => new[] { x.GetMethod, x.SetMethod }).ToList();
+                isIndexer = expr.Method.In(indexerMethods);
+            }
+            if (isIndexer) {
+                Write(expr.Object);
+                "(".AppendTo(sb);
+                WriteList(expr.Arguments);
+                ")".AppendTo(sb);
+                return;
+            }
+
             Expression instance = null;
             IEnumerable<Expression> arguments = expr.Arguments;
 
@@ -349,6 +364,15 @@ namespace ExpressionToString {
             "TypeOf ".AppendTo(sb);
             Write(expr.Expression);
             $" Is {expr.TypeOperand.FriendlyName(VisualBasic)}".AppendTo(sb);
+        }
+
+        protected override void WriteInvocation(InvocationExpression expr) {
+            if (expr.Expression is LambdaExpression) { "(".AppendTo(sb); }
+            Write(expr.Expression);
+            if (expr.Expression is LambdaExpression) { ")".AppendTo(sb); }
+            "(".AppendTo(sb);
+            WriteList(expr.Arguments);
+            ")".AppendTo(sb);
         }
     }
 }

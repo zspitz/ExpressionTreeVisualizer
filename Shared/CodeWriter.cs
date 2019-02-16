@@ -165,6 +165,10 @@ namespace ExpressionToString {
                     WriteTypeBinary(expr as TypeBinaryExpression);
                     break;
 
+                case Invoke:
+                    WriteInvocation(expr as InvocationExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
@@ -253,13 +257,14 @@ namespace ExpressionToString {
         protected abstract void WriteConditional(ConditionalExpression expr);
         protected abstract void WriteDefault(DefaultExpression expr);
         protected abstract void WriteTypeBinary(TypeBinaryExpression expr);
+        protected abstract void WriteInvocation(InvocationExpression expr);
 
         //protected abstract void Write(BlockExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(GotoExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(IndexExpression expr) => throw new NotImplementedException();
-        //protected abstract void Write(InvocationExpression expr) => throw new NotImplementedException();
+
         //protected abstract void Write(LabelExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(LoopExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(NewArrayExpression expr) => throw new NotImplementedException();

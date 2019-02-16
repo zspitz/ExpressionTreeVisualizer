@@ -27,7 +27,16 @@ namespace _visualizerTests {
 
             //Expression<Func<string[][]>> expr = () => new string[5][];
 
-            Expression<Func<int, int, string>> expr = (i, j) => (i + j + 5).ToString();
+            //Expression<Func<int, int, string>> expr = (i, j) => (i + j + 5).ToString();
+
+            //var lst = new List<string>();
+            //Expression<Func<string>> expr = () => lst[5];
+
+            //var arr = new string[,][] { };
+            //Expression<Func<string>> expr = () => arr[5, 2][7];
+
+            Func<int> del = () => DateTime.Now.Day;
+            Expression<Func<int>> expr = () => del();
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();

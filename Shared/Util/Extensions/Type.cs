@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using static ExpressionToString.FormatterNames;
 using static System.Linq.Enumerable;
@@ -158,6 +159,15 @@ namespace ExpressionToString.Util {
                 }
                 currentType = nextType;
             }
+        }
+
+        public static IEnumerable<T> GetAttributes<T>(this Type type, bool inherit) where T : Attribute =>
+            type.GetCustomAttributes(typeof(T), inherit).Cast<T>();
+
+        public static PropertyInfo[] GetIndexers(this Type type, bool inherit) {
+            var memberName = type.GetAttributes<DefaultMemberAttribute>(inherit).FirstOrDefault()?.MemberName;
+            if (memberName == null) { return new PropertyInfo[] { }; }
+            return type.GetProperties().Where(x => x.Name == memberName).ToArray();
         }
     }
 }

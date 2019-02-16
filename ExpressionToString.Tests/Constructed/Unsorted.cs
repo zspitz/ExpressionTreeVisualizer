@@ -29,5 +29,15 @@ namespace ExpressionToString.Tests.Constructed {
             "\"\" is string",
             "TypeOf \"\" Is String"
         );
+
+        [Fact]
+        public void MakeInvocation() => BuildAssert(
+            Invoke(
+                Lambda(Constant(5))
+            ),
+            "(() => 5)()",
+            "(Function() 5)()"
+        );
+
     }
 }

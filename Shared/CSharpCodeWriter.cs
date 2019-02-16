@@ -5,10 +5,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using static ExpressionToString.Util.Functions;
 using static ExpressionToString.FormatterNames;
-using static System.Linq.Expressions.ExpressionType;
+using static ExpressionToString.Util.Functions;
 using static System.Linq.Enumerable;
+using static System.Linq.Expressions.ExpressionType;
 
 namespace ExpressionToString {
     public class CSharpCodeWriter : CodeWriter {
@@ -181,6 +181,21 @@ namespace ExpressionToString {
                 }
             }
 
+            bool isIndexer = false;
+            if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
+                isIndexer = true;
+            } else {
+                var indexerMethods = expr.Method.ReflectedType.GetIndexers(true).SelectMany(x => new[] { x.GetMethod, x.SetMethod }).ToList();
+                isIndexer = expr.Method.In(indexerMethods);
+            }
+            if (isIndexer) {
+                Write(expr.Object);
+                "[".AppendTo(sb);
+                WriteList(expr.Arguments);
+                "]".AppendTo(sb);
+                return;
+            }
+
             Expression instance = null;
             IEnumerable<Expression> arguments = expr.Arguments;
 
@@ -293,12 +308,21 @@ namespace ExpressionToString {
             Write(expr.IfFalse);
         }
 
-        protected override void WriteDefault(DefaultExpression expr) => 
+        protected override void WriteDefault(DefaultExpression expr) =>
             $"default({expr.Type.FriendlyName(CSharp)})".AppendTo(sb);
 
         protected override void WriteTypeBinary(TypeBinaryExpression expr) {
             Write(expr.Expression);
             $" is {expr.TypeOperand.FriendlyName(CSharp)}".AppendTo(sb);
+        }
+
+        protected override void WriteInvocation(InvocationExpression expr) {
+            if (expr.Expression is LambdaExpression) { "(".AppendTo(sb); }
+            Write(expr.Expression);
+            if (expr.Expression is LambdaExpression) { ")".AppendTo(sb); }
+            "(".AppendTo(sb);
+            WriteList(expr.Arguments);
+            ")".AppendTo(sb);
         }
     }
 }
