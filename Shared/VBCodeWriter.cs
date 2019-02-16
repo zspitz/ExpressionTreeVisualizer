@@ -374,5 +374,12 @@ namespace ExpressionToString {
             WriteList(expr.Arguments);
             ")".AppendTo(sb);
         }
+
+        protected override void WriteIndex(IndexExpression expr) {
+            Write(expr.Object);
+            "(".AppendTo(sb);
+            WriteList(expr.Arguments);
+            ")".AppendTo(sb);
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using static System.Linq.Expressions.ExpressionType;
 using static ExpressionToString.FormatterNames;
 using ExpressionToString.Util;
+using System.Diagnostics;
 
 namespace ExpressionToString {
     public abstract class CodeWriter {
@@ -47,7 +48,7 @@ namespace ExpressionToString {
                 }
             } catch (Exception ex) {
                 sb.AppendLine();
-                $"------- {ex.GetType().Name} -- {ex.Message}".AppendLineTo(sb);
+                $"----- {ex.GetType().Name} - {ex.Message} ()".AppendLineTo(sb);
             }
 
             registerVisited(o, start);
@@ -169,6 +170,10 @@ namespace ExpressionToString {
                     WriteInvocation(expr as InvocationExpression);
                     break;
 
+                case Index:
+                    WriteIndex(expr as IndexExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
@@ -258,13 +263,12 @@ namespace ExpressionToString {
         protected abstract void WriteDefault(DefaultExpression expr);
         protected abstract void WriteTypeBinary(TypeBinaryExpression expr);
         protected abstract void WriteInvocation(InvocationExpression expr);
+        protected abstract void WriteIndex(IndexExpression expr);
 
         //protected abstract void Write(BlockExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(GotoExpression expr) => throw new NotImplementedException();
-        //protected abstract void Write(IndexExpression expr) => throw new NotImplementedException();
-
         //protected abstract void Write(LabelExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(LoopExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(NewArrayExpression expr) => throw new NotImplementedException();
