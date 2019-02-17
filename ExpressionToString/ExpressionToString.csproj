@@ -14,9 +14,10 @@
     <RepositoryUrl>https://github.com/zspitz/ExpressionToString.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>expression-tree code-generation visual-basic.net vb.net csharp</PackageTags>
-    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageReleaseNotes>Non-statement expression support is complete, escaped string literals, exceptions written into source</PackageReleaseNotes>
     <AssemblyName>ExpressionTreeToString</AssemblyName>
     <RootNamespace>ExpressionTreeToString</RootNamespace>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
