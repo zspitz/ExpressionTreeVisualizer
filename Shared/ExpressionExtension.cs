@@ -8,5 +8,17 @@ namespace ExpressionToString {
 
         public static string ToString(this Expression expr, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
             CodeWriter.Create(formatter, expr, out visitedParts).ToString();
+
+        public static string ToString(this ElementInit init, string formatter) =>
+            CodeWriter.Create(formatter, init).ToString();
+
+        public static string ToString(this ElementInit init, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
+            CodeWriter.Create(formatter, init, out visitedParts).ToString();
+
+        public static string ToString(this MemberBinding mbind, string formatter) =>
+            CodeWriter.Create(formatter, mbind).ToString();
+
+        public static string ToString(this MemberBinding mbind, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
+            CodeWriter.Create(formatter, mbind, out visitedParts).ToString();
     }
 }

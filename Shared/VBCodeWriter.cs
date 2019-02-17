@@ -12,8 +12,8 @@ using static System.Linq.Enumerable;
 
 namespace ExpressionToString {
     public class VBCodeWriter : CodeWriter {
-        public VBCodeWriter(Expression expr) : base(expr) { }
-        public VBCodeWriter(Expression expr, out Dictionary<object, List<(int start, int length)>> visitedObjects) : base(expr, out visitedObjects) { }
+        public VBCodeWriter(object o) : base(o) { }
+        public VBCodeWriter(object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) : base(o, out visitedObjects) { }
 
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
             [Add] = "+",
@@ -135,7 +135,7 @@ namespace ExpressionToString {
             "(".AppendTo(sb);
             expr.Parameters.ForEach((prm, index) => {
                 if (index > 0) { ", ".AppendTo(sb); }
-                WriteParameterDeclaration(prm);
+                Write(prm, true);
             });
             ") ".AppendTo(sb);
             Write(expr.Body);

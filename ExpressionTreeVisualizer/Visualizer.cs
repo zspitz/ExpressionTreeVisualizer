@@ -10,6 +10,18 @@ using static ExpressionToString.FormatterNames;
     Target = typeof(System.Linq.Expressions.Expression), 
     Description ="Expression Tree Visualizer")]
 
+[assembly: DebuggerVisualizer(
+    visualizer: typeof(ExpressionTreeVisualizer.Visualizer),
+    visualizerObjectSource: typeof(ExpressionTreeVisualizer.VisualizerDataObjectSource),
+    Target = typeof(System.Linq.Expressions.MemberBinding),
+    Description = "Expression Tree Visualizer")]
+
+[assembly: DebuggerVisualizer(
+    visualizer: typeof(ExpressionTreeVisualizer.Visualizer),
+    visualizerObjectSource: typeof(ExpressionTreeVisualizer.VisualizerDataObjectSource),
+    Target = typeof(System.Linq.Expressions.ElementInit),
+    Description = "Expression Tree Visualizer")]
+
 namespace ExpressionTreeVisualizer {
     public class Visualizer : DialogDebuggerVisualizer {
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) {

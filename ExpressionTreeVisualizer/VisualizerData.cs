@@ -53,12 +53,25 @@ namespace ExpressionTreeVisualizer {
         // for deserialization
         public VisualizerData() { }
 
-        public VisualizerData(Expression expr, VisualizerDataOptions options = null) {
-            Options = options ?? new VisualizerDataOptions(); 
-            Source = expr.ToString(Options.Language, out var visitedObjects);
+        public VisualizerData(object o, VisualizerDataOptions options = null) {
+            Options = options ?? new VisualizerDataOptions();
+            Source = CodeWriter.Create(Options.Language, o, out var visitedObjects).ToString();
             VisitedObjects = visitedObjects;
             CollectedEndNodes = new List<ExpressionNodeData>();
-            NodeData = new ExpressionNodeData(expr, this);
+
+            switch (o) {
+                case Expression expr:
+                    NodeData = new ExpressionNodeData(expr, this);
+                    break;
+                case MemberBinding mbind:
+                    NodeData = new ExpressionNodeData(mbind, this);
+                    break;
+                case ElementInit init:
+                    NodeData = new ExpressionNodeData(init, this);
+                    break;
+                default:
+                    throw new ArgumentException($"Unable to visualize type {o.GetType().Name}");
+            }
 
             // TODO it should be possible to write the following using LINQ
             Constants = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
@@ -112,7 +125,7 @@ namespace ExpressionTreeVisualizer {
         // for deserialization
         public ExpressionNodeData() { }
 
-        internal ExpressionNodeData(ElementInit init, VisualizerData visualizerData, (int start, int length) parentSpan) {
+        internal ExpressionNodeData(ElementInit init, VisualizerData visualizerData) {
             NodeType = "ElementInit";
             if (visualizerData.VisitedObjects.TryGetValue(init, out var spans)) {
                 Span = spans.Single();
@@ -122,7 +135,7 @@ namespace ExpressionTreeVisualizer {
             }).ToDictionary();
         }
 
-        internal ExpressionNodeData(MemberBinding binding, VisualizerData visualizerData, (int start, int length) parentSpan) {
+        internal ExpressionNodeData(MemberBinding binding, VisualizerData visualizerData) {
             Name = binding.Member.Name;
             NodeType = binding.BindingType.ToString();
             if (visualizerData.VisitedObjects.TryGetValue(binding, out var spans)) {
@@ -135,7 +148,7 @@ namespace ExpressionTreeVisualizer {
                     }.ToDictionary();
                     break;
                 case MemberListBinding listBinding:
-                    Children = listBinding.Initializers.Select((x, index) => ($"Iinitializers[{index}]", new ExpressionNodeData(x, visualizerData, Span))).ToDictionary();
+                    Children = listBinding.Initializers.Select((x, index) => ($"Iinitializers[{index}]", new ExpressionNodeData(x, visualizerData))).ToDictionary();
                     break;
                 case MemberMemberBinding memberBinding:
                     throw new NotImplementedException("MemberMemberBinding");
@@ -209,10 +222,10 @@ namespace ExpressionTreeVisualizer {
 
                 switch (expr) {
                     case MemberInitExpression initexpr:
-                        initexpr.Bindings.Select((x, index) => ($"Binding[{index}]", new ExpressionNodeData(x, visualizerData, Span))).AddRangeTo(Children);
+                        initexpr.Bindings.Select((x, index) => ($"Binding[{index}]", new ExpressionNodeData(x, visualizerData))).AddRangeTo(Children);
                         break;
                     case ListInitExpression listinitexpr:
-                        listinitexpr.Initializers.Select((x, index) => ($"Initializer[{index}]", new ExpressionNodeData(x, visualizerData, Span))).AddRangeTo(Children);
+                        listinitexpr.Initializers.Select((x, index) => ($"Initializer[{index}]", new ExpressionNodeData(x, visualizerData))).AddRangeTo(Children);
                         break;
                 }
             }

@@ -12,8 +12,8 @@ using static System.Linq.Expressions.ExpressionType;
 
 namespace ExpressionToString {
     public class CSharpCodeWriter : CodeWriter {
-        public CSharpCodeWriter(Expression expr) : base(expr) { }
-        public CSharpCodeWriter(Expression expr, out Dictionary<object, List<(int start, int length)>> visitedObjects) : base(expr, out visitedObjects) { }
+        public CSharpCodeWriter(object o) : base(o) { }
+        public CSharpCodeWriter(object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) : base(o, out visitedObjects) { }
 
         // TODO handle order of operations -- https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/
 
@@ -109,7 +109,7 @@ namespace ExpressionToString {
             // we can't use WriteList here, because we have to call WriteParameterDeclaration
             expr.Parameters.ForEach((prm, index) => {
                 if (index > 0) { ", ".AppendTo(sb); }
-                WriteParameterDeclaration(prm);
+                Write(prm, true);
             });
             ") => ".AppendTo(sb);
             Write(expr.Body);

@@ -35,8 +35,13 @@ namespace _visualizerTests {
             //var arr = new string[,][] { };
             //Expression<Func<string>> expr = () => arr[5, 2][7];
 
-            Func<int> del = () => DateTime.Now.Day;
-            Expression<Func<int>> expr = () => del();
+            //Func<int> del = () => DateTime.Now.Day;
+            //Expression<Func<int>> expr = () => del();
+
+            //Expression<Func<Foo>> expr = () => new Foo("ijkl") { Bar = "abcd", Baz = "efgh" };
+            //var binding = ((MemberInitExpression)expr.Body).Bindings[0];
+
+            Expression<Func<Wrapper>> expr = () => new Wrapper { { "ab", "cd" }, "ef" };
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
@@ -47,11 +52,12 @@ namespace _visualizerTests {
 
     class Foo {
         public string Bar { get; set; }
+        public string Baz { get; set; }
+        public Foo() { }
         public Foo(string baz) { }
     }
 
     class Wrapper : List<string> {
         public void Add(string s1, string s2) => throw new NotImplementedException();
-        public void Add(string s1, string s2, string s3) => throw new NotImplementedException();
     }
 }

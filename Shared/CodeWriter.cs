@@ -9,32 +9,35 @@ using System.Diagnostics;
 
 namespace ExpressionToString {
     public abstract class CodeWriter {
-        public static CodeWriter Create(string language, Expression expr) =>
-            language == CSharp ? (CodeWriter)new CSharpCodeWriter(expr) :
-            language == VisualBasic ? new VBCodeWriter(expr) :
+        public static CodeWriter Create(string language, object o) =>
+            language == CSharp ? (CodeWriter)new CSharpCodeWriter(o) :
+            language == VisualBasic ? new VBCodeWriter(o) :
             throw new NotImplementedException("Unknown language");
 
-        public static CodeWriter Create(string language, Expression expr, out Dictionary<object, List<(int start, int length)>> visitedObjects) =>
-            language == CSharp ? (CodeWriter)new CSharpCodeWriter(expr, out visitedObjects) :
-            language == VisualBasic ? new VBCodeWriter(expr, out visitedObjects) :
+        public static CodeWriter Create(string language, object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) =>
+            language == CSharp ? (CodeWriter)new CSharpCodeWriter(o, out visitedObjects) :
+            language == VisualBasic ? new VBCodeWriter(o, out visitedObjects) :
             throw new NotImplementedException("Unknown language");
 
         protected StringBuilder sb = new StringBuilder();
         Dictionary<object, List<(int start, int length)>> visitedObjects;
 
-        public CodeWriter(Expression expr) {
-            Write(expr);
-        }
-        public CodeWriter(Expression expr, out Dictionary<object, List<(int start, int length)>> visitedObjects) {
+        // Unfortunately, C# doesn't support union types ...
+        public CodeWriter(object o) => Write(o);
+        public CodeWriter(object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) {
             this.visitedObjects = new Dictionary<object, List<(int start, int length)>>();
-            Write(expr);
+            Write(o);
             visitedObjects = this.visitedObjects;
         }
 
-        protected void Write(object o) {
+        protected void Write(object o, bool parameterDeclaration = false) {
             var start = sb.Length;
             try {
                 switch (o) {
+                    // parameter declaration has to be done separately, because even though it's a parameter expression, the declaration is different
+                    case ParameterExpression pexpr when parameterDeclaration:
+                        WriteParameterDeclarationImpl(pexpr);
+                        break;
                     case Expression expr:
                         WriteExpression(expr);
                         break;
@@ -44,7 +47,9 @@ namespace ExpressionToString {
                     case ElementInit init:
                         WriteElementInit(init);
                         break;
-                        // parameter declaration has to be done separately, because even though it's a parameter expression, the declaration is different
+
+                    default:
+                        throw new NotImplementedException($"Code generation not implemented for type '{o.GetType().Name}'");
                 }
             } catch (Exception ex) {
                 sb.AppendLine();
@@ -191,8 +196,6 @@ namespace ExpressionToString {
                     case Extension:
                     case Goto:
                     case Increment:
-                    case Index:
-                    case Invoke:
                     case IsFalse:
                     case IsTrue:
                     case Label:
@@ -201,8 +204,6 @@ namespace ExpressionToString {
                     case ModuloAssign:
                     case MultiplyAssign:
                     case MultiplyAssignChecked:
-                    case NewArrayBounds:
-                    case NewArrayInit:
                     case OnesComplement:
                     case OrAssign:
                     case PostDecrementAssign:
@@ -222,12 +223,6 @@ namespace ExpressionToString {
                     */
                     #endregion
             }
-        }
-
-        protected void WriteParameterDeclaration(ParameterExpression prm) {
-            var start = sb.Length;
-            WriteParameterDeclarationImpl(prm);
-            registerVisited(prm, start);
         }
 
         protected void WriteList<T>(IEnumerable<T> items, string delimiter = ", ") {

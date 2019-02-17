@@ -19,5 +19,19 @@ namespace ExpressionToString.Tests {
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
         }
+
+        public static void BuildAssert(MemberBinding mbind, string csharp, string vb) {
+            var testCSharpCode = mbind.ToString(CSharp);
+            var testVBCode = mbind.ToString(VisualBasic);
+            Assert.Equal(csharp, testCSharpCode);
+            Assert.Equal(vb, testVBCode);
+        }
+
+        public static void BuildAssert(ElementInit init, string csharp, string vb) {
+            var testCSharpCode = init.ToString(CSharp);
+            var testVBCode = init.ToString(VisualBasic);
+            Assert.Equal(csharp, testCSharpCode);
+            Assert.Equal(vb, testVBCode);
+        }
     }
 }
