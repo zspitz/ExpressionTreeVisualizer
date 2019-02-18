@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Linq.Expressions.Expression;
 
 namespace _visualizerTests {
     class Program {
@@ -41,7 +42,24 @@ namespace _visualizerTests {
             //Expression<Func<Foo>> expr = () => new Foo("ijkl") { Bar = "abcd", Baz = "efgh" };
             //var binding = ((MemberInitExpression)expr.Body).Bindings[0];
 
-            Expression<Func<Wrapper>> expr = () => new Wrapper { { "ab", "cd" }, "ef" };
+            //Expression<Func<Wrapper>> expr = () => new Wrapper { { "ab", "cd" }, "ef" };
+
+            var foo = new Foo();
+            var expr = foo.GetExpression();
+
+            //var i = 5;
+            //Expression<Func<Expression<Func<string>>>> expr = () => expr1;
+
+            //Expression<Func<string>> expr = Lambda<Func<string>>(
+            //    MakeMemberAccess(
+            //        Constant(foo),
+            //        typeof(Foo).GetMember("Bar").Single()
+            //    )
+            //);
+
+            var closure = expr.Compile().Target as System.Runtime.CompilerServices.Closure;
+            Console.WriteLine(closure.Constants.Contains(foo));
+
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
@@ -55,6 +73,11 @@ namespace _visualizerTests {
         public string Baz { get; set; }
         public Foo() { }
         public Foo(string baz) { }
+
+        public Expression<Func<string, string>> GetExpression() {
+            var s = "abcd";
+            return s1 => Bar + s + s1;
+        }
     }
 
     class Wrapper : List<string> {
