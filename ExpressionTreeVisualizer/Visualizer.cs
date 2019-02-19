@@ -34,12 +34,8 @@ namespace ExpressionTreeVisualizer {
                 Options = new VisualizerDataOptions() { Language = CSharp } // TODO options could come from a VS extension
             };
 
-            var window = new Window {
+            var window = new VisualizerWindow {
                 Content = control,
-                Title = "Expression Tree Visualizer",
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                VerticalContentAlignment = VerticalAlignment.Stretch,
-                HorizontalContentAlignment = HorizontalAlignment.Stretch
             };
 
             window.ShowDialog();

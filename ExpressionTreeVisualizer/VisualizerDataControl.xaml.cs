@@ -1,6 +1,7 @@
 ﻿using ExpressionToString.Util;
 using ExpressionTreeVisualizer.Util;
 using Microsoft.VisualStudio.DebuggerVisualizers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
@@ -25,6 +26,12 @@ namespace ExpressionTreeVisualizer {
                 // if we don't do this, the selection will only be visible if the textbox currently has the focus
                 source.Focus();
                 source.SelectAll();
+
+                //tree.LayoutUpdated += (s1, e1) => {
+                //    // prevents the whole window from shrinking when nodes are collapsed
+                //    if (tree.ActualWidth > tree.MinWidth) { tree.MinWidth = tree.ActualWidth; }
+                //    if (tree.ActualHeight > tree.MinHeight) { tree.MinHeight = tree.ActualHeight; }
+                //};
             };
 
             cmbLanguages.ItemsSource = new[] { CSharp, VisualBasic };
@@ -69,7 +76,7 @@ namespace ExpressionTreeVisualizer {
                 } else {
                     toHighlight = selected.FirstOrDefault();
                 }
-                if (toHighlight!= null) {
+                if (toHighlight != null) {
                     source.Select(toHighlight.Span.start, toHighlight.Span.length);
                 } else {
                     source.Select(0, 0);
@@ -93,6 +100,6 @@ namespace ExpressionTreeVisualizer {
                 LoadDataContext();
             }
         }
-        public void LoadDataContext() =>DataContext = ObjectProvider.TransferObject(Options);
+        public void LoadDataContext() => DataContext = ObjectProvider.TransferObject(Options);
     }
 }

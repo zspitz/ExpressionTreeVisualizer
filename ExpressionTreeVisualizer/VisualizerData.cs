@@ -36,6 +36,7 @@ namespace ExpressionTreeVisualizer {
         public Dictionary<EndNodeData, List<ExpressionNodeData>> Constants { get; }
         public Dictionary<EndNodeData, List<ExpressionNodeData>> Parameters { get; }
         public Dictionary<EndNodeData, List<ExpressionNodeData>> ClosedVars { get; }
+        public Dictionary<EndNodeData, List<ExpressionNodeData>> Defaults { get; }
 
         public ExpressionNodeData FindNodeBySpan(int start, int length) {
             var end = start + length;
@@ -77,6 +78,8 @@ namespace ExpressionTreeVisualizer {
             Constants = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
             Parameters = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
             ClosedVars = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
+            Defaults = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
+
             foreach (var x in CollectedEndNodes) {
                 Dictionary<EndNodeData, List<ExpressionNodeData>> dict;
                 switch (x.EndNodeType) {
@@ -88,6 +91,9 @@ namespace ExpressionTreeVisualizer {
                         break;
                     case ClosedVar:
                         dict = ClosedVars;
+                        break;
+                    case Default:
+                        dict = Defaults;
                         break;
                     default:
                         throw new InvalidOperationException();
@@ -201,6 +207,9 @@ namespace ExpressionTreeVisualizer {
                     StringValue = StringValue(mexpr.ExtractValue(), language);
                     EndNodeType = ClosedVar;
                     break;
+                case DefaultExpression defexpr:
+                    EndNodeType = Default;
+                    break;
             }
             if (EndNodeType != null) { visualizerData.CollectedEndNodes.Add(this); }
 
@@ -256,7 +265,8 @@ namespace ExpressionTreeVisualizer {
     public enum EndNodeTypes {
         Constant,
         Parameter,
-        ClosedVar
+        ClosedVar,
+        Default
     }
 }
 
