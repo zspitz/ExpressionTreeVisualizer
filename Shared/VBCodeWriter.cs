@@ -194,6 +194,8 @@ namespace ExpressionToString {
                 y => y.ParameterType.In(typeof(string), typeof(string[])))
             ).ToHashSet();
 
+        static MethodInfo power = typeof(Math).GetMethod("Pow");
+
         protected override void WriteCall(MethodCallExpression expr) {
             if (expr.Method.In(stringConcats)) {
                 var firstArg = expr.Arguments[0];
@@ -221,6 +223,13 @@ namespace ExpressionToString {
                 "(".AppendTo(sb);
                 WriteList(expr.Arguments);
                 ")".AppendTo(sb);
+                return;
+            }
+
+            if (expr.Method == power) {
+                Write(expr.Arguments[0]);
+                " ^ ".AppendTo(sb);
+                Write(expr.Arguments[1]);
                 return;
             }
 

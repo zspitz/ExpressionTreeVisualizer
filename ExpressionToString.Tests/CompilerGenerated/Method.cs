@@ -100,5 +100,12 @@ namespace ExpressionToString.Tests {
             "(string s1, string s2) => s1 + s2",
             "Function(s1 As String, s2 As String) s1 + s2"
         );
+
+        [Fact]
+        public void MathPow() => BuildAssert(
+            (double x, double y) => Math.Pow(x, y),
+            "(double x, double y) => Math.Pow(x, y)",
+            "Function(x As Double, y As Double) x ^ y"
+        );
     }
 }
