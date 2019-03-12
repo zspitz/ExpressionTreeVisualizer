@@ -72,6 +72,8 @@
     <Compile Include="VisualizerWindow.xaml.cs">
       <DependentUpon>VisualizerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WpfAutoGrid\AutoGrid.cs" />
+    <Compile Include="WpfAutoGrid\DependencyExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="VisualizerDataControl.xaml">
@@ -85,6 +87,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="WpfAutoGrid\license.txt" />
   </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
