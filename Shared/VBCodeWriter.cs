@@ -152,6 +152,7 @@ namespace ExpressionToString {
         protected override void WriteMemberAccess(MemberExpression expr) {
             switch (expr.Expression) {
                 case ConstantExpression cexpr when cexpr.Type.IsClosureClass():
+                case MemberExpression mexpr when mexpr.Type.IsClosureClass():
                     // closed over variable from outer scope
                     expr.Member.Name.Replace("$VB$Local_", "").AppendTo(sb);
                     return;

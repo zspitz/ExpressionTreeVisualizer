@@ -31,5 +31,12 @@ namespace ExpressionToString.Tests {
             @"() => ""\'\""\\\0\a\b\f\n\r\t\v""",
             "Function() \"\'\"\"\\\0\a\b\f\n\r\t\v\""
         );
+
+        [Fact]
+        public void InterpolatedString() => BuildAssert(
+            () => $"{new DateTime(2001, 1, 1)}",
+            "() => $\"{new DateTime(2001, 1, 1)}\"",
+            "Function() $\"{New DateTime( 2001, 1, 1)}\""
+        );
     }
 }

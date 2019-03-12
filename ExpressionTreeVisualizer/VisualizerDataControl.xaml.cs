@@ -27,6 +27,7 @@ namespace ExpressionTreeVisualizer {
                 source.Focus();
                 source.SelectAll();
 
+                // except if the user makes the window wider, then narrower, the tree doesn't contract
                 //tree.LayoutUpdated += (s1, e1) => {
                 //    // prevents the whole window from shrinking when nodes are collapsed
                 //    if (tree.ActualWidth > tree.MinWidth) { tree.MinWidth = tree.ActualWidth; }

@@ -27,4 +27,9 @@
             "Function() String.Empty"
         )
     End Sub
+
+    <Fact(Skip:="Test for nested scope")>
+    Sub NestedClosureScope()
+        Assert.False(True)
+    End Sub
 End Class

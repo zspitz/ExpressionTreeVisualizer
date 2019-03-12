@@ -32,5 +32,10 @@ namespace ExpressionToString.Tests {
             "() => string.Empty",
             "Function() String.Empty"
         );
+
+        [Fact(Skip ="Test for nested closure scopes")]
+        public void NestedClosedVariable() {
+            Assert.False(true);
+        }
     }
 }
