@@ -89,7 +89,7 @@
             <Button Name="optionsButton" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" VerticalAlignment="Top">
                 <StackPanel>
                     <TextBlock Text="&#9881;" />
-                    <Popup Name="optionsPopup" AllowsTransparency="True" StaysOpen="False">
+                    <Popup Name="optionsPopup" AllowsTransparency="True" StaysOpen="False" PlacementTarget="{Binding ElementName=optionsButton}" Placement="Custom">
                         <Border Background="White" BorderBrush="Black" BorderThickness="1">
                             <ag:AutoGrid Margin="6" ChildMargin="3" ChildVerticalAlignment="Center" ColumnCount="2">
                                 <TextBlock Background="White" Text="Language" />

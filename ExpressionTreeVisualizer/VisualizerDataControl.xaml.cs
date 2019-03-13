@@ -4,8 +4,11 @@ using Microsoft.VisualStudio.DebuggerVisualizers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using static ExpressionToString.FormatterNames;
+
 
 namespace ExpressionTreeVisualizer {
     public partial class VisualizerDataControl {
@@ -17,6 +20,15 @@ namespace ExpressionTreeVisualizer {
             endNodeContainers = endNodes.FindVisualChildren<DataGrid>().ToList();
 
             Loaded += (s, e) => {
+                // https://stackoverflow.com/a/21436273/111794
+                optionsPopup.CustomPopupPlacementCallback += (popupSize, targetSize, offset) => {
+                    return new[] {
+                        new CustomPopupPlacement() {
+                            Point = new Point(targetSize.Width - popupSize.Width, targetSize.Height)
+                        }
+                    };
+                };
+
                 Options = Options ?? new VisualizerDataOptions();
 
                 tree.SelectionChanged += (s1, e1) => changeSelection(s1);
