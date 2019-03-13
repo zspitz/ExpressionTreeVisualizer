@@ -12,9 +12,9 @@ namespace _visualizerTests {
         [STAThread]
         static void Main(string[] args) {
             //var i = 7;
-            var j = 8;
+            //var j = 8;
 
-            Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100) && new Random().Next() > 15 || new DateTime(2001, 10, 12).Month < 5;
+            //Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100) && new Random().Next() > 15 || new DateTime(2001, 10, 12).Month < 5;
 
             //var i = 5;
             //Expression<Func<int, int>> expr = j => (i + j + 17) * (i + j + 17);
@@ -34,6 +34,8 @@ namespace _visualizerTests {
 
             //var arr = new string[,][] { };
             //Expression<Func<string>> expr = () => arr[5, 2][7];
+
+            Expression<Func<int, int, int>> expr = (int i, int j) => i + j;
 
             //Func<int> del = () => DateTime.Now.Day;
             //Expression<Func<int>> expr = () => del();

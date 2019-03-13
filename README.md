@@ -20,7 +20,7 @@ Console.WriteLine(expr.ToString("Visual Basic"));
 
 Features:
 
-* Support for outputting both C# and VB.NET
+* Support for outputting C#- and VB.NET-style pseudocode (with more to come -- #38)
 * Extension methods are rendered as instance methods
 
     ```csharp
