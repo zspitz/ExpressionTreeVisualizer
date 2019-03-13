@@ -1,9 +1,4 @@
-﻿<DockPanel
-    x:Class="ExpressionTreeVisualizer.VisualizerDataControl"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:my="clr-namespace:ExpressionTreeVisualizer"
-    xmlns:ygoe="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView">
+﻿<DockPanel x:Class="ExpressionTreeVisualizer.VisualizerDataControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ag="clr-namespace:WpfAutoGrid" xmlns:my="clr-namespace:ExpressionTreeVisualizer" xmlns:ygoe="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView">
     <FrameworkElement.Resources>
         <my:RootConverter x:Key="RootConverter" />
         <my:ConditionalFormatConverter x:Key="ConditionalFormatConverter" />
@@ -12,48 +7,18 @@
         <HierarchicalDataTemplate x:Key="ExpressionNodeTemplate" ItemsSource="{Binding Value.Children}">
             <TextBlock>
                 <TextBlock.ToolTip>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="65" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
+                    <ag:AutoGrid Columns="65,Auto">
                         <TextBlock Text="Path" />
-                        <TextBlock
-                            Grid.Column="1"
-                            FontWeight="Bold"
-                            Text="{Binding Key}" />
-                        <TextBlock Grid.Row="1" Text="Node type" />
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            FontWeight="Bold"
-                            Text="{Binding Value.NodeType}" />
-                        <TextBlock Grid.Row="2" Text="Type" />
-                        <TextBlock
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            FontWeight="Bold"
-                            Text="{Binding Value.ReflectionTypeName}" />
-                        <TextBlock Grid.Row="3" Text="Name" />
-                        <TextBlock
-                            Grid.Row="3"
-                            Grid.Column="1"
-                            FontWeight="Bold"
-                            Text="{Binding Value.Name}" />
-                        <TextBlock Grid.Row="4" Text="Value" />
-                        <TextBlock
-                            Grid.Row="4"
-                            Grid.Column="1"
-                            FontWeight="Bold"
-                            Text="{Binding Value.StringValue}" />
-                    </Grid>
+                        <TextBlock FontWeight="Bold" Text="{Binding Key}" />
+                        <TextBlock Text="Node type" />
+                        <TextBlock FontWeight="Bold" Text="{Binding Value.NodeType}" />
+                        <TextBlock Text="Type" />
+                        <TextBlock FontWeight="Bold" Text="{Binding Value.ReflectionTypeName}" />
+                        <TextBlock Text="Name" />
+                        <TextBlock FontWeight="Bold" Text="{Binding Value.Name}" />
+                        <TextBlock Text="Value" />
+                        <TextBlock FontWeight="Bold" Text="{Binding Value.StringValue}" />
+                    </ag:AutoGrid>
                 </TextBlock.ToolTip>
                 <Run Foreground="DarkGray" Text="{Binding Key, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
                 <Run FontWeight="Bold" Text="{Binding Value.NodeType, Mode=OneTime}" />
@@ -63,24 +28,18 @@
             </TextBlock>
         </HierarchicalDataTemplate>
     </FrameworkElement.Resources>
-    <DockPanel
-        Width="{Binding ActualWidth, ElementName=endNodes}"
-        Margin="0,12,12,12"
-        DockPanel.Dock="Right">
-        <Grid x:Name="endNodes" DockPanel.Dock="Bottom">
+    <DockPanel Width="{Binding ActualWidth, ElementName=endNodes}" Margin="0,12,12,12" DockPanel.Dock="Right">
+        <ag:AutoGrid x:Name="endNodes" ChildHorizontalAlignment="Left" ColumnCount="1" DockPanel.Dock="Bottom">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
-                    <Setter Property="Grid.Column" Value="0" />
-                    <Setter Property="Margin" Value="0,0,0,12" />
+                    <Setter Property="Margin" Value="0,10,0,5" />
                 </Style>
                 <Style TargetType="DataGrid">
                     <Setter Property="IsReadOnly" Value="True" />
                     <Setter Property="AutoGenerateColumns" Value="False" />
-                    <Setter Property="Grid.Column" Value="1" />
                     <Setter Property="Visibility" Value="{Binding ItemsSource, RelativeSource={RelativeSource Self}, Converter={StaticResource AnyVisibilityConverter}}" />
                     <Setter Property="BorderThickness" Value="1" />
                     <Setter Property="BorderBrush" Value="Gray" />
-                    <Setter Property="Margin" Value="0,0,0,12" />
                     <Setter Property="HeadersVisibility" Value="Column" />
                     <Setter Property="HorizontalAlignment" Value="Stretch" />
                 </Style>
@@ -91,110 +50,81 @@
                     </Style.Resources>
                 </Style>
             </Grid.Resources>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
             <TextBlock Text="Parameters: " Visibility="{Binding Parameters, Converter={StaticResource AnyVisibilityConverter}}" />
             <DataGrid ItemsSource="{Binding Parameters}" SelectedValuePath="Key">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Key.Name}" Header="Name" />
-                    <DataGridTextColumn
-                        Binding="{Binding Key.Type}"
-                        Foreground="{StaticResource TypeColor}"
-                        Header="Type" />
+                    <DataGridTextColumn Binding="{Binding Key.Type}" Foreground="{StaticResource TypeColor}" Header="Type" />
                 </DataGrid.Columns>
             </DataGrid>
-            <TextBlock
-                Grid.Row="1"
-                Text="Closed-over variables: "
-                Visibility="{Binding ClosedVars, Converter={StaticResource AnyVisibilityConverter}}" />
-            <DataGrid
-                Grid.Row="1"
-                ItemsSource="{Binding ClosedVars}"
-                SelectedValuePath="Key">
+            <TextBlock Text="Closed-over variables: " Visibility="{Binding ClosedVars, Converter={StaticResource AnyVisibilityConverter}}" />
+            <DataGrid ItemsSource="{Binding ClosedVars}" SelectedValuePath="Key">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Key.Closure}" Header="Closure" />
                     <DataGridTextColumn Binding="{Binding Key.Name}" Header="Name" />
-                    <DataGridTextColumn
-                        Binding="{Binding Key.Type}"
-                        Foreground="{StaticResource TypeColor}"
-                        Header="Type" />
+                    <DataGridTextColumn Binding="{Binding Key.Type}" Foreground="{StaticResource TypeColor}" Header="Type" />
                     <DataGridTextColumn Binding="{Binding Key.Value}" Header="Value" />
                 </DataGrid.Columns>
             </DataGrid>
-            <TextBlock
-                Grid.Row="2"
-                Text="Constants: "
-                Visibility="{Binding Constants, Converter={StaticResource AnyVisibilityConverter}}" />
-            <DataGrid
-                Grid.Row="2"
-                ItemsSource="{Binding Constants}"
-                SelectedValuePath="Key">
+            <TextBlock Text="Constants: " Visibility="{Binding Constants, Converter={StaticResource AnyVisibilityConverter}}" />
+            <DataGrid ItemsSource="{Binding Constants}" SelectedValuePath="Key">
                 <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding Key.Type}"
-                        Foreground="{StaticResource TypeColor}"
-                        Header="Type" />
+                    <DataGridTextColumn Binding="{Binding Key.Type}" Foreground="{StaticResource TypeColor}" Header="Type" />
                     <DataGridTextColumn Binding="{Binding Key.Value}" Header="Value" />
                 </DataGrid.Columns>
             </DataGrid>
-            <TextBlock
-                Grid.Row="3"
-                Text="Defaults: "
-                Visibility="{Binding Defaults, Converter={StaticResource AnyVisibilityConverter}}" />
-            <DataGrid
-                Grid.Row="3"
-                ItemsSource="{Binding Defaults}"
-                SelectedValuePath="Key">
+            <TextBlock Text="Defaults: " Visibility="{Binding Defaults, Converter={StaticResource AnyVisibilityConverter}}" />
+            <DataGrid ItemsSource="{Binding Defaults}" SelectedValuePath="Key">
                 <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding Key.Type}"
-                        Foreground="{StaticResource TypeColor}"
-                        Header="Type" />
+                    <DataGridTextColumn Binding="{Binding Key.Type}" Foreground="{StaticResource TypeColor}" Header="Type" />
                     <DataGridTextColumn Binding="{Binding Key.Value}" Header="Value" />
                 </DataGrid.Columns>
             </DataGrid>
+        </ag:AutoGrid>
+        <Grid DockPanel.Dock="Top" Margin="0,0,0,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="19" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="Source:" VerticalAlignment="Bottom" />
+            <Button Name="optionsButton" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" VerticalAlignment="Top">
+                <StackPanel>
+                    <TextBlock Text="&#9881;" />
+                    <Popup Name="optionsPopup" AllowsTransparency="True" StaysOpen="False">
+                        <Border Background="White" BorderBrush="Black" BorderThickness="1">
+                            <ag:AutoGrid Margin="6" ChildMargin="3" ChildVerticalAlignment="Center" ColumnCount="2">
+                                <TextBlock Background="White" Text="Language" />
+                                <ComboBox Name="cmbLanguages" SelectedItem="{Binding Language}" />
+                            </ag:AutoGrid>
+                        </Border>
+                    </Popup>
+                </StackPanel>
+            </Button>
         </Grid>
-        <ComboBox
-            Name="cmbLanguages"
-            Margin="0,0,0,9"
-            HorizontalAlignment="Right"
-            DockPanel.Dock="Top"
-            SelectedItem="{Binding Language}" />
-        <TextBox
-            Name="source"
-            Margin="0,0,0,12"
-            BorderBrush="Gray"
-            BorderThickness="1"
-            FontFamily="Consolas"
-            FontSize="14"
-            IsInactiveSelectionHighlightEnabled="True"
-            IsReadOnly="True"
-            IsReadOnlyCaretVisible="True"
-            SelectionBrush="Blue"
-            Text="{Binding Source}"
-            TextWrapping="Wrap" />
+        <TextBox Name="source" Margin="0,0,0,12" BorderBrush="Gray" BorderThickness="1" FontFamily="Consolas" FontSize="14" IsInactiveSelectionHighlightEnabled="True" IsReadOnly="True" IsReadOnlyCaretVisible="True" SelectionBrush="Blue" Text="{Binding Source}" TextWrapping="Wrap" />
     </DockPanel>
-    <ygoe:MultiSelectTreeView
-        Name="tree"
-        Margin="12"
-        BorderBrush="Gray"
-        BorderThickness="1"
-        ItemTemplate="{StaticResource ExpressionNodeTemplate}"
-        ItemsSource="{Binding NodeData, Converter={StaticResource RootConverter}}">
-        <ygoe:MultiSelectTreeView.ItemContainerStyle>
-            <Style TargetType="ygoe:MultiSelectTreeViewItem">
-                <Setter Property="IsExpanded" Value="True" />
-                <Setter Property="ItemIndent" Value="18" />
-                <Setter Property="IsSelected" Value="{Binding Value.IsSelected, Mode=TwoWay}" />
-            </Style>
-        </ygoe:MultiSelectTreeView.ItemContainerStyle>
-    </ygoe:MultiSelectTreeView>
+    <DockPanel Margin="12">
+        <StackPanel Margin="0,0,0,5" DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Bottom">
+            <TextBlock Text="Tree: " VerticalAlignment="Bottom" />
+            <TextBlock Foreground="Blue" Text="&#128712;" FontSize="15">
+                <TextBlock.ToolTip>
+                    <TextBlock>
+                        <Run Foreground="DarkGray" Text="Property of parent" />
+                        <Run FontWeight="Bold" Text="Node type" />
+                        <Run Foreground="{StaticResource TypeColor}" Text="(Type)" />
+                        <Run Text="Name" />
+                        <Run Text="=Value" />
+                    </TextBlock>
+                </TextBlock.ToolTip>
+            </TextBlock>
+        </StackPanel>
+        <ygoe:MultiSelectTreeView Name="tree" BorderBrush="Gray" BorderThickness="1" ItemTemplate="{StaticResource ExpressionNodeTemplate}" ItemsSource="{Binding NodeData, Converter={StaticResource RootConverter}}">
+            <ygoe:MultiSelectTreeView.ItemContainerStyle>
+                <Style TargetType="ygoe:MultiSelectTreeViewItem">
+                    <Setter Property="IsExpanded" Value="True" />
+                    <Setter Property="ItemIndent" Value="18" />
+                    <Setter Property="IsSelected" Value="{Binding Value.IsSelected, Mode=TwoWay}" />
+                </Style>
+            </ygoe:MultiSelectTreeView.ItemContainerStyle>
+        </ygoe:MultiSelectTreeView>
+    </DockPanel>
 </DockPanel>

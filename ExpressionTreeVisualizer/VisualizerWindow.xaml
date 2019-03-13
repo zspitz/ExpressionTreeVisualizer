@@ -1,3 +1,1 @@
-﻿<Window x:Class="ExpressionTreeVisualizer.VisualizerWindow" WindowStartupLocation="CenterScreen" VerticalAlignment="Center" HorizontalAlignment="Center" SizeToContent="WidthAndHeight" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:ExpressionTreeVisualizer">
-    
-</Window>
+﻿<Window x:Class="ExpressionTreeVisualizer.VisualizerWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:ExpressionTreeVisualizer" Title="Expression Tree Visualizer" HorizontalAlignment="Center" VerticalAlignment="Center" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" />

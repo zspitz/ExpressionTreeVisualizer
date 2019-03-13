@@ -12,9 +12,9 @@ namespace _visualizerTests {
         [STAThread]
         static void Main(string[] args) {
             //var i = 7;
-            //var j = 8;
+            var j = 8;
 
-            //Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100) && new Random().Next() > 15 || new DateTime(2001,10,12).Month<5;
+            Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100) && new Random().Next() > 15 || new DateTime(2001, 10, 12).Month < 5;
 
             //var i = 5;
             //Expression<Func<int, int>> expr = j => (i + j + 17) * (i + j + 17);
@@ -59,15 +59,15 @@ namespace _visualizerTests {
             //var closure = expr.Compile().Target as System.Runtime.CompilerServices.Closure;
             //Console.WriteLine(closure.Constants.Contains(foo));
 
-            Func<Expression<Func<int>>> outer = () => {
-                var i = 5;
-                Func<Expression<Func<int>>> inner = () => {
-                    var j = 10;
-                    return () => i + j;
-                };
-                return inner();
-            };
-            var expr = outer();
+            //Func<Expression<Func<int>>> outer = () => {
+            //    var i = 5;
+            //    Func<Expression<Func<int>>> inner = () => {
+            //        var j = 10;
+            //        return () => i + j;
+            //    };
+            //    return inner();
+            //};
+            //var expr = outer();
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();

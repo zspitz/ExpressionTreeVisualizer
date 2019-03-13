@@ -33,6 +33,8 @@ namespace ExpressionTreeVisualizer {
                 //    if (tree.ActualWidth > tree.MinWidth) { tree.MinWidth = tree.ActualWidth; }
                 //    if (tree.ActualHeight > tree.MinHeight) { tree.MinHeight = tree.ActualHeight; }
                 //};
+
+                optionsButton.Click += (s1, e1) => optionsPopup.IsOpen = true;
             };
 
             cmbLanguages.ItemsSource = new[] { CSharp, VisualBasic };
@@ -96,7 +98,7 @@ namespace ExpressionTreeVisualizer {
             set {
                 if (value == null || value == _options) { return; }
                 _options = value;
-                cmbLanguages.DataContext = _options;
+                optionsPopup.DataContext = _options;
                 _options.PropertyChanged += (s, e) => LoadDataContext();
                 LoadDataContext();
             }
