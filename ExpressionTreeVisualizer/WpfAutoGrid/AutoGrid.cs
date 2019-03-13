@@ -1,10 +1,14 @@
 ﻿// based on https://github.com/carbonrobot/wpf-autogrid/blob/master/source/WpfAutoGrid/AutoGrid.cs
 
+using ExpressionToString.Util;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using static ExpressionTreeVisualizer.Util.Functions;
+using static System.Linq.Enumerable;
 using static System.Windows.FrameworkPropertyMetadataOptions;
 
 namespace WpfAutoGrid {
@@ -125,40 +129,33 @@ namespace WpfAutoGrid {
             set => SetValue(RowsProperty, value);
         }
 
+        private GridLength defaultColumnWidth => ColumnDefinitions.FirstOrDefault()?.Width ?? GridLength.Auto;
+
+        private void buildColumnDefinitions() {
+            var lengths = Parse(Columns);
+            var max = Math.Max(ColumnCount, lengths.Length);
+
+            ColumnDefinitions.Clear();
+            Range(0, max).Select(index => new ColumnDefinition {
+                Width =
+                    lengths.Length > index ? lengths[index] : defaultColumnWidth
+            }).AddRangeTo(ColumnDefinitions);
+        }
+
         /// <summary>
         /// Handles the column count changed event
         /// </summary>
         public static void ColumnCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if ((int)e.NewValue < 0)
-                return;
-
-            var grid = d as AutoGrid;
-
-            // look for an existing column definition for the height
-            var width = GridLength.Auto;
-            if (grid.ColumnDefinitions.Count > 0)
-                width = grid.ColumnDefinitions[0].Width;
-
-            // clear and rebuild
-            grid.ColumnDefinitions.Clear();
-            for (int i = 0; i < (int)e.NewValue; i++)
-                grid.ColumnDefinitions.Add(
-                    new ColumnDefinition() { Width = width });
+            if ((int)e.NewValue < 0) { return; }
+            (d as AutoGrid).buildColumnDefinitions();
         }
 
         /// <summary>
         /// Handle the columns changed event
         /// </summary>
         public static void ColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if ((string)e.NewValue == string.Empty)
-                return;
-
-            var grid = d as AutoGrid;
-            grid.ColumnDefinitions.Clear();
-
-            var defs = Parse((string)e.NewValue);
-            foreach (var def in defs)
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = def });
+            if ((string)e.NewValue == string.Empty) { return; }
+            (d as AutoGrid).buildColumnDefinitions();
         }
 
         /// <summary>
@@ -194,68 +191,54 @@ namespace WpfAutoGrid {
         /// <summary>
         /// Parse an array of grid lengths from comma delim text
         /// </summary>
-        public static GridLength[] Parse(string text) {
-            var tokens = text.Split(',');
-            var definitions = new GridLength[tokens.Length];
-            for (var i = 0; i < tokens.Length; i++) {
-                var str = tokens[i];
-                double value;
+        public static GridLength[] Parse(string text) => text.Split(',').Select(str => {
+            double value;
 
-                // ratio
-                if (str.Contains('*')) {
-                    if (!double.TryParse(str.Replace("*", ""), out value))
-                        value = 1.0;
-
-                    definitions[i] = new GridLength(value, GridUnitType.Star);
-                    continue;
+            // ratio
+            if (str.Contains('*')) {
+                if (!double.TryParse(str.Replace("*", ""), out value)) {
+                    value = 1.0;
                 }
-
-                // pixels
-                if (double.TryParse(str, out value)) {
-                    definitions[i] = new GridLength(value);
-                    continue;
-                }
-
-                // auto
-                definitions[i] = GridLength.Auto;
+                return new GridLength(value, GridUnitType.Star);
             }
-            return definitions;
-        }
 
+            // pixels
+            if (double.TryParse(str, out value)) {
+                return new GridLength(value);
+            }
+
+            // auto
+            return GridLength.Auto;
+        }).ToArray();
+
+        // use an existing row definition height, or Auto
+        private GridLength defaultRowHeight => RowDefinitions.FirstOrDefault()?.Height ?? GridLength.Auto;
+
+        private void buildRowDefinitions() {
+            var lengths = Parse(Rows);
+            var max = Math.Max(RowCount, lengths.Length);
+
+            RowDefinitions.Clear();
+            Range(0, max).Select(index => new RowDefinition {
+                Height =
+                     lengths.Length > index ? lengths[index] : defaultRowHeight
+            }).AddRangeTo(RowDefinitions);
+
+        }
         /// <summary>
         /// Handles the row count changed event
         /// </summary>
         public static void RowCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if ((int)e.NewValue < 0)
-                return;
-
-            var grid = d as AutoGrid;
-
-            // look for an existing row to get the height
-            var height = GridLength.Auto;
-            if (grid.RowDefinitions.Count > 0)
-                height = grid.RowDefinitions[0].Height;
-
-            // clear and rebuild
-            grid.RowDefinitions.Clear();
-            for (int i = 0; i < (int)e.NewValue; i++)
-                grid.RowDefinitions.Add(
-                    new RowDefinition() { Height = height });
+            if ((int)e.NewValue < 0) { return; }
+            (d as AutoGrid).buildRowDefinitions();
         }
 
         /// <summary>
         /// Handle the rows changed event
         /// </summary>
         public static void RowsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if ((string)e.NewValue == string.Empty)
-                return;
-
-            var grid = d as AutoGrid;
-            grid.RowDefinitions.Clear();
-
-            var defs = Parse((string)e.NewValue);
-            foreach (var def in defs)
-                grid.RowDefinitions.Add(new RowDefinition() { Height = def });
+            if ((string)e.NewValue == string.Empty) { return; }
+            (d as AutoGrid).buildRowDefinitions();
         }
 
         /// <summary>
@@ -329,6 +312,9 @@ namespace WpfAutoGrid {
         /// </summary>
         private void PerformLayout() {
             var fillRowFirst = Orientation == Orientation.Horizontal;
+            buildRowDefinitions();
+            buildColumnDefinitions();
+
             var rowCount = RowDefinitions.Count;
             var colCount = ColumnDefinitions.Count;
 
@@ -336,44 +322,55 @@ namespace WpfAutoGrid {
                 return;
 
             var position = 0;
-            var skip = new bool[rowCount, colCount];
+            var skip = new HashSet<(int row, int col)>();
+            //var skip = new bool[rowCount, colCount];
             foreach (UIElement child in Children) {
                 var childIsCollapsed = child.Visibility == Visibility.Collapsed;
                 if (IsAutoIndexing && !childIsCollapsed) {
                     if (fillRowFirst) {
-                        var row = Clamp(position / colCount, rowCount - 1);
-                        var col = Clamp(position % colCount, colCount - 1);
-                        if (skip[row, col]) {
+                        var row = position / colCount;
+                        var col = position % colCount;
+                        while (skip.Contains((row, col))) {
                             position++;
-                            row = (position / colCount);
-                            col = (position % colCount);
+                            row = position / colCount;
+                            col = position % colCount;
+                        }
+
+                        if (row>=rowCount) {
+                            RowDefinitions.Add(new RowDefinition { Height = defaultRowHeight });
+                            rowCount = RowDefinitions.Count;
                         }
 
                         SetRow(child, row);
                         SetColumn(child, col);
-                        position += GetColumnSpan(child);
 
-                        var offset = GetRowSpan(child) - 1;
-                        while (offset > 0) {
-                            skip[row + offset--, col] = true;
-                        }
+                        var skipCols = Range(col, GetColumnSpan(child)).ToArray();
+                        var skipRows = Range(row, GetRowSpan(child)).ToArray();
+                        skipCols.SelectMany(col1 => skipRows.Select(row1 => (row1, col1))).Where(x => x!= (row,col)).AddRangeTo(skip);
+
+                        position += 1;
                     } else {
-                        var row = Clamp(position % rowCount, rowCount - 1);
-                        var col = Clamp(position / rowCount, colCount - 1);
-                        if (skip[row, col]) {
+                        var row = position % rowCount;
+                        var col = position / rowCount;
+                        while (skip.Contains((row,col))) {
                             position++;
                             row = position % rowCount;
                             col = position / rowCount;
                         }
 
+                        if (col>=colCount) {
+                            ColumnDefinitions.Add(new ColumnDefinition { Width = defaultColumnWidth });
+                            colCount = ColumnDefinitions.Count;
+                        }
+
                         SetRow(child, row);
                         SetColumn(child, col);
-                        position += GetRowSpan(child);
 
-                        var offset = GetColumnSpan(child) - 1;
-                        while (offset > 0) {
-                            skip[row, col + offset--] = true;
-                        }
+                        var skipCols = Range(col, GetColumnSpan(child)).ToArray();
+                        var skipRows = Range(row, GetRowSpan(child)).ToArray();
+                        skipCols.SelectMany(col1 => skipRows.Select(row1 => (row1, col1))).Where(x => x != (row, col)).AddRangeTo(skip);
+
+                        position += 1;
                     }
                 }
 
@@ -382,7 +379,7 @@ namespace WpfAutoGrid {
         }
 
         public static readonly DependencyProperty ChildHorizontalAlignmentProperty =
-            DPRegister<Thickness?, AutoGrid>(null, AffectsMeasure, OnChildHorizontalAlignmentChanged);
+            DPRegister<HorizontalAlignment?, AutoGrid>(null, AffectsMeasure, OnChildHorizontalAlignmentChanged);
 
         public static readonly DependencyProperty ChildMarginProperty =
             DPRegister<Thickness?, AutoGrid>(null, AffectsMeasure, OnChildMarginChanged);
@@ -391,7 +388,7 @@ namespace WpfAutoGrid {
             DPRegister<VerticalAlignment?, AutoGrid>(null, AffectsMeasure, OnChildVerticalAlignmentChanged);
 
         public static readonly DependencyProperty ColumnCountProperty =
-            DPRegisterAttached<int, AutoGrid>(1, AffectsMeasure, ColumnCountChanged);
+            DPRegisterAttached<int, AutoGrid>(0, AffectsMeasure, ColumnCountChanged);
 
         public static readonly DependencyProperty ColumnsProperty =
             DPRegisterAttached<string, AutoGrid>("", AffectsMeasure, ColumnsChanged);
