@@ -35,7 +35,7 @@ namespace _visualizerTests {
             //var arr = new string[,][] { };
             //Expression<Func<string>> expr = () => arr[5, 2][7];
 
-            Expression<Func<int, int, int>> expr = (int i, int j) => i + j;
+            //Expression<Func<int, int, int>> expr = (int i, int j) => i + j;
 
             //Func<int> del = () => DateTime.Now.Day;
             //Expression<Func<int>> expr = () => del();
@@ -70,6 +70,8 @@ namespace _visualizerTests {
             //    return inner();
             //};
             //var expr = outer();
+
+            Expression expr = Expression.AddAssign(Expression.Variable(typeof(int)), Expression.Constant(5));
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();

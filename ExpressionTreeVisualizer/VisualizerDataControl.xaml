@@ -81,15 +81,15 @@
                 </DataGrid.Columns>
             </DataGrid>
         </ag:AutoGrid>
-        <Grid DockPanel.Dock="Top" Margin="0,0,0,5">
+        <Grid Margin="0,0,0,5" DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="19" />
             </Grid.RowDefinitions>
-            <TextBlock Text="Source:" VerticalAlignment="Bottom" />
-            <Button Name="optionsButton" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" VerticalAlignment="Top">
+            <TextBlock VerticalAlignment="Bottom" Text="Source:" />
+            <Button Name="optionsButton" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderThickness="0">
                 <StackPanel>
                     <TextBlock Text="&#9881;" />
-                    <Popup Name="optionsPopup" AllowsTransparency="True" StaysOpen="False" PlacementTarget="{Binding ElementName=optionsButton}" Placement="Custom">
+                    <Popup Name="optionsPopup" AllowsTransparency="True" Placement="Custom" PlacementTarget="{Binding ElementName=optionsButton}" StaysOpen="False">
                         <Border Background="White" BorderBrush="Black" BorderThickness="1">
                             <ag:AutoGrid Margin="6" ChildMargin="3" ChildVerticalAlignment="Center" ColumnCount="2">
                                 <TextBlock Background="White" Text="Language" />
@@ -103,15 +103,15 @@
         <TextBox Name="source" Margin="0,0,0,12" BorderBrush="Gray" BorderThickness="1" FontFamily="Consolas" FontSize="14" IsInactiveSelectionHighlightEnabled="True" IsReadOnly="True" IsReadOnlyCaretVisible="True" SelectionBrush="Blue" Text="{Binding Source}" TextWrapping="Wrap" />
     </DockPanel>
     <DockPanel Margin="12">
-        <StackPanel Margin="0,0,0,5" DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Bottom">
-            <TextBlock Text="Tree: " VerticalAlignment="Bottom" />
-            <TextBlock Foreground="Blue" Text="&#128712;" FontSize="15">
+        <StackPanel Margin="0,0,0,5" VerticalAlignment="Bottom" DockPanel.Dock="Top" Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Bottom" Text="Tree: " />
+            <TextBlock FontSize="15" Foreground="Blue" Text="&#128712;">
                 <TextBlock.ToolTip>
                     <TextBlock>
                         <Run Foreground="DarkGray" Text="Property of parent" />
                         <Run FontWeight="Bold" Text="Node type" />
                         <Run Foreground="{StaticResource TypeColor}" Text="(Type)" />
-                        <Run Text="Name" />
+                        <Run Text="Name of parameter / member / method" />
                         <Run Text="=Value" />
                     </TextBlock>
                 </TextBlock.ToolTip>
