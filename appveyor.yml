@@ -28,12 +28,18 @@ configuration: Release
 artifacts:
   - path: ExpressionToString\bin\Release\*.nupkg
     type: NuGetPackage
-  - path: ExpressionTreeVisualizer\bin\Release\*.dll
+
+  - path: ExpressionTreeVisualizer\bin\Release\ExpressionTreeVisualizer.dll
+    type: File
     name: visualizer
-    type: File
+
   - path: ExpressionTreeVisualizer\bin\Release\*.pdb
-    name: visualizer_pdb
     type: File
+    name: visualizer
+
+  - path: ExpressionTreeVisualizer\bin\Release\MultiSelectTreeView.dll
+    type: File
+    name: visualizer
 deploy:
   - provider: NuGet
     api_key:
@@ -43,6 +49,6 @@ deploy:
     desciprion: ''
     auth_token:
       secure: aJaTRXIa+zc+SOGdNPKTH+znUun60Jh5b5pdjzLslhnoKk4vh1eoqO/vnGcDEwig
-    artifact: visualizer, visualizer_pdb
+    artifact: visualizer
 matrix:
   fast_finish: true
