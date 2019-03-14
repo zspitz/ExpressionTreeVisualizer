@@ -26,9 +26,9 @@ before_build:
 - cmd: nuget restore
 configuration: Release
 artifacts:
-  - path: ExpressionToString\bin\Release\netstandard2.0\*.nupkg
+  - path: ExpressionToString\bin\Release\*.nupkg
     type: NuGetPackage
-  - path: ExpressionTreeVisualizer\bin\Release\*.dll/, 
+  - path: ExpressionTreeVisualizer\bin\Release\*.dll
     name: visualizer
     type: File
   - path: ExpressionTreeVisualizer\bin\Release\*.pdb
