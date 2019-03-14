@@ -37,6 +37,15 @@ Features:
     // prints: () => i + j
     ```
 
+* Special handling of calls to `String.Concat` and `String.Format`
+
+    ```csharp
+    var name = "World";
+    Expression<Func<string>> expr = () => string.Format("Hello, {0}!", name);
+    Console.WriteLine(expr.ToString("C#"));
+    // prints: () => $"Hello, {name}!"
+    ```
+
 Note that support for the full range of types in `System.Linq.Expressions` is incomplete, but [progressing](https://github.com/zspitz/ExpressionToCode/issues/32).
 
 ## Visual Studio debugger visualizer for expression trees
