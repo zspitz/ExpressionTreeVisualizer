@@ -8,6 +8,7 @@ using static ExpressionToString.Tests.Runners;
 using static System.Linq.Expressions.Expression;
 
 namespace ExpressionToString.Tests.Constructed {
+    [Trait("Source", "Factory methods")]
     public class ArrayIndexer {
         ParameterExpression arr = Parameter(typeof(string[]), "arr");
         ParameterExpression arr2D = Parameter(typeof(string[,]), "arr");

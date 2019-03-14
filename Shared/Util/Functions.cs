@@ -82,6 +82,8 @@ namespace ExpressionToString.Util {
 
         // based on https://github.com/dotnet/corefx/blob/7cf002ec36109943c048ec8da8ef80621190b4be/src/Common/src/CoreLib/System/Text/StringBuilder.cs#L1514
         public static (string literal, int? index, int? alignment, string itemFormat)[] ParseFormatString(string format) {
+            if (format == null) { throw new ArgumentNullException("format"); }
+
             const int indexLimit = 1000000;
             const int alignmentLimit = 100000;
 
@@ -90,8 +92,8 @@ namespace ExpressionToString.Util {
             int lastPos = format.Length - 1;
 
             var parts = new List<(string literal, int? index, int? alignment, string itemFormat)>();
-            
-            while (true) {
+
+            while (pos <= lastPos) {
 
                 // Parse literal until argument placeholder
                 string literal = "";
@@ -103,7 +105,7 @@ namespace ExpressionToString.Util {
                         if (ch == '}') {
                             literal += '}';
                         } else {
-                            throw new Exception("Mismatched end brace");
+                            throw new FormatException("Missing start brace");
                         }
                     } else if (ch == '{') {
                         advanceChar();
@@ -137,23 +139,26 @@ namespace ExpressionToString.Util {
                 // Parse item format; optional
                 string itemFormat = null;
                 if (ch == ':') {
-                    advanceChar();
-                    if (ch == '{') {
+                    itemFormat = "";
+                    while (true) {
                         advanceChar();
                         if (ch == '{') {
-                            itemFormat += '{';
+                            advanceChar();
+                            if (ch == '{') {
+                                itemFormat += '{';
+                            } else {
+                                throw new FormatException("Nested placeholders not allowed");
+                            }
+                        } else if (ch == '}') {
+                            advanceChar(true);
+                            if (ch == '}') {
+                                itemFormat += '}';
+                            } else {
+                                break;
+                            }
                         } else {
-                            throw new Exception("Nested placeholders not allowed");
+                            itemFormat += ch;
                         }
-                    } else if (ch == '}') {
-                        advanceChar();
-                        if (ch=='}') {
-                            itemFormat += '}';
-                        } else {
-                            break;
-                        }
-                    } else {
-                        itemFormat += ch;
                     }
                 }
 
@@ -169,7 +174,7 @@ namespace ExpressionToString.Util {
                 } else if (ignoreEnd) {
                     ch = '\x0';
                 } else {
-                    throw new Exception("Unexpected end of text");
+                    throw new FormatException("Unexpected end of text");
                 }
             }
 
@@ -183,11 +188,12 @@ namespace ExpressionToString.Util {
                 skipWhitespace();
 
                 bool isNegative = false;
-                if (allowNegative && ch == '-') {
+                if (ch == '-') {
+                    if (!allowNegative) { throw new FormatException("Negative number not allowed"); }
                     isNegative = true;
                     advanceChar();
                 }
-                if (ch < '0' || ch > '9') { throw new Exception("Expected digit"); }
+                if (ch < '0' || ch > '9') { throw new FormatException("Expected digit"); }
                 int ret = 0;
                 do {
                     ret = ret * 10 + ch - '0';
