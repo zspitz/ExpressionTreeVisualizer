@@ -18,6 +18,7 @@
     <AssemblyName>ExpressionTreeToString</AssemblyName>
     <RootNamespace>ExpressionTreeToString</RootNamespace>
     <Version>1.0.1</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />

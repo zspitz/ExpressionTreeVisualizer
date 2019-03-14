@@ -28,7 +28,7 @@ configuration: Release
 artifacts:
   - path: ExpressionToString\bin\Release\netstandard2.0\*.nupkg
     type: NuGetPackage
-  - path: /ExpressionTreeVisualizer\bin\Release\.*.dll/, 
+  - path: ExpressionTreeVisualizer\bin\Release\*.dll/, 
     name: visualizer
     type: File
   - path: ExpressionTreeVisualizer\bin\Release\*.pdb
