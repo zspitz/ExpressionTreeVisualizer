@@ -53,6 +53,10 @@ The UI consists of three parts:
 2. Source code view, using the above `ExpressionToString` library
 3. End nodes -- nodes in the expression tree which are not composed of other expressions
 
+   * Parameters
+   * Closed-over variables
+   * Constant expressions
+
 Features:
 
 * Live switching between C# and VB.NET
