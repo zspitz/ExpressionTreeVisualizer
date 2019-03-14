@@ -50,4 +50,13 @@ Public Class Literals
             "Function() """""""""
         )
     End Sub
+
+    <Fact>
+    Sub InterpolatedString()
+        BuildAssert(
+            Function() $"{#2001-1-1#}",
+            "() => $""{(object)#DateTime}""",
+            "Function() $""{CObj(#01/01/2001 0:00:00#)}"""
+        )
+    End Sub
 End Class

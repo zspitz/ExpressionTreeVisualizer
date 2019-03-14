@@ -35,8 +35,8 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void InterpolatedString() => BuildAssert(
             () => $"{new DateTime(2001, 1, 1)}",
-            "() => $\"{new DateTime(2001, 1, 1)}\"",
-            "Function() $\"{New DateTime( 2001, 1, 1)}\""
+            "() => $\"{(object)new DateTime(2001, 1, 1)}\"",
+            "Function() $\"{CObj(New Date(2001, 1, 1))}\""
         );
     }
 }

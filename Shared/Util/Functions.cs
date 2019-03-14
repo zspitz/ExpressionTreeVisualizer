@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using static ExpressionToString.FormatterNames;
-using System.Runtime.CompilerServices;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ExpressionToString.Util {
     public static class Functions {
@@ -77,8 +76,128 @@ namespace ExpressionToString.Util {
         public static object[] TupleValues(object tuple) {
             if (!tuple.GetType().IsTupleType()) { throw new InvalidOperationException(); }
             var fields = tuple.GetType().GetFields();
-            if(fields.Any()) { return tuple.GetType().GetFields().Select(x => x.GetValue(tuple)).ToArray(); }
+            if (fields.Any()) { return tuple.GetType().GetFields().Select(x => x.GetValue(tuple)).ToArray(); }
             return tuple.GetType().GetProperties().Select(x => x.GetValue(tuple)).ToArray();
+        }
+
+        // based on https://github.com/dotnet/corefx/blob/7cf002ec36109943c048ec8da8ef80621190b4be/src/Common/src/CoreLib/System/Text/StringBuilder.cs#L1514
+        public static (string literal, int? index, int? alignment, string itemFormat)[] ParseFormatString(string format) {
+            const int indexLimit = 1000000;
+            const int alignmentLimit = 100000;
+
+            int pos = -1;
+            char ch = '\x0';
+            int lastPos = format.Length - 1;
+
+            var parts = new List<(string literal, int? index, int? alignment, string itemFormat)>();
+            
+            while (true) {
+
+                // Parse literal until argument placeholder
+                string literal = "";
+                while (pos < lastPos) {
+                    advanceChar();
+
+                    if (ch == '}') {
+                        advanceChar();
+                        if (ch == '}') {
+                            literal += '}';
+                        } else {
+                            throw new Exception("Mismatched end brace");
+                        }
+                    } else if (ch == '{') {
+                        advanceChar();
+                        if (ch == '{') {
+                            literal += '{';
+                        } else {
+                            break;
+                        }
+                    } else {
+                        literal += ch;
+                    }
+                }
+
+                if (pos == lastPos) {
+                    if (literal != "") {
+                        parts.Add((literal, (int?)null, (int?)null, (string)null));
+                    }
+                    break;
+                }
+
+                // Parse index section; required
+                int index = getNumber(indexLimit);
+
+                // Parse alignment; optional
+                int? alignment = null;
+                if (ch == ',') {
+                    advanceChar();
+                    alignment = getNumber(alignmentLimit, true);
+                }
+
+                // Parse item format; optional
+                string itemFormat = null;
+                if (ch == ':') {
+                    advanceChar();
+                    if (ch == '{') {
+                        advanceChar();
+                        if (ch == '{') {
+                            itemFormat += '{';
+                        } else {
+                            throw new Exception("Nested placeholders not allowed");
+                        }
+                    } else if (ch == '}') {
+                        advanceChar();
+                        if (ch=='}') {
+                            itemFormat += '}';
+                        } else {
+                            break;
+                        }
+                    } else {
+                        itemFormat += ch;
+                    }
+                }
+
+                parts.Add((literal, index, alignment, itemFormat));
+            }
+
+            return parts.ToArray();
+
+            void advanceChar(bool ignoreEnd = false) {
+                pos += 1;
+                if (pos <= lastPos) {
+                    ch = format[pos];
+                } else if (ignoreEnd) {
+                    ch = '\x0';
+                } else {
+                    throw new Exception("Unexpected end of text");
+                }
+            }
+
+            void skipWhitespace() {
+                while (ch == ' ') {
+                    advanceChar(true);
+                }
+            }
+
+            int getNumber(int limit, bool allowNegative = false) {
+                skipWhitespace();
+
+                bool isNegative = false;
+                if (allowNegative && ch == '-') {
+                    isNegative = true;
+                    advanceChar();
+                }
+                if (ch < '0' || ch > '9') { throw new Exception("Expected digit"); }
+                int ret = 0;
+                do {
+                    ret = ret * 10 + ch - '0';
+                    advanceChar();
+                } while (ch >= '0' && ch <= '9' && ret < limit);
+
+                skipWhitespace();
+
+                return ret * (isNegative ? -1 : 1);
+            }
         }
     }
 }

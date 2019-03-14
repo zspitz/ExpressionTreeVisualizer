@@ -9,6 +9,7 @@ using static ExpressionToString.FormatterNames;
 using static ExpressionToString.Util.Functions;
 using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
+using static ExpressionToString.Globals;
 
 namespace ExpressionToString {
     public class CSharpCodeWriter : CodeWriter {
@@ -161,12 +162,6 @@ namespace ExpressionToString {
             }
         }
 
-        static HashSet<MethodInfo> stringConcats = typeof(string)
-            .GetMethods()
-            .Where(x => x.Name == "Concat" && x.GetParameters().All(
-                y => y.ParameterType.In(typeof(string), typeof(string[])))
-            ).ToHashSet();
-
         protected override void WriteCall(MethodCallExpression expr) {
             if (expr.Method.In(stringConcats)) {
                 var firstArg = expr.Arguments[0];
@@ -194,6 +189,22 @@ namespace ExpressionToString {
                 "[".AppendTo(sb);
                 WriteList(expr.Arguments);
                 "]".AppendTo(sb);
+                return;
+            }
+
+            if (expr.Method.In(stringFormats) && expr.Arguments[0] is ConstantExpression cexpr && cexpr.Value is string format) {
+                var parts = ParseFormatString(format);
+                "$\"".AppendTo(sb);
+                foreach (var (literal, index, alignment, itemFormat) in parts) {
+                    literal.Replace("{", "{{").Replace("}", "}}").AppendTo(sb);
+                    if (index == null) { break; }
+                    "{".AppendTo(sb);
+                    Write(expr.Arguments[index.Value + 1]);
+                    if (alignment != null) { $", {alignment}".AppendTo(sb); }
+                    if (itemFormat != null) { $":{itemFormat}".AppendTo(sb); }
+                    "}".AppendTo(sb);
+                }
+                "\"".AppendTo(sb);
                 return;
             }
 
