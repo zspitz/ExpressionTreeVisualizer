@@ -1,9 +1,9 @@
 # Expression To String and Expression Tree Visualizer
 This project provides the following:
 
-* [![NuGet Status](https://img.shields.io/nuget/v/ExpressionTreeToString.svg?style=flat&max-age=86400) ](https://www.nuget.org/packages/ExpressionTreeToString/) Extension methods to create a C# or VB.NET code-like string representation, of expression trees or expression tree parts
-* A debugging visualizer for expression trees / expression tree parts  
-Note: you currently have to compile the visualizer in order to use. The visualizer DLL and dependent DLL (`MultiSelectTreeView.DLL`, both in `\ExpressionTreeVisualizer\ExpressionTreeVisualizer\bin\Debug`) need to be placed in the appropriate folder, as outlined [here](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2017). Eventually there'll be a VSIX package for the visualizer.
+* [![NuGet Status](https://img.shields.io/nuget/v/ExpressionTreeToString.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeToString/) Extension methods to create a C# or VB.NET code-like string representation, of expression trees or expression tree parts
+* [![GitHub Release](https://img.shields.io/github/release/zspitz/expressiontostring.svg?style=flat&max-age=86400)](https://github.com/zspitz/ExpressionToString/releases) A debugging visualizer for expression trees / expression tree parts  
+**Installation note:** The visualizer DLL and the dependent DLL (`MultiSelectTreeView.DLL`), on the [release page](https://github.com/zspitz/ExpressionToString/releases), should be placed in the appropriate folder, as described [here](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2017).
 
 ---
 
