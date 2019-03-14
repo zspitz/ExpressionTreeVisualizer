@@ -18,7 +18,7 @@ Console.WriteLine(expr.ToString("Visual Basic"));
 
 Features:
 
-* Support for outputting C#- and VB.NET-style pseudocode (with more to come -- #38)
+* Support for outputting C#- and VB.NET-style pseudocode (with [more to come](https://github.com/zspitz/ExpressionToString/issues/38))
 * Extension methods are rendered as instance methods
 
     ```csharp
