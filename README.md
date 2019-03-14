@@ -7,7 +7,7 @@ This project provides the following:
 
 ---
 
-## Expression To String
+## String representations of expression trees
 ```csharp
 Expression<Func<bool>> expr = () => true;
 
@@ -43,7 +43,7 @@ Note that support for the full range of types in `System.Linq.Expressions` is in
 
 ---
 
-## Expression Tree Visualizer
+## Visual Studio debugger visualizer for expression trees
 
 ![Screenshot](screenshot-01.png)
 
