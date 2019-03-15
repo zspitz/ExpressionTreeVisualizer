@@ -4,7 +4,7 @@ This project provides the following:
 * [![NuGet Status](https://img.shields.io/nuget/v/ExpressionTreeToString.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeToString/) Extension methods to create a C# or VB.NET code-like string representation, of expression trees or expression tree parts (.NET Standard library)
 * [![GitHub Release](https://img.shields.io/github/release/zspitz/expressiontostring.svg?style=flat&max-age=86400)](https://github.com/zspitz/ExpressionToString/releases) A debugging visualizer for expression trees / expression tree parts  
   **Note:** Tested with VS 2017, which only supports custom visualizers in .NET Framework projects  
-  **Installation:** The visualizer DLL and the dependent DLL (`MultiSelectTreeView.DLL`), on the [release page](https://github.com/zspitz/ExpressionToString/releases), should be placed in the appropriate folder, as described [here](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2017).
+  **Installation:** The visualizer DLL and the dependent DLL (`MultiSelectTreeView.DLL`), on the [release page](https://github.com/zspitz/ExpressionToString/releases), should be placed in the appropriate folder, as described [here](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2017). It may be necessary to unblock the DLLs.
 
 ## String representations of expression trees
 ```csharp
