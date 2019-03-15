@@ -27,16 +27,12 @@ namespace ExpressionTreeVisualizer {
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) {
             if (windowService == null) { throw new ArgumentNullException(nameof(windowService)); }
 
-            //FrameworkCompatibilityPreferences.AreInactiveSelectionHighlightBrushKeysSupported = false;
+            FrameworkCompatibilityPreferences.AreInactiveSelectionHighlightBrushKeysSupported = false;
 
-            var control = new VisualizerDataControl {
-                ObjectProvider = objectProvider,
-                Options = new VisualizerDataOptions() { Language = CSharp } // TODO options could come from a VS extension
-            };
-
-            var window = new VisualizerWindow {
-                Content = control,
-            };
+            var window = new VisualizerWindow();
+            var control = window.Content as VisualizerDataControl;
+            control.ObjectProvider = objectProvider;
+            control.Options = new VisualizerDataOptions() { Language = CSharp }; // TODO options could come from a VS extension
 
             window.ShowDialog();
         }

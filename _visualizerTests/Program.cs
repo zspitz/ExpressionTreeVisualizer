@@ -71,7 +71,9 @@ namespace _visualizerTests {
             //};
             //var expr = outer();
 
-            Expression expr = Expression.AddAssign(Expression.Variable(typeof(int)), Expression.Constant(5));
+            //Expression expr = Expression.AddAssign(Expression.Variable(typeof(int)), Expression.Constant(5));
+
+            Expression<Func<int, double, double[]>> expr = (n, exp) => new[] { Math.Pow(n, exp) };
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();

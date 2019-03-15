@@ -1,7 +1,6 @@
 ﻿using ExpressionToString.Util;
 using ExpressionTreeVisualizer.Util;
 using Microsoft.VisualStudio.DebuggerVisualizers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -102,7 +101,15 @@ namespace ExpressionTreeVisualizer {
             inChangeSelection = false;
         }
 
-        public IVisualizerObjectProvider ObjectProvider { get; set; }
+        private IVisualizerObjectProvider _objectProvider;
+        public IVisualizerObjectProvider ObjectProvider {
+            get => _objectProvider;
+            set {
+                if (value == null || value == _objectProvider) { return; }
+                _objectProvider = value;
+                LoadDataContext();
+            }
+        }
 
         private VisualizerDataOptions _options;
         public VisualizerDataOptions Options {
@@ -115,6 +122,9 @@ namespace ExpressionTreeVisualizer {
                 LoadDataContext();
             }
         }
-        public void LoadDataContext() => DataContext = ObjectProvider.TransferObject(Options);
+        public void LoadDataContext() {
+            if (_options == null || ObjectProvider == null) { return; }
+            DataContext = ObjectProvider.TransferObject(Options);
+        }
     }
 }
