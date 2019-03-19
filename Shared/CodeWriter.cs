@@ -59,68 +59,30 @@ namespace ExpressionToString {
             registerVisited(o, start);
         }
 
+        private readonly HashSet<ExpressionType> binaryExpressionTypes = new[] {
+            Add, AddChecked, Divide, Modulo, Multiply, MultiplyChecked, Power, Subtract, SubtractChecked,   // mathematical operators
+            And, Or, ExclusiveOr,   // bitwise / logical operations
+            LeftShift, RightShift,     // shift operators
+            AndAlso, OrElse,        // short-circuit boolean operators
+            Equal, NotEqual, GreaterThanOrEqual, GreaterThan,LessThan,LessThanOrEqual,     // comparison operators
+            Coalesce,
+            ArrayIndex
+        }.ToHashSet();
+
+        private readonly HashSet<ExpressionType> unaryExpressionTypes = new[] {
+            ArrayLength, ExpressionType.Convert, ConvertChecked, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus
+        }.ToHashSet();
+
         private void WriteExpression(Expression expr) {
             switch (expr.NodeType) {
 
-                #region BinaryExpression
-
-                // mathematical operations
-                case Add:
-                case AddChecked:
-                case Divide:
-                case Modulo:
-                case Multiply:
-                case MultiplyChecked:
-                case Power:
-                case Subtract:
-                case SubtractChecked:
-
-                // bitwise / logical operations
-                case And:
-                case Or:
-                case ExclusiveOr:
-
-                // shift operations
-                case LeftShift:
-                case RightShift:
-
-                // conditional boolean operators
-                case AndAlso:
-                case OrElse:
-
-                // comparison operators
-                case Equal:
-                case NotEqual:
-                case GreaterThanOrEqual:
-                case GreaterThan:
-                case LessThan:
-                case LessThanOrEqual:
-
-                // coalescing operators
-                case Coalesce:
-
-                // array indexing operations
-                case ArrayIndex:
+                case var nodeType when nodeType.In(binaryExpressionTypes):
                     WriteBinary(expr as BinaryExpression);
                     break;
 
-                #endregion
-
-                #region UnaryExpression
-
-                case ArrayLength:
-                case ExpressionType.Convert:
-                case ConvertChecked:
-                case Negate:
-                case NegateChecked:
-                case Not:
-                case Quote:
-                case TypeAs:
-                case UnaryPlus:
+                case var nodeType when nodeType.In(unaryExpressionTypes):
                     WriteUnary(expr as UnaryExpression);
                     break;
-
-                #endregion
 
                 case Lambda:
                     WriteLambda(expr as LambdaExpression);
@@ -219,7 +181,6 @@ namespace ExpressionToString {
                     case Switch:
                     case Throw:
                     case Try:
-                    case TypeEqual:
                     case Unbox:
                     */
                     #endregion
