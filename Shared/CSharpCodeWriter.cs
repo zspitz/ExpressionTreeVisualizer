@@ -325,7 +325,14 @@ namespace ExpressionToString {
 
         protected override void WriteTypeBinary(TypeBinaryExpression expr) {
             Write(expr.Expression);
-            $" is {expr.TypeOperand.FriendlyName(CSharp)}".AppendTo(sb);
+            switch (expr.NodeType) {
+                case TypeIs:
+                    $" is {expr.TypeOperand.FriendlyName(CSharp)}".AppendTo(sb);
+                    break;
+                case TypeEqual:
+                    $".GetType() == typeof({expr.TypeOperand.FriendlyName(CSharp)})".AppendTo(sb);
+                    break;
+            }
         }
 
         protected override void WriteInvocation(InvocationExpression expr) {

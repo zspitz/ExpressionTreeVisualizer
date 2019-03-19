@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Collections;
+using Xunit;
 using static ExpressionToString.Tests.Globals;
 using static ExpressionToString.Tests.Runners;
 using static System.Linq.Expressions.Expression;
@@ -28,6 +29,16 @@ namespace ExpressionToString.Tests.Constructed {
             ),
             "\"\" is string",
             "TypeOf \"\" Is String"
+        );
+
+        [Fact]
+        public void MakeTypeEqual() => BuildAssert(
+            TypeEqual(
+                Constant(""),
+                typeof(IEnumerable)
+            ),
+            "\"\".GetType() == typeof(IEnumerable)",
+            "\"\".GetType = GetType(IEnumerable)"
         );
 
         [Fact]

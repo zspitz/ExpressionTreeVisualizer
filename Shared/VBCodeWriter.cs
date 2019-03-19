@@ -382,9 +382,17 @@ namespace ExpressionToString {
             $"CType(Nothing, {expr.Type.FriendlyName(VisualBasic)})".AppendTo(sb);
 
         protected override void WriteTypeBinary(TypeBinaryExpression expr) {
-            "TypeOf ".AppendTo(sb);
-            Write(expr.Expression);
-            $" Is {expr.TypeOperand.FriendlyName(VisualBasic)}".AppendTo(sb);
+            switch (expr.NodeType) {
+                case TypeIs:
+                    "TypeOf ".AppendTo(sb);
+                    Write(expr.Expression);
+                    $" Is {expr.TypeOperand.FriendlyName(VisualBasic)}".AppendTo(sb);
+                    break;
+                case TypeEqual:
+                    Write(expr.Expression);
+                    $".GetType = GetType({expr.TypeOperand.FriendlyName(VisualBasic)})".AppendTo(sb);
+                    break;
+            }
         }
 
         protected override void WriteInvocation(InvocationExpression expr) {

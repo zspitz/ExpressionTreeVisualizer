@@ -168,6 +168,7 @@ namespace ExpressionToString {
                     break;
 
                 case TypeIs:
+                case TypeEqual:
                     WriteTypeBinary(expr as TypeBinaryExpression);
                     break;
 
