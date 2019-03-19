@@ -19,7 +19,7 @@ namespace ExpressionToString {
             language == VisualBasic ? new VBCodeWriter(o, out visitedObjects) :
             throw new NotImplementedException("Unknown language");
 
-        protected StringBuilder sb = new StringBuilder();
+        private StringBuilder sb = new StringBuilder();
         Dictionary<object, List<(int start, int length)>> visitedObjects;
 
         // Unfortunately, C# doesn't support union types ...
