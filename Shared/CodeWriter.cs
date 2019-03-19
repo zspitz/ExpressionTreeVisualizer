@@ -30,6 +30,8 @@ namespace ExpressionToString {
             visitedObjects = this.visitedObjects;
         }
 
+        protected void Write(string s) => s.AppendTo(sb);
+
         protected void Write(object o, bool parameterDeclaration = false) {
             var start = sb.Length;
             try {
@@ -228,7 +230,6 @@ namespace ExpressionToString {
         //protected abstract void Write(GotoExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(LabelExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(LoopExpression expr) => throw new NotImplementedException();
-        //protected abstract void Write(NewArrayExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(RuntimeVariablesExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(SwitchExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(TryExpression expr) => throw new NotImplementedException();

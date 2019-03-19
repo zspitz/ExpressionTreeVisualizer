@@ -50,7 +50,8 @@ namespace ExpressionToString.Util {
             {typeof(object), "object"},
             {typeof(short), "short"},
             {typeof(ushort), "ushort"},
-            {typeof(string), "string"}
+            {typeof(string), "string"},
+            {typeof(void), "void" }
         };
 
         private static readonly Dictionary<Type, string> VBKeywordTypes = new Dictionary<Type, string> {

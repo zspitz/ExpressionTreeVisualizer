@@ -46,7 +46,7 @@ namespace ExpressionToString {
         protected override void WriteBinary(BinaryExpression expr) {
             if (simpleBinaryOperators.TryGetValue(expr.NodeType, out var @operator)) {
                 Write(expr.Left);
-                $" {@operator} ".AppendTo(sb);
+                Write($" {@operator} ");
                 Write(expr.Right);
                 return;
             }
@@ -54,16 +54,16 @@ namespace ExpressionToString {
             switch (expr.NodeType) {
                 case ArrayIndex:
                     Write(expr.Left);
-                    "[".AppendTo(sb);
+                    Write("[");
                     Write(expr.Right);
-                    "]".AppendTo(sb);
+                    Write("]");
                     return;
                 case Power:
-                    "Math.Pow(".AppendTo(sb);
+                    Write("Math.Pow(");
                     Write(expr.Left);
-                    ", ".AppendTo(sb);
+                    Write(", ");
                     Write(expr.Right);
-                    ")".AppendTo(sb);
+                    Write(")");
                     return;
             }
 
@@ -74,31 +74,29 @@ namespace ExpressionToString {
             switch (expr.NodeType) {
                 case ArrayLength:
                     Write(expr.Operand);
-                    ".Length".AppendTo(sb);
+                    Write(".Length");
                     break;
                 case ExpressionType.Convert:
                 case ConvertChecked:
-                    "(".AppendTo(sb);
-                    expr.Type.FriendlyName(CSharp).AppendTo(sb);
-                    ")".AppendTo(sb);
+                    Write($"({expr.Type.FriendlyName(CSharp)})");
                     Write(expr.Operand);
                     break;
                 case Negate:
                 case NegateChecked:
-                    "-".AppendTo(sb);
+                    Write("-");
                     Write(expr.Operand);
                     break;
                 case Not:
                     if (expr.Type == typeof(bool)) {
-                        "!".AppendTo(sb);
+                        Write("!");
                     } else {
-                        "~".AppendTo(sb);
+                        Write("~");
                     }
                     Write(expr.Operand);
                     break;
                 case TypeAs:
                     Write(expr.Operand);
-                    $" as {expr.Type.FriendlyName(CSharp)}".AppendTo(sb);
+                    Write($" as {expr.Type.FriendlyName(CSharp)}");
                     break;
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
@@ -106,59 +104,59 @@ namespace ExpressionToString {
         }
 
         protected override void WriteLambda(LambdaExpression expr) {
-            "(".AppendTo(sb);
+            Write("(");
             // we can't use WriteList here, because we have to call WriteParameterDeclaration
             expr.Parameters.ForEach((prm, index) => {
-                if (index > 0) { ", ".AppendTo(sb); }
+                if (index > 0) { Write(", "); }
                 Write(prm, true);
             });
-            ") => ".AppendTo(sb);
+            Write(") => ");
             Write(expr.Body);
         }
 
         protected override void WriteParameterDeclarationImpl(ParameterExpression prm) =>
-            $"{prm.Type.FriendlyName(CSharp)} {prm.Name}".AppendTo(sb);
+            Write($"{prm.Type.FriendlyName(CSharp)} {prm.Name}");
 
-        protected override void WriteParameter(ParameterExpression expr) => expr.Name.AppendTo(sb);
+        protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
 
         protected override void WriteConstant(ConstantExpression expr) =>
-            RenderLiteral(expr.Value, CSharp).AppendTo(sb);
+            Write(RenderLiteral(expr.Value, CSharp));
 
         protected override void WriteMemberAccess(MemberExpression expr) {
             switch (expr.Expression) {
                 case ConstantExpression cexpr when cexpr.Type.IsClosureClass():
                 case MemberExpression mexpr when mexpr.Type.IsClosureClass():
                     // closed over variable from outer scope
-                    expr.Member.Name.Replace("$VB$Local_", "").AppendTo(sb);
+                    Write(expr.Member.Name.Replace("$VB$Local_", ""));
                     return;
                 case null:
                     // static member
-                    $"{expr.Member.DeclaringType.FriendlyName(CSharp)}.{expr.Member.Name}".AppendTo(sb);
+                    Write($"{expr.Member.DeclaringType.FriendlyName(CSharp)}.{expr.Member.Name}");
                     return;
                 default:
                     Write(expr.Expression);
-                    $".{expr.Member.Name}".AppendTo(sb);
+                    Write($".{expr.Member.Name}");
                     return;
             }
         }
 
         protected override void WriteNew(NewExpression expr) {
-            "new ".AppendTo(sb);
+            Write("new ");
             if (expr.Type.IsAnonymous()) {
-                "{ ".AppendTo(sb);
+                Write("{ ");
                 expr.Constructor.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
-                    if (index > 0) { ", ".AppendTo(sb); }
+                    if (index > 0) { Write(", "); }
                     if (!(arg is MemberExpression mexpr && mexpr.Member.Name.Replace("$VB$Local_", "") == name)) {
-                        $"{name} = ".AppendTo(sb);
+                        Write($"{name} = ");
                     }
                     Write(arg);
                 });
-                " }".AppendTo(sb);
+                Write(" }");
             } else {
-                expr.Type.FriendlyName(CSharp).AppendTo(sb);
-                "(".AppendTo(sb);
+                Write(expr.Type.FriendlyName(CSharp));
+                Write("(");
                 WriteList(expr.Arguments);
-                ")".AppendTo(sb);
+                Write(")");
             }
         }
 
@@ -186,25 +184,25 @@ namespace ExpressionToString {
             }
             if (isIndexer) {
                 Write(expr.Object);
-                "[".AppendTo(sb);
+                Write("[");
                 WriteList(expr.Arguments);
-                "]".AppendTo(sb);
+                Write("]");
                 return;
             }
 
             if (expr.Method.In(stringFormats) && expr.Arguments[0] is ConstantExpression cexpr && cexpr.Value is string format) {
                 var parts = ParseFormatString(format);
-                "$\"".AppendTo(sb);
+                Write("$\"");
                 foreach (var (literal, index, alignment, itemFormat) in parts) {
-                    literal.Replace("{", "{{").Replace("}", "}}").AppendTo(sb);
+                    Write(literal.Replace("{", "{{").Replace("}", "}}"));
                     if (index == null) { break; }
-                    "{".AppendTo(sb);
+                    Write("{");
                     Write(expr.Arguments[index.Value + 1]);
-                    if (alignment != null) { $", {alignment}".AppendTo(sb); }
-                    if (itemFormat != null) { $":{itemFormat}".AppendTo(sb); }
-                    "}".AppendTo(sb);
+                    if (alignment != null) { Write($", {alignment}"); }
+                    if (itemFormat != null) { Write($":{itemFormat}"); }
+                    Write("}");
                 }
-                "\"".AppendTo(sb);
+                Write("\"");
                 return;
             }
 
@@ -221,21 +219,21 @@ namespace ExpressionToString {
             }
 
             if (instance == null) {
-                expr.Method.ReflectedType.FriendlyName(CSharp).AppendTo(sb);
+                Write(expr.Method.ReflectedType.FriendlyName(CSharp));
             } else {
                 Write(instance);
             }
 
-            $".{expr.Method.Name}(".AppendTo(sb);
+            Write($".{expr.Method.Name}(");
             WriteList(arguments);
-            ")".AppendTo(sb);
+            Write(")");
         }
 
         protected override void WriteBinding(MemberBinding binding) {
             switch (binding) {
                 case MemberAssignment assignmentBinding:
-                    binding.Member.Name.AppendTo(sb);
-                    " = ".AppendTo(sb);
+                    Write(binding.Member.Name);
+                    Write(" = ");
                     Write(assignmentBinding.Expression);
                     break;
                 case MemberListBinding listBinding:
@@ -250,17 +248,17 @@ namespace ExpressionToString {
         protected override void WriteMemberInit(MemberInitExpression expr) {
             Write(expr.NewExpression);
             if (expr.Bindings.Any()) {
-                " { ".AppendTo(sb);
+                Write(" { ");
                 WriteList(expr.Bindings);
-                " }".AppendTo(sb);
+                Write(" }");
             }
         }
 
         protected override void WriteListInit(ListInitExpression expr) {
             Write(expr.NewExpression);
-            " { ".AppendTo(sb);
+            Write(" { ");
             WriteList(expr.Initializers);
-            " }".AppendTo(sb);
+            Write(" }");
         }
 
         protected override void WriteElementInit(ElementInit elementInit) {
@@ -272,9 +270,9 @@ namespace ExpressionToString {
                     Write(args.First());
                     break;
                 default:
-                    "{ ".AppendTo(sb);
+                    Write("{ ");
                     WriteList(args);
-                    " }".AppendTo(sb);
+                    Write(" }");
                     break;
             }
         }
@@ -283,28 +281,28 @@ namespace ExpressionToString {
             switch (expr.NodeType) {
                 case NewArrayInit:
                     var elementType = expr.Type.GetElementType();
-                    "new ".AppendTo(sb);
+                    Write("new ");
                     if (elementType.IsArray || expr.Expressions.None() || expr.Expressions.Any(x => x.Type != elementType)) {
-                        expr.Type.FriendlyName(CSharp).AppendTo(sb);
+                        Write(expr.Type.FriendlyName(CSharp));
                     } else {
-                        "[]".AppendTo(sb);
+                        Write("[]");
                     }
-                    " { ".AppendTo(sb);
+                    Write(" { ");
                     WriteList(expr.Expressions);
-                    " }".AppendTo(sb);
+                    Write(" }");
                     break;
                 case NewArrayBounds:
                     (string left, string right) specifierChars = ("[", "]");
                     var nestedArrayTypes = expr.Type.NestedArrayTypes().ToList();
-                    $"new {nestedArrayTypes.Last().root.FriendlyName(CSharp)}".AppendTo(sb);
+                    Write($"new {nestedArrayTypes.Last().root.FriendlyName(CSharp)}");
                     nestedArrayTypes.ForEachT((current, _, index) => {
-                        specifierChars.left.AppendTo(sb);
+                        Write(specifierChars.left);
                         if (index == 0) {
                             WriteList(expr.Expressions);
                         } else {
-                            Repeat("", current.GetArrayRank()).Joined().AppendTo(sb);
+                            Write(Repeat("", current.GetArrayRank()).Joined());
                         }
-                        specifierChars.right.AppendTo(sb);
+                        Write(specifierChars.right);
                     });
                     break;
                 default:
@@ -314,41 +312,42 @@ namespace ExpressionToString {
 
         protected override void WriteConditional(ConditionalExpression expr) {
             Write(expr.Test);
-            " ? ".AppendTo(sb);
+            Write(" ? ");
             Write(expr.IfTrue);
-            " : ".AppendTo(sb);
+            Write(" : ");
             Write(expr.IfFalse);
         }
 
         protected override void WriteDefault(DefaultExpression expr) =>
-            $"default({expr.Type.FriendlyName(CSharp)})".AppendTo(sb);
+            Write($"default({expr.Type.FriendlyName(CSharp)})");
 
         protected override void WriteTypeBinary(TypeBinaryExpression expr) {
             Write(expr.Expression);
+            var typeName = expr.TypeOperand.FriendlyName(CSharp);
             switch (expr.NodeType) {
                 case TypeIs:
-                    $" is {expr.TypeOperand.FriendlyName(CSharp)}".AppendTo(sb);
+                    Write($" is {typeName}");
                     break;
                 case TypeEqual:
-                    $".GetType() == typeof({expr.TypeOperand.FriendlyName(CSharp)})".AppendTo(sb);
+                    Write($".GetType() == typeof({typeName})");
                     break;
             }
         }
 
         protected override void WriteInvocation(InvocationExpression expr) {
-            if (expr.Expression is LambdaExpression) { "(".AppendTo(sb); }
+            if (expr.Expression is LambdaExpression) { Write("("); }
             Write(expr.Expression);
-            if (expr.Expression is LambdaExpression) { ")".AppendTo(sb); }
-            "(".AppendTo(sb);
+            if (expr.Expression is LambdaExpression) { Write(")"); }
+            Write("(");
             WriteList(expr.Arguments);
-            ")".AppendTo(sb);
+            Write(")");
         }
 
         protected override void WriteIndex(IndexExpression expr) {
             Write(expr.Object);
-            "[".AppendTo(sb);
+            Write("[");
             WriteList(expr.Arguments);
-            "]".AppendTo(sb);
+            Write("]");
         }
     }
 }

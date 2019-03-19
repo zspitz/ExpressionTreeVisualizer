@@ -122,11 +122,6 @@ namespace _visualizerTests {
                 )
             );
             Expression<Action> expr = Lambda<Action>(block);
-            Action action = expr.Compile();
-
-            action.Invoke();
-
-            
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
