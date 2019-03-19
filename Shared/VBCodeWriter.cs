@@ -190,7 +190,7 @@ namespace ExpressionToString {
             }
         }
 
-        static MethodInfo power = typeof(Math).GetMethod("Pow");
+        static readonly MethodInfo power = typeof(Math).GetMethod("Pow");
 
         protected override void WriteCall(MethodCallExpression expr) {
             if (expr.Method.In(stringConcats)) {

@@ -33,5 +33,13 @@ namespace ExpressionToString.Tests {
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
         }
+
+        public static void BuildAssert(CatchBlock catchBlock, string csharp, string vb) => throw new NotImplementedException();
+        public static void BuildAssert(SwitchCase switchCase, string csharp, string vb) => throw new NotImplementedException();
+        public static void BuildAssert(LabelTarget labelTarget, string csharp, string vb) => throw new NotImplementedException();
+
+        public static void BuildAssert(Type type, string csharp, string vb) => throw new NotImplementedException();
+        public static void BuildAssert(SymbolDocumentInfo symbolDocumentInfo, string csharp, string vb) => throw new NotImplementedException();
+        public static void BuildAssert(bool @bool, string csharp, string vb) => throw new NotImplementedException();
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Linq.Expressions.Expression;
 
 namespace _visualizerTests {
     class Program {
@@ -73,7 +74,59 @@ namespace _visualizerTests {
 
             //Expression expr = Expression.AddAssign(Expression.Variable(typeof(int)), Expression.Constant(5));
 
-            Expression<Func<int, double, double[]>> expr = (n, exp) => new[] { Math.Pow(n, exp) };
+            //Expression<Func<int, double, double[]>> expr = (n, exp) => new[] { Math.Pow(n, exp) };
+
+            //IQueryable<Person> personSource = null;
+            //Expression<Func<Person, bool>> expr = person => person.LastName.StartsWith("A");
+
+            var hour = Variable(typeof(int), "hour");
+            var msg = Variable(typeof(string), "msg");
+            var block = Block(
+                // specify the variables available within the block
+                new [] { hour, msg},
+                // hour =
+                Assign(hour,
+                    // DateTime.Now.Hour
+                    MakeMemberAccess(
+                        MakeMemberAccess(
+                            null,
+                            typeof(DateTime).GetMember("Now").Single()
+                        ),
+                        typeof(DateTime).GetMember("Hour").Single()
+                    )
+                ),
+                // if ( ... ) { ... } else { ... }
+                IfThenElse(
+                    // ... && ...
+                    AndAlso(
+                        // hour >= 6
+                        GreaterThanOrEqual(
+                            hour,
+                            Constant(6)
+                        ),
+                        // hour <= 18
+                        LessThanOrEqual(
+                            hour,
+                            Constant(18)
+                        )
+                    ),
+                    // msg = "Good day"
+                    Assign(msg, Constant("Good day")),
+                    // msg = Good night"
+                    Assign(msg, Constant("Good night"))
+                ),
+                // Console.WriteLine(msg);
+                Call(
+                    typeof(Console).GetMethod("WriteLine", new [] {typeof(object)}),
+                    msg
+                )
+            );
+            Expression<Action> expr = Lambda<Action>(block);
+            Action action = expr.Compile();
+
+            action.Invoke();
+
+            
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
@@ -96,5 +149,10 @@ namespace _visualizerTests {
 
     class Wrapper : List<string> {
         public void Add(string s1, string s2) => throw new NotImplementedException();
+    }
+
+    class Person {
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
     }
 }
