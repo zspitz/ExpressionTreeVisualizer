@@ -119,4 +119,23 @@ Public Class Method
             "Function(s1 As String, s2 As String) s1 + s2 + s1 + s2 + s1 + s2"
         )
     End Sub
+
+    ' This will not compile -- Like operator not supported for current project type
+    '<Fact>
+    'Sub LikeOperatorStrings()
+    '    BuildAssert(
+    '        Function(s1 As String, s2 As String) s1 Like s2,
+    '        "(string s1, string s2) => LikeOperator.LikeString(s1, s2)",
+    '        "Function(s1 As String, s2 As String) s1 Like s2"
+    '    )
+    'End Sub
+
+    '<Fact>
+    'Sub LikeOperatorObjects()
+    '    BuildAssert(
+    '        Function(o1 As Object, o2 As Object) o1 Like o2,
+    '        "(object o1, object o2) => LikeOperator.LikeObject(o1, o2)",
+    '        "Function(o1 As Object, o2 As Object) o1 Like o2"
+    '    )
+    'End Sub
 End Class

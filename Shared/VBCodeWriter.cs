@@ -243,6 +243,14 @@ namespace ExpressionToString {
                 return;
             }
 
+            // Microsoft.VisualBasic.CompilerServices is not available to .NET Standard
+            if (expr.Method.DeclaringType.FullName == "Microsoft.VisualBasic.CompilerServices.LikeOperator") {
+                Write(expr.Arguments[0]);
+                Write(" Like ");
+                Write(expr.Arguments[1]);
+                return;
+            }
+
             Expression instance = null;
             IEnumerable<Expression> arguments = expr.Arguments;
 
