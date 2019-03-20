@@ -416,5 +416,7 @@ namespace ExpressionToString {
             WriteList(expr.Arguments);
             Write(")");
         }
+
+        protected override void WriteBlock(BlockExpression expr) => throw new NotImplementedException();
     }
 }

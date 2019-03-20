@@ -311,11 +311,22 @@ namespace ExpressionToString {
         }
 
         protected override void WriteConditional(ConditionalExpression expr) {
-            Write(expr.Test);
-            Write(" ? ");
-            Write(expr.IfTrue);
-            Write(" : ");
-            Write(expr.IfFalse);
+            if (expr.Type == typeof(void)) { // if block, or if..else block
+                Write("if (");
+                Write(expr.Test); // what happens if this is a BlockExpression?
+                Write(")");
+                WriteBlock(expr.IfTrue);
+                if (expr.IfFalse != null) {
+                    Write("else ");
+                    WriteBlock(expr.IfFalse);
+                }
+            } else {
+                Write(expr.Test);
+                Write(" ? ");
+                Write(expr.IfTrue);
+                Write(" : ");
+                Write(expr.IfFalse);
+            }
         }
 
         protected override void WriteDefault(DefaultExpression expr) =>
@@ -348,6 +359,29 @@ namespace ExpressionToString {
             Write("[");
             WriteList(expr.Arguments);
             Write("]");
+        }
+
+        protected override void WriteBlock(BlockExpression expr) {
+            Write("{");
+            Indent();
+            foreach (var subexpr in expr.Expressions) {
+                WriteEOL();
+                Write(subexpr);
+            }
+            // we can ignore expr.Result, because it is the same as expr.Expressions.Last()
+            WriteEOL(true);
+            Write("}");
+        }
+
+        private void WriteBlock(Expression expr) {
+            if (expr is BlockExpression bexpr) {
+                WriteBlock(bexpr);
+                return;
+            }
+            Indent();
+            WriteEOL();
+            Write(expr);
+            WriteEOL(true);
         }
     }
 }

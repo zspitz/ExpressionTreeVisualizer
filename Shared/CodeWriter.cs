@@ -30,6 +30,14 @@ namespace ExpressionToString {
             visitedObjects = this.visitedObjects;
         }
 
+        private int indentationLevel = 0;
+        protected void Indent() => indentationLevel += 1;
+        protected void WriteEOL(bool dedent=false) {
+            sb.AppendLine();
+            if (dedent) { indentationLevel = Math.Max(indentationLevel-1, 0); } // ensures the indentation level is never < 0
+            sb.Append(new string(' ', indentationLevel* 4));
+        }
+
         protected void Write(string s) => s.AppendTo(sb);
 
         protected void Write(object o, bool parameterDeclaration = false) {
@@ -144,6 +152,10 @@ namespace ExpressionToString {
                     WriteIndex(expr as IndexExpression);
                     break;
 
+                case Block:
+                    WriteBlock(expr as BlockExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
@@ -224,7 +236,9 @@ namespace ExpressionToString {
         protected abstract void WriteInvocation(InvocationExpression expr);
         protected abstract void WriteIndex(IndexExpression expr);
 
-        //protected abstract void Write(BlockExpression expr) => throw new NotImplementedException();
+        protected abstract void WriteBlock(BlockExpression expr);
+
+
         //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(GotoExpression expr) => throw new NotImplementedException();
@@ -233,8 +247,6 @@ namespace ExpressionToString {
         //protected abstract void Write(RuntimeVariablesExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(SwitchExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(TryExpression expr) => throw new NotImplementedException();
-
-        //protected abstract void WriteBinding(MemberBinding binding);
 
         protected abstract void WriteElementInit(ElementInit elementInit);
         protected abstract void WriteBinding(MemberBinding binding);
