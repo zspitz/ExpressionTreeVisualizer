@@ -2,7 +2,7 @@
 name: Bug report - String rendering library
 about: Report a bug in the string rendering library
 title: ''
-labels: code-gen
+labels: bug, code-gen
 assignees: ''
 
 ---
