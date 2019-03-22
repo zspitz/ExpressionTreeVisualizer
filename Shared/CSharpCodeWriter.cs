@@ -40,7 +40,8 @@ namespace ExpressionToString {
             [LessThanOrEqual] = "<=",
             [Coalesce] = "??",
             [LeftShift] = "<<",
-            [RightShift] = ">>"
+            [RightShift] = ">>",
+            [Assign] = "="
         };
 
         protected override void WriteBinary(BinaryExpression expr) {
@@ -314,11 +315,11 @@ namespace ExpressionToString {
             if (expr.Type == typeof(void)) { // if block, or if..else block
                 Write("if (");
                 Write(expr.Test); // what happens if this is a BlockExpression?
-                Write(")");
-                WriteBlock(expr.IfTrue);
-                if (expr.IfFalse != null) {
-                    Write("else ");
-                    WriteBlock(expr.IfFalse);
+                Write(") ");
+                WriteAsBlock(expr.IfTrue);
+                if (!(expr.IfFalse is DefaultExpression && expr.Type == typeof(void))) {
+                    Write(" else ");
+                    WriteAsBlock(expr.IfFalse);
                 }
             } else {
                 Write(expr.Test);
@@ -361,27 +362,41 @@ namespace ExpressionToString {
             Write("]");
         }
 
-        protected override void WriteBlock(BlockExpression expr) {
+        protected override void WriteBlock(BlockExpression expr) => WriteAsBlock(expr);
+
+        protected void WriteAsBlock(Expression expr) {
             Write("{");
             Indent();
-            foreach (var subexpr in expr.Expressions) {
-                WriteEOL();
-                Write(subexpr);
+            if (expr is BlockExpression bexpr) {
+                foreach (var subexpr in bexpr.Expressions) {
+                    WriteStatement(subexpr);
+                }
+                // we can ignore expr.Result, because it is the same as expr.Expressions.Last()
+            } else {
+                WriteStatement(expr);
             }
-            // we can ignore expr.Result, because it is the same as expr.Expressions.Last()
             WriteEOL(true);
             Write("}");
         }
 
-        private void WriteBlock(Expression expr) {
-            if (expr is BlockExpression bexpr) {
-                WriteBlock(bexpr);
-                return;
-            }
-            Indent();
+        private void WriteStatement(Expression expr) {
             WriteEOL();
             Write(expr);
-            WriteEOL(true);
+            switch (expr) {
+                case BlockExpression _:
+                case ConditionalExpression cexpr when cexpr.Type == typeof(void):
+                    return;
+            }
+            Write(";");
         }
+
+        //private bool IsBlockSyntaxExpression(Expression expr) {
+        //    switch (expr) {
+        //        case ConditionalExpression cexpr:
+        //            return cexpr.Type == typeof(void);
+        //        default:
+        //            throw new NotImplementedException($"Expression type: {expr.GetType().Name}");
+        //    }
+        //}
     }
 }

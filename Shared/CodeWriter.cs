@@ -32,6 +32,7 @@ namespace ExpressionToString {
 
         private int indentationLevel = 0;
         protected void Indent() => indentationLevel += 1;
+        protected void Dedent() => indentationLevel -= 1;
         protected void WriteEOL(bool dedent=false) {
             sb.AppendLine();
             if (dedent) { indentationLevel = Math.Max(indentationLevel-1, 0); } // ensures the indentation level is never < 0
@@ -76,7 +77,8 @@ namespace ExpressionToString {
             AndAlso, OrElse,        // short-circuit boolean operators
             Equal, NotEqual, GreaterThanOrEqual, GreaterThan,LessThan,LessThanOrEqual,     // comparison operators
             Coalesce,
-            ArrayIndex
+            ArrayIndex,
+            Assign // assignment
         }.ToHashSet();
 
         private readonly HashSet<ExpressionType> unaryExpressionTypes = new[] {

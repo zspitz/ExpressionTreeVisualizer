@@ -72,6 +72,9 @@ namespace ExpressionToString.Util {
             return ret;
         }
 
+        public static MemberInfo GetMember<T>(Expression<Func<T>> expr) =>
+            (expr.Body as MemberExpression).Member;
+
         // TODO handle more than 8 values
         public static object[] TupleValues(object tuple) {
             if (!tuple.GetType().IsTupleType()) { throw new InvalidOperationException(); }
