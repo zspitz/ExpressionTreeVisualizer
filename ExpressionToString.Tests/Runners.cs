@@ -15,21 +15,21 @@ namespace ExpressionToString.Tests {
 
         public static void BuildAssert(Expression expr, string csharp, string vb) {
             var testCSharpCode = expr.ToString(CSharp);
-            var testVBCode = expr.ToString(VisualBasic);
+            var testVBCode = expr.ToString(VisualBasic).Replace("\r\n", "\n");
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
         }
 
         public static void BuildAssert(MemberBinding mbind, string csharp, string vb) {
             var testCSharpCode = mbind.ToString(CSharp);
-            var testVBCode = mbind.ToString(VisualBasic);
+            var testVBCode = mbind.ToString(VisualBasic).Replace("\r\n", "\n");
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
         }
 
         public static void BuildAssert(ElementInit init, string csharp, string vb) {
             var testCSharpCode = init.ToString(CSharp);
-            var testVBCode = init.ToString(VisualBasic);
+            var testVBCode = init.ToString(VisualBasic).Replace("\r\n", "\n");
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
         }
