@@ -87,5 +87,8 @@ namespace ExpressionToString.Tests.Constructed {
 
         [Fact]
         public void ConstructArrayIndex() => BuildAssert(ArrayIndex(arr, i), "arr[i]", "arr(i)");
+
+        [Fact]
+        public void ConstructAssign() => BuildAssert(Assign(x, Constant(5.2,typeof(double))), "x = 5.2", "x = 5.2");
     }
 }

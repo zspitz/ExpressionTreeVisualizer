@@ -314,7 +314,7 @@ namespace ExpressionToString {
         protected override void WriteConditional(ConditionalExpression expr) {
             if (expr.Type == typeof(void)) { // if block, or if..else block
                 Write("if (");
-                Write(expr.Test); // what happens if this is a BlockExpression?
+                Write(expr.Test);
                 Write(") ");
                 WriteAsBlock(expr.IfTrue);
                 if (!(expr.IfFalse is DefaultExpression && expr.Type == typeof(void))) {

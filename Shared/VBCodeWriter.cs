@@ -38,7 +38,8 @@ namespace ExpressionToString {
             [LessThanOrEqual] = "<=",
             [LeftShift] = "<<",
             [RightShift] = ">>",
-            [Power] = "^"
+            [Power] = "^",
+            [Assign] = "="
         };
 
         protected override void WriteBinary(BinaryExpression expr) {
@@ -375,13 +376,51 @@ namespace ExpressionToString {
         }
 
         protected override void WriteConditional(ConditionalExpression expr) {
-            Write("If(");
-            Write(expr.Test);
-            Write(", ");
-            Write(expr.IfTrue);
-            Write(", ");
-            Write(expr.IfFalse);
-            Write(")");
+            if (expr.Type == typeof(void)) {
+                Write("If");
+                if (IsBlockSyntax(expr.Test)) {
+                    Indent();
+                    WriteEOL();
+                    Write(expr.Test);
+                    WriteEOL(true);
+                } else {
+                    Write(" ");
+                    Write(expr.Test);
+                    Write(" ");
+                }
+                Write("Then");
+                Indent();
+                WriteEOL();
+                Write(expr.IfTrue);
+                Dedent();
+                WriteEOL();
+                if (!(expr.IfFalse is DefaultExpression) && expr.Type==typeof(void)) {
+                    Write("Else"); // TODO handle ElseIf -- ifFalse is a ConditionalExpression with typeof(void)
+                    Indent();
+                    WriteEOL();
+                    Write(expr.IfFalse);
+                    Dedent();
+                    WriteEOL();
+                }
+                Write("End If");
+            } else {
+                Write("If(");
+                if (IsBlockSyntax(expr.Test)) {
+                    Write("(");
+                    Indent();
+                    WriteEOL();
+                }
+                Write(expr.Test);
+                if (IsBlockSyntax(expr.Test)) {
+                    WriteEOL(true);
+                    Write(")");
+                }
+                Write(", ");
+                Write(expr.IfTrue);
+                Write(", ");
+                Write(expr.IfFalse);
+                Write(")");
+            }
         }
 
         protected override void WriteDefault(DefaultExpression expr) =>
@@ -417,6 +456,29 @@ namespace ExpressionToString {
             Write(")");
         }
 
-        protected override void WriteBlock(BlockExpression expr) => throw new NotImplementedException();
+        protected override void WriteBlock(BlockExpression expr) {
+            expr.Expressions.ForEach((subexpr, index) => {
+                if (index==0) {
+                    Write(subexpr);
+                } else {
+                    WriteStatement(subexpr);
+                }
+            });
+        }
+
+        private void WriteStatement(Expression expr) {
+            WriteEOL();
+            Write(expr);
+        }
+
+        private bool IsBlockSyntax(Expression expr) {
+            switch (expr) {
+                case ConditionalExpression cexpr:
+                    return cexpr.Type == typeof(void);
+                case BlockExpression bexpr:
+                    return true;
+            }
+            return false;
+        }
     }
 }

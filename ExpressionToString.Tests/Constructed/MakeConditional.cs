@@ -115,7 +115,10 @@ End If".TrimStart());
     true;
     true;
 } ? ""true"".Length : ""false"".Length",
-            @"If((True: True), ""True"".Length, ""False"".Length)"
+            @"If((
+    True
+    True
+), ""true"".Length, ""false"".Length)"
         );
 
         [Fact]
@@ -130,7 +133,10 @@ if ({
 }) {
     Console.WriteLine(true);
 }".TrimStart(), @"
-If (True: True) Then
+If
+    True
+    True
+Then
     Console.WriteLine(True)
 End If".TrimStart());
 
