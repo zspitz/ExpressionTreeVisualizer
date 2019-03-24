@@ -39,7 +39,17 @@ namespace ExpressionToString {
             [LeftShift] = "<<",
             [RightShift] = ">>",
             [Power] = "^",
-            [Assign] = "="
+            [Assign] = "=",
+            [AddAssign] = "+=",
+            [AddAssignChecked] = "+=",
+            [DivideAssign] = "/=",
+            [LeftShiftAssign] = "<<=",
+            [MultiplyAssign] = "*=",
+            [MultiplyAssignChecked] = "*=",
+            [PowerAssign] = "^=",
+            [RightShiftAssign] = ">>=",
+            [SubtractAssign] = "-=",
+            [SubtractAssignChecked] = "-="
         };
 
         protected override void WriteBinary(BinaryExpression expr) {
@@ -64,7 +74,18 @@ namespace ExpressionToString {
                     Write(expr.Right);
                     Write(")");
                     return;
-            }
+                case OrAssign:
+                case AndAssign:
+                case ExclusiveOrAssign:
+                case ModuloAssign:
+                    var op = (ExpressionType)Enum.Parse(typeof(ExpressionType), expr.NodeType.ToString().Replace("Assign", ""));
+                    Write(expr.Left);
+                    Write(" = ");
+                    Write(expr.Left);
+                    Write($" {simpleBinaryOperators[op]} ");
+                    Write(expr.Right);
+                    return;
+                }
 
             throw new NotImplementedException();
         }

@@ -14,22 +14,22 @@ namespace ExpressionToString.Tests {
         public static void BuildAssert<T1, T2, T3>(Expression<Func<T1, T2, T3>> expr, string csharp, string vb) => BuildAssert(expr as Expression, csharp, vb);
 
         public static void BuildAssert(Expression expr, string csharp, string vb) {
-            var testCSharpCode = expr.ToString(CSharp).Replace("\r\n", "\n");
-            var testVBCode = expr.ToString(VisualBasic).Replace("\r\n", "\n");
+            var testCSharpCode = expr.ToString(CSharp);
+            var testVBCode = expr.ToString(VisualBasic);
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
         }
 
         public static void BuildAssert(MemberBinding mbind, string csharp, string vb) {
-            var testCSharpCode = mbind.ToString(CSharp).Replace("\r\n", "\n");
-            var testVBCode = mbind.ToString(VisualBasic).Replace("\r\n", "\n");
+            var testCSharpCode = mbind.ToString(CSharp);
+            var testVBCode = mbind.ToString(VisualBasic);
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
         }
 
         public static void BuildAssert(ElementInit init, string csharp, string vb) {
-            var testCSharpCode = init.ToString(CSharp).Replace("\r\n", "\n");
-            var testVBCode = init.ToString(VisualBasic).Replace("\r\n", "\n");
+            var testCSharpCode = init.ToString(CSharp);
+            var testVBCode = init.ToString(VisualBasic);
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
         }

@@ -1,11 +1,10 @@
-﻿using System;
+﻿using ExpressionToString.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
-using static System.Linq.Expressions.ExpressionType;
 using static ExpressionToString.FormatterNames;
-using ExpressionToString.Util;
-using System.Diagnostics;
+using static System.Linq.Expressions.ExpressionType;
 
 namespace ExpressionToString {
     public abstract class CodeWriter {
@@ -33,10 +32,10 @@ namespace ExpressionToString {
         private int indentationLevel = 0;
         protected void Indent() => indentationLevel += 1;
         protected void Dedent() => indentationLevel -= 1;
-        protected void WriteEOL(bool dedent=false) {
+        protected void WriteEOL(bool dedent = false) {
             sb.AppendLine();
-            if (dedent) { indentationLevel = Math.Max(indentationLevel-1, 0); } // ensures the indentation level is never < 0
-            sb.Append(new string(' ', indentationLevel* 4));
+            if (dedent) { indentationLevel = Math.Max(indentationLevel - 1, 0); } // ensures the indentation level is never < 0
+            sb.Append(new string(' ', indentationLevel * 4));
         }
 
         protected void Write(string s) => s.AppendTo(sb);
@@ -78,7 +77,7 @@ namespace ExpressionToString {
             Equal, NotEqual, GreaterThanOrEqual, GreaterThan,LessThan,LessThanOrEqual,     // comparison operators
             Coalesce,
             ArrayIndex,
-            Assign // assignment
+            Assign, AddAssign, AddAssignChecked,DivideAssign,ExclusiveOrAssign, LeftShiftAssign,ModuloAssign,MultiplyAssign, MultiplyAssignChecked, OrAssign, RightShiftAssign, SubtractAssign,SubtractAssignChecked, PowerAssign, AndAssign
         }.ToHashSet();
 
         private readonly HashSet<ExpressionType> unaryExpressionTypes = new[] {

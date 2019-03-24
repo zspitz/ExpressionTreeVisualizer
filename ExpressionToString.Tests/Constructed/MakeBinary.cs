@@ -90,5 +90,59 @@ namespace ExpressionToString.Tests.Constructed {
 
         [Fact]
         public void ConstructAssign() => BuildAssert(Assign(x, Constant(5.2,typeof(double))), "x = 5.2", "x = 5.2");
+
+        [Fact]
+        public void ConstructAddAssign() => BuildAssert(AddAssign(i,j), "i += j", "i += j");
+
+        [Fact]
+        public void ConstructAddAssignChecked() => BuildAssert(AddAssignChecked(i, j), "i += j", "i += j");
+
+        [Fact]
+        public void ConstructAndAssign() => BuildAssert(AndAssign(b1, b2), "b1 &= b2", "b1 = b1 And b2");
+
+        [Fact]
+        public void ConstructDivideAssign() => BuildAssert(DivideAssign(i,j), "i /= j", "i /= j");
+
+        [Fact]
+        public void ConstructExclusiveOrAssign() => BuildAssert(ExclusiveOrAssign(b1, b2), "b1 ^= b2", "b1 = b1 Xor b2");
+
+        [Fact]
+        public void ConstructLeftShiftAssign() => BuildAssert(LeftShiftAssign(i, j), "i <<= j", "i <<= j");
+
+        [Fact]
+        public void ConstructModuloAssign() => BuildAssert(ModuloAssign(i, j), "i %= j", "i = i Mod j");
+
+        [Fact]
+        public void ConstructMultiplyAssign() => BuildAssert(MultiplyAssign(i,j), "i *= j", "i *= j");
+
+        [Fact]
+        public void ConstructMultiplyAssignChecked() => BuildAssert(MultiplyAssignChecked(i, j), "i *= j", "i *= j");
+
+        [Fact]
+        public void ConstructOrAssign() => BuildAssert(OrAssign(b1,b2), "b1 |= b2", "b1 = b1 Or b2");
+
+        //[Fact]
+        //public void ConstructPostDecrementAssign() => BuildAssert(PostDecrementAssign(), "", "");
+
+        //[Fact]
+        //public void ConstructPostIncrementAssign() => BuildAssert(PostIncrementAssign(), "", "");
+
+        [Fact]
+        public void ConstructPowerAssign() => BuildAssert(PowerAssign(x,y), "x = Math.Pow(x, y)", "x ^= y");
+
+        //[Fact]
+        //public void ConstructPreDecrementAssign() => BuildAssert(PreDecrementAssign(), "", "");
+
+        //[Fact]
+        //public void ConstructPreIncrementAssign() => BuildAssert(PreIncrementAssign(), "", "");
+
+        [Fact]
+        public void ConstructRightShiftAssign() => BuildAssert(RightShiftAssign(i,j), "i >>= j", "i >>= j");
+
+        [Fact]
+        public void ConstructSubtractAssign() => BuildAssert(SubtractAssign(i,j), "i -= j", "i -= j");
+
+        [Fact]
+        public void ConstructSubtractAssignChecked() => BuildAssert(SubtractAssignChecked(i, j), "i -= j", "i -= j");
     }
 }

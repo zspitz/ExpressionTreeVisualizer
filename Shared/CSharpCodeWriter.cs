@@ -41,7 +41,20 @@ namespace ExpressionToString {
             [Coalesce] = "??",
             [LeftShift] = "<<",
             [RightShift] = ">>",
-            [Assign] = "="
+            [Assign] = "="      ,
+            [AddAssign]="+=",
+            [AddAssignChecked]= "+=",
+            [AndAssign]="&=",
+            [DivideAssign]="/=",
+            [ExclusiveOrAssign]="^=",
+            [LeftShiftAssign]="<<=",
+            [ModuloAssign]="%=",
+            [MultiplyAssign]="*=",
+            [MultiplyAssignChecked] = "*=",
+            [OrAssign]="|=",
+            [RightShiftAssign]=">>=",
+            [SubtractAssign]="-=",
+            [SubtractAssignChecked]="-="
         };
 
         protected override void WriteBinary(BinaryExpression expr) {
@@ -60,6 +73,15 @@ namespace ExpressionToString {
                     Write("]");
                     return;
                 case Power:
+                    Write("Math.Pow(");
+                    Write(expr.Left);
+                    Write(", ");
+                    Write(expr.Right);
+                    Write(")");
+                    return;
+                case PowerAssign:
+                    Write(expr.Left);
+                    Write(" = ");
                     Write("Math.Pow(");
                     Write(expr.Left);
                     Write(", ");
