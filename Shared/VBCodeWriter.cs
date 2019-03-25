@@ -30,8 +30,6 @@ namespace ExpressionToString {
             [ExclusiveOr] = "Xor",
             [AndAlso] = "AndAlso",
             [OrElse] = "OrElse",
-            //[Equal] = "=",
-            //[NotEqual] = "<>",
             [GreaterThanOrEqual] = ">=",
             [GreaterThan] = ">",
             [LessThan] = "<",
@@ -187,6 +185,23 @@ namespace ExpressionToString {
                     Write(expr.Operand);
                     Write(" + 1)");
                     return;
+
+                case IsTrue:
+                    Write(expr.Operand);
+                    break;
+                case IsFalse:
+                    Write("Not ");
+                    Write(expr.Operand);
+                    break;
+
+                case Increment:
+                    Write(expr.Operand);
+                    Write(" += 1");
+                    break;
+                case Decrement:
+                    Write(expr.Operand);
+                    Write(" -= 1");
+                    break;
 
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");

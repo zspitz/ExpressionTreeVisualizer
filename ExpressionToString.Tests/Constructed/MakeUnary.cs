@@ -13,6 +13,9 @@ namespace ExpressionToString.Tests.Constructed {
         public void ConstructConvert() => BuildAssert(Convert(arr, typeof(object)), "(object)arr", "CObj(arr)");
 
         [Fact]
+        public void ConstructConvertChecked() => BuildAssert(ConvertChecked(arr, typeof(object)), "(object)arr", "CObj(arr)");
+
+        [Fact]
         public void ConstructNegate() => BuildAssert(Negate(i), "-i", "-i");
 
         [Fact]
@@ -23,5 +26,29 @@ namespace ExpressionToString.Tests.Constructed {
 
         [Fact]
         public void ConstructTypeAs() => BuildAssert(TypeAs(arr, typeof(object)), "arr as object", "TryCast(arr, Object)");
+
+        [Fact]
+        public void ConstructPostDecrementAssign() => BuildAssert(PostDecrementAssign(i), "i--", "(i -= 1 : i + 1)");
+
+        [Fact]
+        public void ConstructPostIncrementAssign() => BuildAssert(PostIncrementAssign(i), "i++", "(i += 1 : i - 1)");
+
+        [Fact]
+        public void ConstructPreDecrementAssign() => BuildAssert(PreDecrementAssign(i), "--i", "(i -= 1 : i)");
+
+        [Fact]
+        public void ConstructPreIncrementAssign() => BuildAssert(PreIncrementAssign(i), "++i", "(i += 1 : i)");
+
+        [Fact]
+        public void ConstructIsTrue() => BuildAssert(IsTrue(b1), "b1", "b1");
+
+        [Fact]
+        public void ConstructIsFalse() => BuildAssert(IsFalse(b1), "!b1", "Not b1");
+
+        [Fact]
+        public void ConstructIncrement() => BuildAssert(Increment(i), "i += 1", "i += 1");
+
+        [Fact]
+        public void ConstructDecrement() => BuildAssert(Decrement(i), "i -= 1", "i -= 1");
     }
 }

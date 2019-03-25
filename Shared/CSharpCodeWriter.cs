@@ -137,6 +137,21 @@ namespace ExpressionToString {
                     Write(expr.Operand);
                     Write("--");
                     break;
+                case IsTrue:
+                    Write(expr.Operand);
+                    break;
+                case IsFalse:
+                    Write("!");
+                    Write(expr.Operand);
+                    break;
+                case Increment:
+                    Write(expr.Operand);
+                    Write(" += 1");
+                    break;
+                case Decrement:
+                    Write(expr.Operand);
+                    Write(" -= 1");
+                    break;
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
             }

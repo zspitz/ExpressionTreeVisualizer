@@ -77,12 +77,17 @@ namespace ExpressionToString {
             Equal, NotEqual, GreaterThanOrEqual, GreaterThan,LessThan,LessThanOrEqual,     // comparison operators
             Coalesce,
             ArrayIndex,
-            Assign, AddAssign, AddAssignChecked,DivideAssign,ExclusiveOrAssign, LeftShiftAssign,ModuloAssign,MultiplyAssign, MultiplyAssignChecked, OrAssign, RightShiftAssign, SubtractAssign,SubtractAssignChecked, PowerAssign, AndAssign
+
+            Assign, 
+            AddAssign, AddAssignChecked,DivideAssign, ModuloAssign,MultiplyAssign, MultiplyAssignChecked, PowerAssign, SubtractAssign, SubtractAssignChecked, 
+            AndAssign, OrAssign, ExclusiveOrAssign,
+            LeftShiftAssign,RightShiftAssign
         }.ToHashSet();
 
         private readonly HashSet<ExpressionType> unaryExpressionTypes = new[] {
-            ArrayLength, ExpressionType.Convert, ConvertChecked, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus,
-            PreIncrementAssign, PreDecrementAssign, PostIncrementAssign, PostDecrementAssign
+            ArrayLength, ExpressionType.Convert, ConvertChecked, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus, IsTrue, IsFalse,
+            PreIncrementAssign, PreDecrementAssign, PostIncrementAssign, PostDecrementAssign,
+            Increment, Decrement
         }.ToHashSet();
 
         private void WriteExpression(Expression expr) {

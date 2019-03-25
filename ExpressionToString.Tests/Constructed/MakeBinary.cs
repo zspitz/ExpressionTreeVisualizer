@@ -138,17 +138,5 @@ namespace ExpressionToString.Tests.Constructed {
 
         [Fact]
         public void ConstructSubtractAssignChecked() => BuildAssert(SubtractAssignChecked(i, j), "i -= j", "i -= j");
-
-        [Fact]
-        public void ConstructPostDecrementAssign() => BuildAssert(PostDecrementAssign(i), "i--", "(i -= 1 : i + 1)");
-
-        [Fact]
-        public void ConstructPostIncrementAssign() => BuildAssert(PostIncrementAssign(i), "i++", "(i += 1 : i - 1)");
-
-        [Fact]
-        public void ConstructPreDecrementAssign() => BuildAssert(PreDecrementAssign(i), "--i", "(i -= 1 : i)");
-
-        [Fact]
-        public void ConstructPreIncrementAssign() => BuildAssert(PreIncrementAssign(i), "++i", "(i += 1 : i)");
     }
 }
