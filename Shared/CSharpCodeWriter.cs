@@ -121,6 +121,22 @@ namespace ExpressionToString {
                     Write(expr.Operand);
                     Write($" as {expr.Type.FriendlyName(CSharp)}");
                     break;
+                case PreIncrementAssign:
+                    Write("++");
+                    Write(expr.Operand);
+                    break;
+                case PostIncrementAssign:
+                    Write(expr.Operand);
+                    Write("++");
+                    break;
+                case PreDecrementAssign:
+                    Write("--");
+                    Write(expr.Operand);
+                    break;
+                case PostDecrementAssign:
+                    Write(expr.Operand);
+                    Write("--");
+                    break;
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
             }

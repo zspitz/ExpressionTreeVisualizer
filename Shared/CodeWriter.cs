@@ -81,7 +81,8 @@ namespace ExpressionToString {
         }.ToHashSet();
 
         private readonly HashSet<ExpressionType> unaryExpressionTypes = new[] {
-            ArrayLength, ExpressionType.Convert, ConvertChecked, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus
+            ArrayLength, ExpressionType.Convert, ConvertChecked, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus,
+            PreIncrementAssign, PreDecrementAssign, PostIncrementAssign, PostDecrementAssign
         }.ToHashSet();
 
         private void WriteExpression(Expression expr) {

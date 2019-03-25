@@ -62,6 +62,12 @@ namespace ExpressionToString.Tests.Constructed {
         public void ConstructNotEqual() => BuildAssert(NotEqual(x, y), "x != y", "x <> y");
 
         [Fact]
+        public void ConstructReferenceEqual() => BuildAssert(ReferenceEqual(lst, lst), "lst == lst", "lst Is lst");
+
+        [Fact]
+        public void ConstructReferenceNotEqual() => BuildAssert(ReferenceNotEqual(lst, lst), "lst != lst", "lst IsNot lst");
+
+        [Fact]
         public void ConstructGreaterThanOrEqual() => BuildAssert(GreaterThanOrEqual(x, y), "x >= y", "x >= y");
 
         [Fact]
@@ -121,20 +127,8 @@ namespace ExpressionToString.Tests.Constructed {
         [Fact]
         public void ConstructOrAssign() => BuildAssert(OrAssign(b1,b2), "b1 |= b2", "b1 = b1 Or b2");
 
-        //[Fact]
-        //public void ConstructPostDecrementAssign() => BuildAssert(PostDecrementAssign(), "", "");
-
-        //[Fact]
-        //public void ConstructPostIncrementAssign() => BuildAssert(PostIncrementAssign(), "", "");
-
         [Fact]
         public void ConstructPowerAssign() => BuildAssert(PowerAssign(x,y), "x = Math.Pow(x, y)", "x ^= y");
-
-        //[Fact]
-        //public void ConstructPreDecrementAssign() => BuildAssert(PreDecrementAssign(), "", "");
-
-        //[Fact]
-        //public void ConstructPreIncrementAssign() => BuildAssert(PreIncrementAssign(), "", "");
 
         [Fact]
         public void ConstructRightShiftAssign() => BuildAssert(RightShiftAssign(i,j), "i >>= j", "i >>= j");
@@ -144,5 +138,17 @@ namespace ExpressionToString.Tests.Constructed {
 
         [Fact]
         public void ConstructSubtractAssignChecked() => BuildAssert(SubtractAssignChecked(i, j), "i -= j", "i -= j");
+
+        [Fact]
+        public void ConstructPostDecrementAssign() => BuildAssert(PostDecrementAssign(i), "i--", "(i -= 1 : i + 1)");
+
+        [Fact]
+        public void ConstructPostIncrementAssign() => BuildAssert(PostIncrementAssign(i), "i++", "(i += 1 : i - 1)");
+
+        [Fact]
+        public void ConstructPreDecrementAssign() => BuildAssert(PreDecrementAssign(i), "--i", "(i -= 1 : i)");
+
+        [Fact]
+        public void ConstructPreIncrementAssign() => BuildAssert(PreIncrementAssign(i), "++i", "(i += 1 : i)");
     }
 }

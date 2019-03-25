@@ -5,11 +5,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using static ExpressionToString.Util.Functions;
 using static ExpressionToString.FormatterNames;
-using static System.Linq.Expressions.ExpressionType;
-using static System.Linq.Enumerable;
 using static ExpressionToString.Globals;
+using static ExpressionToString.Util.Functions;
+using static System.Linq.Enumerable;
+using static System.Linq.Expressions.ExpressionType;
 
 namespace ExpressionToString {
     public class VBCodeWriter : CodeWriter {
@@ -30,8 +30,8 @@ namespace ExpressionToString {
             [ExclusiveOr] = "Xor",
             [AndAlso] = "AndAlso",
             [OrElse] = "OrElse",
-            [Equal] = "=",
-            [NotEqual] = "<>",
+            //[Equal] = "=",
+            //[NotEqual] = "<>",
             [GreaterThanOrEqual] = ">=",
             [GreaterThan] = ">",
             [LessThan] = "<",
@@ -85,7 +85,23 @@ namespace ExpressionToString {
                     Write($" {simpleBinaryOperators[op]} ");
                     Write(expr.Right);
                     return;
-                }
+                case Equal:
+                    Write(expr.Left);
+                    Write(expr.IsReferenceComparison() ?
+                        " Is " :
+                        " = "
+                    );
+                    Write(expr.Right);
+                    return;
+                case NotEqual:
+                    Write(expr.Left);
+                    Write(expr.IsReferenceComparison() ?
+                        " IsNot " :
+                        " <> "
+                    );
+                    Write(expr.Right);
+                    return;
+            }
 
             throw new NotImplementedException();
         }
@@ -142,6 +158,36 @@ namespace ExpressionToString {
                     Write(expr.Operand);
                     Write($", {expr.Type.FriendlyName(VisualBasic)})");
                     break;
+
+                case PreIncrementAssign:
+                    Write("(");
+                    Write(expr.Operand);
+                    Write(" += 1 : ");
+                    Write(expr.Operand);
+                    Write(")");
+                    return;
+                case PostIncrementAssign:
+                    Write("(");
+                    Write(expr.Operand);
+                    Write(" += 1 : ");
+                    Write(expr.Operand);
+                    Write(" - 1)");
+                    return;
+                case PreDecrementAssign:
+                    Write("(");
+                    Write(expr.Operand);
+                    Write(" -= 1 : ");
+                    Write(expr.Operand);
+                    Write(")");
+                    return;
+                case PostDecrementAssign:
+                    Write("(");
+                    Write(expr.Operand);
+                    Write(" -= 1 : ");
+                    Write(expr.Operand);
+                    Write(" + 1)");
+                    return;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
             }
@@ -415,7 +461,7 @@ namespace ExpressionToString {
                 Write(expr.IfTrue);
                 Dedent();
                 WriteEOL();
-                if (!(expr.IfFalse is DefaultExpression) && expr.Type==typeof(void)) {
+                if (!(expr.IfFalse is DefaultExpression) && expr.Type == typeof(void)) {
                     Write("Else"); // TODO handle ElseIf -- ifFalse is a ConditionalExpression with typeof(void)
                     Indent();
                     WriteEOL();
@@ -479,7 +525,7 @@ namespace ExpressionToString {
 
         protected override void WriteBlock(BlockExpression expr) {
             expr.Expressions.ForEach((subexpr, index) => {
-                if (index==0) {
+                if (index == 0) {
                     Write(subexpr);
                 } else {
                     WriteStatement(subexpr);

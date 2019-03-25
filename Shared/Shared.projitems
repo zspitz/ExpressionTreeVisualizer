@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CSharpCodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\BinaryExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Dictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Expression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\ICollectionT.cs" />

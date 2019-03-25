@@ -19,5 +19,6 @@ namespace ExpressionToString.Tests {
         public static readonly ParameterExpression s1 = Parameter(typeof(string), "s1");
         public static readonly ParameterExpression s2 = Parameter(typeof(string), "s2");
         public static readonly ParameterExpression arr = Parameter(typeof(string[]), "arr");
+        public static readonly ParameterExpression lst = Parameter(typeof(List<int>), "lst");
     }
 }
