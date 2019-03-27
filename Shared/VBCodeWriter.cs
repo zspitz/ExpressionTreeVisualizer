@@ -539,13 +539,25 @@ namespace ExpressionToString {
         }
 
         protected override void WriteBlock(BlockExpression expr) {
+            var explicitBlock = expr.Variables.Any();
+            if (explicitBlock) {
+                Write("Block");
+                Indent();
+                WriteEOL();
+                expr.Variables.ForEach((v, index) => {
+                    if (index > 0) { WriteEOL(); }
+                    Write("Dim ");
+                    Write(v, true);
+                });
+            }
             expr.Expressions.ForEach((subexpr, index) => {
-                if (index == 0) {
-                    Write(subexpr);
-                } else {
-                    WriteStatement(subexpr);
-                }
+                if (index > 0 || expr.Variables.Any()) { WriteEOL(); }
+                Write(subexpr);
             });
+            if (explicitBlock) {
+                WriteEOL(true);
+                Write("End Block");
+            }
         }
 
         private void WriteStatement(Expression expr) {
@@ -561,6 +573,16 @@ namespace ExpressionToString {
                     return true;
             }
             return false;
+        }
+
+        protected override void WriteSwitch(SwitchExpression expr) => throw new NotImplementedException();
+
+        protected override void WriteSwitchCase(SwitchCase switchCase) {
+            Write("Case ");
+            WriteList(switchCase.TestValues);
+            Indent();
+            
+            WriteEOL();
         }
     }
 }

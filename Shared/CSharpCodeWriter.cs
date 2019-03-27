@@ -117,6 +117,10 @@ namespace ExpressionToString {
                     }
                     Write(expr.Operand);
                     break;
+                case OnesComplement:
+                    Write("~");
+                    Write(expr.Operand);
+                    break;
                 case TypeAs:
                     Write(expr.Operand);
                     Write($" as {expr.Type.FriendlyName(CSharp)}");
@@ -415,10 +419,30 @@ namespace ExpressionToString {
             Write("]");
         }
 
-        protected override void WriteBlock(BlockExpression expr) => WriteAsBlock(expr);
+        protected override void WriteBlock(BlockExpression expr) {
+            var explicitBlock = expr.Variables.Any();
+            if (explicitBlock) {
+                Write("{");
+                Indent();
+                WriteEOL();
+                expr.Variables.ForEach((v, index) => {
+                    if (index>0) { WriteEOL(); }
+                    Write(v, true);
+                    Write(";");
+                });
+            }
+            expr.Expressions.ForEach((subexpr, index) => {
+                if (index > 0 || expr.Variables.Any()) { WriteEOL(); }
+                Write(subexpr);
+                Write(";");
+            });
+            if (explicitBlock) {
+                WriteEOL(true);
+                Write("}");
+            }
+        }
 
         protected void WriteAsBlock(Expression expr) {
-            Write("{");
             Indent();
             if (expr is BlockExpression bexpr) {
                 foreach (var subexpr in bexpr.Expressions) {
@@ -428,8 +452,6 @@ namespace ExpressionToString {
             } else {
                 WriteStatement(expr);
             }
-            WriteEOL(true);
-            Write("}");
         }
 
         private void WriteStatement(Expression expr) {
@@ -441,6 +463,20 @@ namespace ExpressionToString {
                     return;
             }
             Write(";");
+        }
+
+        protected override void WriteSwitch(SwitchExpression expr) => throw new NotImplementedException();
+
+        protected override void WriteSwitchCase(SwitchCase switchCase) {
+            switchCase.TestValues.ForEach((testValue, index) => {
+                if (index > 0) { WriteEOL(); }
+                Write("case ");
+                Write(testValue);
+                Write(":");
+            });
+            Write(switchCase.Body);
+            WriteEOL();
+            Write("break;");
         }
 
         //private bool IsBlockSyntaxExpression(Expression expr) {

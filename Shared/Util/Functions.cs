@@ -208,5 +208,7 @@ namespace ExpressionToString.Util {
                 return ret * (isNegative ? -1 : 1);
             }
         }
+
+        public static KeyValuePair<TKey, TValue> KVP<TKey, TValue>(TKey key, TValue value) => new KeyValuePair<TKey, TValue>(key, value);
     }
 }

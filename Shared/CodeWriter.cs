@@ -57,6 +57,9 @@ namespace ExpressionToString {
                     case ElementInit init:
                         WriteElementInit(init);
                         break;
+                    case SwitchCase switchCase:
+                        WriteSwitchCase(switchCase);
+                        break;
 
                     default:
                         throw new NotImplementedException($"Code generation not implemented for type '{o.GetType().Name}'");
@@ -78,8 +81,8 @@ namespace ExpressionToString {
             Coalesce,
             ArrayIndex,
 
-            Assign, 
-            AddAssign, AddAssignChecked,DivideAssign, ModuloAssign,MultiplyAssign, MultiplyAssignChecked, PowerAssign, SubtractAssign, SubtractAssignChecked, 
+            Assign,
+            AddAssign, AddAssignChecked,DivideAssign, ModuloAssign,MultiplyAssign, MultiplyAssignChecked, PowerAssign, SubtractAssign, SubtractAssignChecked,
             AndAssign, OrAssign, ExclusiveOrAssign,
             LeftShiftAssign,RightShiftAssign
         }.ToHashSet();
@@ -163,43 +166,21 @@ namespace ExpressionToString {
                     WriteBlock(expr as BlockExpression);
                     break;
 
+                case Switch:
+                    WriteSwitch(expr as SwitchExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
                     #region Missing cases
-                    /*case AddAssign:
-                    case AddAssignChecked:
-                    case AndAssign:
-                    case Assign:
-                    case Block:
-                    case DebugInfo:
-                    case Decrement:
-                    case DivideAssign:
+                    /*case DebugInfo:
                     case Dynamic:
-                    case ExclusiveOrAssign:
                     case Extension:
                     case Goto:
-                    case Increment:
-                    case IsFalse:
-                    case IsTrue:
                     case Label:
-                    case LeftShiftAssign:
                     case Loop:
-                    case ModuloAssign:
-                    case MultiplyAssign:
-                    case MultiplyAssignChecked:
-                    case OnesComplement:
-                    case OrAssign:
-                    case PostDecrementAssign:
-                    case PostIncrementAssign:
-                    case PowerAssign:
-                    case PreDecrementAssign:
-                    case PreIncrementAssign:
-                    case RightShiftAssign:
                     case RuntimeVariables:
-                    case SubtractAssign:
-                    case SubtractAssignChecked:
-                    case Switch:
                     case Throw:
                     case Try:
                     case Unbox:
@@ -244,7 +225,7 @@ namespace ExpressionToString {
         protected abstract void WriteIndex(IndexExpression expr);
 
         protected abstract void WriteBlock(BlockExpression expr);
-
+        protected abstract void WriteSwitch(SwitchExpression expr);
 
         //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();
@@ -252,11 +233,13 @@ namespace ExpressionToString {
         //protected abstract void Write(LabelExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(LoopExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(RuntimeVariablesExpression expr) => throw new NotImplementedException();
-        //protected abstract void Write(SwitchExpression expr) => throw new NotImplementedException();
+
         //protected abstract void Write(TryExpression expr) => throw new NotImplementedException();
 
         protected abstract void WriteElementInit(ElementInit elementInit);
         protected abstract void WriteBinding(MemberBinding binding);
+
+        protected abstract void WriteSwitchCase(SwitchCase switchCase);
 
         protected abstract void WriteParameterDeclarationImpl(ParameterExpression prm);
     }
