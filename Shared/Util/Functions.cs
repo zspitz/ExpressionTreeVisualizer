@@ -34,6 +34,12 @@ namespace ExpressionToString.Util {
                 ret = s.ToVerbatimString(language);
             } else if (o is Enum e) {
                 ret = $"{e.GetType().Name}.{e.ToString()}";
+            } else if (o is Type t) {
+                if (language==CSharp) {
+                    ret = $"typeof({t.FriendlyName(CSharp)})";
+                } else {
+                    ret = $"GetType({t.FriendlyName(VisualBasic)})";
+                }
             } else if (type.IsArray && !type.GetElementType().IsArray && type.GetArrayRank() == 1) {
                 var values = (o as dynamic[]).Joined(", ", x => RenderLiteral(x, language));
                 if (language == CSharp) {
@@ -45,7 +51,7 @@ namespace ExpressionToString.Util {
                 ret = "(" + TupleValues(o).Select(x => RenderLiteral(x, language)).Joined(", ") + ")";
             } else if (type.IsNumeric()) {
                 ret = o.ToString();
-            } else {
+            }else {
                 rendered = false;
                 ret = $"#{type.FriendlyName(language)}";
             }

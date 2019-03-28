@@ -38,5 +38,12 @@ namespace ExpressionToString.Tests {
             "() => $\"{(object)new DateTime(2001, 1, 1)}\"",
             "Function() $\"{CObj(New Date(2001, 1, 1))}\""
         );
+
+        [Fact]
+        public void Type() => BuildAssert(
+            () => typeof(string),
+            "() => typeof(string)",
+            "Function() GetType(String)"
+        );
     }
 }

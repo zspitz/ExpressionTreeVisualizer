@@ -56,5 +56,12 @@ namespace ExpressionToString.Tests.Constructed {
             "new [] { \"abcd\", 5, #Random }",
             "{ \"abcd\", 5, #Random }"
         );
+
+        [Fact]
+        public void Type() => BuildAssert(
+            Constant(typeof(string)),
+            "typeof(string)",
+            "GetType(String)"
+        );
     }
 }
