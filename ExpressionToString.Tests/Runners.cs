@@ -34,8 +34,14 @@ namespace ExpressionToString.Tests {
             Assert.Equal(vb, testVBCode);
         }
 
+        public static void BuildAssert(SwitchCase switchCase, string csharp, string vb) {
+            var testCSharpCode = switchCase.ToString(CSharp);
+            var testVBCode = switchCase.ToString(VisualBasic);
+            Assert.Equal(csharp, testCSharpCode);
+            Assert.Equal(vb, testVBCode);
+        }
+
         public static void BuildAssert(CatchBlock catchBlock, string csharp, string vb) => throw new NotImplementedException();
-        public static void BuildAssert(SwitchCase switchCase, string csharp, string vb) => throw new NotImplementedException();
         public static void BuildAssert(LabelTarget labelTarget, string csharp, string vb) => throw new NotImplementedException();
 
         public static void BuildAssert(Type type, string csharp, string vb) => throw new NotImplementedException();

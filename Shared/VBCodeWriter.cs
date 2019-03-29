@@ -457,13 +457,27 @@ namespace ExpressionToString {
             }
         }
 
+        //private void IndentIfBlockSyntax(Expression expr, bool trailingSpace) {
+        //    if (IsBlockSyntax(expr)) {
+        //        Indent();
+        //        WriteEOL();
+        //        Write(expr, false, false);
+        //        WriteEOL(true);
+        //    } else {
+        //        Write(" ");
+        //        Write(expr);
+        //        if (trailingSpace) {Write(" ");}
+        //    }
+        //}
+
         protected override void WriteConditional(ConditionalExpression expr) {
             if (expr.Type == typeof(void)) {
+                var lastClauseIsBlock = false;
                 Write("If");
                 if (IsBlockSyntax(expr.Test)) {
                     Indent();
                     WriteEOL();
-                    Write(expr.Test);
+                    Write(expr.Test, false, false);
                     WriteEOL(true);
                 } else {
                     Write(" ");
@@ -471,20 +485,35 @@ namespace ExpressionToString {
                     Write(" ");
                 }
                 Write("Then");
-                Indent();
-                WriteEOL();
-                Write(expr.IfTrue);
-                Dedent();
-                WriteEOL();
-                if (!(expr.IfFalse is DefaultExpression) && expr.Type == typeof(void)) {
-                    Write("Else"); // TODO handle ElseIf -- ifFalse is a ConditionalExpression with typeof(void)
+                if (IsBlockSyntax(expr.IfTrue)) {
+                    lastClauseIsBlock = true;
                     Indent();
                     WriteEOL();
-                    Write(expr.IfFalse);
-                    Dedent();
-                    WriteEOL();
+                    Write(expr.IfTrue, false, false);
+                    WriteEOL(true);
+                } else {
+                    Write(" ");
+                    Write(expr.IfTrue);
+                    if (!expr.IfFalse.IsEmpty()) { Write(" "); }
                 }
-                Write("End If");
+                if (!expr.IfFalse.IsEmpty()) {
+                    Write("Else");
+                    if (IsBlockSyntax(expr.IfFalse)) {
+                        lastClauseIsBlock = true;
+                        Indent();
+                        WriteEOL();
+                        Write(expr.IfFalse, false, false);
+                        WriteEOL(true);
+                    } else {
+                        lastClauseIsBlock = false;
+                        Write(" ");
+                        Write(expr.IfFalse);
+                        //Write(" ");
+                    }
+                }
+                if (lastClauseIsBlock) {
+                    Write("End If");
+                }
             } else {
                 Write("If(");
                 if (IsBlockSyntax(expr.Test)) {
@@ -538,9 +567,9 @@ namespace ExpressionToString {
             Write(")");
         }
 
-        protected override void WriteBlock(BlockExpression expr) {
-            var explicitBlock = expr.Variables.Any();
-            if (explicitBlock) {
+        protected override void WriteBlock(BlockExpression expr, bool? explicitBlock = null) {
+            var useExplicitBlock = explicitBlock ?? expr.Variables.Any();
+            if (useExplicitBlock) {
                 Write("Block");
                 Indent();
                 WriteEOL();
@@ -554,22 +583,17 @@ namespace ExpressionToString {
                 if (index > 0 || expr.Variables.Any()) { WriteEOL(); }
                 Write(subexpr);
             });
-            if (explicitBlock) {
+            if (useExplicitBlock) {
                 WriteEOL(true);
                 Write("End Block");
             }
         }
 
-        private void WriteStatement(Expression expr) {
-            WriteEOL();
-            Write(expr);
-        }
-
         private bool IsBlockSyntax(Expression expr) {
             switch (expr) {
-                case ConditionalExpression cexpr:
-                    return cexpr.Type == typeof(void);
+                case ConditionalExpression cexpr when cexpr.Type == typeof(void):
                 case BlockExpression bexpr:
+                case SwitchExpression switchExpression:
                     return true;
             }
             return false;

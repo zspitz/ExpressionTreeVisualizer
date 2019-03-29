@@ -371,20 +371,36 @@ namespace ExpressionToString {
         protected override void WriteConditional(ConditionalExpression expr) {
             if (expr.Type == typeof(void)) { // if block, or if..else block
                 Write("if (");
-                Write(expr.Test);
+                Write(expr.Test, false, true);
                 Write(") ");
-                WriteAsBlock(expr.IfTrue);
-                if (!(expr.IfFalse is DefaultExpression && expr.Type == typeof(void))) {
+                Write(expr.IfTrue, false, true);
+                if (!IsBlockSyntax(expr.IfTrue)) {
+                    Write(";");
+                }
+                if (!expr.IfFalse.IsEmpty()) {
                     Write(" else ");
-                    WriteAsBlock(expr.IfFalse);
+                    Write(expr.IfFalse, false, true);
+                    if (!IsBlockSyntax(expr.IfFalse)) {
+                        Write(";");
+                    }
                 }
             } else {
-                Write(expr.Test);
+                Write(expr.Test, false, true);
                 Write(" ? ");
                 Write(expr.IfTrue);
                 Write(" : ");
                 Write(expr.IfFalse);
             }
+        }
+
+        private bool IsBlockSyntax(Expression expr) {
+            switch (expr) {
+                case ConditionalExpression cexpr when cexpr.Type == typeof(void):
+                case BlockExpression bexpr:
+                case SwitchExpression switchExpression:
+                    return true;
+            }
+            return false;
         }
 
         protected override void WriteDefault(DefaultExpression expr) =>
@@ -419,9 +435,9 @@ namespace ExpressionToString {
             Write("]");
         }
 
-        protected override void WriteBlock(BlockExpression expr) {
-            var explicitBlock = expr.Variables.Any();
-            if (explicitBlock) {
+        protected override void WriteBlock(BlockExpression expr, bool? explicitBlock) {
+            var useExplicitBlock = explicitBlock ?? expr.Variables.Any();
+            if (useExplicitBlock) {
                 Write("{");
                 Indent();
                 WriteEOL();
@@ -436,7 +452,7 @@ namespace ExpressionToString {
                 Write(subexpr);
                 Write(";");
             });
-            if (explicitBlock) {
+            if (useExplicitBlock) {
                 WriteEOL(true);
                 Write("}");
             }

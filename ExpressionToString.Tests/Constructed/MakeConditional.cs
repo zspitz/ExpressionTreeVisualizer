@@ -1,20 +1,12 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using Xunit;
 using static ExpressionToString.Tests.Globals;
 using static ExpressionToString.Tests.Runners;
-using static ExpressionToString.Util.Functions;
 using static System.Linq.Expressions.Expression;
 
 namespace ExpressionToString.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
-    public class MakeConditional
-    {
-        MethodCallExpression writeLineTrue;
-        MethodCallExpression writeLineFalse;
-
-        MemberExpression trueLength;
-        MemberExpression falseLength;
+    public class MakeConditional {
 
         // note that the NodeType of the expression constructed Conditional factory method can be either typeof(void) or some other type
         // the NodeTypeof IfThen and IfThenElse is always typeof(void)
@@ -25,17 +17,10 @@ namespace ExpressionToString.Tests.Constructed {
                 Constant(true),
                 writeLineTrue,
                 writeLineFalse
-            ), @"
-if (true) {
-    Console.WriteLine(true);
-} else {
-    Console.WriteLine(false);
-}".TrimStart(), @"
-If True Then
-    Console.WriteLine(True)
-Else
-    Console.WriteLine(False)
-End If".TrimStart());
+            ),
+            @"if (true) Console.WriteLine(true); else Console.WriteLine(false);",
+            @"If True Then Console.WriteLine(True) Else Console.WriteLine(False)"
+        );
 
         [Fact]
         public void VoidConditional1WithElse() => BuildAssert(
@@ -43,44 +28,31 @@ End If".TrimStart());
                 Constant(true),
                 writeLineTrue,
                 writeLineFalse
-            ), @"
-if (true) {
-    Console.WriteLine(true);
-} else {
-    Console.WriteLine(false);
-}".TrimStart(), @"
-If True Then
-    Console.WriteLine(True)
-Else
-    Console.WriteLine(False)
-End If".TrimStart());
+            ),
+            @"if (true) Console.WriteLine(true); else Console.WriteLine(false);",
+            @"If True Then Console.WriteLine(True) Else Console.WriteLine(False)"
+        );
 
         [Fact]
         public void VoidConditionalWithoutElse() => BuildAssert(
             Condition(
                 Constant(true),
                 writeLineTrue,
-                Expression.Default(typeof(void))
-            ), @"
-if (true) {
-    Console.WriteLine(true);
-}".TrimStart(), @"
-If True Then
-    Console.WriteLine(True)
-End If".TrimStart());
+                Empty()
+            ), 
+            @"if (true) Console.WriteLine(true);", 
+            @"If True Then Console.WriteLine(True)"
+        );
 
         [Fact]
         public void VoidConditional1WithoutElse() => BuildAssert(
             IfThen(
                 Constant(true),
                 writeLineTrue
-            ), @"
-if (true) {
-    Console.WriteLine(true);
-}".TrimStart(), @"
-If True Then
-    Console.WriteLine(True)
-End If".TrimStart());
+            ), 
+            @"if (true) Console.WriteLine(true);", 
+            @"If True Then Console.WriteLine(True)"
+        );
 
         [Fact]
         public void NonVoidConditionalWithElse() => BuildAssert(
@@ -88,7 +60,7 @@ End If".TrimStart());
                 Constant(true),
                 trueLength,
                 falseLength
-            ), 
+            ),
             "true ? \"true\".Length : \"false\".Length",
             "If(True, \"true\".Length, \"false\".Length)"
         );
@@ -126,28 +98,62 @@ End If".TrimStart());
             IfThen(
                 Block(Constant(true), Constant(true)),
                 writeLineTrue
-            ), @"
-if ({
+            ),
+            @"if ({
     true;
     true;
-}) {
+}) Console.WriteLine(true);",
+            @"If
+    True
+    True
+Then Console.WriteLine(True)"
+        );
+
+        [Fact]
+        public void MultilineIfTrue() => BuildAssert(
+            IfThen(
+                Constant(true),
+                Block(writeLineTrue, writeLineTrue)
+            ),
+            @"if (true) {
     Console.WriteLine(true);
-}".TrimStart(), @"
-If
-    True
-    True
-Then
+    Console.WriteLine(true);
+}",
+            @"If True Then
     Console.WriteLine(True)
-End If".TrimStart());
+    Console.WriteLine(True)
+End If"
+        );
 
-        public MakeConditional() {
-            var writeLine = GetMethod(() => Console.WriteLine(true));
-            writeLineTrue = Call(writeLine, Constant(true));
-            writeLineFalse = Call(writeLine, Constant(false));
+        [Fact]
+        public void NestedIfThen() => BuildAssert(
+                IfThen(
+                    Constant(true),
+                    IfThen(
+                        Constant(true),
+                        writeLineTrue
+                    )
+                ),
+                @"if (true) if (true) Console.WriteLine(true);",
+                @"If True Then
+    If True Then Console.WriteLine(True)
+End If"
+        );
 
-            var stringLength = GetMember(() => "".Length);
-            trueLength = MakeMemberAccess(Constant("true"), stringLength);
-            falseLength = MakeMemberAccess(Constant("false"), stringLength);
-        }
+        [Fact]
+        public void NestedElse() => BuildAssert(
+            IfThenElse(
+                Constant(true),
+                writeLineTrue,
+                IfThen(
+                    Constant(true),
+                    writeLineTrue
+                )
+            ),
+            @"if (true) Console.WriteLine(true); else if (true) Console.WriteLine(true);",
+            @"If True Then Console.WriteLine(True) Else
+    If True Then Console.WriteLine(True)
+End If"
+        );
     }
 }

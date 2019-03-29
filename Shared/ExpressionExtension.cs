@@ -20,5 +20,11 @@ namespace ExpressionToString {
 
         public static string ToString(this MemberBinding mbind, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
             CodeWriter.Create(formatter, mbind, out visitedParts).ToString();
+
+        public static string ToString(this SwitchCase switchCase, string formatter) =>
+            CodeWriter.Create(formatter, switchCase).ToString();
+
+        public static string ToString(this SwitchCase switchCase, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
+            CodeWriter.Create(formatter, switchCase, out visitedParts).ToString();
     }
 }

@@ -40,13 +40,19 @@ namespace ExpressionToString {
 
         protected void Write(string s) => s.AppendTo(sb);
 
-        protected void Write(object o, bool parameterDeclaration = false) {
+        /// <summary>Write a string-rendering of an expression or other type used in expression trees</summary>
+        /// <param name="o">Object to be rendered</param>
+        /// <param name="parameterDeclaration">For ParameterExpression, this is a parameter declaration</param>
+        /// <param name="explicitBlock">For BlockExpression, controls explicit block rendering: true forces the rendering; false prevents the rendering; and null determines automatically</param>
+        protected void Write(object o, bool parameterDeclaration = false, bool? explicitBlock = null) {
             var start = sb.Length;
             try {
                 switch (o) {
-                    // parameter declaration has to be done separately, because even though it's a parameter expression, the declaration is different
                     case ParameterExpression pexpr when parameterDeclaration:
                         WriteParameterDeclarationImpl(pexpr);
+                        break;
+                    case BlockExpression bexpr when explicitBlock != null:
+                        WriteBlock(bexpr, explicitBlock);
                         break;
                     case Expression expr:
                         WriteExpression(expr);
@@ -224,7 +230,7 @@ namespace ExpressionToString {
         protected abstract void WriteInvocation(InvocationExpression expr);
         protected abstract void WriteIndex(IndexExpression expr);
 
-        protected abstract void WriteBlock(BlockExpression expr);
+        protected abstract void WriteBlock(BlockExpression expr, bool? noExplicitBlock = null);
         protected abstract void WriteSwitch(SwitchExpression expr);
 
         //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();

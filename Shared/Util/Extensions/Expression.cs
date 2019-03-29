@@ -23,5 +23,8 @@ namespace ExpressionToString.Util {
             expr is UnaryExpression uexpr && uexpr.NodeType == ExpressionType.Convert ?
                 uexpr.Operand :
                 expr;
+
+        public static bool IsEmpty(this Expression expr) =>
+            expr is DefaultExpression && expr.Type == typeof(void);
     }
 }
