@@ -457,7 +457,7 @@ namespace ExpressionToString {
             }
         }
 
-        private void IndentIfBlockSyntax(Expression expr, (bool leading, bool trailing) nonblockSpaces, bool? explicitBlock = false) {
+        private bool IndentIfBlockSyntax(Expression expr, (bool leading, bool trailing) nonblockSpaces, bool? explicitBlock = false) {
             if (IsBlockSyntax(expr)) {
                 if (explicitBlock ?? false) {
                     Write(expr, false, true);
@@ -467,10 +467,12 @@ namespace ExpressionToString {
                     Write(expr, false, explicitBlock);
                     WriteEOL(true);
                 }
+                return true;
             } else {
                 if (nonblockSpaces.leading) { Write(" "); }
                 Write(expr);
                 if (nonblockSpaces.trailing) { Write(" "); }
+                return false;
             }
         }
 
@@ -480,12 +482,11 @@ namespace ExpressionToString {
                 Write("If");
                 IndentIfBlockSyntax(expr.Test, (true, true));
                 Write("Then");
-                if (IsBlockSyntax(expr.IfTrue)) { lastClauseIsBlock = true; }
+                lastClauseIsBlock = IsBlockSyntax(expr.IfTrue);
                 IndentIfBlockSyntax(expr.IfTrue, (true, !expr.IfFalse.IsEmpty()));
                 if (!expr.IfFalse.IsEmpty()) {
                     Write("Else");
-                    if (IsBlockSyntax(expr.IfFalse)) { lastClauseIsBlock = true; }
-                    IndentIfBlockSyntax(expr.IfFalse, (true, false));
+                    lastClauseIsBlock = IndentIfBlockSyntax(expr.IfFalse, (true, false));
                 }
                 if (lastClauseIsBlock) {
                     Write("End If");
@@ -572,8 +573,8 @@ namespace ExpressionToString {
             Write("Case ");
             WriteList(switchCase.TestValues);
             Indent();
-            
             WriteEOL();
+            Write(switchCase.Body);
         }
     }
 }

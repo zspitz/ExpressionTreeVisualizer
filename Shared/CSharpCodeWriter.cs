@@ -3,13 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using static ExpressionToString.FormatterNames;
+using static ExpressionToString.Globals;
 using static ExpressionToString.Util.Functions;
 using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
-using static ExpressionToString.Globals;
 
 namespace ExpressionToString {
     public class CSharpCodeWriter : CodeWriter {
@@ -41,20 +40,20 @@ namespace ExpressionToString {
             [Coalesce] = "??",
             [LeftShift] = "<<",
             [RightShift] = ">>",
-            [Assign] = "="      ,
-            [AddAssign]="+=",
-            [AddAssignChecked]= "+=",
-            [AndAssign]="&=",
-            [DivideAssign]="/=",
-            [ExclusiveOrAssign]="^=",
-            [LeftShiftAssign]="<<=",
-            [ModuloAssign]="%=",
-            [MultiplyAssign]="*=",
+            [Assign] = "=",
+            [AddAssign] = "+=",
+            [AddAssignChecked] = "+=",
+            [AndAssign] = "&=",
+            [DivideAssign] = "/=",
+            [ExclusiveOrAssign] = "^=",
+            [LeftShiftAssign] = "<<=",
+            [ModuloAssign] = "%=",
+            [MultiplyAssign] = "*=",
             [MultiplyAssignChecked] = "*=",
-            [OrAssign]="|=",
-            [RightShiftAssign]=">>=",
-            [SubtractAssign]="-=",
-            [SubtractAssignChecked]="-="
+            [OrAssign] = "|=",
+            [RightShiftAssign] = ">>=",
+            [SubtractAssign] = "-=",
+            [SubtractAssignChecked] = "-="
         };
 
         protected override void WriteBinary(BinaryExpression expr) {
@@ -442,7 +441,7 @@ namespace ExpressionToString {
                 Indent();
                 WriteEOL();
                 expr.Variables.ForEach((v, index) => {
-                    if (index>0) { WriteEOL(); }
+                    if (index > 0) { WriteEOL(); }
                     Write(v, true);
                     Write(";");
                 });
@@ -490,18 +489,14 @@ namespace ExpressionToString {
                 Write(testValue);
                 Write(":");
             });
-            Write(switchCase.Body);
+            Indent();
+            WriteEOL();
+            Write(switchCase.Body, false, false);
+            if (!IsBlockSyntax(switchCase.Body)) {
+                Write(";");
+            }
             WriteEOL();
             Write("break;");
         }
-
-        //private bool IsBlockSyntaxExpression(Expression expr) {
-        //    switch (expr) {
-        //        case ConditionalExpression cexpr:
-        //            return cexpr.Type == typeof(void);
-        //        default:
-        //            throw new NotImplementedException($"Expression type: {expr.GetType().Name}");
-        //    }
-        //}
     }
 }
