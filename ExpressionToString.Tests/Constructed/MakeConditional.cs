@@ -87,10 +87,10 @@ namespace ExpressionToString.Tests.Constructed {
     true;
     true;
 } ? ""true"".Length : ""false"".Length",
-            @"If((
+            @"If(Block
     True
     True
-), ""true"".Length, ""false"".Length)"
+End Block, ""true"".Length, ""false"".Length)"
         );
 
         [Fact]

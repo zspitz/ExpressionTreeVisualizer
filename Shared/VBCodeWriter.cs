@@ -457,75 +457,42 @@ namespace ExpressionToString {
             }
         }
 
-        //private void IndentIfBlockSyntax(Expression expr, bool trailingSpace) {
-        //    if (IsBlockSyntax(expr)) {
-        //        Indent();
-        //        WriteEOL();
-        //        Write(expr, false, false);
-        //        WriteEOL(true);
-        //    } else {
-        //        Write(" ");
-        //        Write(expr);
-        //        if (trailingSpace) {Write(" ");}
-        //    }
-        //}
+        private void IndentIfBlockSyntax(Expression expr, (bool leading, bool trailing) nonblockSpaces, bool? explicitBlock = false) {
+            if (IsBlockSyntax(expr)) {
+                if (explicitBlock ?? false) {
+                    Write(expr, false, true);
+                } else {
+                    Indent();
+                    WriteEOL();
+                    Write(expr, false, explicitBlock);
+                    WriteEOL(true);
+                }
+            } else {
+                if (nonblockSpaces.leading) { Write(" "); }
+                Write(expr);
+                if (nonblockSpaces.trailing) { Write(" "); }
+            }
+        }
 
         protected override void WriteConditional(ConditionalExpression expr) {
             if (expr.Type == typeof(void)) {
                 var lastClauseIsBlock = false;
                 Write("If");
-                if (IsBlockSyntax(expr.Test)) {
-                    Indent();
-                    WriteEOL();
-                    Write(expr.Test, false, false);
-                    WriteEOL(true);
-                } else {
-                    Write(" ");
-                    Write(expr.Test);
-                    Write(" ");
-                }
+                IndentIfBlockSyntax(expr.Test, (true, true));
                 Write("Then");
-                if (IsBlockSyntax(expr.IfTrue)) {
-                    lastClauseIsBlock = true;
-                    Indent();
-                    WriteEOL();
-                    Write(expr.IfTrue, false, false);
-                    WriteEOL(true);
-                } else {
-                    Write(" ");
-                    Write(expr.IfTrue);
-                    if (!expr.IfFalse.IsEmpty()) { Write(" "); }
-                }
+                if (IsBlockSyntax(expr.IfTrue)) { lastClauseIsBlock = true; }
+                IndentIfBlockSyntax(expr.IfTrue, (true, !expr.IfFalse.IsEmpty()));
                 if (!expr.IfFalse.IsEmpty()) {
                     Write("Else");
-                    if (IsBlockSyntax(expr.IfFalse)) {
-                        lastClauseIsBlock = true;
-                        Indent();
-                        WriteEOL();
-                        Write(expr.IfFalse, false, false);
-                        WriteEOL(true);
-                    } else {
-                        lastClauseIsBlock = false;
-                        Write(" ");
-                        Write(expr.IfFalse);
-                        //Write(" ");
-                    }
+                    if (IsBlockSyntax(expr.IfFalse)) { lastClauseIsBlock = true; }
+                    IndentIfBlockSyntax(expr.IfFalse, (true, false));
                 }
                 if (lastClauseIsBlock) {
                     Write("End If");
                 }
             } else {
                 Write("If(");
-                if (IsBlockSyntax(expr.Test)) {
-                    Write("(");
-                    Indent();
-                    WriteEOL();
-                }
-                Write(expr.Test);
-                if (IsBlockSyntax(expr.Test)) {
-                    WriteEOL(true);
-                    Write(")");
-                }
+                IndentIfBlockSyntax(expr.Test, (false, false), true);
                 Write(", ");
                 Write(expr.IfTrue);
                 Write(", ");
