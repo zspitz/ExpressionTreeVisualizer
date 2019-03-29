@@ -480,8 +480,6 @@ namespace ExpressionToString {
             Write(";");
         }
 
-        protected override void WriteSwitch(SwitchExpression expr) => throw new NotImplementedException();
-
         protected override void WriteSwitchCase(SwitchCase switchCase) {
             switchCase.TestValues.ForEach((testValue, index) => {
                 if (index > 0) { WriteEOL(); }
@@ -497,6 +495,29 @@ namespace ExpressionToString {
             }
             WriteEOL();
             Write("break;");
+        }
+
+        protected override void WriteSwitch(SwitchExpression expr) {
+            Write("switch (");
+            Write(expr.SwitchValue, false, true);
+            Write(") {");
+            Indent();
+            WriteEOL();
+            expr.Cases.ForEach((switchCase, index) => {
+                if (index > 0) { WriteEOL(); }
+                Write(switchCase);
+                Dedent();
+            });
+            if (expr.DefaultBody != null) {
+                WriteEOL();
+                Write("default:");
+                Indent();
+                WriteEOL();
+                Write(expr.DefaultBody);
+                Dedent();
+            }
+            WriteEOL(true);
+            Write("}");
         }
     }
 }

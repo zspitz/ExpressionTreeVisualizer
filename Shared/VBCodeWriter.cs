@@ -567,14 +567,34 @@ namespace ExpressionToString {
             return false;
         }
 
-        protected override void WriteSwitch(SwitchExpression expr) => throw new NotImplementedException();
-
         protected override void WriteSwitchCase(SwitchCase switchCase) {
             Write("Case ");
             WriteList(switchCase.TestValues);
             Indent();
             WriteEOL();
             Write(switchCase.Body);
+        }
+
+        protected override void WriteSwitch(SwitchExpression expr) {
+            Write("Select Case ");
+            Indent();
+            Write(expr.SwitchValue, false, true);
+            WriteEOL();
+            expr.Cases.ForEach((switchCase, index) => {
+                if (index > 0) { WriteEOL(); }
+                Write(switchCase);
+                Dedent();
+            });
+            if (expr.DefaultBody != null) {
+                if (expr.Cases.Any()) { WriteEOL(); }
+                Write("Case Else");
+                Indent();
+                WriteEOL();
+                Write(expr.DefaultBody);
+                Dedent();
+            }
+            WriteEOL(true);
+            Write("End Select");
         }
     }
 }

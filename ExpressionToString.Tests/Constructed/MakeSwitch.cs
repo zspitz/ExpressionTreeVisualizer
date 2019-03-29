@@ -63,128 +63,136 @@ case 6:
     Console.WriteLine(True)"
         );
 
-//        [Fact]
-//        public void SwitchOnExpressionWithDefault() => BuildAssert(
-//            Switch(i, Block(
-//                    Constant(true),
-//                    Constant(true)
-//                ), SwitchCase(
-//                    writeLineTrue,
-//                    Constant(4)
-//                ), SwitchCase(
-//                    writeLineFalse,
-//                    Constant(5)
-//                )
-//            ),
-//            @"switch (i) {
-//    case 4:
-//        Console.WriteLine(true);
-//        break;
-//    case 5:
-//        Console.WriteLine(false);
-//        break;
-//    default:
-//        true;
-//        true;
-//}", @"Select Case i
-//    Case 4
-//        Console.WriteLine(True)
-//    Case 5
-//        Console.WriteLine(False)
-//    Case Else
-//        True
-//        True
-//End Select"
-//        );
+        [Fact]
+        public void SwitchOnExpressionWithDefault() => BuildAssert(
+            Switch(i, Block(
+                    typeof(void),
+                    Constant(true),
+                    Constant(true)
+                ), SwitchCase(
+                    writeLineTrue,
+                    Constant(4)
+                ), SwitchCase(
+                    writeLineFalse,
+                    Constant(5)
+                )
+            ),
+            @"switch (i) {
+    case 4:
+        Console.WriteLine(true);
+        break;
+    case 5:
+        Console.WriteLine(false);
+        break;
+    default:
+        true;
+        true;
+}", @"Select Case i
+    Case 4
+        Console.WriteLine(True)
+    Case 5
+        Console.WriteLine(False)
+    Case Else
+        True
+        True
+End Select"
+        );
 
-//        [Fact]
-//        public void SwitchOnMultipleStatementsWithDefault() => BuildAssert(
-//            Switch(Block(i, j), Block(
-//                    Constant(true),
-//                    Constant(true)
-//                ), SwitchCase(
-//                    writeLineTrue,
-//                    Constant(4)
-//                ), SwitchCase(
-//                    writeLineFalse,
-//                    Constant(5)
-//                )
-//            ),
-//            @"switch ({
-//    i;
-//    j;
-//}) {
-//    case 4:
-//        Console.WriteLine(true);
-//        break;
-//    case 5:
-//        Console.WriteLine(false);
-//        break;
-//    default:
-//        true;
-//        true;
-//}", @"Select Case (i : j)
-//    Case 4
-//        Console.WriteLine(True)
-//    Case 5
-//        Console.WriteLine(False)
-//    Case Else
-//        True
-//        True
-//End Select"
-//        );
+        [Fact]
+        public void SwitchOnMultipleStatementsWithDefault() => BuildAssert(
+            Switch(Block(i, j), Block(
+                    typeof(void),
+                    Constant(true),
+                    Constant(true)
+                ), SwitchCase(
+                    writeLineTrue,
+                    Constant(4)
+                ), SwitchCase(
+                    writeLineFalse,
+                    Constant(5)
+                )
+            ),
+            @"switch ({
+    i;
+    j;
+}) {
+    case 4:
+        Console.WriteLine(true);
+        break;
+    case 5:
+        Console.WriteLine(false);
+        break;
+    default:
+        true;
+        true;
+}", @"Select Case Block
+        i
+        j
+    End Block
+    Case 4
+        Console.WriteLine(True)
+    Case 5
+        Console.WriteLine(False)
+    Case Else
+        True
+        True
+End Select"
+        );
 
-//        [Fact]
-//        public void SwitchOnExpressionWithoutDefault() => BuildAssert(
-//            Switch(i, SwitchCase(
-//                    writeLineTrue,
-//                    Constant(4)
-//                ), SwitchCase(
-//                    writeLineFalse,
-//                    Constant(5)
-//                )
-//            ),
-//            @"switch (i) {
-//    case 4:
-//        Console.WriteLine(true);
-//        break;
-//    case 5:
-//        Console.WriteLine(false);
-//        break;
-//}", @"Select Case i
-//    Case 4
-//        Console.WriteLine(True)
-//    Case 5
-//        Console.WriteLine(False)
-//End Select"
-//        );
+        [Fact]
+        public void SwitchOnExpressionWithoutDefault() => BuildAssert(
+            Switch(i, SwitchCase(
+                    writeLineTrue,
+                    Constant(4)
+                ), SwitchCase(
+                    writeLineFalse,
+                    Constant(5)
+                )
+            ),
+            @"switch (i) {
+    case 4:
+        Console.WriteLine(true);
+        break;
+    case 5:
+        Console.WriteLine(false);
+        break;
+}", @"Select Case i
+    Case 4
+        Console.WriteLine(True)
+    Case 5
+        Console.WriteLine(False)
+End Select"
+        );
 
-//        [Fact]
-//        public void SwithOnMultipleStatementsWithoutDefault() => BuildAssert(
-//            Switch(Block(i, j), SwitchCase(
-//                    writeLineTrue,
-//                    Constant(4)
-//                ), SwitchCase(
-//                    writeLineFalse,
-//                    Constant(5)
-//                )
-//            ),
-//            @"switch ({
-//    i;
-//    j;
-//}) {
-//    case 4:
-//        Console.WriteLine(true);
-//        break;
-//    case 5:
-//        Console.WriteLine(false);
-//        break;
-//}", @"Select Case (i : j)
-//    Case 4
-//        Console.WriteLine(True)
-//    Case 5
-//        Console.WriteLine(False)
-//End Select"
-//        );
+        [Fact]
+        public void SwithOnMultipleStatementsWithoutDefault() => BuildAssert(
+            Switch(Block(i, j), SwitchCase(
+                    writeLineTrue,
+                    Constant(4)
+                ), SwitchCase(
+                    writeLineFalse,
+                    Constant(5)
+                )
+            ),
+            @"switch ({
+    i;
+    j;
+}) {
+    case 4:
+        Console.WriteLine(true);
+        break;
+    case 5:
+        Console.WriteLine(false);
+        break;
+}", @"Select Case Block
+        i
+        j
+    End Block
+    Case 4
+        Console.WriteLine(True)
+    Case 5
+        Console.WriteLine(False)
+End Select"
+        );
     }
 }
