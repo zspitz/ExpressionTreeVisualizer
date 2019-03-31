@@ -54,5 +54,8 @@ namespace ExpressionToString.Tests.Constructed {
 
         [Fact]
         public void ConstructThrow() => BuildAssert(Throw(Constant(new Random())), "throw #Random", "Throw #Random");
+
+        [Fact]
+        public void ConstructRethrow() => BuildAssert(Rethrow(), "throw", "Throw");
     }
 }

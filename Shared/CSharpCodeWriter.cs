@@ -156,8 +156,11 @@ namespace ExpressionToString {
                     Write(" -= 1");
                     break;
                 case Throw:
-                    Write("throw ");
-                    Write(expr.Operand);
+                    Write("throw");
+                    if (expr.Operand != null) {
+                        Write(" ");
+                        Write(expr.Operand);
+                    }
                     break;
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
@@ -518,10 +521,78 @@ namespace ExpressionToString {
                 Indent();
                 WriteEOL();
                 Write(expr.DefaultBody);
+                if (!IsBlockSyntax(expr.DefaultBody)) {
+                    Write(";");
+                }
                 Dedent();
             }
             WriteEOL(true);
             Write("}");
+        }
+
+        protected override void WriteCatchBlock(CatchBlock catchBlock) {
+            Write("catch ");
+            if (catchBlock.Variable != null || catchBlock.Test != typeof(Exception)) {
+                Write("(");
+                if (catchBlock.Variable != null) {
+                    Write(catchBlock.Variable, true);
+                } else {
+                    Write(catchBlock.Test.FriendlyName(CSharp));
+                }
+                Write(") ");
+                if (catchBlock.Filter != null) {
+                    Write("when (");
+                    Write(catchBlock.Filter, false, true);
+                    Write(") ");
+                }
+            }
+            Write("{");
+            Indent();
+            WriteEOL();
+            Write(catchBlock.Body);
+            if (!IsBlockSyntax(catchBlock.Body)) {
+                Write(";");
+            }
+            WriteEOL(true);
+            Write("}");
+        }
+
+        protected override void WriteTry(TryExpression expr) {
+            Write("try {");
+            Indent();
+            WriteEOL();
+            Write(expr.Body);
+            if (!IsBlockSyntax(expr.Body)) {
+                Write(";");
+            }
+            WriteEOL(true);
+            Write("}");
+            expr.Handlers.ForEach(catchBlock => {
+                Write(" ");
+                Write(catchBlock);
+            });
+            if (expr.Fault != null) {
+                Write(" fault {");
+                Indent();
+                WriteEOL();
+                Write(expr.Fault);
+                if (!IsBlockSyntax(expr.Fault)) {
+                    Write(";");
+                }
+                WriteEOL(true);
+                Write("}");
+            }
+            if (expr.Finally != null) {
+                Write(" finally {");
+                Indent();
+                WriteEOL();
+                Write(expr.Finally);
+                if (!IsBlockSyntax(expr.Finally)) {
+                    Write(";");
+                }
+                WriteEOL(true);
+                Write("}");
+            }
         }
     }
 }

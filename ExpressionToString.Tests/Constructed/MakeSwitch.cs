@@ -64,12 +64,8 @@ case 6:
         );
 
         [Fact]
-        public void SwitchOnExpressionWithDefault() => BuildAssert(
-            Switch(i, Block(
-                    typeof(void),
-                    Constant(true),
-                    Constant(true)
-                ), SwitchCase(
+        public void SwitchOnExpressionWithDefaultSingleStatement() => BuildAssert(
+            Switch(i, Empty(), SwitchCase(
                     writeLineTrue,
                     Constant(4)
                 ), SwitchCase(
@@ -78,6 +74,39 @@ case 6:
                 )
             ),
             @"switch (i) {
+    case 4:
+        Console.WriteLine(true);
+        break;
+    case 5:
+        Console.WriteLine(false);
+        break;
+    default:
+        default(void);
+}", @"Select Case i
+    Case 4
+        Console.WriteLine(True)
+    Case 5
+        Console.WriteLine(False)
+    Case Else
+        CType(Nothing, Void)
+End Select"
+        );
+
+        [Fact]
+        public void SwitchOnExpressionWithDefaultMultiStatement() => BuildAssert(
+    Switch(i, Block(
+            typeof(void),
+            Constant(true),
+            Constant(true)
+        ), SwitchCase(
+            writeLineTrue,
+            Constant(4)
+        ), SwitchCase(
+            writeLineFalse,
+            Constant(5)
+        )
+    ),
+    @"switch (i) {
     case 4:
         Console.WriteLine(true);
         break;
@@ -96,7 +125,7 @@ case 6:
         True
         True
 End Select"
-        );
+);
 
         [Fact]
         public void SwitchOnMultipleStatementsWithDefault() => BuildAssert(

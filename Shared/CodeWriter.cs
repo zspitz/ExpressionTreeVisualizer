@@ -66,6 +66,9 @@ namespace ExpressionToString {
                     case SwitchCase switchCase:
                         WriteSwitchCase(switchCase);
                         break;
+                    case CatchBlock catchBlock:
+                        WriteCatchBlock(catchBlock);
+                        break;
 
                     default:
                         throw new NotImplementedException($"Code generation not implemented for type '{o.GetType().Name}'");
@@ -177,6 +180,10 @@ namespace ExpressionToString {
                     WriteSwitch(expr as SwitchExpression);
                     break;
 
+                case Try:
+                    WriteTry(expr as TryExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
@@ -233,6 +240,7 @@ namespace ExpressionToString {
 
         protected abstract void WriteBlock(BlockExpression expr, bool? noExplicitBlock = null);
         protected abstract void WriteSwitch(SwitchExpression expr);
+        protected abstract void WriteTry(TryExpression expr);
 
         //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();
@@ -240,11 +248,17 @@ namespace ExpressionToString {
         //protected abstract void Write(LabelExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(LoopExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(RuntimeVariablesExpression expr) => throw new NotImplementedException();
-        //protected abstract void Write(TryExpression expr) => throw new NotImplementedException();
 
         protected abstract void WriteElementInit(ElementInit elementInit);
         protected abstract void WriteBinding(MemberBinding binding);
         protected abstract void WriteSwitchCase(SwitchCase switchCase);
+        protected abstract void WriteCatchBlock(CatchBlock catchBlock);
+
+        //protected abstract void WriteIArgumentProvider(IArgumentProvider iArgumentProvider); 
+        //protected abstract void WriteIDynamicExpression(IDynamicExpression iDynamicExpression); 
+        //protected abstract void WriteLabelTarget(LabelTarget labelTarget); 
+        //protected abstract void WriteMemberAssignment(MemberAssignment memberAssignment); 
+        //protected abstract void WriteSymbolDocumentInfo(SymbolDocumentInfo symbolDocumentInfo); 
 
         protected abstract void WriteParameterDeclarationImpl(ParameterExpression prm);
     }

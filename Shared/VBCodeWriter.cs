@@ -204,8 +204,11 @@ namespace ExpressionToString {
                     break;
 
                 case Throw:
-                    Write("Throw ");
-                    Write(expr.Operand);
+                    Write("Throw");
+                    if (expr.Operand != null) {
+                        Write(" ");
+                        Write(expr.Operand);
+                    }
                     break;
 
                 default:
@@ -600,6 +603,50 @@ namespace ExpressionToString {
             }
             WriteEOL(true);
             Write("End Select");
+        }
+
+        protected override void WriteCatchBlock(CatchBlock catchBlock) {
+            Write("Catch");
+            if (catchBlock.Variable != null) {
+                Write(" ");
+                Write(catchBlock.Variable, true);
+            } else if (catchBlock.Test != null && catchBlock.Test != typeof(Exception)) {
+                Write($" _ As {catchBlock.Test.FriendlyName(VisualBasic)}");
+            }
+            if (catchBlock.Filter != null) {
+                Write(" When ");
+                Write(catchBlock.Filter, false, true);
+            }
+            Indent();
+            WriteEOL();
+            Write(catchBlock.Body);
+        }
+
+        protected override void WriteTry(TryExpression expr) {
+            Write("Try");
+            Indent();
+            WriteEOL();
+            Write(expr.Body,false, false);
+            WriteEOL(true);
+            expr.Handlers.ForEach(catchBlock => {
+                Write(catchBlock);
+                WriteEOL(true);
+            });
+            if (expr.Fault != null) {
+                Write("Fault");
+                Indent();
+                WriteEOL();
+                Write(expr.Fault,false, false);
+                WriteEOL(true);
+            }
+            if (expr.Finally != null) {
+                Write("Finally");
+                Indent();
+                WriteEOL();
+                Write(expr.Finally, false, false);
+                WriteEOL(true);
+            }
+            Write("End Try");
         }
     }
 }
