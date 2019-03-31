@@ -96,7 +96,8 @@ namespace ExpressionToString {
         private readonly HashSet<ExpressionType> unaryExpressionTypes = new[] {
             ArrayLength, ExpressionType.Convert, ConvertChecked, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus, IsTrue, IsFalse,
             PreIncrementAssign, PreDecrementAssign, PostIncrementAssign, PostDecrementAssign,
-            Increment, Decrement
+            Increment, Decrement,
+            Throw
         }.ToHashSet();
 
         private void WriteExpression(Expression expr) {
@@ -239,12 +240,10 @@ namespace ExpressionToString {
         //protected abstract void Write(LabelExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(LoopExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(RuntimeVariablesExpression expr) => throw new NotImplementedException();
-
         //protected abstract void Write(TryExpression expr) => throw new NotImplementedException();
 
         protected abstract void WriteElementInit(ElementInit elementInit);
         protected abstract void WriteBinding(MemberBinding binding);
-
         protected abstract void WriteSwitchCase(SwitchCase switchCase);
 
         protected abstract void WriteParameterDeclarationImpl(ParameterExpression prm);

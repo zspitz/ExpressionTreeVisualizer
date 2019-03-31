@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 using static ExpressionToString.Tests.Globals;
 using static ExpressionToString.Tests.Runners;
 using static System.Linq.Expressions.Expression;
@@ -50,5 +51,8 @@ namespace ExpressionToString.Tests.Constructed {
 
         [Fact]
         public void ConstructDecrement() => BuildAssert(Decrement(i), "i -= 1", "i -= 1");
+
+        [Fact]
+        public void ConstructThrow() => BuildAssert(Throw(Constant(new Random())), "throw #Random", "Throw #Random");
     }
 }

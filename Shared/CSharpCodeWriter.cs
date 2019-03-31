@@ -155,6 +155,10 @@ namespace ExpressionToString {
                     Write(expr.Operand);
                     Write(" -= 1");
                     break;
+                case Throw:
+                    Write("throw ");
+                    Write(expr.Operand);
+                    break;
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
             }

@@ -203,6 +203,11 @@ namespace ExpressionToString {
                     Write(" -= 1");
                     break;
 
+                case Throw:
+                    Write("Throw ");
+                    Write(expr.Operand);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
             }
