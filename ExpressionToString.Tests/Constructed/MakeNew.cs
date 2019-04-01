@@ -43,8 +43,12 @@ namespace ExpressionToString.Tests.Constructed
                 New(fooType),
                 Bind(barProp, Constant("abcd"))
             ),
-            "new Foo() { Bar = \"abcd\" }",
-            "New Foo With {.Bar = \"abcd\"}"
+            @"new Foo() {
+    Bar = ""abcd""
+}",
+            @"New Foo With {
+    .Bar = ""abcd""
+}"
         );
 
         [Fact]
@@ -54,15 +58,21 @@ namespace ExpressionToString.Tests.Constructed
                 Bind(barProp, Constant("abcd")),
                 Bind(bazProp, Constant("efgh"))
             ),
-            "new Foo() { Bar = \"abcd\", Baz = \"efgh\" }",
-            "New Foo With {.Bar = \"abcd\", .Baz = \"efgh\"}"
+            @"new Foo() {
+    Bar = ""abcd"",
+    Baz = ""efgh""
+}",
+            @"New Foo With {
+    .Bar = ""abcd"",
+    .Baz = ""efgh""
+}"
         );
 
         [Fact]
         public void NamedTypeConstructorParameters() => BuildAssert(
             New(fooCtor1, Constant("ijkl")),
-            "new Foo(\"ijkl\")",
-            "New Foo(\"ijkl\")"
+            @"new Foo(""ijkl"")",
+            @"New Foo(""ijkl"")"
         );
 
         [Fact]
@@ -72,8 +82,14 @@ namespace ExpressionToString.Tests.Constructed
                 Bind(barProp, Constant("abcd")),
                 Bind(bazProp, Constant("efgh"))
             ),
-            "new Foo(\"ijkl\") { Bar = \"abcd\", Baz = \"efgh\" }",
-            "New Foo(\"ijkl\") With {.Bar = \"abcd\", .Baz = \"efgh\"}"
+            @"new Foo(""ijkl"") {
+    Bar = ""abcd"",
+    Baz = ""efgh""
+}",
+            @"New Foo(""ijkl"") With {
+    .Bar = ""abcd"",
+    .Baz = ""efgh""
+}"
         );
 
         [Fact]
@@ -83,8 +99,14 @@ namespace ExpressionToString.Tests.Constructed
                 ElementInit(add1, Constant("abcd")), 
                 ElementInit(add1, Constant("efgh"))
             ),
-            "new List<string>() { \"abcd\", \"efgh\" }",
-            "New List(Of String) From {\"abcd\", \"efgh\"}"
+            @"new List<string>() {
+    ""abcd"",
+    ""efgh""
+}",
+            @"New List(Of String) From {
+    ""abcd"",
+    ""efgh""
+}"
         );
 
         [Fact]
@@ -94,8 +116,26 @@ namespace ExpressionToString.Tests.Constructed
                 ElementInit(add2, Constant("ab"), Constant("cd")),
                 ElementInit(add2, Constant("ef"), Constant("gh"))
             ),
-            "new Wrapper() { { \"ab\", \"cd\" }, { \"ef\", \"gh\" } }",
-            "New Wrapper From {{\"ab\", \"cd\"}, {\"ef\", \"gh\"}}"
+            @"new Wrapper() {
+    {
+        ""ab"",
+        ""cd""
+    },
+    {
+        ""ef"",
+        ""gh""
+    }
+}",
+            @"New Wrapper From {
+    {
+        ""ab"",
+        ""cd""
+    },
+    {
+        ""ef"",
+        ""gh""
+    }
+}"
         );
 
         [Fact]
@@ -105,8 +145,20 @@ namespace ExpressionToString.Tests.Constructed
                 ElementInit(add2, Constant("ab"), Constant("cd")),
                 ElementInit(add1, Constant("ef"))
             ),
-            "new Wrapper() { { \"ab\", \"cd\" }, \"ef\" }",
-            "New Wrapper From {{\"ab\", \"cd\"}, \"ef\"}"
+            @"new Wrapper() {
+    {
+        ""ab"",
+        ""cd""
+    },
+    ""ef""
+}",
+            @"New Wrapper From {
+    {
+        ""ab"",
+        ""cd""
+    },
+    ""ef""
+}"
         );
     }
 }

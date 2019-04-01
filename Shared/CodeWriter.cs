@@ -203,12 +203,18 @@ namespace ExpressionToString {
             }
         }
 
-        protected void WriteList<T>(IEnumerable<T> items, string delimiter = ", ") {
+        protected void WriteList<T>(IEnumerable<T> items, bool writeEOL, string delimiter = ", ") {
+            if (writeEOL) { delimiter = delimiter.TrimEnd(); }
             items.ForEach((arg, index) => {
-                if (index > 0) { delimiter.AppendTo(sb); }
+                if (index > 0) {
+                    delimiter.AppendTo(sb);
+                    if (writeEOL) { WriteEOL(); }
+                }
                 Write(arg);
             });
         }
+
+        protected void WriteList<T>(IEnumerable<T> items, string delimiter = ", ") => WriteList(items, false, delimiter);
 
         private void registerVisited(object o, int start) {
             if (visitedObjects == null) { return; }
@@ -257,7 +263,6 @@ namespace ExpressionToString {
         //protected abstract void WriteIArgumentProvider(IArgumentProvider iArgumentProvider); 
         //protected abstract void WriteIDynamicExpression(IDynamicExpression iDynamicExpression); 
         //protected abstract void WriteLabelTarget(LabelTarget labelTarget); 
-        //protected abstract void WriteMemberAssignment(MemberAssignment memberAssignment); 
         //protected abstract void WriteSymbolDocumentInfo(SymbolDocumentInfo symbolDocumentInfo); 
 
         protected abstract void WriteParameterDeclarationImpl(ParameterExpression prm);

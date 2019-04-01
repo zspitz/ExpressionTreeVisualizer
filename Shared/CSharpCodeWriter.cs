@@ -207,15 +207,21 @@ namespace ExpressionToString {
         protected override void WriteNew(NewExpression expr) {
             Write("new ");
             if (expr.Type.IsAnonymous()) {
-                Write("{ ");
+                Write("{");
+                Indent();
+                WriteEOL();
                 expr.Constructor.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
-                    if (index > 0) { Write(", "); }
+                    if (index > 0) {
+                        Write(",");
+                        WriteEOL();
+                    }
                     if (!(arg is MemberExpression mexpr && mexpr.Member.Name.Replace("$VB$Local_", "") == name)) {
                         Write($"{name} = ");
                     }
                     Write(arg);
                 });
-                Write(" }");
+                WriteEOL(true);
+                Write("}");
             } else {
                 Write(expr.Type.FriendlyName(CSharp));
                 Write("(");
@@ -303,6 +309,7 @@ namespace ExpressionToString {
                 case MemberListBinding listBinding:
                     throw new NotImplementedException();
                 case MemberMemberBinding memberBinding:
+                    Write(binding.Member.Name);
                     throw new NotImplementedException();
                 default:
                     throw new NotImplementedException();
@@ -312,17 +319,23 @@ namespace ExpressionToString {
         protected override void WriteMemberInit(MemberInitExpression expr) {
             Write(expr.NewExpression);
             if (expr.Bindings.Any()) {
-                Write(" { ");
-                WriteList(expr.Bindings);
-                Write(" }");
+                Write(" {");
+                Indent();
+                WriteEOL();
+                WriteList(expr.Bindings, true);
+                WriteEOL(true);
+                Write("}");
             }
         }
 
         protected override void WriteListInit(ListInitExpression expr) {
             Write(expr.NewExpression);
-            Write(" { ");
-            WriteList(expr.Initializers);
-            Write(" }");
+            Write(" {");
+            Indent();
+            WriteEOL();
+            WriteList(expr.Initializers, true);
+            WriteEOL(true);
+            Write("}");
         }
 
         protected override void WriteElementInit(ElementInit elementInit) {
@@ -334,9 +347,12 @@ namespace ExpressionToString {
                     Write(args.First());
                     break;
                 default:
-                    Write("{ ");
-                    WriteList(args);
-                    Write(" }");
+                    Write("{");
+                    Indent();
+                    WriteEOL();
+                    WriteList(args, true);
+                    WriteEOL(true);
+                    Write("}");
                     break;
             }
         }

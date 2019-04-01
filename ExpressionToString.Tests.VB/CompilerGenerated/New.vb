@@ -20,6 +20,14 @@ Friend Class Wrapper
     End Sub
 End Class
 
+Friend Class Node
+    Property Data As NodeData = New NodeData
+    Property Children As IList(Of Node) = New List(Of Node)
+End Class
+Friend Class NodeData
+    Property Name As String
+End Class
+
 Public Class [New]
     <Fact>
     Public Sub NamedType()
@@ -34,8 +42,12 @@ Public Class [New]
     Public Sub NamedTypeWithInitializer()
         BuildAssert(
             Function() New Foo With {.Bar = "abcd"},
-            "() => new Foo() { Bar = ""abcd"" }",
-            "Function() New Foo With {.Bar = ""abcd""}"
+            "() => new Foo() {
+    Bar = ""abcd""
+}",
+            "Function() New Foo With {
+    .Bar = ""abcd""
+}"
         )
     End Sub
 
@@ -43,8 +55,14 @@ Public Class [New]
     Public Sub NamedTypeWithInitializers()
         BuildAssert(
             Function() New Foo With {.Bar = "abcd", .Baz = "efgh"},
-            "() => new Foo() { Bar = ""abcd"", Baz = ""efgh"" }",
-            "Function() New Foo With {.Bar = ""abcd"", .Baz = ""efgh""}"
+            "() => new Foo() {
+    Bar = ""abcd"",
+    Baz = ""efgh""
+}",
+            "Function() New Foo With {
+    .Bar = ""abcd"",
+    .Baz = ""efgh""
+}"
         )
     End Sub
 
@@ -61,8 +79,14 @@ Public Class [New]
     Public Sub NamedTypeConstructorParametersWithInitializers()
         BuildAssert(
             Function() New Foo("ijkl") With {.Bar = "abcd", .Baz = "efgh"},
-            "() => new Foo(""ijkl"") { Bar = ""abcd"", Baz = ""efgh"" }",
-            "Function() New Foo(""ijkl"") With {.Bar = ""abcd"", .Baz = ""efgh""}"
+            "() => new Foo(""ijkl"") {
+    Bar = ""abcd"",
+    Baz = ""efgh""
+}",
+            "Function() New Foo(""ijkl"") With {
+    .Bar = ""abcd"",
+    .Baz = ""efgh""
+}"
         )
     End Sub
 
@@ -70,8 +94,14 @@ Public Class [New]
     Public Sub AnonymousType()
         BuildAssert(
             Function() New With {.Bar = "abcd", .Baz = "efgh"},
-            "() => new { Bar = ""abcd"", Baz = ""efgh"" }",
-            "Function() New With {.Bar = ""abcd"", .Baz = ""efgh""}"
+            "() => new {
+    Bar = ""abcd"",
+    Baz = ""efgh""
+}",
+            "Function() New With {
+    .Bar = ""abcd"",
+    .Baz = ""efgh""
+}"
         )
     End Sub
 
@@ -81,8 +111,14 @@ Public Class [New]
         Dim Baz = "efgh"
         BuildAssert(
             Function() New With {Bar, Baz},
-            "() => new { Bar, Baz }",
-            "Function() New With {Bar, Baz}"
+            "() => new {
+    Bar,
+    Baz
+}",
+            "Function() New With {
+    Bar,
+    Baz
+}"
         )
     End Sub
 
@@ -90,8 +126,14 @@ Public Class [New]
     Public Sub CollectionTypeWithInitializer()
         BuildAssert(
             Function() New List(Of String) From {"abcd", "efgh"},
-            "() => new List<string>() { ""abcd"", ""efgh"" }",
-            "Function() New List(Of String) From {""abcd"", ""efgh""}"
+            "() => new List<string>() {
+    ""abcd"",
+    ""efgh""
+}",
+            "Function() New List(Of String) From {
+    ""abcd"",
+    ""efgh""
+}"
         )
     End Sub
 
@@ -99,8 +141,26 @@ Public Class [New]
     Public Sub CollectionTypeWithMultipleElementsInitializers()
         BuildAssert(
             Function() New Wrapper From {{"ab", "cd"}, {"ef", "gh"}},
-            "() => new Wrapper() { { ""ab"", ""cd"" }, { ""ef"", ""gh"" } }",
-            "Function() New Wrapper From {{""ab"", ""cd""}, {""ef"", ""gh""}}"
+            "() => new Wrapper() {
+    {
+        ""ab"",
+        ""cd""
+    },
+    {
+        ""ef"",
+        ""gh""
+    }
+}",
+            "Function() New Wrapper From {
+    {
+        ""ab"",
+        ""cd""
+    },
+    {
+        ""ef"",
+        ""gh""
+    }
+}"
         )
     End Sub
 
@@ -108,8 +168,20 @@ Public Class [New]
     Public Sub CollectionTypeWithSingleOrMultipleElementsInitializers()
         BuildAssert(
             Function() New Wrapper From {{"ab", "cd"}, "ef"},
-            "() => new Wrapper() { { ""ab"", ""cd"" }, ""ef"" }",
-            "Function() New Wrapper From {{""ab"", ""cd""}, ""ef""}"
+            "() => new Wrapper() {
+    {
+        ""ab"",
+        ""cd""
+    },
+    ""ef""
+}",
+            "Function() New Wrapper From {
+    {
+        ""ab"",
+        ""cd""
+    },
+    ""ef""
+}"
         )
     End Sub
 End Class

@@ -157,7 +157,8 @@ namespace ExpressionTreeVisualizer {
                     Children = listBinding.Initializers.Select((x, index) => ($"Iinitializers[{index}]", new ExpressionNodeData(x, visualizerData))).ToDictionary();
                     break;
                 case MemberMemberBinding memberBinding:
-                    throw new NotImplementedException("MemberMemberBinding");
+                    Children = memberBinding.Bindings.Select((x, index) => ($"Bindings[{index}]", new ExpressionNodeData(x, visualizerData))).ToDictionary();
+                    break;
                 default:
                     throw new NotImplementedException();
             }

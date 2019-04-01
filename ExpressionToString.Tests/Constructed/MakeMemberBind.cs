@@ -40,8 +40,14 @@ namespace ExpressionToString.Tests.Constructed {
                 Constant("abcd"),
                 Constant("efgh")
             ),
-            "{ \"abcd\", \"efgh\" }",
-            "{\"abcd\", \"efgh\"}"
+            @"{
+    ""abcd"",
+    ""efgh""
+}",
+            @"{
+    ""abcd"",
+    ""efgh""
+}"
         );
 
 

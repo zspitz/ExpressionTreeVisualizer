@@ -261,13 +261,19 @@ namespace ExpressionToString {
             Write("New ");
             if (expr.Type.IsAnonymous()) {
                 Write("With {");
+                Indent();
+                WriteEOL();
                 expr.Constructor.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
-                    if (index > 0) { Write(", "); }
+                    if (index > 0) {
+                        Write(",");
+                        WriteEOL();
+                    }
                     if (!(arg is MemberExpression mexpr && mexpr.Member.Name.Replace("$VB$Local_", "") == name)) {
                         Write($".{name} = ");
                     }
                     Write(arg);
                 });
+                WriteEOL(true);
                 Write("}");
             } else {
                 Write(expr.Type.FriendlyName(VisualBasic));
@@ -369,6 +375,7 @@ namespace ExpressionToString {
         }
 
         protected override void WriteBinding(MemberBinding binding) {
+            // TODO see https://stackoverflow.com/questions/2917448/what-are-some-examples-of-memberbinding-linq-expressions
             switch (binding) {
                 case MemberAssignment assignmentBinding:
                     Write(".");
@@ -389,7 +396,10 @@ namespace ExpressionToString {
             Write(expr.NewExpression);
             if (expr.Bindings.Any()) {
                 Write(" With {");
-                WriteList(expr.Bindings);
+                Indent();
+                WriteEOL();
+                WriteList(expr.Bindings, true);
+                WriteEOL(true);
                 Write("}");
             }
         }
@@ -397,10 +407,10 @@ namespace ExpressionToString {
         protected override void WriteListInit(ListInitExpression expr) {
             Write(expr.NewExpression);
             Write(" From {");
-            expr.Initializers.ForEach((init, index) => {
-                if (index > 0) { Write(", "); }
-                Write(init);
-            });
+            Indent();
+            WriteEOL();
+            WriteList(expr.Initializers, true);
+            WriteEOL(true);
             Write("}");
         }
 
@@ -414,7 +424,10 @@ namespace ExpressionToString {
                     break;
                 default:
                     Write("{");
-                    WriteList(args);
+                    Indent();
+                    WriteEOL();
+                    WriteList(args, true);
+                    WriteEOL(true);
                     Write("}");
                     break;
             }
