@@ -300,20 +300,32 @@ namespace ExpressionToString {
         }
 
         protected override void WriteBinding(MemberBinding binding) {
-            switch (binding) {
-                case MemberAssignment assignmentBinding:
-                    Write(binding.Member.Name);
-                    Write(" = ");
-                    Write(assignmentBinding.Expression);
-                    break;
-                case MemberListBinding listBinding:
-                    throw new NotImplementedException();
-                case MemberMemberBinding memberBinding:
-                    Write(binding.Member.Name);
-                    throw new NotImplementedException();
-                default:
-                    throw new NotImplementedException();
+            Write(binding.Member.Name);
+            Write(" = ");
+            if (binding is MemberAssignment assignmentBinding) {
+                Write(assignmentBinding.Expression);
+                return;
             }
+            
+            Write("{");
+
+            IEnumerable<object> items = null;
+            switch (binding) {
+                case MemberListBinding listBinding when listBinding.Initializers.Any():
+                    items = listBinding.Initializers.Cast<object>();
+                    break;
+                case MemberMemberBinding memberBinding when memberBinding.Bindings.Any():
+                    items = memberBinding.Bindings.Cast<object>();
+                    break;
+            }
+            if (items != null) {
+                Indent();
+                WriteEOL();
+                WriteList(items, true);
+                WriteEOL(true);
+            }
+
+            Write("}");
         }
 
         protected override void WriteMemberInit(MemberInitExpression expr) {

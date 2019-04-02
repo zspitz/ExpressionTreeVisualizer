@@ -375,21 +375,33 @@ namespace ExpressionToString {
         }
 
         protected override void WriteBinding(MemberBinding binding) {
-            // TODO see https://stackoverflow.com/questions/2917448/what-are-some-examples-of-memberbinding-linq-expressions
-            switch (binding) {
-                case MemberAssignment assignmentBinding:
-                    Write(".");
-                    Write(binding.Member.Name);
-                    Write(" = ");
-                    Write(assignmentBinding.Expression);
-                    break;
-                case MemberListBinding listBinding:
-                    throw new NotImplementedException();
-                case MemberMemberBinding memberBinding:
-                    throw new NotImplementedException();
-                default:
-                    throw new NotImplementedException();
+            Write(".");
+            Write(binding.Member.Name);
+            Write(" = ");
+            if (binding is MemberAssignment assignmentBinding) {
+                Write(assignmentBinding.Expression);
+                return;
             }
+
+            Write("{");
+
+            IEnumerable<object> items = null;
+            switch (binding) {
+                case MemberListBinding listBinding when listBinding.Initializers.Any():
+                    items = listBinding.Initializers.Cast<object>();
+                    break;
+                case MemberMemberBinding memberBinding when memberBinding.Bindings.Any():
+                    items = memberBinding.Bindings.Cast<object>();
+                    break;
+            }
+            if (items != null) {
+                Indent();
+                WriteEOL();
+                WriteList(items, true);
+                WriteEOL(true);
+            }
+
+            Write("}");
         }
 
         protected override void WriteMemberInit(MemberInitExpression expr) {

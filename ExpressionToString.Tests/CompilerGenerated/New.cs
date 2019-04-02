@@ -169,14 +169,14 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void MemberMemberBinding() => BuildAssert(
             () => new Node { Data = { Name = "abcd" } },
-            @"() => new Node {
+            @"() => new Node() {
     Data = {
         Name = ""abcd""
     }
 }",
             @"Function() New Node With {
-    Data = {
-        Name = ""abcd""
+    .Data = {
+        .Name = ""abcd""
     }
 }"
         );
@@ -184,14 +184,14 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void ListBinding() => BuildAssert(
             () => new Node { Children = { new Node(), new Node() } },
-            @"() => new Node {
+            @"() => new Node() {
     Children = {
         new Node(),
         new Node()
     }
 }",
             @"Function() New Node With {
-    Children = {
+    .Children = {
         New Node,
         New Node
     }
