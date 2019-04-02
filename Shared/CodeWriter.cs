@@ -18,12 +18,13 @@ namespace ExpressionToString {
             language == VisualBasic ? new VBCodeWriter(o, out visitedObjects) :
             throw new NotImplementedException("Unknown language");
 
-        private StringBuilder sb = new StringBuilder();
-        Dictionary<object, List<(int start, int length)>> visitedObjects;
+        private readonly StringBuilder sb = new StringBuilder();
+        private readonly Dictionary<object, List<(int start, int length)>> visitedObjects;
 
         // Unfortunately, C# doesn't support union types ...
-        public CodeWriter(object o) => Write(o);
-        public CodeWriter(object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) {
+        protected CodeWriter(object o) => Write(o);
+
+        protected CodeWriter(object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) {
             this.visitedObjects = new Dictionary<object, List<(int start, int length)>>();
             Write(o);
             visitedObjects = this.visitedObjects;
@@ -32,6 +33,7 @@ namespace ExpressionToString {
         private int indentationLevel = 0;
         protected void Indent() => indentationLevel += 1;
         protected void Dedent() => indentationLevel -= 1;
+
         protected void WriteEOL(bool dedent = false) {
             sb.AppendLine();
             if (dedent) { indentationLevel = Math.Max(indentationLevel - 1, 0); } // ensures the indentation level is never < 0
@@ -184,6 +186,10 @@ namespace ExpressionToString {
                     WriteTry(expr as TryExpression);
                     break;
 
+                case Label:
+                    WriteLabel(expr as LabelExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
@@ -195,8 +201,7 @@ namespace ExpressionToString {
                     case Label:
                     case Loop:
                     case RuntimeVariables:
-                    case Throw:
-                    case Try:
+                    case Quote:
                     case Unbox:
                     */
                     #endregion
@@ -215,6 +220,8 @@ namespace ExpressionToString {
         }
 
         protected void WriteList<T>(IEnumerable<T> items, string delimiter = ", ") => WriteList(items, false, delimiter);
+
+        protected void TrimEnd() => sb.TrimEnd(false);
 
         private void registerVisited(object o, int start) {
             if (visitedObjects == null) { return; }
@@ -244,14 +251,14 @@ namespace ExpressionToString {
         protected abstract void WriteInvocation(InvocationExpression expr);
         protected abstract void WriteIndex(IndexExpression expr);
 
-        protected abstract void WriteBlock(BlockExpression expr, bool? noExplicitBlock = null);
+        protected abstract void WriteBlock(BlockExpression expr, bool? explicitBlock = null);
         protected abstract void WriteSwitch(SwitchExpression expr);
         protected abstract void WriteTry(TryExpression expr);
+        protected abstract void WriteLabel(LabelExpression expr);
 
         //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(GotoExpression expr) => throw new NotImplementedException();
-        //protected abstract void Write(LabelExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(LoopExpression expr) => throw new NotImplementedException();
         //protected abstract void Write(RuntimeVariablesExpression expr) => throw new NotImplementedException();
 
@@ -262,7 +269,7 @@ namespace ExpressionToString {
 
         //protected abstract void WriteIArgumentProvider(IArgumentProvider iArgumentProvider); 
         //protected abstract void WriteIDynamicExpression(IDynamicExpression iDynamicExpression); 
-        //protected abstract void WriteLabelTarget(LabelTarget labelTarget); 
+        //protected abstract void WriteLabelTarget(LabelTarget labelTarget);
         //protected abstract void WriteSymbolDocumentInfo(SymbolDocumentInfo symbolDocumentInfo); 
 
         protected abstract void WriteParameterDeclarationImpl(ParameterExpression prm);

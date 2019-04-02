@@ -49,6 +49,5 @@ namespace ExpressionToString.Tests.Constructed {
             "(() => 5)()",
             "(Function() 5)()"
         );
-
     }
 }

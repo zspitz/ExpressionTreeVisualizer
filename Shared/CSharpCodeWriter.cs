@@ -306,15 +306,15 @@ namespace ExpressionToString {
                 Write(assignmentBinding.Expression);
                 return;
             }
-            
+
             Write("{");
 
             IEnumerable<object> items = null;
             switch (binding) {
-                case MemberListBinding listBinding when listBinding.Initializers.Any():
+                case MemberListBinding listBinding when listBinding.Initializers.Count > 0:
                     items = listBinding.Initializers.Cast<object>();
                     break;
-                case MemberMemberBinding memberBinding when memberBinding.Bindings.Any():
+                case MemberMemberBinding memberBinding when memberBinding.Bindings.Count > 0:
                     items = memberBinding.Bindings.Cast<object>();
                     break;
             }
@@ -330,7 +330,7 @@ namespace ExpressionToString {
 
         protected override void WriteMemberInit(MemberInitExpression expr) {
             Write(expr.NewExpression);
-            if (expr.Bindings.Any()) {
+            if (expr.Bindings.Count > 0) {
                 Write(" {");
                 Indent();
                 WriteEOL();
@@ -356,7 +356,7 @@ namespace ExpressionToString {
                 case 0:
                     throw new NotImplementedException();
                 case 1:
-                    Write(args.First());
+                    Write(args[0]);
                     break;
                 default:
                     Write("{");
@@ -408,15 +408,11 @@ namespace ExpressionToString {
                 Write(expr.Test, false, true);
                 Write(") ");
                 Write(expr.IfTrue, false, true);
-                if (!IsBlockSyntax(expr.IfTrue)) {
-                    Write(";");
-                }
+                WriteSemicolon(expr.IfTrue);
                 if (!expr.IfFalse.IsEmpty()) {
                     Write(" else ");
                     Write(expr.IfFalse, false, true);
-                    if (!IsBlockSyntax(expr.IfFalse)) {
-                        Write(";");
-                    }
+                    WriteSemicolon(expr.IfFalse);
                 }
             } else {
                 Write(expr.Test, false, true);
@@ -427,15 +423,16 @@ namespace ExpressionToString {
             }
         }
 
-        private bool IsBlockSyntax(Expression expr) {
-            switch (expr) {
-                case ConditionalExpression cexpr when cexpr.Type == typeof(void):
-                case BlockExpression bexpr:
-                case SwitchExpression switchExpression:
-                    return true;
-            }
-            return false;
-        }
+        //[Obsolete("Use WriteSemicolon")]
+        //private bool IsBlockSyntax(Expression expr) {
+        //    switch (expr) {
+        //        case ConditionalExpression cexpr when cexpr.Type == typeof(void):
+        //        case BlockExpression bexpr:
+        //        case SwitchExpression switchExpression:
+        //            return true;
+        //    }
+        //    return false;
+        //}
 
         protected override void WriteDefault(DefaultExpression expr) =>
             Write($"default({expr.Type.FriendlyName(CSharp)})");
@@ -470,7 +467,7 @@ namespace ExpressionToString {
         }
 
         protected override void WriteBlock(BlockExpression expr, bool? explicitBlock) {
-            var useExplicitBlock = explicitBlock ?? expr.Variables.Any();
+            var useExplicitBlock = explicitBlock ?? expr.Variables.Count > 0;
             if (useExplicitBlock) {
                 Write("{");
                 Indent();
@@ -482,9 +479,10 @@ namespace ExpressionToString {
                 });
             }
             expr.Expressions.ForEach((subexpr, index) => {
-                if (index > 0 || expr.Variables.Any()) { WriteEOL(); }
+                if (index > 0 || expr.Variables.Count > 0) { WriteEOL(); }
+                if (subexpr is LabelExpression) { TrimEnd(); }
                 Write(subexpr);
-                Write(";");
+                WriteSemicolon(subexpr);
             });
             if (useExplicitBlock) {
                 WriteEOL(true);
@@ -492,24 +490,35 @@ namespace ExpressionToString {
             }
         }
 
-        protected void WriteAsBlock(Expression expr) {
-            Indent();
-            if (expr is BlockExpression bexpr) {
-                foreach (var subexpr in bexpr.Expressions) {
-                    WriteStatement(subexpr);
-                }
-                // we can ignore expr.Result, because it is the same as expr.Expressions.Last()
-            } else {
-                WriteStatement(expr);
-            }
-        }
+        //protected void WriteAsBlock(Expression expr) {
+        //    Indent();
+        //    if (expr is BlockExpression bexpr) {
+        //        foreach (var subexpr in bexpr.Expressions) {
+        //            WriteStatement(subexpr);
+        //        }
+        //        // we can ignore expr.Result, because it is the same as expr.Expressions.Last()
+        //    } else {
+        //        WriteStatement(expr);
+        //    }
+        //}
 
-        private void WriteStatement(Expression expr) {
-            WriteEOL();
-            Write(expr);
+        //private void WriteStatement(Expression expr) {
+        //    WriteEOL();
+        //    Write(expr);
+        //    switch (expr) {
+        //        case BlockExpression _:
+        //        case ConditionalExpression cexpr when cexpr.Type == typeof(void):
+        //            return;
+        //    }
+        //    Write(";");
+        //}
+
+        private void WriteSemicolon(Expression expr) {
             switch (expr) {
-                case BlockExpression _:
                 case ConditionalExpression cexpr when cexpr.Type == typeof(void):
+                case BlockExpression bexpr:
+                case SwitchExpression switchExpression:
+                case LabelExpression labelExpression:
                     return;
             }
             Write(";");
@@ -525,9 +534,7 @@ namespace ExpressionToString {
             Indent();
             WriteEOL();
             Write(switchCase.Body, false, false);
-            if (!IsBlockSyntax(switchCase.Body)) {
-                Write(";");
-            }
+            WriteSemicolon(switchCase.Body);
             WriteEOL();
             Write("break;");
         }
@@ -549,9 +556,7 @@ namespace ExpressionToString {
                 Indent();
                 WriteEOL();
                 Write(expr.DefaultBody);
-                if (!IsBlockSyntax(expr.DefaultBody)) {
-                    Write(";");
-                }
+                WriteSemicolon(expr.DefaultBody);
                 Dedent();
             }
             WriteEOL(true);
@@ -578,9 +583,7 @@ namespace ExpressionToString {
             Indent();
             WriteEOL();
             Write(catchBlock.Body);
-            if (!IsBlockSyntax(catchBlock.Body)) {
-                Write(";");
-            }
+            WriteSemicolon(catchBlock.Body);
             WriteEOL(true);
             Write("}");
         }
@@ -590,9 +593,7 @@ namespace ExpressionToString {
             Indent();
             WriteEOL();
             Write(expr.Body);
-            if (!IsBlockSyntax(expr.Body)) {
-                Write(";");
-            }
+            WriteSemicolon(expr.Body);
             WriteEOL(true);
             Write("}");
             expr.Handlers.ForEach(catchBlock => {
@@ -604,9 +605,7 @@ namespace ExpressionToString {
                 Indent();
                 WriteEOL();
                 Write(expr.Fault);
-                if (!IsBlockSyntax(expr.Fault)) {
-                    Write(";");
-                }
+                WriteSemicolon(expr.Fault);
                 WriteEOL(true);
                 Write("}");
             }
@@ -615,12 +614,12 @@ namespace ExpressionToString {
                 Indent();
                 WriteEOL();
                 Write(expr.Finally);
-                if (!IsBlockSyntax(expr.Finally)) {
-                    Write(";");
-                }
+                WriteSemicolon(expr.Finally);
                 WriteEOL(true);
                 Write("}");
             }
         }
+
+        protected override void WriteLabel(LabelExpression expr) => Write($"{expr.Target.Name}:");
     }
 }

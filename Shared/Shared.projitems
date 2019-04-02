@@ -26,6 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MemberInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Object.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\String.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\StringBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\T.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Type.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Functions.cs" />

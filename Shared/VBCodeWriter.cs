@@ -277,7 +277,7 @@ namespace ExpressionToString {
                 Write("}");
             } else {
                 Write(expr.Type.FriendlyName(VisualBasic));
-                if (expr.Arguments.Any()) {
+                if (expr.Arguments.Count > 0) {
                     Write("(");
                     WriteList(expr.Arguments);
                     Write(")");
@@ -387,10 +387,10 @@ namespace ExpressionToString {
 
             IEnumerable<object> items = null;
             switch (binding) {
-                case MemberListBinding listBinding when listBinding.Initializers.Any():
+                case MemberListBinding listBinding when listBinding.Initializers.Count > 0:
                     items = listBinding.Initializers.Cast<object>();
                     break;
-                case MemberMemberBinding memberBinding when memberBinding.Bindings.Any():
+                case MemberMemberBinding memberBinding when memberBinding.Bindings.Count > 0:
                     items = memberBinding.Bindings.Cast<object>();
                     break;
             }
@@ -406,7 +406,7 @@ namespace ExpressionToString {
 
         protected override void WriteMemberInit(MemberInitExpression expr) {
             Write(expr.NewExpression);
-            if (expr.Bindings.Any()) {
+            if (expr.Bindings.Count > 0) {
                 Write(" With {");
                 Indent();
                 WriteEOL();
@@ -432,7 +432,7 @@ namespace ExpressionToString {
                 case 0:
                     throw new NotImplementedException();
                 case 1:
-                    Write(args.First());
+                    Write(args[0]);
                     break;
                 default:
                     Write("{");
@@ -569,7 +569,7 @@ namespace ExpressionToString {
         }
 
         protected override void WriteBlock(BlockExpression expr, bool? explicitBlock = null) {
-            var useExplicitBlock = explicitBlock ?? expr.Variables.Any();
+            var useExplicitBlock = explicitBlock ?? expr.Variables.Count > 0;
             if (useExplicitBlock) {
                 Write("Block");
                 Indent();
@@ -581,7 +581,8 @@ namespace ExpressionToString {
                 });
             }
             expr.Expressions.ForEach((subexpr, index) => {
-                if (index > 0 || expr.Variables.Any()) { WriteEOL(); }
+                if (index > 0 || expr.Variables.Count > 0) { WriteEOL(); }
+                if (subexpr is LabelExpression) { TrimEnd(); }
                 Write(subexpr);
             });
             if (useExplicitBlock) {
@@ -619,7 +620,7 @@ namespace ExpressionToString {
                 Dedent();
             });
             if (expr.DefaultBody != null) {
-                if (expr.Cases.Any()) { WriteEOL(); }
+                if (expr.Cases.Count > 0) { WriteEOL(); }
                 Write("Case Else");
                 Indent();
                 WriteEOL();
@@ -673,5 +674,7 @@ namespace ExpressionToString {
             }
             Write("End Try");
         }
+
+        protected override void WriteLabel(LabelExpression expr) => Write($"{expr.Target.Name}:");
     }
 }
