@@ -66,5 +66,19 @@ target:
     End Block
 End Block"
         );
+
+        [Fact]
+        public void ConstructLabelTarget() => BuildAssert(
+            Label("target"),
+            "target",
+            "target"
+        );
+
+        [Fact]
+        public void ConstructEmptyLabelTarget() => BuildAssert(
+            Label(""),
+            "",
+            ""
+        );
     }
 }

@@ -682,7 +682,10 @@ namespace ExpressionToString {
             Write("End Try");
         }
 
-        protected override void WriteLabel(LabelExpression expr) => Write($"{expr.Target.Name}:");
+        protected override void WriteLabel(LabelExpression expr) {
+            Write(expr.Target);
+            Write(":");
+        }
 
         protected override void WriteGoto(GotoExpression expr) {
             string gotoKeyword = "";
@@ -712,5 +715,7 @@ namespace ExpressionToString {
                 Write(expr.Value);
             }
         }
+
+        protected override void WriteLabelTarget(LabelTarget labelTarget) => Write(labelTarget.Name);
     }
 }

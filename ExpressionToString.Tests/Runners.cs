@@ -48,7 +48,12 @@ namespace ExpressionToString.Tests {
             Assert.Equal(vb, testVBCode);
         }
 
-        public static void BuildAssert(LabelTarget labelTarget, string csharp, string vb) => throw new NotImplementedException();
+        public static void BuildAssert(LabelTarget labelTarget, string csharp, string vb) {
+            var testCSharpCode = labelTarget.ToString(CSharp);
+            var testVBCode = labelTarget.ToString(VisualBasic);
+            Assert.Equal(csharp, testCSharpCode);
+            Assert.Equal(vb, testVBCode);
+        }
 
         public static void BuildAssert(Type type, string csharp, string vb) => throw new NotImplementedException();
         public static void BuildAssert(SymbolDocumentInfo symbolDocumentInfo, string csharp, string vb) => throw new NotImplementedException();

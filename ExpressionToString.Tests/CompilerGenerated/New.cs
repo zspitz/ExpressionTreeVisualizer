@@ -175,7 +175,7 @@ namespace ExpressionToString.Tests {
     }
 }",
             @"Function() New Node With {
-    .Data = {
+    .Data = With {
         .Name = ""abcd""
     }
 }"
@@ -191,7 +191,7 @@ namespace ExpressionToString.Tests {
     }
 }",
             @"Function() New Node With {
-    .Children = {
+    .Children = From {
         New Node,
         New Node
     }

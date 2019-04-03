@@ -32,5 +32,11 @@ namespace ExpressionToString {
 
         public static string ToString(this CatchBlock catchBlock, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
             CodeWriter.Create(formatter, catchBlock, out visitedParts).ToString();
+
+        public static string ToString(this LabelTarget labelTarget, string formatter) =>
+            CodeWriter.Create(formatter, labelTarget).ToString();
+
+        public static string ToString(this LabelTarget labelTarget, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
+            CodeWriter.Create(formatter, labelTarget, out visitedParts).ToString();
     }
 }

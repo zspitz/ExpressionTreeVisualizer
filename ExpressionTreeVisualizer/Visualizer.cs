@@ -13,13 +13,19 @@ using static ExpressionToString.FormatterNames;
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer),
     visualizerObjectSource: typeof(ExpressionTreeVisualizer.VisualizerDataObjectSource),
+    Target = typeof(System.Linq.Expressions.ElementInit),
+    Description = "Expression Tree Visualizer")]
+
+[assembly: DebuggerVisualizer(
+    visualizer: typeof(ExpressionTreeVisualizer.Visualizer),
+    visualizerObjectSource: typeof(ExpressionTreeVisualizer.VisualizerDataObjectSource),
     Target = typeof(System.Linq.Expressions.MemberBinding),
     Description = "Expression Tree Visualizer")]
 
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer),
     visualizerObjectSource: typeof(ExpressionTreeVisualizer.VisualizerDataObjectSource),
-    Target = typeof(System.Linq.Expressions.ElementInit),
+    Target = typeof(System.Linq.Expressions.SwitchCase),
     Description = "Expression Tree Visualizer")]
 
 [assembly: DebuggerVisualizer(
@@ -31,7 +37,7 @@ using static ExpressionToString.FormatterNames;
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer),
     visualizerObjectSource: typeof(ExpressionTreeVisualizer.VisualizerDataObjectSource),
-    Target = typeof(System.Linq.Expressions.SwitchCase),
+    Target = typeof(System.Linq.Expressions.LabelTarget),
     Description = "Expression Tree Visualizer")]
 
 namespace ExpressionTreeVisualizer {

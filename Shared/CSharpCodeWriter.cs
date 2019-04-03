@@ -587,7 +587,10 @@ namespace ExpressionToString {
             }
         }
 
-        protected override void WriteLabel(LabelExpression expr) => Write($"{expr.Target.Name}:");
+        protected override void WriteLabel(LabelExpression expr) {
+            Write(expr.Target);
+            Write(":");
+        }
 
         protected override void WriteGoto(GotoExpression expr) {
             string gotoKeyword = "";
@@ -610,12 +613,14 @@ namespace ExpressionToString {
             Write(gotoKeyword);
             if (!(expr.Target?.Name).IsNullOrWhitespace()) {
                 Write(" ");
-                Write(expr.Target.Name);
+                Write(expr.Target);
             }
             if (expr.Value != null) {
                 Write(" ");
                 Write(expr.Value);
             }
         }
+
+        protected override void WriteLabelTarget(LabelTarget labelTarget) => Write(labelTarget.Name);
     }
 }

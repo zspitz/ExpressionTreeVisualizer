@@ -71,6 +71,9 @@ namespace ExpressionToString {
                     case CatchBlock catchBlock:
                         WriteCatchBlock(catchBlock);
                         break;
+                    case LabelTarget labelTarget:
+                        WriteLabelTarget(labelTarget);
+                        break;
 
                     default:
                         throw new NotImplementedException($"Code generation not implemented for type '{o.GetType().Name}'");
@@ -266,10 +269,10 @@ namespace ExpressionToString {
         protected abstract void WriteBinding(MemberBinding binding);
         protected abstract void WriteSwitchCase(SwitchCase switchCase);
         protected abstract void WriteCatchBlock(CatchBlock catchBlock);
-
+        protected abstract void WriteLabelTarget(LabelTarget labelTarget);
 
         //protected abstract void Write(LoopExpression expr) => throw new NotImplementedException();
-        //protected abstract void WriteLabelTarget(LabelTarget labelTarget);
+
 
         //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();
         //protected abstract void WriteIDynamicExpression(IDynamicExpression iDynamicExpression); 
