@@ -234,6 +234,7 @@ namespace ExpressionToString {
 
         public override string ToString() => sb.ToString();
 
+        // .NET 3.5 expression types
         protected abstract void WriteBinary(BinaryExpression expr);
         protected abstract void WriteUnary(UnaryExpression expr);
         protected abstract void WriteLambda(LambdaExpression expr);
@@ -251,26 +252,31 @@ namespace ExpressionToString {
         protected abstract void WriteInvocation(InvocationExpression expr);
         protected abstract void WriteIndex(IndexExpression expr);
 
+        // .NET 4 expression types
         protected abstract void WriteBlock(BlockExpression expr, bool? explicitBlock = null);
         protected abstract void WriteSwitch(SwitchExpression expr);
         protected abstract void WriteTry(TryExpression expr);
         protected abstract void WriteLabel(LabelExpression expr);
 
-        //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();
-        //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();
-        //protected abstract void Write(GotoExpression expr) => throw new NotImplementedException();
-        //protected abstract void Write(LoopExpression expr) => throw new NotImplementedException();
-        //protected abstract void Write(RuntimeVariablesExpression expr) => throw new NotImplementedException();
-
+        // other types
         protected abstract void WriteElementInit(ElementInit elementInit);
         protected abstract void WriteBinding(MemberBinding binding);
         protected abstract void WriteSwitchCase(SwitchCase switchCase);
         protected abstract void WriteCatchBlock(CatchBlock catchBlock);
 
-        //protected abstract void WriteIArgumentProvider(IArgumentProvider iArgumentProvider); 
-        //protected abstract void WriteIDynamicExpression(IDynamicExpression iDynamicExpression); 
+        //protected abstract void Write(GotoExpression expr) => throw new NotImplementedException();
+        //protected abstract void Write(LoopExpression expr) => throw new NotImplementedException();
         //protected abstract void WriteLabelTarget(LabelTarget labelTarget);
+
+        //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();
+        //protected abstract void WriteIDynamicExpression(IDynamicExpression iDynamicExpression); 
+
+        //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();
         //protected abstract void WriteSymbolDocumentInfo(SymbolDocumentInfo symbolDocumentInfo); 
+
+        //protected abstract void Write(RuntimeVariablesExpression expr) => throw new NotImplementedException();
+
+        //protected abstract void WriteIArgumentProvider(IArgumentProvider iArgumentProvider); 
 
         protected abstract void WriteParameterDeclarationImpl(ParameterExpression prm);
     }

@@ -65,7 +65,7 @@ namespace ExpressionToString.Tests.Constructed {
             @"Data = {
     Name = ""abcd""
 }",
-            @".Data = {
+            @".Data = With {
     .Name = ""abcd""
 }"
         );
@@ -84,7 +84,7 @@ namespace ExpressionToString.Tests.Constructed {
     new Node(),
     new Node()
 }",
-            @".Children = {
+            @".Children = From {
     New Node,
     New Node
 }"

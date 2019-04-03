@@ -383,17 +383,23 @@ namespace ExpressionToString {
                 return;
             }
 
-            Write("{");
+            
 
             IEnumerable<object> items = null;
+            string initializerKeyword = "";
             switch (binding) {
                 case MemberListBinding listBinding when listBinding.Initializers.Count > 0:
                     items = listBinding.Initializers.Cast<object>();
+                    initializerKeyword = "From ";
                     break;
                 case MemberMemberBinding memberBinding when memberBinding.Bindings.Count > 0:
                     items = memberBinding.Bindings.Cast<object>();
+                    initializerKeyword = "With ";
                     break;
             }
+
+            Write($"{initializerKeyword}{{");
+
             if (items != null) {
                 Indent();
                 WriteEOL();

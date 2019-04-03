@@ -9,6 +9,7 @@ namespace ExpressionToString.Tests.Constructed {
         [Fact]
         public void ConstructLabel() => BuildAssert(
             // we're using variables here to force explicit blocks, which have indentation
+            // in order to verify that the label is written without indentation
             Block(
                 new[] { i },
                 Block(
@@ -40,7 +41,6 @@ End Block"
 
         [Fact]
         public void ConstructLabel1() => BuildAssert(
-            // we're using variables here to force explicit blocks, which have indentation
             Block(
                 new[] { i },
                 Block(
