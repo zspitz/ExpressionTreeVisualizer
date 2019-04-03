@@ -5,7 +5,7 @@ using static ExpressionToString.Tests.Runners;
 
 namespace ExpressionToString.Tests {
     [Trait("Source", CSharpCompiler)]
-    public class Unsorted {
+    public class Misc {
         [Fact]
         public void Conditional() => BuildAssert(
             (int i) => i > 10 ? i : i + 10,

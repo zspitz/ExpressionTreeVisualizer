@@ -1,4 +1,4 @@
-Public Class Unsorted
+Public Class Misc
     <Fact>
     Public Sub Conditional()
         BuildAssert(

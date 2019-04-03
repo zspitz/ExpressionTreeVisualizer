@@ -10,6 +10,7 @@ using static ExpressionToString.Globals;
 using static ExpressionToString.Util.Functions;
 using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
+using static System.Linq.Expressions.GotoExpressionKind;
 
 namespace ExpressionToString {
     public class VBCodeWriter : CodeWriter {
@@ -682,5 +683,34 @@ namespace ExpressionToString {
         }
 
         protected override void WriteLabel(LabelExpression expr) => Write($"{expr.Target.Name}:");
+
+        protected override void WriteGoto(GotoExpression expr) {
+            string gotoKeyword = "";
+            switch (expr.Kind) {
+                case Break:
+                    gotoKeyword = "Exit";
+                    break;
+                case Continue:
+                    gotoKeyword = "Continue";
+                    break;
+                case GotoExpressionKind.Goto:
+                    gotoKeyword = "Goto";
+                    break;
+                case Return:
+                    gotoKeyword = "Return";
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            Write(gotoKeyword);
+            if (!(expr.Target?.Name).IsNullOrWhitespace()) {
+                Write(" ");
+                Write(expr.Target.Name);
+            }
+            if (expr.Value != null) {
+                Write(" ");
+                Write(expr.Value);
+            }
+        }
     }
 }

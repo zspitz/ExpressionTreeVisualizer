@@ -9,6 +9,7 @@ using static ExpressionToString.Globals;
 using static ExpressionToString.Util.Functions;
 using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
+using static System.Linq.Expressions.GotoExpressionKind;
 
 namespace ExpressionToString {
     public class CSharpCodeWriter : CodeWriter {
@@ -423,17 +424,6 @@ namespace ExpressionToString {
             }
         }
 
-        //[Obsolete("Use WriteSemicolon")]
-        //private bool IsBlockSyntax(Expression expr) {
-        //    switch (expr) {
-        //        case ConditionalExpression cexpr when cexpr.Type == typeof(void):
-        //        case BlockExpression bexpr:
-        //        case SwitchExpression switchExpression:
-        //            return true;
-        //    }
-        //    return false;
-        //}
-
         protected override void WriteDefault(DefaultExpression expr) =>
             Write($"default({expr.Type.FriendlyName(CSharp)})");
 
@@ -489,29 +479,6 @@ namespace ExpressionToString {
                 Write("}");
             }
         }
-
-        //protected void WriteAsBlock(Expression expr) {
-        //    Indent();
-        //    if (expr is BlockExpression bexpr) {
-        //        foreach (var subexpr in bexpr.Expressions) {
-        //            WriteStatement(subexpr);
-        //        }
-        //        // we can ignore expr.Result, because it is the same as expr.Expressions.Last()
-        //    } else {
-        //        WriteStatement(expr);
-        //    }
-        //}
-
-        //private void WriteStatement(Expression expr) {
-        //    WriteEOL();
-        //    Write(expr);
-        //    switch (expr) {
-        //        case BlockExpression _:
-        //        case ConditionalExpression cexpr when cexpr.Type == typeof(void):
-        //            return;
-        //    }
-        //    Write(";");
-        //}
 
         private void WriteSemicolon(Expression expr) {
             switch (expr) {
@@ -621,5 +588,34 @@ namespace ExpressionToString {
         }
 
         protected override void WriteLabel(LabelExpression expr) => Write($"{expr.Target.Name}:");
+
+        protected override void WriteGoto(GotoExpression expr) {
+            string gotoKeyword = "";
+            switch (expr.Kind) {
+                case Break:
+                    gotoKeyword = "break";
+                    break;
+                case Continue:
+                    gotoKeyword = "continue";
+                    break;
+                case GotoExpressionKind.Goto:
+                    gotoKeyword = "goto";
+                    break;
+                case Return:
+                    gotoKeyword = "return";
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            Write(gotoKeyword);
+            if (!(expr.Target?.Name).IsNullOrWhitespace()) {
+                Write(" ");
+                Write(expr.Target.Name);
+            }
+            if (expr.Value != null) {
+                Write(" ");
+                Write(expr.Value);
+            }
+        }
     }
 }

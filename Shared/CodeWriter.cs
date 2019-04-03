@@ -190,6 +190,10 @@ namespace ExpressionToString {
                     WriteLabel(expr as LabelExpression);
                     break;
 
+                case Goto:
+                    WriteGoto(expr as GotoExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
@@ -197,8 +201,6 @@ namespace ExpressionToString {
                     /*case DebugInfo:
                     case Dynamic:
                     case Extension:
-                    case Goto:
-                    case Label:
                     case Loop:
                     case RuntimeVariables:
                     case Quote:
@@ -257,6 +259,7 @@ namespace ExpressionToString {
         protected abstract void WriteSwitch(SwitchExpression expr);
         protected abstract void WriteTry(TryExpression expr);
         protected abstract void WriteLabel(LabelExpression expr);
+        protected abstract void WriteGoto(GotoExpression expr);
 
         // other types
         protected abstract void WriteElementInit(ElementInit elementInit);
@@ -264,7 +267,7 @@ namespace ExpressionToString {
         protected abstract void WriteSwitchCase(SwitchCase switchCase);
         protected abstract void WriteCatchBlock(CatchBlock catchBlock);
 
-        //protected abstract void Write(GotoExpression expr) => throw new NotImplementedException();
+
         //protected abstract void Write(LoopExpression expr) => throw new NotImplementedException();
         //protected abstract void WriteLabelTarget(LabelTarget labelTarget);
 
