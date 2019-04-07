@@ -101,6 +101,7 @@ namespace ExpressionToString {
                     break;
                 case ExpressionType.Convert:
                 case ConvertChecked:
+                case Unbox:
                     Write($"({expr.Type.FriendlyName(CSharp)})");
                     Write(expr.Operand);
                     break;
@@ -162,6 +163,20 @@ namespace ExpressionToString {
                         Write(" ");
                         Write(expr.Operand);
                     }
+                    break;
+                case Quote:
+                    TrimEnd(true);
+                    WriteEOL();
+                    Write("// --- Quoted - begin");
+                    Indent();
+                    WriteEOL();
+                    Write(expr.Operand);
+                    WriteEOL(true);
+                    Write("// --- Quoted - end");
+                    break;
+                case UnaryPlus:
+                    Write("+");
+                    Write(expr.Operand);
                     break;
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
@@ -490,6 +505,7 @@ namespace ExpressionToString {
                 case LabelExpression _:
                 case TryExpression _:
                 case RuntimeVariablesExpression _:
+                case UnaryExpression bexpr when bexpr.NodeType == Quote:
                     return;
             }
             Write(";");

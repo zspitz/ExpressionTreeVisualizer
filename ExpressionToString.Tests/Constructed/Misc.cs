@@ -59,5 +59,44 @@ namespace ExpressionToString.Tests.Constructed {
             "(ref string s4) => true",
             "Function(ByRef s4 As String) True"
         );
+
+        [Fact]
+        public void MakeQuoted() => BuildAssert(
+            Block(
+                new[] { x },
+                Quote(
+                    Lambda(writeLineTrue)
+                )
+            ),
+            @"{
+    double x;
+    // --- Quoted - begin
+        () => Console.WriteLine(true)
+    // --- Quoted - end
+}",
+            @"Block
+    Dim x As Double
+    ' --- Quoted - begin
+        Sub() Console.WriteLine(True)
+    ' --- Quoted - end
+End Block"
+        );
+
+        [Fact]
+        public void MakeQuoted1() => BuildAssert(
+            Lambda(
+                Quote(
+                    Lambda(writeLineTrue)
+                )
+            ),
+            @"() =>
+// --- Quoted - begin
+    () => Console.WriteLine(true)
+// --- Quoted - end",
+            @"Function()
+' --- Quoted - begin
+    Sub() Console.WriteLine(True)
+' --- Quoted - end"
+        );
     }
 }

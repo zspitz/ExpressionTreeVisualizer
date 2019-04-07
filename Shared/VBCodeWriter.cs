@@ -132,6 +132,7 @@ namespace ExpressionToString {
                     break;
                 case ExpressionType.Convert:
                 case ConvertChecked:
+                case Unbox:
                     if (conversionFunctions.TryGetValue(expr.Type, out var conversionFunction)) {
                         Write(conversionFunction);
                         Write("(");
@@ -210,6 +211,22 @@ namespace ExpressionToString {
                         Write(" ");
                         Write(expr.Operand);
                     }
+                    break;
+
+                case Quote:
+                    TrimEnd(true);
+                    WriteEOL();
+                    Write("' --- Quoted - begin");
+                    Indent();
+                    WriteEOL();
+                    Write(expr.Operand);
+                    WriteEOL(true);
+                    Write("' --- Quoted - end");
+                    break;
+
+                case UnaryPlus:
+                    Write("+");
+                    Write(expr.Operand);
                     break;
 
                 default:

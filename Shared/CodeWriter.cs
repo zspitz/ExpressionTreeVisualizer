@@ -233,7 +233,7 @@ namespace ExpressionToString {
 
         protected void WriteList<T>(IEnumerable<T> items, string delimiter = ", ") => WriteList(items, false, delimiter);
 
-        protected void TrimEnd() => sb.TrimEnd(false);
+        protected void TrimEnd(bool trimEOL = false) => sb.TrimEnd(trimEOL);
 
         private void registerVisited(object o, int start) {
             if (visitedObjects == null) { return; }
