@@ -232,8 +232,10 @@ namespace ExpressionToString {
             Write(expr.Body);
         }
 
-        protected override void WriteParameterDeclarationImpl(ParameterExpression prm) =>
+        protected override void WriteParameterDeclarationImpl(ParameterExpression prm) {
+            if (prm.IsByRef) { Write("ByRef "); }
             Write($"{prm.Name} As {prm.Type.FriendlyName(VisualBasic)}");
+        }
 
         protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
 

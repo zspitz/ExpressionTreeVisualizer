@@ -49,5 +49,15 @@ namespace ExpressionToString.Tests.Constructed {
             "(() => 5)()",
             "(Function() 5)()"
         );
+
+        [Fact]
+        public void MakeByRefParameter() => BuildAssert(
+            Lambda(
+                Constant(true),
+                Parameter(typeof(string).MakeByRefType(), "s4")
+            ),
+            "(ref string s4) => true",
+            "Function(ByRef s4 As String) True"
+        );
     }
 }

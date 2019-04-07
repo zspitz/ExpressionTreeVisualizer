@@ -179,8 +179,10 @@ namespace ExpressionToString {
             Write(expr.Body);
         }
 
-        protected override void WriteParameterDeclarationImpl(ParameterExpression prm) =>
+        protected override void WriteParameterDeclarationImpl(ParameterExpression prm) {
+            if (prm.IsByRef) { Write("ref "); }
             Write($"{prm.Type.FriendlyName(CSharp)} {prm.Name}");
+        }
 
         protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
 
