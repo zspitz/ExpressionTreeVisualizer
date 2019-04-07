@@ -601,8 +601,10 @@ namespace ExpressionToString {
         private bool IsBlockSyntax(Expression expr) {
             switch (expr) {
                 case ConditionalExpression cexpr when cexpr.Type == typeof(void):
-                case BlockExpression bexpr:
-                case SwitchExpression switchExpression:
+                case BlockExpression _:
+                case SwitchExpression _:
+                case TryExpression _:
+                case RuntimeVariablesExpression _:
                     return true;
             }
             return false;
@@ -717,5 +719,22 @@ namespace ExpressionToString {
         }
 
         protected override void WriteLabelTarget(LabelTarget labelTarget) => Write(labelTarget.Name);
+
+        protected override void WriteLoop(LoopExpression expr) {
+            Write("Do");
+            Indent();
+            WriteEOL();
+            Write(expr.Body);
+            WriteEOL(true);
+            Write("Loop");
+        }
+
+        protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) {
+            Write("' Variables -- ");
+            expr.Variables.ForEach((x, index) => {
+                if (index > 0) { Write(", "); }
+                Write(x, true);
+            });
+        }
     }
 }

@@ -197,6 +197,14 @@ namespace ExpressionToString {
                     WriteGoto(expr as GotoExpression);
                     break;
 
+                case Loop:
+                    WriteLoop(expr as LoopExpression);
+                    break;
+
+                case RuntimeVariables:
+                    WriteRuntimeVariables(expr as RuntimeVariablesExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
 
@@ -204,7 +212,6 @@ namespace ExpressionToString {
                     /*case DebugInfo:
                     case Dynamic:
                     case Extension:
-                    case Loop:
                     case RuntimeVariables:
                     case Quote:
                     case Unbox:
@@ -263,6 +270,8 @@ namespace ExpressionToString {
         protected abstract void WriteTry(TryExpression expr);
         protected abstract void WriteLabel(LabelExpression expr);
         protected abstract void WriteGoto(GotoExpression expr);
+        protected abstract void WriteLoop(LoopExpression expr);
+        protected abstract void WriteRuntimeVariables(RuntimeVariablesExpression expr);
 
         // other types
         protected abstract void WriteElementInit(ElementInit elementInit);
@@ -271,16 +280,11 @@ namespace ExpressionToString {
         protected abstract void WriteCatchBlock(CatchBlock catchBlock);
         protected abstract void WriteLabelTarget(LabelTarget labelTarget);
 
-        //protected abstract void Write(LoopExpression expr) => throw new NotImplementedException();
-
-
         //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();
         //protected abstract void WriteIDynamicExpression(IDynamicExpression iDynamicExpression); 
 
         //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();
         //protected abstract void WriteSymbolDocumentInfo(SymbolDocumentInfo symbolDocumentInfo); 
-
-        //protected abstract void Write(RuntimeVariablesExpression expr) => throw new NotImplementedException();
 
         //protected abstract void WriteIArgumentProvider(IArgumentProvider iArgumentProvider); 
 

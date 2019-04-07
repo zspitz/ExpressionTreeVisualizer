@@ -483,9 +483,11 @@ namespace ExpressionToString {
         private void WriteSemicolon(Expression expr) {
             switch (expr) {
                 case ConditionalExpression cexpr when cexpr.Type == typeof(void):
-                case BlockExpression bexpr:
-                case SwitchExpression switchExpression:
-                case LabelExpression labelExpression:
+                case BlockExpression _:
+                case SwitchExpression _:
+                case LabelExpression _:
+                case TryExpression _:
+                case RuntimeVariablesExpression _:
                     return;
             }
             Write(";");
@@ -622,5 +624,23 @@ namespace ExpressionToString {
         }
 
         protected override void WriteLabelTarget(LabelTarget labelTarget) => Write(labelTarget.Name);
+
+        protected override void WriteLoop(LoopExpression expr) {
+            Write("while (true) {");
+            Indent();
+            WriteEOL();
+            Write(expr.Body);
+            WriteSemicolon(expr.Body);
+            WriteEOL(true);
+            Write("}");
+        }
+
+        protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) {
+            Write("// variables -- ");
+            expr.Variables.ForEach((x, index) => {
+                if (index > 0) { Write(", "); }
+                Write(x, true);
+            });
+        }
     }
 }
