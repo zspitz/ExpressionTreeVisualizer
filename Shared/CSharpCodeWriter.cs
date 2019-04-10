@@ -1,6 +1,7 @@
 ﻿using ExpressionToString.Util;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
@@ -659,6 +660,27 @@ namespace ExpressionToString {
                 if (index > 0) { Write(", "); }
                 Write(x, true);
             });
+        }
+
+        protected override void WriteDebugInfo(DebugInfoExpression expr) {
+            Write("// ");
+            if (expr.IsClear) {
+                Write($"Clear debug info from {expr.Document.FileName}");
+                return;
+            }
+            var debugInfoText = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Debug to {0}, {1}, {2} -> {3}, {4}",
+                    expr.Document.FileName,
+                    expr.StartLine,
+                    expr.StartColumn,
+                    expr.EndLine,
+                    expr.EndColumn);
+            Write(debugInfoText);
+        }
+
+        protected override void WriteSymbolDocumentInfo(SymbolDocumentInfo symbolDocumentInfo) {
+            throw new NotImplementedException();
         }
     }
 }

@@ -14,7 +14,6 @@ namespace ExpressionToString.Tests.Constructed {
         readonly Expression[] expressionArray;
         readonly Guid guid;
         readonly int @int;
-        readonly MethodInfo methodInfo;
         readonly string @string;
         readonly SymbolDocumentInfo symbolDocumentInfo;
         readonly Type type;

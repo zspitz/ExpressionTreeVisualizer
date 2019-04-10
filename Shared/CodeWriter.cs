@@ -74,6 +74,9 @@ namespace ExpressionToString {
                     case LabelTarget labelTarget:
                         WriteLabelTarget(labelTarget);
                         break;
+                    case SymbolDocumentInfo symbolDocumentInfo:
+                        WriteSymbolDocumentInfo(symbolDocumentInfo);
+                        break;
 
                     default:
                         throw new NotImplementedException($"Code generation not implemented for type '{o.GetType().Name}'");
@@ -272,6 +275,7 @@ namespace ExpressionToString {
         protected abstract void WriteGoto(GotoExpression expr);
         protected abstract void WriteLoop(LoopExpression expr);
         protected abstract void WriteRuntimeVariables(RuntimeVariablesExpression expr);
+        protected abstract void WriteDebugInfo(DebugInfoExpression expr);
 
         // other types
         protected abstract void WriteElementInit(ElementInit elementInit);
@@ -279,13 +283,9 @@ namespace ExpressionToString {
         protected abstract void WriteSwitchCase(SwitchCase switchCase);
         protected abstract void WriteCatchBlock(CatchBlock catchBlock);
         protected abstract void WriteLabelTarget(LabelTarget labelTarget);
+        protected abstract void WriteSymbolDocumentInfo(SymbolDocumentInfo symbolDocumentInfo);
 
         //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();
-        //protected abstract void WriteIDynamicExpression(IDynamicExpression iDynamicExpression); 
-
-        //protected abstract void Write(DebugInfoExpression expr) => throw new NotImplementedException();
-        //protected abstract void WriteSymbolDocumentInfo(SymbolDocumentInfo symbolDocumentInfo); 
-
         //protected abstract void WriteIArgumentProvider(IArgumentProvider iArgumentProvider); 
 
         protected abstract void WriteParameterDeclarationImpl(ParameterExpression prm);
