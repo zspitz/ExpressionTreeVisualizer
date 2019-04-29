@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>16ca0653-e03a-47df-a5bf-292eef9aa5f0</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>ExpressionTreeVisualizer.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Converters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\DependencyObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MultiSelector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MultiSelectTreeView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Selector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\TreeView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Functions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Monitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visualizer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VisualizerData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VisualizerDataControl.xaml.cs">
+      <DependentUpon>VisualizerDataControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)VisualizerDataObjectSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VisualizerWindow.xaml.cs">
+      <DependentUpon>VisualizerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)WpfAutoGrid\AutoGrid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WpfAutoGrid\DependencyExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)WpfAutoGrid\license.txt" />
+  </ItemGroup>
+    <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)VisualizerDataControl.xaml" />
+    <None Include="$(MSBuildThisFileDirectory)VisualizerWindow.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)VisualizerDataControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)VisualizerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

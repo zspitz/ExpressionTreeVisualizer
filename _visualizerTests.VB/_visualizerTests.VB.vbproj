@@ -48,7 +48,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -108,9 +108,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExpressionTreeVisualizer\ExpressionTreeVisualizer.csproj">
-      <Project>{23EFE8A0-FE43-41B9-8097-8EC13989539B}</Project>
-      <Name>ExpressionTreeVisualizer</Name>
+    <ProjectReference Include="..\ExpressionTreeVisualizer.2019\ExpressionTreeVisualizer.2019.csproj">
+      <Project>{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}</Project>
+      <Name>ExpressionTreeVisualizer.2019</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

@@ -755,5 +755,9 @@ namespace ExpressionToString {
                 Write(x, true);
             });
         }
+
+        protected override void WriteDebugInfo(DebugInfoExpression expr) => throw new NotImplementedException();
+
+        protected override void WriteSymbolDocumentInfo(SymbolDocumentInfo symbolDocumentInfo) => throw new NotImplementedException();
     }
 }
