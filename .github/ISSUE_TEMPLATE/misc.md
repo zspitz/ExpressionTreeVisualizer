@@ -1,9 +1,10 @@
 ---
 name: General Issue
-about: ''
+about: Miscellaneous issue
 title: ''
 labels: ''
 assignees: ''
 
 ---
+
 

@@ -2,7 +2,7 @@
 name: Feature request - String rendering library
 about: Suggest an idea for the string rendering library
 title: ''
-labels: enhancement, code-gen
+labels: code-gen, enhancement
 assignees: ''
 
 ---
