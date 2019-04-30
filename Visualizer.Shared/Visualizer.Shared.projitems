@@ -32,10 +32,6 @@
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)WpfAutoGrid\license.txt" />
   </ItemGroup>
-    <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)VisualizerDataControl.xaml" />
-    <None Include="$(MSBuildThisFileDirectory)VisualizerWindow.xaml" />
-  </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)VisualizerDataControl.xaml">
       <Generator>MSBuild:Compile</Generator>
