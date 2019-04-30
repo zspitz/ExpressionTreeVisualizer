@@ -403,7 +403,7 @@ namespace ExpressionToString {
                 return;
             }
 
-            
+
 
             IEnumerable<object> items = null;
             string initializerKeyword = "";
@@ -680,7 +680,7 @@ namespace ExpressionToString {
             Write("Try");
             Indent();
             WriteEOL();
-            Write(expr.Body,false, false);
+            Write(expr.Body, false, false);
             WriteEOL(true);
             expr.Handlers.ForEach(catchBlock => {
                 Write(catchBlock);
@@ -690,7 +690,7 @@ namespace ExpressionToString {
                 Write("Fault");
                 Indent();
                 WriteEOL();
-                Write(expr.Fault,false, false);
+                Write(expr.Fault, false, false);
                 WriteEOL(true);
             }
             if (expr.Finally != null) {
@@ -756,8 +756,14 @@ namespace ExpressionToString {
             });
         }
 
-        protected override void WriteDebugInfo(DebugInfoExpression expr) => throw new NotImplementedException();
-
-        protected override void WriteSymbolDocumentInfo(SymbolDocumentInfo symbolDocumentInfo) => throw new NotImplementedException();
+        protected override void WriteDebugInfo(DebugInfoExpression expr) {
+            var filename = expr.Document.FileName;
+            Write("' ");
+            var comment =
+                expr.IsClear ?
+                $"Clear debug info from {filename}" :
+                $"Debug to {filename} -- L{expr.StartLine}C{expr.StartColumn} : L{expr.EndLine}C{expr.EndColumn}";
+            Write(comment);
+        }
     }
 }

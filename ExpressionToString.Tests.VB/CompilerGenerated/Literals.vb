@@ -53,10 +53,11 @@ Public Class Literals
 
     <Fact>
     Sub InterpolatedString()
+        Dim toString = #2001-1-1#.ToString
         BuildAssert(
             Function() $"{#2001-1-1#}",
             "() => $""{(object)#DateTime}""",
-            "Function() $""{CObj(#01/01/2001 0:00:00#)}"""
+            "Function() $""{CObj(#" + toString + "#)}"""
         )
     End Sub
 End Class

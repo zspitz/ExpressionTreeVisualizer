@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq.Expressions;
 using Xunit;
 using static ExpressionToString.Tests.Globals;
 using static ExpressionToString.Tests.Runners;
@@ -97,6 +98,22 @@ End Block"
 ' --- Quoted - begin
     Sub() Console.WriteLine(True)
 ' --- Quoted - end"
+        );
+
+        SymbolDocumentInfo document = SymbolDocument("source.txt");
+
+        [Fact]
+        public void MakeDebugInfo() => BuildAssert(
+            DebugInfo(document,1,2,3,4),
+            "// Debug to source.txt -- L1C2 : L3C4",
+            "' Debug to source.txt -- L1C2 : L3C4"
+        );
+
+        [Fact]
+        public void MakeClearDebugInfo() => BuildAssert(
+            ClearDebugInfo(document),
+            "// Clear debug info from source.txt",
+            "' Clear debug info from source.txt"
         );
     }
 }

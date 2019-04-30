@@ -663,24 +663,13 @@ namespace ExpressionToString {
         }
 
         protected override void WriteDebugInfo(DebugInfoExpression expr) {
+            var filename = expr.Document.FileName;
             Write("// ");
-            if (expr.IsClear) {
-                Write($"Clear debug info from {expr.Document.FileName}");
-                return;
-            }
-            var debugInfoText = string.Format(
-                    CultureInfo.InvariantCulture,
-                    "Debug to {0}, {1}, {2} -> {3}, {4}",
-                    expr.Document.FileName,
-                    expr.StartLine,
-                    expr.StartColumn,
-                    expr.EndLine,
-                    expr.EndColumn);
-            Write(debugInfoText);
-        }
-
-        protected override void WriteSymbolDocumentInfo(SymbolDocumentInfo symbolDocumentInfo) {
-            throw new NotImplementedException();
+            var comment =
+                expr.IsClear ?
+                $"Clear debug info from {filename}" :
+                $"Debug to {filename} -- L{expr.StartLine}C{expr.StartColumn} : L{expr.EndLine}C{expr.EndColumn}";
+            Write(comment);
         }
     }
 }
