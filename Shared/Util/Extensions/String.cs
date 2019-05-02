@@ -57,5 +57,10 @@ namespace ExpressionToString.Util {
             var toAppend = new string(' ', indentationLevel * 4) + s.TrimEnd();
             sb.AppendLine(toAppend);
         }
+
+        public static string ToCamelCase(this string s) {
+            if (s == null || s.Length == 0) { return s; }
+            return char.ToLowerInvariant(s[0]) + s.Substring(1);
+        }
     }
 }

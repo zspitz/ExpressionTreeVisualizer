@@ -8,250 +8,185 @@ using Microsoft.CSharp.RuntimeBinder;
 using static Microsoft.CSharp.RuntimeBinder.Binder;
 using static System.Linq.Expressions.Expression;
 using static ExpressionToString.Tests.Runners;
+using static ExpressionToString.Tests.Globals;
+using System.Linq.Expressions;
 
 namespace ExpressionToString.Tests.Constructed {
+    [Trait("Source", FactoryMethods)]
     public class MakeDynamics {
+        readonly CSharpBinderFlags flags = CSharpBinderFlags.None;
+        readonly Type context = typeof(MakeDynamics);
+        readonly CSharpArgumentInfo[] argInfos = new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) };
+        readonly CSharpArgumentInfo[] argInfos2 = new[] {
+            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null),
+            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null)
+        };
+        readonly ParameterExpression obj = Parameter(typeof(object), "obj");
+        readonly ConstantExpression key1 = Constant("key");
+        readonly ConstantExpression key2 = Constant(1);
+        readonly ConstantExpression value = Constant(42);
+        readonly ConstantExpression arg1 = Constant("arg1");
+        readonly ConstantExpression arg2 = Constant(15);
+
+
+        // TODO tests for the following types in System.Dynamic:
+        //      CreateInstanceBinder (can't create from Microsoft.CSharp.RuntimeBinder classes because Microsoft.CSharp.RuntimeBinder.CSharpInvokeBinder inherits directly from DynamicMetaObjectBinder)
+
+        // TODO what about VB runtime binder?
+
         [Fact]
-        public void ShouldTranslateAPropertyReadAccess() {
-            var lengthGetterSiteBinder = GetMember(
-                CSharpBinderFlags.None,
-                "Length",
-                typeof(MakeDynamics),
-                new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) });
-
-            var dynamicParameter = Parameter(typeof(object), "obj");
-
-            var dynamicLengthGetter = Dynamic(
-                lengthGetterSiteBinder,
-                typeof(object),
-                dynamicParameter);
-
-            var dynamicLengthLambda = Lambda<Func<object, object>>(dynamicLengthGetter, dynamicParameter);
-
-            dynamicLengthLambda.Compile();
+        public void ConstructGetIndex() {
+            var binder = GetIndex(flags, context, argInfos);
+            var expr = Dynamic(binder, typeof(object), obj, key1);
 
             BuildAssert(
-                dynamicLengthGetter,
-                "obj.Length",
-                "obj.Length"
+                expr,
+                "obj[\"key\"]",
+                "obj(\"key\")"
             );
         }
 
+        [Fact]
+        public void ConstructGetIndexMultipleKeys() {
+            var binder = GetIndex(flags,context,argInfos);
+            var expr = Dynamic(binder, typeof(object), obj, key1, key2);
+
+            BuildAssert(
+                expr,
+                "obj[\"key\", 1]",
+                "obj(\"key\", 1)"
+            );
+        }
+
+        [Fact]
+        public void ConstructGetMember() {
+            var binder = GetMember(flags, "Data", context, argInfos);
+            var expr = Dynamic(binder, typeof(object), obj);
+
+            BuildAssert(
+                expr,
+                "obj.Data",
+                "obj.Data"
+            );
+        }
+
+        [Fact]
+        public void ConstructInvocationNoArguments() {
+            var binder = Invoke(flags, context, argInfos);
+            var expr = Dynamic(binder, typeof(object), obj);
+
+            BuildAssert(
+                expr,
+                "obj()",
+                "obj"
+            );
+        }
+
+        [Fact]
+        public void ConstructInvocationWithArguments() {
+            var binder = Invoke(flags, context, argInfos);
+            var expr = Dynamic(binder, typeof(object), obj, arg1, arg2);
+
+            BuildAssert(
+                expr,
+                "obj(\"arg1\", 15)",
+                "obj(\"arg1\", 15)"
+            );
+        }
+
+        [Fact]
+        public void ConstructMemberInvocationNoArguments() {
+            var binder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
+            var expr = Dynamic(binder, typeof(object), obj);
+
+            BuildAssert(
+                expr,
+                "obj.Method()",
+                "obj.Method"
+            );
+        }
+
+        [Fact]
+        public void ConstructMemberInvocationWithArguments() {
+            var binder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
+            var expr = Dynamic(binder, typeof(object), obj, arg1, arg2);
+
+            BuildAssert(
+                expr,
+                "obj.Method(\"arg1\", 15)",
+                "obj.Method(\"arg1\", 15)"
+            );
+        }
+
+        [Fact]
+        public void ConstructSetIndex() {
+            var binder = SetIndex(flags, context, argInfos2);
+            var expr = Dynamic(binder, typeof(object), obj, value, key1);
+
+            BuildAssert(
+                expr,
+                "obj[\"key\"] = 42",
+                "obj(\"key\") = 42"
+            );
+        }
+
+        [Fact]
+        public void ConstructSetIndexMultipleKeys() {
+            var binder = SetIndex(flags, context, argInfos2);
+            var expr = Dynamic(binder, typeof(object), obj, value, key1, key2);
+
+            BuildAssert(
+                expr,
+                "obj[\"key\", 1] = 42",
+                "obj(\"key\", 1) = 42"
+            );
+        }
+
+        [Fact]
+        public void ConstructSetMember() {
+            var binder = SetMember(flags, "Data", context, argInfos);
+            var expr = Dynamic(binder, typeof(object), obj, value);
+
+            BuildAssert(
+                expr,
+                "obj.Data = 42",
+                "obj.Data = 42"
+            );
+        }
+
+
+        // TODO create tests specifically for the classes in Microsoft.CSharp.RuntimeBinder
+        // TODO including invoking methods with generic parameters
+
         //[Fact]
-        //public void ShouldTranslateAPropertyWriteAccess() {
-        //    var positionSetterSiteBinder = Binder.SetMember(
-        //        CSharpBinderFlags.ResultDiscarded,
-        //        "Position",
-        //        typeof(WhenTranslatingDynamicOperations),
-        //        new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) });
+        //public void ConstructGenericMemberInvocationNoArguments() {
+        //    var obj = Parameter(typeof(object), "obj");
+        //    var binder = InvokeMember(flags, "Method", new Type[] { typeof(string), typeof(int)}, context, argInfos);
 
-        //    var dynamicParameter = Expression.Parameter(typeof(object), "obj");
-        //    var positionParameter = Expression.Parameter(typeof(long), "position");
+        //    var expr = Dynamic(binder, typeof(object), obj);
 
-        //    var dynamicPositionSetter = Expression.Dynamic(
-        //        positionSetterSiteBinder,
-        //        typeof(object),
-        //        dynamicParameter,
-        //        positionParameter);
-
-        //    var dynamicPositionLambda = Expression.Lambda<Action<object, long>>(
-        //        dynamicPositionSetter,
-        //        dynamicParameter,
-        //        positionParameter);
-
-        //    dynamicPositionLambda.Compile();
-
-        //    var translated = ToReadableString(dynamicPositionLambda);
-
-        //    translated.ShouldBe("(obj, position) => obj.Position = position");
+        //    BuildAssert(
+        //        expr,
+        //        "obj.Method()",
+        //        "obj.Method"
+        //    );
         //}
 
         //[Fact]
-        //public void ShouldTranslateAParameterlessMethodCall() {
-        //    var objectToStringCallSiteBinder = Binder.InvokeMember(
-        //        CSharpBinderFlags.InvokeSimpleName,
-        //        "ToString",
-        //        null,
-        //        typeof(WhenTranslatingDynamicOperations),
-        //        new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) });
+        //public void ConstructGenericMemberInvocationWithArguments() {
+        //    var obj = Parameter(typeof(object), "obj");
+        //    var arg1 = Constant("arg1");
+        //    var arg2 = Constant(15);
 
-        //    var dynamicParameter = Expression.Parameter(typeof(object), "obj");
+        //    var binder = InvokeMember(flags, "Method", new Type[] { typeof(string), typeof(int) }, context, argInfos);
 
-        //    var dynamicToStringCall = Expression.Dynamic(
-        //        objectToStringCallSiteBinder,
-        //        typeof(object),
-        //        dynamicParameter);
+        //    var expr = Dynamic(binder, typeof(object), obj, arg1, arg2);
 
-        //    var dynamicToStringLambda = Expression
-        //        .Lambda<Func<object, object>>(dynamicToStringCall, dynamicParameter);
-
-        //    dynamicToStringLambda.Compile();
-
-        //    var translated = ToReadableString(dynamicToStringLambda);
-
-        //    translated.ShouldBe("obj => obj.ToString()");
-        //}
-
-        //[Fact]
-        //public void ShouldTranslateACallToAMissingMethod() {
-        //    // Just because the method doesn't exist doesn't mean
-        //    // you can't build a dynamic call to it and that that
-        //    // call shouldn't be translated...
-
-        //    var objectYellHurrahCallSiteBinder = Binder.InvokeMember(
-        //        CSharpBinderFlags.InvokeSimpleName,
-        //        "YellHurrah",
-        //        null,
-        //        typeof(WhenTranslatingDynamicOperations),
-        //        new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) });
-
-        //    var dynamicParameter = Expression.Parameter(typeof(object), "obj");
-
-        //    var dynamicYellHurrahCall = Expression.Dynamic(
-        //        objectYellHurrahCallSiteBinder,
-        //        typeof(object),
-        //        dynamicParameter);
-
-        //    var dynamicYellHurrahLambda = Expression
-        //        .Lambda<Func<object, object>>(dynamicYellHurrahCall, dynamicParameter);
-
-        //    dynamicYellHurrahLambda.Compile();
-
-        //    var translated = ToReadableString(dynamicYellHurrahLambda);
-
-        //    translated.ShouldBe("obj => obj.YellHurrah()");
-        //}
-
-        //[Fact]
-        //public void ShouldTranslateAParameterisedMethodCall() {
-        //    var objectToStringCallSiteBinder = Binder.InvokeMember(
-        //        CSharpBinderFlags.InvokeSimpleName,
-        //        "ToString",
-        //        null,
-        //        typeof(WhenTranslatingDynamicOperations),
-        //        new[]
-        //        {
-        //            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null),
-        //            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType, null)
-        //        });
-
-        //    var dynamicParameter = Expression.Parameter(typeof(object), "obj");
-        //    var cultureInfoParameter = Expression.Parameter(typeof(CultureInfo), "ci");
-
-        //    var dynamicToStringCall = Expression.Dynamic(
-        //        objectToStringCallSiteBinder,
-        //        typeof(object),
-        //        dynamicParameter,
-        //        cultureInfoParameter);
-
-        //    var dynamicToStringLambda = Expression.Lambda<Func<object, CultureInfo, object>>(
-        //        dynamicToStringCall,
-        //        dynamicParameter,
-        //        cultureInfoParameter);
-
-        //    dynamicToStringLambda.Compile();
-
-        //    var translated = ToReadableString(dynamicToStringLambda);
-
-        //    translated.ShouldBe("(obj, ci) => obj.ToString(ci)");
-        //}
-
-        //[Fact]
-        //public void ShouldTranslateAGenericParameterisedMethodCall() {
-        //    var valueConverterConvertCallSiteBinder = Binder.InvokeMember(
-        //        CSharpBinderFlags.InvokeSimpleName,
-        //        "Convert",
-        //        new[] { typeof(string), typeof(int) },
-        //        typeof(WhenTranslatingDynamicOperations),
-        //        new[]
-        //        {
-        //            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null),
-        //            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType, null)
-        //        });
-
-        //    var dynamicParameter = Expression.Parameter(typeof(ValueConverter), "valueConverter");
-        //    var valueParameter = Expression.Parameter(typeof(string), "value");
-
-        //    var dynamicConvertCall = Expression.Dynamic(
-        //        valueConverterConvertCallSiteBinder,
-        //        typeof(int),
-        //        dynamicParameter,
-        //        valueParameter);
-
-        //    var dynamicConvertLambda = Expression.Lambda<Func<ValueConverter, string, int>>(
-        //        dynamicConvertCall,
-        //        dynamicParameter,
-        //        valueParameter);
-
-        //    dynamicConvertLambda.Compile();
-
-        //    var translated = ToReadableString(dynamicConvertLambda);
-
-        //    translated.ShouldBe("(valueConverter, value) => valueConverter.Convert<string, int>(value)");
-        //}
-
-        //[Fact]
-        //public void ShouldTranslateACallWithTooFewParameters() {
-        //    var valueConverterConvertCallSiteBinder = Binder.InvokeMember(
-        //        CSharpBinderFlags.InvokeSimpleName,
-        //        "Convert",
-        //        new[] { typeof(int), typeof(string) },
-        //        typeof(WhenTranslatingDynamicOperations),
-        //        new[]
-        //        {
-        //            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null),
-        //            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType, null)
-        //        });
-
-        //    var dynamicParameter = Expression.Parameter(typeof(ValueConverter), "valueConverter");
-
-        //    var dynamicConvertCall = Expression.Dynamic(
-        //        valueConverterConvertCallSiteBinder,
-        //        typeof(string),
-        //        dynamicParameter);
-
-        //    var dynamicConvertLambda = Expression.Lambda<Func<ValueConverter, string>>(
-        //        dynamicConvertCall,
-        //        dynamicParameter);
-
-        //    dynamicConvertLambda.Compile();
-
-        //    var translated = ToReadableString(dynamicConvertLambda);
-
-        //    // The method type parameter can't be figured out from the arguments and return type, so are missing:
-        //    translated.ShouldBe("valueConverter => valueConverter.Convert()");
-        //}
-
-        //[Fact]
-        //public void ShouldTranslateAParameterlessCallWithGenericParameters() {
-        //    var typePrinterPrintCallSiteBinder = Binder.InvokeMember(
-        //        CSharpBinderFlags.InvokeSimpleName,
-        //        "Print",
-        //        new[] { typeof(DateTime) },
-        //        typeof(WhenTranslatingDynamicOperations),
-        //        new[]
-        //        {
-        //            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null),
-        //            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType, null)
-        //        });
-
-        //    var dynamicParameter = Expression.Parameter(typeof(TypePrinter), "typePrinter");
-
-        //    var dynamicPrintCall = Expression.Dynamic(
-        //        typePrinterPrintCallSiteBinder,
-        //        typeof(void),
-        //        dynamicParameter);
-
-        //    var dynamicPrintLambda = Expression.Lambda<Action<TypePrinter>>(
-        //        dynamicPrintCall,
-        //        dynamicParameter);
-
-        //    dynamicPrintLambda.Compile();
-
-        //    var translated = ToReadableString(dynamicPrintLambda);
-
-        //    // The method type parameter can't be figured out from the arguments and return type, so are missing:
-        //    translated.ShouldBe("typePrinter => typePrinter.Print()");
+        //    BuildAssert(
+        //        expr,
+        //        "obj.Method<string, int>(\"arg1\", 15)",
+        //        "obj(Of String, Integer)(\"arg1\", 15)"
+        //    );
         //}
     }
 }

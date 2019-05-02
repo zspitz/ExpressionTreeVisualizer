@@ -1,6 +1,7 @@
 ﻿using ExpressionToString.Util;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq.Expressions;
 using System.Text;
 using static ExpressionToString.FormatterNames;
@@ -209,18 +210,56 @@ namespace ExpressionToString {
                     WriteDebugInfo(expr as DebugInfoExpression);
                     break;
 
+                case Dynamic:
+                    WriteDynamic(expr as DynamicExpression);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
+            }
+        }
 
-                    #region Missing cases
-                    /*case DebugInfo:
-                    case Dynamic:
-                    case Extension:
-                    case RuntimeVariables:
-                    case Quote:
-                    case Unbox:
-                    */
-                    #endregion
+        protected virtual void WriteDynamic(DynamicExpression expr) {
+            switch (expr.Binder) {
+                case BinaryOperationBinder binaryOperationBinder:
+                    WriteBinaryOperationBinder(binaryOperationBinder, expr.Arguments);
+                    break;
+                case ConvertBinder convertBinder:
+                    WriteConvertBinder(convertBinder, expr.Arguments);
+                    break;
+                case CreateInstanceBinder createInstanceBinder:
+                    WriteCreateInstanceBinder(createInstanceBinder, expr.Arguments);
+                    break;
+                case DeleteIndexBinder deleteIndexBinder:
+                    WriteDeleteIndexBinder(deleteIndexBinder, expr.Arguments);
+                    break;
+                case DeleteMemberBinder deleteMemberBinder:
+                    WriteDeleteMemberBinder(deleteMemberBinder, expr.Arguments);
+                    break;
+                case GetIndexBinder getIndexBinder:
+                    WriteGetIndexBinder(getIndexBinder, expr.Arguments);
+                    break;
+                case GetMemberBinder getMemberBinder:
+                    WriteGetMemberBinder(getMemberBinder, expr.Arguments);
+                    break;
+                case InvokeBinder invokeBinder:
+                    WriteInvokeBinder(invokeBinder, expr.Arguments);
+                    break;
+                case InvokeMemberBinder invokeMemberBinder:
+                    WriteInvokeMemberBinder(invokeMemberBinder, expr.Arguments);
+                    break;
+                case SetIndexBinder setIndexBinder:
+                    WriteSetIndexBinder(setIndexBinder, expr.Arguments);
+                    break;
+                case SetMemberBinder setMemberBinder:
+                    WriteSetMemberBinder(setMemberBinder, expr.Arguments);
+                    break;
+                case UnaryOperationBinder unaryOperationBinder:
+                    WriteUnaryOperationBinder(unaryOperationBinder, expr.Arguments);
+                    break;
+
+                default:
+                    throw new NotImplementedException($"Dynamic expression with binder type {expr.Binder} not implemented");
             }
         }
 
@@ -284,9 +323,21 @@ namespace ExpressionToString {
         protected abstract void WriteSwitchCase(SwitchCase switchCase);
         protected abstract void WriteCatchBlock(CatchBlock catchBlock);
         protected abstract void WriteLabelTarget(LabelTarget labelTarget);
-
-        //protected abstract void Write(DynamicExpression expr) => throw new NotImplementedException();
         //protected abstract void WriteIArgumentProvider(IArgumentProvider iArgumentProvider); 
+
+        // binders
+        protected abstract void WriteBinaryOperationBinder(BinaryOperationBinder binaryOperationBinder, IList<Expression> args);
+        protected abstract void WriteConvertBinder(ConvertBinder convertBinder, IList<Expression> args);
+        protected abstract void WriteCreateInstanceBinder(CreateInstanceBinder createInstanceBinder, IList<Expression> args);
+        protected abstract void WriteDeleteIndexBinder(DeleteIndexBinder deleteIndexBinder, IList<Expression> args);
+        protected abstract void WriteDeleteMemberBinder(DeleteMemberBinder deleteMemberBinder, IList<Expression> args);
+        protected abstract void WriteGetIndexBinder(GetIndexBinder getIndexBinder, IList<Expression> args);
+        protected abstract void WriteGetMemberBinder(GetMemberBinder getMemberBinder, IList<Expression> args);
+        protected abstract void WriteInvokeBinder(InvokeBinder invokeBinder, IList<Expression> args);
+        protected abstract void WriteInvokeMemberBinder(InvokeMemberBinder invokeMemberBinder, IList<Expression> args);
+        protected abstract void WriteSetIndexBinder(SetIndexBinder setIndexBinder, IList<Expression> args);
+        protected abstract void WriteSetMemberBinder(SetMemberBinder setMemberBinder, IList<Expression> args);
+        protected abstract void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args);
 
         protected abstract void WriteParameterDeclarationImpl(ParameterExpression prm);
     }

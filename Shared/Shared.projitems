@@ -12,7 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CSharpCodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionExtension.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\BinaryExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Dictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Expression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\ICollectionT.cs" />
@@ -31,6 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Type.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Functions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Globals.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Methods.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VBCodeWriter.cs" />
   </ItemGroup>
 </Project>

@@ -216,5 +216,11 @@ namespace ExpressionToString.Util {
         }
 
         public static KeyValuePair<TKey, TValue> KVP<TKey, TValue>(TKey key, TValue value) => new KeyValuePair<TKey, TValue>(key, value);
+
+        public static bool IsReferenceComparison(ExpressionType nodeType, Expression left, Expression right, bool hasMethod) =>
+            (nodeType == ExpressionType.Equal || nodeType == ExpressionType.NotEqual) &&
+            !hasMethod &&
+            !left.Type.IsValueType &&
+            !right.Type.IsValueType;
     }
 }
