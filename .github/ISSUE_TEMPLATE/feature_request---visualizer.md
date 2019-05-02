@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest an idea for the visualizer
 title: ''
-labels: bug, visualizer ui
+labels: enhancement, visualizer ui
 assignees: ''
 
 ---
