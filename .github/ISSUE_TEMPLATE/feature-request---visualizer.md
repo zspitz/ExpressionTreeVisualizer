@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: Feature request - visualizer
 about: Suggest an idea for the visualizer
 title: ''
 labels: enhancement, visualizer ui
