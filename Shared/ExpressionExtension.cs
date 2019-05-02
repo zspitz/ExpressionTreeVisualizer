@@ -38,11 +38,5 @@ namespace ExpressionToString {
 
         public static string ToString(this LabelTarget labelTarget, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
             CodeWriter.Create(formatter, labelTarget, out visitedParts).ToString();
-
-        public static string ToString(this SymbolDocumentInfo symbolDocumentInfo, string formatter) =>
-            CodeWriter.Create(formatter, symbolDocumentInfo).ToString();
-
-        public static string ToString(this SymbolDocumentInfo symbolDocumentInfo, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
-            CodeWriter.Create(formatter, symbolDocumentInfo, out visitedParts).ToString();
     }
 }

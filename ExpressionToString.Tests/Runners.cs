@@ -54,12 +54,5 @@ namespace ExpressionToString.Tests {
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
         }
-
-        public static void BuildAssert(SymbolDocumentInfo symbolDocumentInfo, string csharp, string vb) {
-            var testCSharpCode = symbolDocumentInfo.ToString(CSharp);
-            var testVBCode = symbolDocumentInfo.ToString(VisualBasic);
-            Assert.Equal(csharp, testCSharpCode);
-            Assert.Equal(vb, testVBCode);
-        }
     }
 }
