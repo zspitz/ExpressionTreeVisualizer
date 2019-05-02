@@ -1,4 +1,6 @@
-﻿Public Class Binary
+﻿Imports System.Linq.Expressions
+
+Public Class Binary
     <Fact>
     Sub Add()
         Dim x As Double = 0, y As Double = 0
