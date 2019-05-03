@@ -5,6 +5,12 @@ This project provides the following:
 * [![GitHub Release](https://img.shields.io/github/release/zspitz/expressiontostring.svg?style=flat&max-age=86400)](https://github.com/zspitz/ExpressionToString/releases) A debugging visualizer for expression trees / expression tree parts  
   **Note:** Tested with VS 2017, which only supports custom visualizers in .NET Framework projects  
   **Installation:** The visualizer DLL and the dependent DLL (`MultiSelectTreeView.DLL`), on the [release page](https://github.com/zspitz/ExpressionToString/releases), should be placed in the appropriate folder, as described [here](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2017). It may be necessary to unblock the DLLs.
+  
+### Feedback
+
+* Star the project and/or upvote the posts on [reddit](https://www.reddit.com/r/dotnet/comments/bk2f05/expressiontostring_debugger_visualizer_v12_net_4/) or [Hacker News](https://news.ycombinator.com/item?id=19814493)
+* File an [issue](https://github.com/zspitz/ExpressionToString/issues)
+
 
 ## String representations of expression trees
 ```csharp
@@ -80,11 +86,6 @@ Features:
 
   ![Selection sync from end nodes](sync-from-endnodes.gif)
   
-# Feedback
-
-* Star the project, and/or upvote the reddit post
-* File an [issue](https://github.com/zspitz/ExpressionToString/issues)
-
 # Credits
 
 * John M. Wright's series on [writing debugger visualizers](https://wrightfully.com/writing-a-readonly-debugger-visualizer)
