@@ -7,7 +7,8 @@ skip_tags:  true
 only_commits:
   files:
     - ExpressionToString/
-    - ExpressionTreeVisualizer/
+    - Shared/
+    - Visualizer.Shared
 assembly_info:
   patch: true
   file: AssemblyInfo.*
@@ -24,20 +25,20 @@ dotnet_csproj:
   informational_version: '{version}'
 before_build:
 - cmd: nuget restore
-configuration: Release
+configuration: ReleaseCI
 artifacts:
   - path: ExpressionToString\bin\Release\*.nupkg
     type: NuGetPackage
 
-  - path: ExpressionTreeVisualizer\bin\Release\ExpressionTreeVisualizer.dll
+  - path: ExpressionTreeVisualizer.2017\bin\ReleaseCI\ExpressionTreeVisualizer.2017.dll
     type: File
     name: visualizer
 
-  - path: ExpressionTreeVisualizer\bin\Release\*.pdb
+  - path: ExpressionTreeVisualizer.2017\bin\ReleaseCI\*.pdb
     type: File
     name: visualizer
 
-  - path: ExpressionTreeVisualizer\bin\Release\MultiSelectTreeView.dll
+  - path: ExpressionTreeVisualizer.2017\bin\ReleaseCI\MultiSelectTreeView.dll
     type: File
     name: visualizer
 deploy:

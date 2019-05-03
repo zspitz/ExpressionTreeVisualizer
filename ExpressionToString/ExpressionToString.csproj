@@ -19,6 +19,7 @@
     <RootNamespace>ExpressionTreeToString</RootNamespace>
     <Version>1.0.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Configurations>Debug;Release;ReleaseCI</Configurations>
   </PropertyGroup>
 
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
