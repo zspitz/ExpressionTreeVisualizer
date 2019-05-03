@@ -29,7 +29,7 @@ before_build:
 - cmd: nuget restore
 configuration: ReleaseCI
 artifacts:
-  - path: ExpressionToString\bin\Release\*.nupkg
+  - path: ExpressionToString\bin\ReleaseCI\*.nupkg
     type: NuGetPackage
 
   - path: ExpressionTreeVisualizer.2017\bin\ReleaseCI\ExpressionTreeVisualizer.2017.dll
