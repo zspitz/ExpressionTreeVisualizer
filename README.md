@@ -46,8 +46,7 @@ Features:
     Console.WriteLine(expr.ToString("C#"));
     // prints: () => $"Hello, {name}!"
     ```
-
-Note that support for the full range of types in `System.Linq.Expressions` is incomplete, but [progressing](https://github.com/zspitz/ExpressionToCode/issues/32).
+* Supports the full range of types in `System.Linq.Expressions`, including .NET 4 expression types, and `DynamicExpression`
 
 ## Visual Studio debugger visualizer for expression trees
 
@@ -80,6 +79,11 @@ Features:
   and from end nodes:
 
   ![Selection sync from end nodes](sync-from-endnodes.gif)
+  
+# Feedback
+
+* Star the project, and/or upvote the reddit post
+* File an [issue](https://github.com/zspitz/ExpressionToString/issues)
 
 # Credits
 
