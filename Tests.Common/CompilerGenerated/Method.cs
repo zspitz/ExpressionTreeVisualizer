@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     static class Dummy {
@@ -10,6 +11,7 @@ namespace ExpressionToString.Tests {
 
     public partial class CompilerGeneratedBase {
         [Fact]
+        [Trait("Category", Method)]
         public void InstanceMethod0Arguments() {
             var s = "";
             RunTest(
@@ -20,6 +22,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Method)]
         public void StaticMethod0Arguments() => RunTest(
             () => Dummy.DummyMethod(),
             "() => Dummy.DummyMethod()",
@@ -27,6 +30,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Method)]
         public void ExtensionMethod0Arguments() {
             var lst = new List<string>();
             RunTest(
@@ -37,6 +41,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Method)]
         public void InstanceMethod1Argument() {
             var s = "";
             RunTest(
@@ -47,6 +52,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Method)]
         public void StaticMethod1Argument() => RunTest(
             () => string.Intern(""),
             "() => string.Intern(\"\")",
@@ -54,6 +60,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Method)]
         public void ExtensionMethod1Argument() {
             var lst = new List<string>();
             RunTest(
@@ -64,6 +71,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Method)]
         public void InstanceMethod2Arguments() {
             var s = "";
             RunTest(
@@ -74,6 +82,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Method)]
         public void StaticMethod2Arguments() => RunTest(
             () => string.Join(",", new[] { "a","b" }),
             "() => string.Join(\",\", new [] { \"a\", \"b\" })",
@@ -81,6 +90,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Method)]
         public void ExtensionMethod2Arguments() {
             var lst = new List<string>();
             RunTest(
@@ -91,6 +101,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Method)]
         public void StringConcat() => RunTest(
             (string s1, string s2) => string.Concat(s1, s2),
             "(string s1, string s2) => s1 + s2",
@@ -98,6 +109,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Method)]
         public void MathPow() => RunTest(
             (double x, double y) => Math.Pow(x, y),
             "(double x, double y) => Math.Pow(x, y)",

@@ -4,6 +4,7 @@ using System.Reflection;
 using Xunit;
 using static ExpressionToString.Util.Functions;
 using static System.Linq.Expressions.Expression;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
@@ -22,6 +23,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void NamedType() => RunTest(
             New(typeof(Random)),
             "new Random()",
@@ -29,6 +31,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void NamedTypeWithInitializer() => RunTest(
             MemberInit(
                 New(fooType),
@@ -43,6 +46,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void NamedTypeWithInitializers() => RunTest(
             MemberInit(
                 New(fooType),
@@ -60,6 +64,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void NamedTypeConstructorParameters() => RunTest(
             New(fooCtor1, Constant("ijkl")),
             @"new Foo(""ijkl"")",
@@ -67,6 +72,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void NamedTypeConstructorParametersWithInitializers() => RunTest(
             MemberInit(
                 New(fooCtor1, Constant("ijkl")),
@@ -84,6 +90,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void CollectionTypeWithInitializer() => RunTest(
             ListInit(
                 New(typeof(List<string>)),
@@ -101,6 +108,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void CollectionTypeWithMultipleElementsInitializers() => RunTest(
             ListInit(
                 New(typeof(Wrapper)),
@@ -130,6 +138,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void CollectionTypeWithSingleOrMultipleElementsInitializers() => RunTest(
             ListInit(
                 New(typeof(Wrapper)),

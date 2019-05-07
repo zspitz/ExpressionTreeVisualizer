@@ -1,10 +1,12 @@
 ﻿using Xunit;
 using static System.Linq.Expressions.Expression;
 using static ExpressionToString.Tests.Globals;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
         [Fact]
+        [Trait("Category", Labels)]
         public void ConstructLabel() => RunTest(
             // we're using variables here to force explicit blocks, which have indentation
             // in order to verify that the label is written without indentation
@@ -38,6 +40,7 @@ End Block"
         );
 
         [Fact]
+        [Trait("Category", Labels)]
         public void ConstructLabel1() => RunTest(
             Block(
                 new[] { i },
@@ -66,6 +69,7 @@ End Block"
         );
 
         [Fact]
+        [Trait("Category", Labels)]
         public void ConstructLabelTarget() => RunTest(
             Label("target"),
             "target",
@@ -73,6 +77,7 @@ End Block"
         );
 
         [Fact]
+        [Trait("Category", Labels)]
         public void ConstructEmptyLabelTarget() => RunTest(
             Label(""),
             "",

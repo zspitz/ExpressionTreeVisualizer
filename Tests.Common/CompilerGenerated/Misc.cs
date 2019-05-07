@@ -1,9 +1,11 @@
 using System;
 using Xunit;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class CompilerGeneratedBase {
         [Fact]
+        [Trait("Category", Conditionals)]
         public void Conditional() => RunTest(
             (int i) => i > 10 ? i : i + 10,
             "(int i) => i > 10 ? i : i + 10",
@@ -21,6 +23,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Invocation)]
         public void InvocationNoArguments() {
             Func<int> del = () => DateTime.Now.Day;
             RunTest(
@@ -31,6 +34,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Invocation)]
         public void InvocationOneArgument() {
             Func<int, int> del = (int i) => DateTime.Now.Day;
             RunTest(

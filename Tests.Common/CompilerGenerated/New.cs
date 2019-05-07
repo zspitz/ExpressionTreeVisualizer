@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xunit;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     class Foo {
@@ -27,6 +28,7 @@ namespace ExpressionToString.Tests {
 
     public partial class CompilerGeneratedBase {
         [Fact]
+        [Trait("Category",NewObject)]
         public void NamedType() => RunTest(
             () => new Random(),
             "() => new Random()",
@@ -34,6 +36,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void NamedTypeWithInitializer() => RunTest(
             () => new Foo { Bar = "abcd" },
             @"() => new Foo() {
@@ -45,6 +48,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void NamedTypeWithInitializers() => RunTest(
             () => new Foo { Bar = "abcd", Baz = "efgh" },
             @"() => new Foo() {
@@ -58,6 +62,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void NamedTypeConstructorParameters() => RunTest(
             () => new Foo("ijkl"),
             @"() => new Foo(""ijkl"")",
@@ -65,6 +70,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void NamedTypeConstructorParametersWithInitializers() => RunTest(
             () => new Foo("ijkl") { Bar = "abcd", Baz = "efgh" },
             @"() => new Foo(""ijkl"") {
@@ -78,6 +84,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void AnonymousType() => RunTest(
             () => new { Bar = "abcd", Baz = "efgh" },
             @"() => new {
@@ -91,6 +98,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void AnonymousTypeFromVariables() {
             var Bar = "abcd";
             var Baz = "efgh";
@@ -108,6 +116,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void CollectionTypeWithInitializer() => RunTest(
             () => new List<string> { "abcd", "efgh" },
             @"() => new List<string>() {
@@ -121,6 +130,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void CollectionTypeWithMultipleElementsInitializers() => RunTest(
             () => new Wrapper { { "ab", "cd" }, { "ef", "gh" } },
             @"() => new Wrapper() {
@@ -146,6 +156,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void CollectionTypeWithSingleOrMultipleElementsInitializers() => RunTest(
             () => new Wrapper { { "ab", "cd" }, "ef" },
             @"() => new Wrapper() {
@@ -165,6 +176,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void MemberMemberBinding() => RunTest(
             () => new Node { Data = { Name = "abcd" } },
             @"() => new Node() {
@@ -180,6 +192,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewObject)]
         public void ListBinding() => RunTest(
             () => new Node { Children = { new Node(), new Node() } },
             @"() => new Node() {

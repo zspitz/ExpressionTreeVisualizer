@@ -1,10 +1,12 @@
 ﻿using Xunit;
 using static ExpressionToString.Tests.Globals;
 using static System.Linq.Expressions.Expression;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
         [Fact]
+        [Trait("Category", RuntimeVars)]
         public void ConstructRuntimeVariables() => RunTest(
             RuntimeVariables(x, s1),
             "// variables -- double x, string s1",
@@ -12,6 +14,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", RuntimeVars)]
         public void RuntimeVariablesWithinBlock() => RunTest(
             Block(
                 new[] { s2 }, //forces an explicit block

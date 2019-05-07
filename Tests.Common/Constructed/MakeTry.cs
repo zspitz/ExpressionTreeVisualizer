@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using Xunit;
 using static ExpressionToString.Tests.Globals;
 using static System.Linq.Expressions.Expression;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
@@ -10,6 +11,7 @@ namespace ExpressionToString.Tests {
         ParameterExpression ex = Parameter(typeof(Exception), "ex");
 
         [Fact]
+        [Trait("Category", Try)]
         public void ConstructSimpleCatch() => RunTest(
             Catch(typeof(Exception), writeLineTrue),
                 @"catch {
@@ -20,6 +22,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Try)]
         public void ConstructCatchSingleStatement() => RunTest(
             Catch(ex, writeLineTrue),
             @"catch (Exception ex) {
@@ -30,6 +33,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Try)]
         public void ConstructCatchMultiStatement() => RunTest(
             Catch(ex, Block(writeLineTrue, writeLineTrue)),
             @"catch (Exception ex) {
@@ -42,6 +46,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Try)]
         public void ConstructCatchSingleStatementWithType() => RunTest(
             Catch(exceptionType, writeLineTrue),
             @"catch (InvalidCastException) {
@@ -52,6 +57,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Try)]
         public void ConstructCatchMultiStatementWithType() => RunTest(
             Catch(exceptionType, Block(writeLineTrue, writeLineTrue)),
             @"catch (InvalidCastException) {
@@ -64,6 +70,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Try)]
         public void ConstructCatchSingleStatementWithFilter() => RunTest(
             Catch(ex, writeLineTrue, Constant(true)),
             @"catch (Exception ex) when (true) {
@@ -74,6 +81,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Try)]
         public void ConstructCatchMultiStatementWithFilter() => RunTest(
             Catch(ex, Block(writeLineTrue, writeLineTrue), Constant(true)),
             @"catch (Exception ex) when (true) {
@@ -86,6 +94,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Try)]
         public void ConstructCatchWithMultiStatementFilter() => RunTest(
             Catch(ex, writeLineTrue, Block(Constant(true), Constant(true))),
             @"catch (Exception ex) when ({
@@ -102,6 +111,7 @@ End Block
         );
 
         [Fact]
+        [Trait("Category", Try)]
         public void ConstructTryCatch() => RunTest(
             TryCatch(Constant(true),Catch(typeof(Exception), Constant(true))),
             @"try {
@@ -117,6 +127,7 @@ End Try"
         );
 
         [Fact]
+        [Trait("Category", Try)]
         public void ConstructTryCatchFinally() => RunTest(
             TryCatchFinally(Constant(true), writeLineTrue, Catch(ex, Constant(true))),
             @"try {
@@ -136,6 +147,7 @@ End Try"
         );
 
         [Fact]
+        [Trait("Category", Try)]
         public void ConstructTryFault() => RunTest(
             TryFault(writeLineTrue, writeLineTrue),
             @"try {
@@ -151,6 +163,7 @@ End Try"
         );
 
         [Fact]
+        [Trait("Category", Try)]
         public void ConstructTryFinally() => RunTest(
             TryFinally(writeLineTrue, writeLineTrue),
             @"try {

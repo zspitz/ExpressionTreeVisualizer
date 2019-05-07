@@ -2,6 +2,7 @@
 using Xunit;
 using static ExpressionToString.Tests.Globals;
 using static System.Linq.Expressions.Expression;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
@@ -16,6 +17,8 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", SwitchCases)]
+       
         public void SingleValueSwitchCase() => RunTest(
             singleValueCase,
             @"case 5:
@@ -28,6 +31,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", SwitchCases)]
         public void MultiValueSwitchCase() => RunTest(
             multiValueCase,
             @"case 5:
@@ -41,6 +45,7 @@ case 6:
         );
 
         [Fact]
+        [Trait("Category", SwitchCases)]
         public void SingleValueSwitchCase1() => RunTest(
             SwitchCase(writeLineTrue, Constant(5)),
             @"case 5:
@@ -51,6 +56,7 @@ case 6:
 );
 
         [Fact]
+        [Trait("Category", SwitchCases)]
         public void MultiValueSwitchCase1() => RunTest(
             SwitchCase(writeLineTrue, Constant(5), Constant(6)),
             @"case 5:
@@ -62,6 +68,7 @@ case 6:
         );
 
         [Fact]
+        [Trait("Category", SwitchCases)]
         public void SwitchOnExpressionWithDefaultSingleStatement() => RunTest(
             Switch(i, Empty(), SwitchCase(
                     writeLineTrue,
@@ -91,6 +98,7 @@ End Select"
         );
 
         [Fact]
+        [Trait("Category", SwitchCases)]
         public void SwitchOnExpressionWithDefaultMultiStatement() => RunTest(
     Switch(i, Block(
             typeof(void),
@@ -126,6 +134,7 @@ End Select"
 );
 
         [Fact]
+        [Trait("Category", SwitchCases)]
         public void SwitchOnMultipleStatementsWithDefault() => RunTest(
             Switch(Block(i, j), Block(
                     typeof(void),
@@ -167,6 +176,7 @@ End Select"
         );
 
         [Fact]
+        [Trait("Category", SwitchCases)]
         public void SwitchOnExpressionWithoutDefault() => RunTest(
             Switch(i, SwitchCase(
                     writeLineTrue,
@@ -192,6 +202,7 @@ End Select"
         );
 
         [Fact]
+        [Trait("Category", SwitchCases)]
         public void SwithOnMultipleStatementsWithoutDefault() => RunTest(
             Switch(Block(i, j), SwitchCase(
                     writeLineTrue,

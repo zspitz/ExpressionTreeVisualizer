@@ -2,6 +2,7 @@
 using Xunit;
 using static System.Linq.Expressions.Expression;
 using static ExpressionToString.Tests.Globals;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
@@ -10,6 +11,7 @@ namespace ExpressionToString.Tests {
         // the NodeTypeof IfThen and IfThenElse is always typeof(void)
 
         [Fact]
+        [Trait("Category", Conditionals)]
         public void VoidConditionalWithElse() => RunTest(
             Condition(
                 Constant(true),
@@ -21,6 +23,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Conditionals)]
         public void VoidConditional1WithElse() => RunTest(
             IfThenElse(
                 Constant(true),
@@ -32,6 +35,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Conditionals)]
         public void VoidConditionalWithoutElse() => RunTest(
             Condition(
                 Constant(true),
@@ -43,6 +47,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Conditionals)]
         public void VoidConditional1WithoutElse() => RunTest(
             IfThen(
                 Constant(true),
@@ -53,6 +58,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Conditionals)]
         public void NonVoidConditionalWithElse() => RunTest(
             Condition(
                 Constant(true),
@@ -64,6 +70,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Conditionals)]
         public void NonVoidConditionalWithoutElse() => RunTest(
             Condition(
                 Constant(true),
@@ -75,6 +82,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Conditionals)]
         public void MultilineTestPart() => RunTest(
             Condition(
                 Block(Constant(true), Constant(true)),
@@ -92,6 +100,7 @@ End Block, ""true"".Length, ""false"".Length)"
         );
 
         [Fact]
+        [Trait("Category", Conditionals)]
         public void MultilineTestPart1() => RunTest(
             IfThen(
                 Block(Constant(true), Constant(true)),
@@ -108,6 +117,7 @@ Then Console.WriteLine(True)"
         );
 
         [Fact]
+        [Trait("Category", Conditionals)]
         public void MultilineIfTrue() => RunTest(
             IfThen(
                 Constant(true),
@@ -124,6 +134,7 @@ End If"
         );
 
         [Fact]
+        [Trait("Category", Conditionals)]
         public void NestedIfThen() => RunTest(
                 IfThen(
                     Constant(true),
@@ -139,6 +150,7 @@ End If"
         );
 
         [Fact]
+        [Trait("Category", Conditionals)]
         public void NestedElse() => RunTest(
             IfThenElse(
                 Constant(true),

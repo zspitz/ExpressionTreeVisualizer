@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using Microsoft.CSharp.RuntimeBinder;
 using static Microsoft.CSharp.RuntimeBinder.Binder;
 using static System.Linq.Expressions.Expression;
 using System.Linq.Expressions;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
@@ -32,6 +29,7 @@ namespace ExpressionToString.Tests {
         // TODO what about VB runtime binder?
 
         [Fact]
+        [Trait("Category", Dynamics)]
         public void ConstructGetIndex() {
             var binder = GetIndex(flags, context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj, key1);
@@ -44,8 +42,9 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Dynamics)]
         public void ConstructGetIndexMultipleKeys() {
-            var binder = GetIndex(flags,context,argInfos);
+            var binder = GetIndex(flags, context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj, key1, key2);
 
             RunTest(
@@ -56,6 +55,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Dynamics)]
         public void ConstructGetMember() {
             var binder = GetMember(flags, "Data", context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj);
@@ -68,6 +68,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Dynamics)]
         public void ConstructInvocationNoArguments() {
             var binder = Invoke(flags, context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj);
@@ -80,6 +81,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Dynamics)]
         public void ConstructInvocationWithArguments() {
             var binder = Invoke(flags, context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj, arg1, arg2);
@@ -92,6 +94,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Dynamics)]
         public void ConstructMemberInvocationNoArguments() {
             var binder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj);
@@ -104,6 +107,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Dynamics)]
         public void ConstructMemberInvocationWithArguments() {
             var binder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj, arg1, arg2);
@@ -116,6 +120,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Dynamics)]
         public void ConstructSetIndex() {
             var binder = SetIndex(flags, context, argInfos2);
             var expr = Dynamic(binder, typeof(object), obj, value, key1);
@@ -128,6 +133,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Dynamics)]
         public void ConstructSetIndexMultipleKeys() {
             var binder = SetIndex(flags, context, argInfos2);
             var expr = Dynamic(binder, typeof(object), obj, value, key1, key2);
@@ -140,6 +146,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Dynamics)]
         public void ConstructSetMember() {
             var binder = SetMember(flags, "Data", context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj, value);

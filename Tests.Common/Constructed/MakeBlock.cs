@@ -2,10 +2,12 @@
 using static System.Linq.Expressions.Expression;
 using System.Linq.Expressions;
 using static ExpressionToString.Tests.Globals;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
         [Fact]
+        [Trait("Category", Blocks)]
         public void BlockNoVariables() => RunTest(
             Block(
                 Constant(true),
@@ -18,6 +20,7 @@ True"
         );
 
         [Fact]
+        [Trait("Category", Blocks)]
         public void BlockSingleVariable() => RunTest(
             Block(
                 new[] { i },
@@ -37,6 +40,7 @@ End Block"
         );
 
         [Fact]
+        [Trait("Category", Blocks)]
         public void BlockMultipleVariable() => RunTest(
             Block(
                 new[] { i,s1 },
@@ -56,31 +60,5 @@ End Block"
     True
 End Block"
         );
-
-        [Fact]
-        public void EmptyBlock() => RunTest(
-            Block(),
-            "",
-            ""
-        );
-
-        [Fact]
-        public void BlockOnlyVariables() => RunTest(
-            Block(
-                new[] { i, s1 },
-                new Expression[] { }
-            ),
-            @"{
-    int i;
-    string s1;
-}",
-            @"Block
-    Dim i As Integer
-    Dim s1 As String
-End Block"
-        );
-
-
-
     }
 }

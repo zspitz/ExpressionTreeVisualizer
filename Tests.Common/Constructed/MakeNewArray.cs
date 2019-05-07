@@ -1,10 +1,12 @@
 ﻿using Xunit;
 using static ExpressionToString.Tests.Globals;
 using static System.Linq.Expressions.Expression;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
         [Fact]
+        [Trait("Category",NewArray)]
         public void SingleDimensionInit() => RunTest(
             NewArrayInit(typeof(string), Constant("")),
             "new [] { \"\" }",
@@ -12,6 +14,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewArray)]
         public void SingleDimensionInitExplicitType() => RunTest(
             NewArrayInit(typeof(object), Constant("")),
             "new object[] { \"\" }",
@@ -19,6 +22,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewArray)]
         public void SingleDimensionWithBounds() => RunTest(
             NewArrayBounds(typeof(string),Constant(5)),
             "new string[5]",
@@ -26,6 +30,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewArray)]
         public void MultidimensionWithBounds() => RunTest(
             NewArrayBounds(typeof(string), Constant(2), Constant(3)),
             "new string[2, 3]",
@@ -33,6 +38,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewArray)]
         public void JaggedWithElementsImplicitType() => RunTest(
             NewArrayInit(typeof(string[]), 
                 NewArrayInit(typeof(string), Constant("ab"), Constant("cd")),
@@ -43,6 +49,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewArray)]
         public void JaggedWithElementsExplicitType() => RunTest(
             NewArrayInit(typeof(object[]),
                 NewArrayInit(typeof(string), Constant("ab"), Constant("cd")),
@@ -53,6 +60,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewArray)]
         public void JaggedWithBounds() => RunTest(
             NewArrayBounds(typeof(string[]), Constant(5)),
             "new string[5][]",
@@ -60,6 +68,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewArray)]
         public void ArrayOfMultidimensionalArray() => RunTest(
             NewArrayBounds(typeof(string[,]), Constant(5)),
             "new string[5][,]",
@@ -67,6 +76,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", NewArray)]
         public void MultidimensionalArrayOfArray() => RunTest(
             NewArrayBounds(typeof(string[]), Constant(3), Constant(2)),
             "new string[3, 2][]",

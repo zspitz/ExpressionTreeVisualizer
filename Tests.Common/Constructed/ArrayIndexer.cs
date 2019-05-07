@@ -6,10 +6,12 @@ using System.Reflection;
 using Xunit;
 using static System.Linq.Expressions.Expression;
 using static ExpressionToString.Tests.Globals;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
         [Fact]
+        [Trait("Category", Indexer)]
         public void MakeArrayIndex() => RunTest(
             ArrayIndex(arr, Constant(0)),
             "arr[0]",
@@ -17,6 +19,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Indexer)]
         public void MakeArrayMultipleIndex() => RunTest(
             ArrayIndex(arr2D, Constant(0), Constant(1)),
             "arr[0, 1]",
@@ -24,6 +27,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Indexer)]
         public void MakeArrayAccess() => RunTest(
             ArrayAccess(arr, Constant(0)),
             "arr[0]",
@@ -31,6 +35,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Indexer)]
         public void InstanceIndexer() => RunTest(
             MakeIndex(
                 lstString, listIndexer, new[] { Constant(0) as Expression }
@@ -40,6 +45,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Indexer)]
         public void PropertyIndexer() => RunTest(
             Property(lstString, listIndexer, Constant(0)),
             "lst[0]",

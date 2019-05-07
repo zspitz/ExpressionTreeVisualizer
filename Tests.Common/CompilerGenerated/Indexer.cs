@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using Xunit;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class CompilerGeneratedBase {
         [Fact]
+        [Trait("Category",Indexer)]
         public void ArraySingleIndex() {
             var arr = new string[] { };
             RunTest(
@@ -14,6 +16,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Indexer)]
         public void ArrayMultipleIndex() {
             var arr = new string[,] { };
             RunTest(
@@ -24,6 +27,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
+        [Trait("Category", Indexer)]
         public void TypeIndexer() {
             var lst = new List<string>();
             RunTest(

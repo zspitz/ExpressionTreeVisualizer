@@ -3,9 +3,10 @@ using System.Linq.Expressions;
 using Xunit;
 using static ExpressionToString.Tests.Globals;
 using static System.Linq.Expressions.Expression;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
-    public partial class ConstructedBase : TestsBase {
+    public partial class ConstructedBase {
         [Fact]
         public void MakeConditional() {
             var i = Parameter(typeof(int), "i");
@@ -41,6 +42,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category",Invocation)]
         public void MakeInvocation() => RunTest(
             Invoke(
                 Lambda(Constant(5))
@@ -50,6 +52,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", Lambdas)]
         public void MakeByRefParameter() => RunTest(
             Lambda(
                 Constant(true),
@@ -60,6 +63,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category",Quoted)]
         public void MakeQuoted() => RunTest(
             Block(
                 new[] { x },
@@ -82,6 +86,7 @@ End Block"
         );
 
         [Fact]
+        [Trait("Category", Quoted)]
         public void MakeQuoted1() => RunTest(
             Lambda(
                 Quote(
@@ -101,6 +106,7 @@ End Block"
         SymbolDocumentInfo document = SymbolDocument("source.txt");
 
         [Fact]
+        [Trait("Category", DebugInfos)]
         public void MakeDebugInfo() => RunTest(
             DebugInfo(document,1,2,3,4),
             "// Debug to source.txt -- L1C2 : L3C4",
@@ -108,6 +114,7 @@ End Block"
         );
 
         [Fact]
+        [Trait("Category", DebugInfos)]
         public void MakeClearDebugInfo() => RunTest(
             ClearDebugInfo(document),
             "// Clear debug info from source.txt",

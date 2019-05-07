@@ -7,6 +7,7 @@ using static System.Reflection.BindingFlags;
 using System.Linq.Expressions;
 using System;
 using System.Reflection;
+using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     internal class DummyMember {
@@ -15,6 +16,7 @@ namespace ExpressionToString.Tests {
 
     public partial class ConstructedBase {
         [Fact]
+        [Trait("Category",MemberBindings)]
         public void MakeMemberBind() => RunTest(
             Bind(
                 typeof(DummyMember).GetMember("Foo", Instance | NonPublic).Single(), Constant("abcd")
@@ -24,6 +26,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", MemberBindings)]
         public void MakeElementInit() => RunTest(
             ElementInit(
                 GetMethod(() => ((List<string>)null).Add("")),
@@ -34,6 +37,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", MemberBindings)]
         public void MakeElementInit2Arguments() => RunTest(
             ElementInit(
                 GetMethod(() => ((Wrapper)null).Add("", "")),
@@ -51,6 +55,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
+        [Trait("Category", MemberBindings)]
         public void MakeMemberMemberBind() => RunTest(
             Expression.MemberBind(
                 GetMember(() => ((Node)null).Data),
@@ -71,11 +76,12 @@ namespace ExpressionToString.Tests {
         static readonly ConstructorInfo nodeConstructor = typeof(Node).GetConstructor(new Type[] { });
 
         [Fact]
+        [Trait("Category", MemberBindings)]
         public void MakeListBinding() => RunTest(
             ListBind(
                 GetMember(() => ((Node)null).Children),
-                ElementInit(addMethod, Expression.New(nodeConstructor)),
-                ElementInit(addMethod, Expression.New(nodeConstructor))
+                ElementInit(addMethod, New(nodeConstructor)),
+                ElementInit(addMethod, New(nodeConstructor))
             ),
             @"Children = {
     new Node(),
