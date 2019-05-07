@@ -16,7 +16,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void InstanceMethod0Arguments() {
             var s = "";
-            BuildAssert(
+            RunTest(
                 () => s.ToString(),
                 "() => s.ToString()",
                 "Function() s.ToString"
@@ -24,7 +24,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
-        public void StaticMethod0Arguments() => BuildAssert(
+        public void StaticMethod0Arguments() => RunTest(
             () => Dummy.DummyMethod(),
             "() => Dummy.DummyMethod()",
             "Sub() Dummy.DummyMethod"
@@ -33,7 +33,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void ExtensionMethod0Arguments() {
             var lst = new List<string>();
-            BuildAssert(
+            RunTest(
                 () => lst.Count(),
                 "() => lst.Count()",
                 "Function() lst.Count"
@@ -43,7 +43,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void InstanceMethod1Argument() {
             var s = "";
-            BuildAssert(
+            RunTest(
                 () => s.CompareTo(""),
                 "() => s.CompareTo(\"\")",
                 "Function() s.CompareTo(\"\")"
@@ -51,7 +51,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
-        public void StaticMethod1Argument() => BuildAssert(
+        public void StaticMethod1Argument() => RunTest(
             () => string.Intern(""),
             "() => string.Intern(\"\")",
             "Function() String.Intern(\"\")"
@@ -60,7 +60,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void ExtensionMethod1Argument() {
             var lst = new List<string>();
-            BuildAssert(
+            RunTest(
                 () => lst.Take(1),
                 "() => lst.Take(1)",
                 "Function() lst.Take(1)"
@@ -70,7 +70,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void InstanceMethod2Arguments() {
             var s = "";
-            BuildAssert(
+            RunTest(
                 () => s.Contains('a', StringComparison.InvariantCultureIgnoreCase),
                 "() => s.Contains('a', StringComparison.InvariantCultureIgnoreCase)",
                 "Function() s.Contains(\"a\"C, StringComparison.InvariantCultureIgnoreCase)"
@@ -78,7 +78,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
-        public void StaticMethod2Arguments() => BuildAssert(
+        public void StaticMethod2Arguments() => RunTest(
             () => string.Join(',', new[] { 'a', 'b' }),
             "() => string.Join(',', new [] { 'a', 'b' })",
             "Function() String.Join(\",\"C, { \"a\"C, \"b\"C })"
@@ -87,7 +87,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void ExtensionMethod2Arguments() {
             var lst = new List<string>();
-            BuildAssert(
+            RunTest(
                 () => lst.OrderBy(x=>x, StringComparer.OrdinalIgnoreCase),
                 "() => lst.OrderBy((string x) => x, StringComparer.OrdinalIgnoreCase)",
                 "Function() lst.OrderBy(Function(x As String) x, StringComparer.OrdinalIgnoreCase)"
@@ -95,14 +95,14 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
-        public void StringConcat() => BuildAssert(
+        public void StringConcat() => RunTest(
             (string s1, string s2) => string.Concat(s1, s2),
             "(string s1, string s2) => s1 + s2",
             "Function(s1 As String, s2 As String) s1 + s2"
         );
 
         [Fact]
-        public void MathPow() => BuildAssert(
+        public void MathPow() => RunTest(
             (double x, double y) => Math.Pow(x, y),
             "(double x, double y) => Math.Pow(x, y)",
             "Function(x As Double, y As Double) x ^ y"

@@ -11,7 +11,7 @@ namespace ExpressionToString.Tests.Constructed {
         [Fact]
         public void MakeConditional() {
             var i = Parameter(typeof(int), "i");
-            BuildAssert(
+            RunTest(
                 Condition(
                     GreaterThan(i, Constant(10)),
                     i,
@@ -23,7 +23,7 @@ namespace ExpressionToString.Tests.Constructed {
         }
 
         [Fact]
-        public void MakeTypeCheck() => BuildAssert(
+        public void MakeTypeCheck() => RunTest(
             TypeIs(
                 Constant(""),
                 typeof(string)
@@ -33,7 +33,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void MakeTypeEqual() => BuildAssert(
+        public void MakeTypeEqual() => RunTest(
             TypeEqual(
                 Constant(""),
                 typeof(IEnumerable)
@@ -43,7 +43,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void MakeInvocation() => BuildAssert(
+        public void MakeInvocation() => RunTest(
             Invoke(
                 Lambda(Constant(5))
             ),
@@ -52,7 +52,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void MakeByRefParameter() => BuildAssert(
+        public void MakeByRefParameter() => RunTest(
             Lambda(
                 Constant(true),
                 Parameter(typeof(string).MakeByRefType(), "s4")
@@ -62,7 +62,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void MakeQuoted() => BuildAssert(
+        public void MakeQuoted() => RunTest(
             Block(
                 new[] { x },
                 Quote(
@@ -84,7 +84,7 @@ End Block"
         );
 
         [Fact]
-        public void MakeQuoted1() => BuildAssert(
+        public void MakeQuoted1() => RunTest(
             Lambda(
                 Quote(
                     Lambda(writeLineTrue)
@@ -103,14 +103,14 @@ End Block"
         SymbolDocumentInfo document = SymbolDocument("source.txt");
 
         [Fact]
-        public void MakeDebugInfo() => BuildAssert(
+        public void MakeDebugInfo() => RunTest(
             DebugInfo(document,1,2,3,4),
             "// Debug to source.txt -- L1C2 : L3C4",
             "' Debug to source.txt -- L1C2 : L3C4"
         );
 
         [Fact]
-        public void MakeClearDebugInfo() => BuildAssert(
+        public void MakeClearDebugInfo() => RunTest(
             ClearDebugInfo(document),
             "// Clear debug info from source.txt",
             "' Clear debug info from source.txt"

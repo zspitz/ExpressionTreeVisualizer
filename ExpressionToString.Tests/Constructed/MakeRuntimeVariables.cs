@@ -8,14 +8,14 @@ namespace ExpressionToString.Tests.Constructed {
     public class MakeRuntimeVariables
     {
         [Fact]
-        public void ConstructRuntimeVariables() => BuildAssert(
+        public void ConstructRuntimeVariables() => RunTest(
             RuntimeVariables(x, s1),
             "// variables -- double x, string s1",
             "' Variables -- x As Double, s1 As String"
         );
 
         [Fact]
-        public void RuntimeVariablesWithinBlock() => BuildAssert(
+        public void RuntimeVariablesWithinBlock() => RunTest(
             Block(
                 new [] {s2}, //forces an explicit block
                 Constant(true),

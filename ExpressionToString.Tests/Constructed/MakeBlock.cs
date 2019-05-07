@@ -8,7 +8,7 @@ namespace ExpressionToString.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class MakeBlock {
         [Fact]
-        public void BlockNoVariables() => BuildAssert(
+        public void BlockNoVariables() => RunTest(
             Block(
                 Constant(true),
                 Constant(true)
@@ -20,7 +20,7 @@ True"
         );
 
         [Fact]
-        public void BlockSingleVariable() => BuildAssert(
+        public void BlockSingleVariable() => RunTest(
             Block(
                 new[] { i },
                 Constant(true),
@@ -39,7 +39,7 @@ End Block"
         );
 
         [Fact]
-        public void BlockMultipleVariable() => BuildAssert(
+        public void BlockMultipleVariable() => RunTest(
             Block(
                 new[] { i,s1 },
                 Constant(true),
@@ -60,14 +60,14 @@ End Block"
         );
 
         [Fact]
-        public void EmptyBlock() => BuildAssert(
+        public void EmptyBlock() => RunTest(
             Block(),
             "",
             ""
         );
 
         [Fact]
-        public void BlockOnlyVariables() => BuildAssert(
+        public void BlockOnlyVariables() => RunTest(
             Block(
                 new[] { i, s1 },
                 new Expression[] { }

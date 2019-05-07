@@ -31,14 +31,14 @@ namespace ExpressionToString.Tests.Constructed
         }
 
         [Fact]
-        public void NamedType() => BuildAssert(
+        public void NamedType() => RunTest(
             New(typeof(Random)),
             "new Random()",
             "New Random"
         );
 
         [Fact]
-        public void NamedTypeWithInitializer() => BuildAssert(
+        public void NamedTypeWithInitializer() => RunTest(
             MemberInit(
                 New(fooType),
                 Bind(barProp, Constant("abcd"))
@@ -52,7 +52,7 @@ namespace ExpressionToString.Tests.Constructed
         );
 
         [Fact]
-        public void NamedTypeWithInitializers() => BuildAssert(
+        public void NamedTypeWithInitializers() => RunTest(
             MemberInit(
                 New(fooType),
                 Bind(barProp, Constant("abcd")),
@@ -69,14 +69,14 @@ namespace ExpressionToString.Tests.Constructed
         );
 
         [Fact]
-        public void NamedTypeConstructorParameters() => BuildAssert(
+        public void NamedTypeConstructorParameters() => RunTest(
             New(fooCtor1, Constant("ijkl")),
             @"new Foo(""ijkl"")",
             @"New Foo(""ijkl"")"
         );
 
         [Fact]
-        public void NamedTypeConstructorParametersWithInitializers() => BuildAssert(
+        public void NamedTypeConstructorParametersWithInitializers() => RunTest(
             MemberInit(
                 New(fooCtor1, Constant("ijkl")),
                 Bind(barProp, Constant("abcd")),
@@ -93,7 +93,7 @@ namespace ExpressionToString.Tests.Constructed
         );
 
         [Fact]
-        public void CollectionTypeWithInitializer() => BuildAssert(
+        public void CollectionTypeWithInitializer() => RunTest(
             ListInit(
                 New(typeof(List<string>)), 
                 ElementInit(add1, Constant("abcd")), 
@@ -110,7 +110,7 @@ namespace ExpressionToString.Tests.Constructed
         );
 
         [Fact]
-        public void CollectionTypeWithMultipleElementsInitializers() => BuildAssert(
+        public void CollectionTypeWithMultipleElementsInitializers() => RunTest(
             ListInit(
                 New(typeof(Wrapper)),
                 ElementInit(add2, Constant("ab"), Constant("cd")),
@@ -139,7 +139,7 @@ namespace ExpressionToString.Tests.Constructed
         );
 
         [Fact]
-        public void CollectionTypeWithSingleOrMultipleElementsInitializers() => BuildAssert(
+        public void CollectionTypeWithSingleOrMultipleElementsInitializers() => RunTest(
             ListInit(
                 New(typeof(Wrapper)),
                 ElementInit(add2, Constant("ab"), Constant("cd")),

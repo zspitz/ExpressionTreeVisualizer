@@ -16,28 +16,28 @@ namespace ExpressionToString.Tests.Constructed {
         PropertyInfo listIndexer = typeof(List<string>).GetIndexers(true).Single();
 
         [Fact]
-        public void MakeArrayIndex() => BuildAssert(
+        public void MakeArrayIndex() => RunTest(
             ArrayIndex(arr, Constant(0)),
             "arr[0]",
             "arr(0)"
         );
 
         [Fact]
-        public void MakeArrayMultipleIndex() => BuildAssert(
+        public void MakeArrayMultipleIndex() => RunTest(
             ArrayIndex(arr2D, Constant(0), Constant(1)),
             "arr[0, 1]",
             "arr(0, 1)"
         );
 
         [Fact]
-        public void MakeArrayAccess() => BuildAssert(
+        public void MakeArrayAccess() => RunTest(
             ArrayAccess(arr, Constant(0)),
             "arr[0]",
             "arr(0)"
         );
 
         [Fact]
-        public void InstanceIndexer() => BuildAssert(
+        public void InstanceIndexer() => RunTest(
             MakeIndex(
                 lst, listIndexer, new[] { Constant(0) as Expression }
             ),
@@ -46,7 +46,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void PropertyIndexer() => BuildAssert(
+        public void PropertyIndexer() => RunTest(
             Property(lst, listIndexer, Constant(0)),
             "lst[0]",
             "lst(0)"

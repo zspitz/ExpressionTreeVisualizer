@@ -7,14 +7,14 @@ namespace ExpressionToString.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class MakeDefault {
         [Fact]
-        public void MakeDefaultRefType() => BuildAssert(
+        public void MakeDefaultRefType() => RunTest(
             Default(typeof(string)),
             "default(string)",
             "CType(Nothing, String)"
         );
 
         [Fact]
-        public void MakeDefaultValueType() => BuildAssert(
+        public void MakeDefaultValueType() => RunTest(
             Default(typeof(int)),
             "default(int)",
             "CType(Nothing, Integer)"

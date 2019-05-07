@@ -12,55 +12,55 @@ namespace ExpressionToString.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class MakeMethodCall {
         ParameterExpression s = Parameter(typeof(string), "s");
-        ParameterExpression lst = Parameter(typeof(List<string>), "lst");
+        ParameterExpression lstString = Parameter(typeof(List<string>), "lst");
         ParameterExpression s1 = Parameter(typeof(string), "s1");
         ParameterExpression s2 = Parameter(typeof(string), "s2");
 
         [Fact]
-        public void InstanceMethod0Arguments() => BuildAssert(
+        public void InstanceMethod0Arguments() => RunTest(
             Call(s, GetMethod(() => "".ToString())),
             "s.ToString()",
             "s.ToString"
         );
 
         [Fact]
-        public void StaticMethod0Arguments() => BuildAssert(
+        public void StaticMethod0Arguments() => RunTest(
             Call(GetMethod(() => Dummy.DummyMethod())),
             "Dummy.DummyMethod()",
             "Dummy.DummyMethod"
         );
 
         [Fact]
-        public void ExtensionMethod0Arguments() => BuildAssert(
-            Call(GetMethod(() => ((List<string>)null).Count()), lst),
+        public void ExtensionMethod0Arguments() => RunTest(
+            Call(GetMethod(() => ((List<string>)null).Count()), lstString),
             "lst.Count()",
             "lst.Count"
         );
 
         [Fact]
-        public void InstanceMethod1Argument() => BuildAssert(
+        public void InstanceMethod1Argument() => RunTest(
             Call(s, GetMethod(() => "".CompareTo("")), Constant("")),
             "s.CompareTo(\"\")",
             "s.CompareTo(\"\")"
         );
 
         [Fact]
-        public void StaticMethod1Argument() => BuildAssert(
+        public void StaticMethod1Argument() => RunTest(
             Call(GetMethod(() => string.Intern("")), Constant("")),
             "string.Intern(\"\")",
             "String.Intern(\"\")"
         );
 
         [Fact]
-        public void ExtensionMethod1Argument() => BuildAssert(
-            Call(GetMethod(() => (null as List<string>).Take(1)), lst, Constant(1)),
+        public void ExtensionMethod1Argument() => RunTest(
+            Call(GetMethod(() => (null as List<string>).Take(1)), lstString, Constant(1)),
             "lst.Take(1)",
             "lst.Take(1)"
         );
 
 
         [Fact]
-        public void InstanceMethod2Arguments() => BuildAssert(
+        public void InstanceMethod2Arguments() => RunTest(
             Call(
                 s,
                 GetMethod(() => "".Contains('a', StringComparison.OrdinalIgnoreCase)),
@@ -72,7 +72,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void StaticMethod2Arguments() => BuildAssert(
+        public void StaticMethod2Arguments() => RunTest(
             Call(
                 GetMethod(() => string.Join(',', new[] { 'a', 'b' })),
                 Constant(','),
@@ -85,10 +85,10 @@ namespace ExpressionToString.Tests.Constructed {
         [Fact]
         public void ExtensionMethod2Arguments() {
             var x = Parameter(typeof(string), "x");
-            BuildAssert(
+            RunTest(
                 Call(
                     GetMethod(() => (null as List<string>).OrderBy(y => y, StringComparer.OrdinalIgnoreCase)),
-                    lst,
+                    lstString,
                     Lambda(x, x),
                     MakeMemberAccess(null, typeof(StringComparer).GetMember("OrdinalIgnoreCase").Single())
                 ),
@@ -98,7 +98,7 @@ namespace ExpressionToString.Tests.Constructed {
         }
 
         [Fact]
-        public void StringConcat() => BuildAssert(
+        public void StringConcat() => RunTest(
             Call(
                 GetMethod(() => string.Concat("", "")),
                 s1,

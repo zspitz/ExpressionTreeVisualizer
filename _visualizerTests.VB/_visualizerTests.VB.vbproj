@@ -119,9 +119,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExpressionTreeVisualizer.2019\ExpressionTreeVisualizer.2019.csproj">
+    <ProjectReference Include="..\ExpressionTreeVisualizer.2019\Visualizer.2019.csproj">
       <Project>{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}</Project>
-      <Name>ExpressionTreeVisualizer.2019</Name>
+      <Name>Visualizer.2019</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

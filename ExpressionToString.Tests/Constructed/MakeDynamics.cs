@@ -39,7 +39,7 @@ namespace ExpressionToString.Tests.Constructed {
             var binder = GetIndex(flags, context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj, key1);
 
-            BuildAssert(
+            RunTest(
                 expr,
                 "obj[\"key\"]",
                 "obj(\"key\")"
@@ -51,7 +51,7 @@ namespace ExpressionToString.Tests.Constructed {
             var binder = GetIndex(flags,context,argInfos);
             var expr = Dynamic(binder, typeof(object), obj, key1, key2);
 
-            BuildAssert(
+            RunTest(
                 expr,
                 "obj[\"key\", 1]",
                 "obj(\"key\", 1)"
@@ -63,7 +63,7 @@ namespace ExpressionToString.Tests.Constructed {
             var binder = GetMember(flags, "Data", context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj);
 
-            BuildAssert(
+            RunTest(
                 expr,
                 "obj.Data",
                 "obj.Data"
@@ -75,7 +75,7 @@ namespace ExpressionToString.Tests.Constructed {
             var binder = Invoke(flags, context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj);
 
-            BuildAssert(
+            RunTest(
                 expr,
                 "obj()",
                 "obj"
@@ -87,7 +87,7 @@ namespace ExpressionToString.Tests.Constructed {
             var binder = Invoke(flags, context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj, arg1, arg2);
 
-            BuildAssert(
+            RunTest(
                 expr,
                 "obj(\"arg1\", 15)",
                 "obj(\"arg1\", 15)"
@@ -99,7 +99,7 @@ namespace ExpressionToString.Tests.Constructed {
             var binder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj);
 
-            BuildAssert(
+            RunTest(
                 expr,
                 "obj.Method()",
                 "obj.Method"
@@ -111,7 +111,7 @@ namespace ExpressionToString.Tests.Constructed {
             var binder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj, arg1, arg2);
 
-            BuildAssert(
+            RunTest(
                 expr,
                 "obj.Method(\"arg1\", 15)",
                 "obj.Method(\"arg1\", 15)"
@@ -123,7 +123,7 @@ namespace ExpressionToString.Tests.Constructed {
             var binder = SetIndex(flags, context, argInfos2);
             var expr = Dynamic(binder, typeof(object), obj, value, key1);
 
-            BuildAssert(
+            RunTest(
                 expr,
                 "obj[\"key\"] = 42",
                 "obj(\"key\") = 42"
@@ -135,7 +135,7 @@ namespace ExpressionToString.Tests.Constructed {
             var binder = SetIndex(flags, context, argInfos2);
             var expr = Dynamic(binder, typeof(object), obj, value, key1, key2);
 
-            BuildAssert(
+            RunTest(
                 expr,
                 "obj[\"key\", 1] = 42",
                 "obj(\"key\", 1) = 42"
@@ -147,7 +147,7 @@ namespace ExpressionToString.Tests.Constructed {
             var binder = SetMember(flags, "Data", context, argInfos);
             var expr = Dynamic(binder, typeof(object), obj, value);
 
-            BuildAssert(
+            RunTest(
                 expr,
                 "obj.Data = 42",
                 "obj.Data = 42"

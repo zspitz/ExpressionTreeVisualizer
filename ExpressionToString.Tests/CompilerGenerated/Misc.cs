@@ -7,7 +7,7 @@ namespace ExpressionToString.Tests {
     [Trait("Source", CSharpCompiler)]
     public class Misc {
         [Fact]
-        public void Conditional() => BuildAssert(
+        public void Conditional() => RunTest(
             (int i) => i > 10 ? i : i + 10,
             "(int i) => i > 10 ? i : i + 10",
             "Function(i As Integer) If(i > 10, i, i + 10)"
@@ -16,7 +16,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void TypeCheck() {
             object o = "";
-            BuildAssert(
+            RunTest(
                 () => o is string,
                 "() => o is string",
                 "Function() TypeOf o Is String"
@@ -26,7 +26,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void InvocationNoArguments() {
             Func<int> del = () => DateTime.Now.Day;
-            BuildAssert(
+            RunTest(
                 () => del(),
                 "() => del()",
                 "Function() del()"
@@ -36,7 +36,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void InvocationOneArgument() {
             Func<int, int> del = (int i) => DateTime.Now.Day;
-            BuildAssert(
+            RunTest(
                 () => del(5),
                 "() => del(5)",
                 "Function() del(5)"

@@ -29,14 +29,14 @@ namespace ExpressionToString.Tests {
     [Trait("Source", CSharpCompiler)]
     public class New {
         [Fact]
-        public void NamedType() => BuildAssert(
+        public void NamedType() => RunTest(
             () => new Random(),
             "() => new Random()",
             "Function() New Random"
         );
 
         [Fact]
-        public void NamedTypeWithInitializer() => BuildAssert(
+        public void NamedTypeWithInitializer() => RunTest(
             () => new Foo { Bar = "abcd" },
             @"() => new Foo() {
     Bar = ""abcd""
@@ -47,7 +47,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
-        public void NamedTypeWithInitializers() => BuildAssert(
+        public void NamedTypeWithInitializers() => RunTest(
             () => new Foo { Bar = "abcd", Baz = "efgh" },
             @"() => new Foo() {
     Bar = ""abcd"",
@@ -60,14 +60,14 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
-        public void NamedTypeConstructorParameters() => BuildAssert(
+        public void NamedTypeConstructorParameters() => RunTest(
             () => new Foo("ijkl"),
             @"() => new Foo(""ijkl"")",
             @"Function() New Foo(""ijkl"")"
         );
 
         [Fact]
-        public void NamedTypeConstructorParametersWithInitializers() => BuildAssert(
+        public void NamedTypeConstructorParametersWithInitializers() => RunTest(
             () => new Foo("ijkl") { Bar = "abcd", Baz = "efgh" },
             @"() => new Foo(""ijkl"") {
     Bar = ""abcd"",
@@ -80,7 +80,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
-        public void AnonymousType() => BuildAssert(
+        public void AnonymousType() => RunTest(
             () => new { Bar = "abcd", Baz = "efgh" },
             @"() => new {
     Bar = ""abcd"",
@@ -96,7 +96,7 @@ namespace ExpressionToString.Tests {
         public void AnonymousTypeFromVariables() {
             var Bar = "abcd";
             var Baz = "efgh";
-            BuildAssert(
+            RunTest(
                 () => new { Bar, Baz },
                 @"() => new {
     Bar,
@@ -110,7 +110,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
-        public void CollectionTypeWithInitializer() => BuildAssert(
+        public void CollectionTypeWithInitializer() => RunTest(
             () => new List<string> { "abcd", "efgh" },
             @"() => new List<string>() {
     ""abcd"",
@@ -123,7 +123,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
-        public void CollectionTypeWithMultipleElementsInitializers() => BuildAssert(
+        public void CollectionTypeWithMultipleElementsInitializers() => RunTest(
             () => new Wrapper { { "ab", "cd" }, { "ef", "gh" } },
             @"() => new Wrapper() {
     {
@@ -148,7 +148,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
-        public void CollectionTypeWithSingleOrMultipleElementsInitializers() => BuildAssert(
+        public void CollectionTypeWithSingleOrMultipleElementsInitializers() => RunTest(
             () => new Wrapper { { "ab", "cd" }, "ef" },
             @"() => new Wrapper() {
     {
@@ -167,7 +167,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
-        public void MemberMemberBinding() => BuildAssert(
+        public void MemberMemberBinding() => RunTest(
             () => new Node { Data = { Name = "abcd" } },
             @"() => new Node() {
     Data = {
@@ -182,7 +182,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
-        public void ListBinding() => BuildAssert(
+        public void ListBinding() => RunTest(
             () => new Node { Children = { new Node(), new Node() } },
             @"() => new Node() {
     Children = {

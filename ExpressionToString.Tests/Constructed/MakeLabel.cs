@@ -7,7 +7,7 @@ namespace ExpressionToString.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class MakeLabel {
         [Fact]
-        public void ConstructLabel() => BuildAssert(
+        public void ConstructLabel() => RunTest(
             // we're using variables here to force explicit blocks, which have indentation
             // in order to verify that the label is written without indentation
             Block(
@@ -40,7 +40,7 @@ End Block"
         );
 
         [Fact]
-        public void ConstructLabel1() => BuildAssert(
+        public void ConstructLabel1() => RunTest(
             Block(
                 new[] { i },
                 Block(
@@ -68,14 +68,14 @@ End Block"
         );
 
         [Fact]
-        public void ConstructLabelTarget() => BuildAssert(
+        public void ConstructLabelTarget() => RunTest(
             Label("target"),
             "target",
             "target"
         );
 
         [Fact]
-        public void ConstructEmptyLabelTarget() => BuildAssert(
+        public void ConstructEmptyLabelTarget() => RunTest(
             Label(""),
             "",
             ""

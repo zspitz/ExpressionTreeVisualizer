@@ -9,7 +9,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void ArraySingleIndex() {
             var arr = new string[] { };
-            BuildAssert(
+            RunTest(
                 () => arr[5],
                 "() => arr[5]",
                 "Function() arr(5)"
@@ -19,7 +19,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void ArrayMultipleIndex() {
             var arr = new string[,] { };
-            BuildAssert(
+            RunTest(
                 () => arr[5, 6],
                 "() => arr[5, 6]",
                 "Function() arr(5, 6)"
@@ -29,7 +29,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void TypeIndexer() {
             var lst = new List<string>();
-            BuildAssert(
+            RunTest(
                 () => lst[3],
                 "() => lst[3]",
                 "Function() lst(3)"

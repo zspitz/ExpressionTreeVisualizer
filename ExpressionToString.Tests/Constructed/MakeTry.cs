@@ -12,7 +12,7 @@ namespace ExpressionToString.Tests.Constructed {
         ParameterExpression ex = Parameter(typeof(Exception), "ex");
 
         [Fact]
-        public void ConstructSimpleCatch() => BuildAssert(
+        public void ConstructSimpleCatch() => RunTest(
             Catch(typeof(Exception), writeLineTrue),
                 @"catch {
     Console.WriteLine(true);
@@ -22,7 +22,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void ConstructCatchSingleStatement() => BuildAssert(
+        public void ConstructCatchSingleStatement() => RunTest(
             Catch(ex, writeLineTrue),
             @"catch (Exception ex) {
     Console.WriteLine(true);
@@ -32,7 +32,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void ConstructCatchMultiStatement() => BuildAssert(
+        public void ConstructCatchMultiStatement() => RunTest(
             Catch(ex, Block(writeLineTrue, writeLineTrue)),
             @"catch (Exception ex) {
     Console.WriteLine(true);
@@ -44,7 +44,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void ConstructCatchSingleStatementWithType() => BuildAssert(
+        public void ConstructCatchSingleStatementWithType() => RunTest(
             Catch(exceptionType, writeLineTrue),
             @"catch (InvalidCastException) {
     Console.WriteLine(true);
@@ -54,7 +54,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void ConstructCatchMultiStatementWithType() => BuildAssert(
+        public void ConstructCatchMultiStatementWithType() => RunTest(
             Catch(exceptionType, Block(writeLineTrue, writeLineTrue)),
             @"catch (InvalidCastException) {
     Console.WriteLine(true);
@@ -66,7 +66,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void ConstructCatchSingleStatementWithFilter() => BuildAssert(
+        public void ConstructCatchSingleStatementWithFilter() => RunTest(
             Catch(ex, writeLineTrue, Constant(true)),
             @"catch (Exception ex) when (true) {
     Console.WriteLine(true);
@@ -76,7 +76,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void ConstructCatchMultiStatementWithFilter() => BuildAssert(
+        public void ConstructCatchMultiStatementWithFilter() => RunTest(
             Catch(ex, Block(writeLineTrue, writeLineTrue), Constant(true)),
             @"catch (Exception ex) when (true) {
     Console.WriteLine(true);
@@ -88,7 +88,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void ConstructCatchWithMultiStatementFilter() => BuildAssert(
+        public void ConstructCatchWithMultiStatementFilter() => RunTest(
             Catch(ex, writeLineTrue, Block(Constant(true), Constant(true))),
             @"catch (Exception ex) when ({
     true;
@@ -104,7 +104,7 @@ End Block
         );
 
         [Fact]
-        public void ConstructTryCatch() => BuildAssert(
+        public void ConstructTryCatch() => RunTest(
             TryCatch(Constant(true),Catch(typeof(Exception), Constant(true))),
             @"try {
     true;
@@ -119,7 +119,7 @@ End Try"
         );
 
         [Fact]
-        public void ConstructTryCatchFinally() => BuildAssert(
+        public void ConstructTryCatchFinally() => RunTest(
             TryCatchFinally(Constant(true), writeLineTrue, Catch(ex, Constant(true))),
             @"try {
     true;
@@ -138,7 +138,7 @@ End Try"
         );
 
         [Fact]
-        public void ConstructTryFault() => BuildAssert(
+        public void ConstructTryFault() => RunTest(
             TryFault(writeLineTrue, writeLineTrue),
             @"try {
     Console.WriteLine(true);
@@ -153,7 +153,7 @@ End Try"
         );
 
         [Fact]
-        public void ConstructTryFinally() => BuildAssert(
+        public void ConstructTryFinally() => RunTest(
             TryFinally(writeLineTrue, writeLineTrue),
             @"try {
     Console.WriteLine(true);

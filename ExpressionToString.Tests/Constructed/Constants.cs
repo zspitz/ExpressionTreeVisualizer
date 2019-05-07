@@ -8,21 +8,21 @@ namespace ExpressionToString.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class Constants {
         [Fact]
-        public void Random() => BuildAssert(
+        public void Random() => RunTest(
             Constant(new Random()), 
             "#Random", 
             "#Random"
         );
 
         [Fact]
-        public void ValueTuple() => BuildAssert(
+        public void ValueTuple() => RunTest(
             Constant(("abcd", 5)), 
             "(\"abcd\", 5)",
             "(\"abcd\", 5)"
         );
 
         [Fact]
-        public void OldTuple() => BuildAssert(
+        public void OldTuple() => RunTest(
             Constant(Tuple.Create("abcd", 5)),
             "(\"abcd\", 5)",
             "(\"abcd\", 5)"
@@ -32,7 +32,7 @@ namespace ExpressionToString.Tests.Constructed {
         public void DateTime() {
             // test rendered VB literal
             var dte = new DateTime(1981, 1, 1);
-            BuildAssert(
+            RunTest(
                 Constant(dte), 
                 "#DateTime", 
                 $"#{dte.ToString()}#"
@@ -43,7 +43,7 @@ namespace ExpressionToString.Tests.Constructed {
         public void TimeSpan() {
             // test rendered VB literal
             var ts = new TimeSpan(5, 4, 3, 2);
-            BuildAssert(
+            RunTest(
                 Constant(ts), 
                 "#TimeSpan", 
                 $"#{ts.ToString()}#"
@@ -51,14 +51,14 @@ namespace ExpressionToString.Tests.Constructed {
         }
 
         [Fact]
-        public void Array() => BuildAssert(
+        public void Array() => RunTest(
             Constant(new object[] { "abcd", 5, new Random() }),
             "new [] { \"abcd\", 5, #Random }",
             "{ \"abcd\", 5, #Random }"
         );
 
         [Fact]
-        public void Type() => BuildAssert(
+        public void Type() => RunTest(
             Constant(typeof(string)),
             "typeof(string)",
             "GetType(String)"

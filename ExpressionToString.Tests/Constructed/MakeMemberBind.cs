@@ -18,7 +18,7 @@ namespace ExpressionToString.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class MemberBind {
         [Fact]
-        public void MakeMemberBind() => BuildAssert(
+        public void MakeMemberBind() => RunTest(
             Bind(
                 typeof(DummyMember).GetMember("Foo", Instance | NonPublic).Single(), Constant("abcd")
             ),
@@ -27,7 +27,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void MakeElementInit() => BuildAssert(
+        public void MakeElementInit() => RunTest(
             ElementInit(
                 GetMethod(() => ((List<string>)null).Add("")),
                 Constant("abcd")
@@ -37,7 +37,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void MakeElementInit2Arguments() => BuildAssert(
+        public void MakeElementInit2Arguments() => RunTest(
             ElementInit(
                 GetMethod(() => ((Wrapper)null).Add("", "")),
                 Constant("abcd"),
@@ -54,7 +54,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void MakeMemberMemberBind() => BuildAssert(
+        public void MakeMemberMemberBind() => RunTest(
             Expression.MemberBind(
                 GetMember(() => ((Node)null).Data),
                 Bind(
@@ -74,7 +74,7 @@ namespace ExpressionToString.Tests.Constructed {
         static readonly ConstructorInfo nodeConstructor = typeof(Node).GetConstructor(new Type[] { });
 
         [Fact]
-        public void MakeListBinding() => BuildAssert(
+        public void MakeListBinding() => RunTest(
             ListBind(
                 GetMember(() => ((Node)null).Children),
                 ElementInit(addMethod, Expression.New(nodeConstructor)),

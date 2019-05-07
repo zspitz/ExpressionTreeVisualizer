@@ -12,7 +12,7 @@ namespace ExpressionToString.Tests.Constructed {
         // the NodeTypeof IfThen and IfThenElse is always typeof(void)
 
         [Fact]
-        public void VoidConditionalWithElse() => BuildAssert(
+        public void VoidConditionalWithElse() => RunTest(
             Condition(
                 Constant(true),
                 writeLineTrue,
@@ -23,7 +23,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void VoidConditional1WithElse() => BuildAssert(
+        public void VoidConditional1WithElse() => RunTest(
             IfThenElse(
                 Constant(true),
                 writeLineTrue,
@@ -34,7 +34,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void VoidConditionalWithoutElse() => BuildAssert(
+        public void VoidConditionalWithoutElse() => RunTest(
             Condition(
                 Constant(true),
                 writeLineTrue,
@@ -45,7 +45,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void VoidConditional1WithoutElse() => BuildAssert(
+        public void VoidConditional1WithoutElse() => RunTest(
             IfThen(
                 Constant(true),
                 writeLineTrue
@@ -55,7 +55,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void NonVoidConditionalWithElse() => BuildAssert(
+        public void NonVoidConditionalWithElse() => RunTest(
             Condition(
                 Constant(true),
                 trueLength,
@@ -66,7 +66,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void NonVoidConditionalWithoutElse() => BuildAssert(
+        public void NonVoidConditionalWithoutElse() => RunTest(
             Condition(
                 Constant(true),
                 trueLength,
@@ -77,7 +77,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void MultilineTestPart() => BuildAssert(
+        public void MultilineTestPart() => RunTest(
             Condition(
                 Block(Constant(true), Constant(true)),
                 trueLength,
@@ -94,7 +94,7 @@ End Block, ""true"".Length, ""false"".Length)"
         );
 
         [Fact]
-        public void MultilineTestPart1() => BuildAssert(
+        public void MultilineTestPart1() => RunTest(
             IfThen(
                 Block(Constant(true), Constant(true)),
                 writeLineTrue
@@ -110,7 +110,7 @@ Then Console.WriteLine(True)"
         );
 
         [Fact]
-        public void MultilineIfTrue() => BuildAssert(
+        public void MultilineIfTrue() => RunTest(
             IfThen(
                 Constant(true),
                 Block(writeLineTrue, writeLineTrue)
@@ -126,7 +126,7 @@ End If"
         );
 
         [Fact]
-        public void NestedIfThen() => BuildAssert(
+        public void NestedIfThen() => RunTest(
                 IfThen(
                     Constant(true),
                     IfThen(
@@ -141,7 +141,7 @@ End If"
         );
 
         [Fact]
-        public void NestedElse() => BuildAssert(
+        public void NestedElse() => RunTest(
             IfThenElse(
                 Constant(true),
                 writeLineTrue,

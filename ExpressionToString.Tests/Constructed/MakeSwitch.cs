@@ -18,7 +18,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void SingleValueSwitchCase() => BuildAssert(
+        public void SingleValueSwitchCase() => RunTest(
             singleValueCase,
             @"case 5:
     Console.WriteLine(true);
@@ -30,7 +30,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void MultiValueSwitchCase() => BuildAssert(
+        public void MultiValueSwitchCase() => RunTest(
             multiValueCase,
             @"case 5:
 case 6:
@@ -43,7 +43,7 @@ case 6:
         );
 
         [Fact]
-        public void SingleValueSwitchCase1() => BuildAssert(
+        public void SingleValueSwitchCase1() => RunTest(
             SwitchCase(writeLineTrue, Constant(5)),
             @"case 5:
     Console.WriteLine(true);
@@ -53,7 +53,7 @@ case 6:
 );
 
         [Fact]
-        public void MultiValueSwitchCase1() => BuildAssert(
+        public void MultiValueSwitchCase1() => RunTest(
             SwitchCase(writeLineTrue, Constant(5), Constant(6)),
             @"case 5:
 case 6:
@@ -64,7 +64,7 @@ case 6:
         );
 
         [Fact]
-        public void SwitchOnExpressionWithDefaultSingleStatement() => BuildAssert(
+        public void SwitchOnExpressionWithDefaultSingleStatement() => RunTest(
             Switch(i, Empty(), SwitchCase(
                     writeLineTrue,
                     Constant(4)
@@ -93,7 +93,7 @@ End Select"
         );
 
         [Fact]
-        public void SwitchOnExpressionWithDefaultMultiStatement() => BuildAssert(
+        public void SwitchOnExpressionWithDefaultMultiStatement() => RunTest(
     Switch(i, Block(
             typeof(void),
             Constant(true),
@@ -128,7 +128,7 @@ End Select"
 );
 
         [Fact]
-        public void SwitchOnMultipleStatementsWithDefault() => BuildAssert(
+        public void SwitchOnMultipleStatementsWithDefault() => RunTest(
             Switch(Block(i, j), Block(
                     typeof(void),
                     Constant(true),
@@ -169,7 +169,7 @@ End Select"
         );
 
         [Fact]
-        public void SwitchOnExpressionWithoutDefault() => BuildAssert(
+        public void SwitchOnExpressionWithoutDefault() => RunTest(
             Switch(i, SwitchCase(
                     writeLineTrue,
                     Constant(4)
@@ -194,7 +194,7 @@ End Select"
         );
 
         [Fact]
-        public void SwithOnMultipleStatementsWithoutDefault() => BuildAssert(
+        public void SwithOnMultipleStatementsWithoutDefault() => RunTest(
             Switch(Block(i, j), SwitchCase(
                     writeLineTrue,
                     Constant(4)

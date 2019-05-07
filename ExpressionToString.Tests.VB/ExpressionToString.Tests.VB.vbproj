@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <Import Include="ExpressionToString.Tests" />
-    <Import Include="ExpressionToString.Tests.Globals" />
     <Import Include="ExpressionToString.Tests.Runners" />
     <Import Include="Xunit" />
   </ItemGroup>

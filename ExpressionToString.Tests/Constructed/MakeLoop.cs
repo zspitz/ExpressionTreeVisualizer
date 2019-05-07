@@ -7,7 +7,7 @@ namespace ExpressionToString.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class MakeLoop {
         [Fact]
-        public void EmptyLoop() => BuildAssert(
+        public void EmptyLoop() => RunTest(
             Loop(Constant(true)),
             @"while (true) {
     true;
@@ -18,7 +18,7 @@ Loop"
             );
 
         [Fact]
-        public void EmptyLoop1() => BuildAssert(
+        public void EmptyLoop1() => RunTest(
             Loop(
                 Block(
                     Constant(true),

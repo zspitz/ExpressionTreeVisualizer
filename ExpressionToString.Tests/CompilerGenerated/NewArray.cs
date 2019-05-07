@@ -6,35 +6,35 @@ namespace ExpressionToString.Tests {
     [Trait("Source", CSharpCompiler)]
     public class NewArray {
         [Fact]
-        public void SingleDimensionInit() => BuildAssert(
+        public void SingleDimensionInit() => RunTest(
             () => new string[] { "" },
             "() => new [] { \"\" }",
             "Function() { \"\" }"
         );
 
         [Fact]
-        public void SingleDimensionInitExplicitType() => BuildAssert(
+        public void SingleDimensionInitExplicitType() => RunTest(
             () => new object[] { "" },
             "() => new object[] { \"\" }",
             "Function() New Object() { \"\" }"
         );
 
         [Fact]
-        public void SingleDimensionWithBounds() => BuildAssert(
+        public void SingleDimensionWithBounds() => RunTest(
             () => new string[5],
             "() => new string[5]",
             "Function() New String(4) {}"
         );
 
         [Fact]
-        public void MultidimensionWithBounds() => BuildAssert(
+        public void MultidimensionWithBounds() => RunTest(
             () => new string[2, 3],
             "() => new string[2, 3]",
             "Function() New String(1, 2) {}"
         );
 
         [Fact]
-        public void JaggedWithElementsImplicitType() => BuildAssert(
+        public void JaggedWithElementsImplicitType() => RunTest(
             () => new string[][] {
                 new [] {"ab","cd" },
                 new [] {"ef","gh"}
@@ -44,7 +44,7 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
-        public void JaggedWithElementsExplicitType() => BuildAssert(
+        public void JaggedWithElementsExplicitType() => RunTest(
             () => new object[][] {
                 new [] {"ab","cd" },
                 new [] {"ef","gh"}
@@ -54,21 +54,21 @@ namespace ExpressionToString.Tests {
         );
 
         [Fact]
-        public void JaggedWithBounds() => BuildAssert(
+        public void JaggedWithBounds() => RunTest(
             () => new string[5][],
             "() => new string[5][]",
             "Function() New String(4)() {}"
         );
 
         [Fact]
-        public void ArrayOfMultidimensionalArray() => BuildAssert(
+        public void ArrayOfMultidimensionalArray() => RunTest(
             () => new string[5][,],
             "() => new string[5][,]",
             "Function() New String(4)(,) {}"
         );
 
         [Fact]
-        public void MultidimensionalArrayOfArray() => BuildAssert(
+        public void MultidimensionalArrayOfArray() => RunTest(
             () => new string[3, 2][],
             "() => new string[3, 2][]",
             "Function() New String(2, 1)() {}"

@@ -7,35 +7,35 @@ namespace ExpressionToString.Tests.Constructed {
     [Trait("Source", FactoryMethods)]
     public class MakeNewArray {
         [Fact]
-        public void SingleDimensionInit() => BuildAssert(
+        public void SingleDimensionInit() => RunTest(
             NewArrayInit(typeof(string), Constant("")),
             "new [] { \"\" }",
             "{ \"\" }"
         );
 
         [Fact]
-        public void SingleDimensionInitExplicitType() => BuildAssert(
+        public void SingleDimensionInitExplicitType() => RunTest(
             NewArrayInit(typeof(object), Constant("")),
             "new object[] { \"\" }",
             "New Object() { \"\" }"
         );
 
         [Fact]
-        public void SingleDimensionWithBounds() => BuildAssert(
+        public void SingleDimensionWithBounds() => RunTest(
             NewArrayBounds(typeof(string),Constant(5)),
             "new string[5]",
             "New String(4) {}"
         );
 
         [Fact]
-        public void MultidimensionWithBounds() => BuildAssert(
+        public void MultidimensionWithBounds() => RunTest(
             NewArrayBounds(typeof(string), Constant(2), Constant(3)),
             "new string[2, 3]",
             "New String(1, 2) {}"
         );
 
         [Fact]
-        public void JaggedWithElementsImplicitType() => BuildAssert(
+        public void JaggedWithElementsImplicitType() => RunTest(
             NewArrayInit(typeof(string[]), 
                 NewArrayInit(typeof(string), Constant("ab"), Constant("cd")),
                 NewArrayInit(typeof(string), Constant("ef"), Constant("gh"))
@@ -45,7 +45,7 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void JaggedWithElementsExplicitType() => BuildAssert(
+        public void JaggedWithElementsExplicitType() => RunTest(
             NewArrayInit(typeof(object[]),
                 NewArrayInit(typeof(string), Constant("ab"), Constant("cd")),
                 NewArrayInit(typeof(string), Constant("ef"), Constant("gh"))
@@ -55,21 +55,21 @@ namespace ExpressionToString.Tests.Constructed {
         );
 
         [Fact]
-        public void JaggedWithBounds() => BuildAssert(
+        public void JaggedWithBounds() => RunTest(
             NewArrayBounds(typeof(string[]), Constant(5)),
             "new string[5][]",
             "New String(4)() {}"
         );
 
         [Fact]
-        public void ArrayOfMultidimensionalArray() => BuildAssert(
+        public void ArrayOfMultidimensionalArray() => RunTest(
             NewArrayBounds(typeof(string[,]), Constant(5)),
             "new string[5][,]",
             "New String(4)(,) {}"
         );
 
         [Fact]
-        public void MultidimensionalArrayOfArray() => BuildAssert(
+        public void MultidimensionalArrayOfArray() => RunTest(
             NewArrayBounds(typeof(string[]), Constant(3), Constant(2)),
             "new string[3, 2][]",
             "New String(2, 1)() {}"

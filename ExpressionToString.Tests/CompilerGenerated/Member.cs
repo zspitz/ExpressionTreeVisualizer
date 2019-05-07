@@ -9,7 +9,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void InstanceMember() {
             var s = "";
-            BuildAssert(
+            RunTest(
                 () => s.Length,
                 "() => s.Length",
                 "Function() s.Length"
@@ -19,7 +19,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void ClosedVariable() {
             var s = "";
-            BuildAssert(
+            RunTest(
                 () => s,
                 "() => s",
                 "Function() s"
@@ -27,7 +27,7 @@ namespace ExpressionToString.Tests {
         }
 
         [Fact]
-        public void StaticMember() => BuildAssert(
+        public void StaticMember() => RunTest(
             () => string.Empty,
             "() => string.Empty",
             "Function() String.Empty"
