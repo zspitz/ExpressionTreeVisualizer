@@ -1,1 +1,0 @@
-﻿<Assembly: AssemblyTrait("Source", VBCompiler)>
