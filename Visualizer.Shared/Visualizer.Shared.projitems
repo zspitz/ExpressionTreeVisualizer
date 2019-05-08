@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Converters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\CallSiteBinder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\DependencyObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MultiSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MultiSelectTreeView.cs" />

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using static ExpressionToString.FormatterNames;
 using static ExpressionToString.Globals;
 using static ExpressionToString.Util.Functions;
 using static System.Linq.Enumerable;
@@ -15,9 +14,9 @@ using static System.Linq.Expressions.GotoExpressionKind;
 using static ExpressionToString.Util.Methods;
 
 namespace ExpressionToString {
-    public class VBCodeWriter : CodeWriter {
-        public VBCodeWriter(object o) : base(o) { }
-        public VBCodeWriter(object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) : base(o, out visitedObjects) { }
+    public class VBCodeWriter : FormatterBase {
+        public VBCodeWriter(object o) : base(o, FormatterNames.VisualBasic) { }
+        public VBCodeWriter(object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) : base(o, FormatterNames.VisualBasic, out visitedObjects) { }
 
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
             [Add] = "+",
@@ -153,7 +152,7 @@ namespace ExpressionToString {
                     } else {
                         Write("CType(");
                         Write(operand);
-                        Write($", {type.FriendlyName(VisualBasic)})");
+                        Write($", {type.FriendlyName(language)})");
                     }
                     break;
                 case Negate:
@@ -168,7 +167,7 @@ namespace ExpressionToString {
                 case TypeAs:
                     Write("TryCast(");
                     Write(operand);
-                    Write($", {type.FriendlyName(VisualBasic)})");
+                    Write($", {type.FriendlyName(language)})");
                     break;
 
                 case PreIncrementAssign:
@@ -265,13 +264,13 @@ namespace ExpressionToString {
 
         protected override void WriteParameterDeclarationImpl(ParameterExpression prm) {
             if (prm.IsByRef) { Write("ByRef "); }
-            Write($"{prm.Name} As {prm.Type.FriendlyName(VisualBasic)}");
+            Write($"{prm.Name} As {prm.Type.FriendlyName(language)}");
         }
 
         protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
 
         protected override void WriteConstant(ConstantExpression expr) =>
-            Write(RenderLiteral(expr.Value, VisualBasic));
+            Write(RenderLiteral(expr.Value, language));
 
         protected override void WriteMemberAccess(MemberExpression expr) {
             switch (expr.Expression) {
@@ -282,7 +281,7 @@ namespace ExpressionToString {
                     return;
                 case null:
                     // static member
-                    Write($"{expr.Member.DeclaringType.FriendlyName(VisualBasic)}.{expr.Member.Name}");
+                    Write($"{expr.Member.DeclaringType.FriendlyName(language)}.{expr.Member.Name}");
                     return;
                 default:
                     Write(expr.Expression);
@@ -292,7 +291,7 @@ namespace ExpressionToString {
         }
         private void WriteNew(Type type, IList<Expression> args) {
             Write("New ");
-            Write(type.FriendlyName(VisualBasic));
+            Write(type.FriendlyName(language));
             if (args.Count > 0) {
                 Write("(");
                 WriteList(args);
@@ -395,7 +394,7 @@ namespace ExpressionToString {
             }
 
             if (instance == null) {
-                Write(expr.Method.ReflectedType.FriendlyName(VisualBasic));
+                Write(expr.Method.ReflectedType.FriendlyName(language));
             } else {
                 Write(instance);
             }
@@ -490,7 +489,7 @@ namespace ExpressionToString {
                 case NewArrayInit:
                     var elementType = expr.Type.GetElementType();
                     if (expr.Expressions.None() || expr.Expressions.Any(x => x.Type != elementType)) {
-                        Write($"New {expr.Type.FriendlyName(VisualBasic)} ");
+                        Write($"New {expr.Type.FriendlyName(language)} ");
                     }
                     Write("{ ");
                     expr.Expressions.ForEach((arg, index) => {
@@ -504,7 +503,7 @@ namespace ExpressionToString {
                 case NewArrayBounds:
                     (string left, string right) specifierChars = ("(", ")");
                     var nestedArrayTypes = expr.Type.NestedArrayTypes().ToList();
-                    Write($"New {nestedArrayTypes.Last().root.FriendlyName(VisualBasic)}");
+                    Write($"New {nestedArrayTypes.Last().root.FriendlyName(language)}");
                     nestedArrayTypes.ForEachT((current, _, arrayTypeIndex) => {
                         Write(specifierChars.left);
                         if (arrayTypeIndex == 0) {
@@ -576,18 +575,18 @@ namespace ExpressionToString {
         }
 
         protected override void WriteDefault(DefaultExpression expr) =>
-            Write($"CType(Nothing, {expr.Type.FriendlyName(VisualBasic)})");
+            Write($"CType(Nothing, {expr.Type.FriendlyName(language)})");
 
         protected override void WriteTypeBinary(TypeBinaryExpression expr) {
             switch (expr.NodeType) {
                 case TypeIs:
                     Write("TypeOf ");
                     Write(expr.Expression);
-                    Write($" Is {expr.TypeOperand.FriendlyName(VisualBasic)}");
+                    Write($" Is {expr.TypeOperand.FriendlyName(language)}");
                     break;
                 case TypeEqual:
                     Write(expr.Expression);
-                    Write($".GetType = GetType({expr.TypeOperand.FriendlyName(VisualBasic)})");
+                    Write($".GetType = GetType({expr.TypeOperand.FriendlyName(language)})");
                     break;
             }
         }
@@ -674,7 +673,7 @@ namespace ExpressionToString {
                 Write(" ");
                 Write(catchBlock.Variable, true);
             } else if (catchBlock.Test != null && catchBlock.Test != typeof(Exception)) {
-                Write($" _ As {catchBlock.Test.FriendlyName(VisualBasic)}");
+                Write($" _ As {catchBlock.Test.FriendlyName(language)}");
             }
             if (catchBlock.Filter != null) {
                 Write(" When ");

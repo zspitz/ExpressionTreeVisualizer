@@ -2,11 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using static ExpressionToString.FormatterNames;
 using static ExpressionToString.Globals;
 using static ExpressionToString.Util.Functions;
 using static ExpressionToString.Util.Methods;
@@ -15,9 +13,9 @@ using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Expressions.GotoExpressionKind;
 
 namespace ExpressionToString {
-    public class CSharpCodeWriter : CodeWriter {
-        public CSharpCodeWriter(object o) : base(o) { }
-        public CSharpCodeWriter(object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) : base(o, out visitedObjects) { }
+    public class CSharpCodeWriter : FormatterBase {
+        public CSharpCodeWriter(object o) : base(o, FormatterNames.CSharp) { }
+        public CSharpCodeWriter(object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) : base(o, FormatterNames.CSharp, out visitedObjects) { }
 
         // TODO handle order of operations -- https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/
 
@@ -113,7 +111,7 @@ namespace ExpressionToString {
                 case ExpressionType.Convert:
                 case ConvertChecked:
                 case Unbox:
-                    Write($"({type.FriendlyName(CSharp)})");
+                    Write($"({type.FriendlyName(language)})");
                     Write(operand);
                     break;
                 case Negate:
@@ -135,7 +133,7 @@ namespace ExpressionToString {
                     break;
                 case TypeAs:
                     Write(operand);
-                    Write($" as {type.FriendlyName(CSharp)}");
+                    Write($" as {type.FriendlyName(language)}");
                     break;
                 case PreIncrementAssign:
                     Write("++");
@@ -210,13 +208,13 @@ namespace ExpressionToString {
 
         protected override void WriteParameterDeclarationImpl(ParameterExpression prm) {
             if (prm.IsByRef) { Write("ref "); }
-            Write($"{prm.Type.FriendlyName(CSharp)} {prm.Name}");
+            Write($"{prm.Type.FriendlyName(language)} {prm.Name}");
         }
 
         protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
 
         protected override void WriteConstant(ConstantExpression expr) =>
-            Write(RenderLiteral(expr.Value, CSharp));
+            Write(RenderLiteral(expr.Value, language));
 
         protected override void WriteMemberAccess(MemberExpression expr) {
             switch (expr.Expression) {
@@ -227,7 +225,7 @@ namespace ExpressionToString {
                     return;
                 case null:
                     // static member
-                    Write($"{expr.Member.DeclaringType.FriendlyName(CSharp)}.{expr.Member.Name}");
+                    Write($"{expr.Member.DeclaringType.FriendlyName(language)}.{expr.Member.Name}");
                     return;
                 default:
                     Write(expr.Expression);
@@ -238,7 +236,7 @@ namespace ExpressionToString {
 
         private void WriteNew(Type type, IList<Expression> args) {
             Write("new ");
-            Write(type.FriendlyName(CSharp));
+            Write(type.FriendlyName(language));
             Write("(");
             WriteList(args);
             Write(")");
@@ -323,7 +321,7 @@ namespace ExpressionToString {
             }
 
             if (instance == null) {
-                Write(expr.Method.ReflectedType.FriendlyName(CSharp));
+                Write(expr.Method.ReflectedType.FriendlyName(language));
             } else {
                 Write(instance);
             }
@@ -409,7 +407,7 @@ namespace ExpressionToString {
                     var elementType = expr.Type.GetElementType();
                     Write("new ");
                     if (elementType.IsArray || expr.Expressions.None() || expr.Expressions.Any(x => x.Type != elementType)) {
-                        Write(expr.Type.FriendlyName(CSharp));
+                        Write(expr.Type.FriendlyName(language));
                     } else {
                         Write("[]");
                     }
@@ -420,7 +418,7 @@ namespace ExpressionToString {
                 case NewArrayBounds:
                     (string left, string right) specifierChars = ("[", "]");
                     var nestedArrayTypes = expr.Type.NestedArrayTypes().ToList();
-                    Write($"new {nestedArrayTypes.Last().root.FriendlyName(CSharp)}");
+                    Write($"new {nestedArrayTypes.Last().root.FriendlyName(language)}");
                     nestedArrayTypes.ForEachT((current, _, index) => {
                         Write(specifierChars.left);
                         if (index == 0) {
@@ -458,11 +456,11 @@ namespace ExpressionToString {
         }
 
         protected override void WriteDefault(DefaultExpression expr) =>
-            Write($"default({expr.Type.FriendlyName(CSharp)})");
+            Write($"default({expr.Type.FriendlyName(language)})");
 
         protected override void WriteTypeBinary(TypeBinaryExpression expr) {
             Write(expr.Expression);
-            var typeName = expr.TypeOperand.FriendlyName(CSharp);
+            var typeName = expr.TypeOperand.FriendlyName(language);
             switch (expr.NodeType) {
                 case TypeIs:
                     Write($" is {typeName}");
@@ -568,7 +566,7 @@ namespace ExpressionToString {
                 if (catchBlock.Variable != null) {
                     Write(catchBlock.Variable, true);
                 } else {
-                    Write(catchBlock.Test.FriendlyName(CSharp));
+                    Write(catchBlock.Test.FriendlyName(language));
                 }
                 Write(") ");
                 if (catchBlock.Filter != null) {

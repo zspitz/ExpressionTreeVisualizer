@@ -8,24 +8,31 @@ using static ExpressionToString.FormatterNames;
 using static System.Linq.Expressions.ExpressionType;
 
 namespace ExpressionToString {
-    public abstract class CodeWriter {
-        public static CodeWriter Create(string language, object o) =>
-            language == CSharp ? (CodeWriter)new CSharpCodeWriter(o) :
+    public abstract class FormatterBase {
+        public static FormatterBase Create(string language, object o) =>
+            language == CSharp ? (FormatterBase)new CSharpCodeWriter(o) :
             language == VisualBasic ? new VBCodeWriter(o) :
             throw new NotImplementedException("Unknown language");
 
-        public static CodeWriter Create(string language, object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) =>
-            language == CSharp ? (CodeWriter)new CSharpCodeWriter(o, out visitedObjects) :
+        public static FormatterBase Create(string language, object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) =>
+            language == CSharp ? (FormatterBase)new CSharpCodeWriter(o, out visitedObjects) :
             language == VisualBasic ? new VBCodeWriter(o, out visitedObjects) :
             throw new NotImplementedException("Unknown language");
 
         private readonly StringBuilder sb = new StringBuilder();
         private readonly Dictionary<object, List<(int start, int length)>> visitedObjects;
 
-        // Unfortunately, C# doesn't support union types ...
-        protected CodeWriter(object o) => Write(o);
+        /// <summary>Determines how to render literals and types</summary>
+        protected string language { get; private set; }
 
-        protected CodeWriter(object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) {
+        // Unfortunately, C# doesn't support union types ...
+        protected FormatterBase(object o, string language) {
+            this.language = language;
+            Write(o);
+        }
+
+        protected FormatterBase(object o, string language, out Dictionary<object, List<(int start, int length)>> visitedObjects) {
+            this.language = language;
             this.visitedObjects = new Dictionary<object, List<(int start, int length)>>();
             Write(o);
             visitedObjects = this.visitedObjects;

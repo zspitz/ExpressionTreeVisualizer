@@ -67,5 +67,19 @@ target:
     End Block
 End Block"
         );
+
+        [Fact]
+        public void ConstructLabelTarget() => RunTest(
+            Label("target"),
+            "target",
+            "target"
+        );
+
+        [Fact]
+        public void ConstructEmptyLabelTarget() => RunTest(
+            Label(""),
+            "",
+            ""
+        );
     }
 }

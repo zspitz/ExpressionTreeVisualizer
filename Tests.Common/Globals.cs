@@ -69,7 +69,7 @@ namespace ExpressionToString.Tests {
         public const string Loops = "Loops";
         public const string Labels = "Labels";
         public const string Gotos = "Gotos";
-        public const string Dynamics = "Dynamcs";
+        public const string Dynamics = "Dynamics";
         public const string Quoted = "Quoted";
         public const string DebugInfos = "DebguInfos";
         public const string Conditionals = "Conditionals";

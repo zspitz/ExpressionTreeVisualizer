@@ -9,6 +9,8 @@ using static ExpressionToString.Util.Functions;
 using static ExpressionTreeVisualizer.EndNodeTypes;
 using static ExpressionToString.FormatterNames;
 using System.Collections;
+using System.Runtime.CompilerServices;
+using ExpressionTreeVisualizer.Util;
 
 namespace ExpressionTreeVisualizer {
     [Serializable]
@@ -58,7 +60,7 @@ namespace ExpressionTreeVisualizer {
 
         public VisualizerData(object o, VisualizerDataOptions options = null) {
             Options = options ?? new VisualizerDataOptions();
-            Source = CodeWriter.Create(Options.Language, o, out var visitedObjects).ToString();
+            Source = FormatterBase.Create(Options.Language, o, out var visitedObjects).ToString();
             VisitedObjects = visitedObjects;
             CollectedEndNodes = new List<ExpressionNodeData>();
             NodeData = new ExpressionNodeData(o, this, (0, Source.Length), false);
@@ -125,15 +127,16 @@ namespace ExpressionTreeVisualizer {
             typeof(MemberBinding),
             typeof(ElementInit),
             typeof(SwitchCase),
-            typeof(CatchBlock)
+            typeof(CatchBlock),
+            typeof(CallSiteBinder)
         };
 
         private static HashSet<Type> propertyTypes = types.SelectMany(x => new[] { x, typeof(IEnumerable<>).MakeGenericType(x) }).ToHashSet();
 
         internal ExpressionNodeData(object o, VisualizerData visualizerData, (int start, int length) parentSpan, bool isParameterDeclaration = false) {
+            var language = visualizerData.Options.Language;
             switch (o) {
                 case Expression expr:
-                    var language = visualizerData.Options.Language;
                     NodeType = expr.NodeType.ToString();
                     ReflectionTypeName = expr.Type.FriendlyName(language);
                     IsDeclaration = isParameterDeclaration;
@@ -179,8 +182,12 @@ namespace ExpressionTreeVisualizer {
                     NodeType = mbind.BindingType.ToString();
                     Name = mbind.Member.Name;
                     break;
+                case CallSiteBinder callSiteBinder:
+                    ReflectionTypeName = callSiteBinder.GetType().Name;
+                    NodeType = callSiteBinder.BinderType();
+                    break;
                 default:
-                    NodeType = o.GetType().ToString();
+                    NodeType = o.GetType().FriendlyName(language);
                     break;
             }
 
@@ -230,7 +237,8 @@ namespace ExpressionTreeVisualizer {
             (typeof(MethodCallExpression), new [] {"Object", "Arguments"}),
             (typeof(SwitchCase), new [] {"TestValues", "Body"}),
             (typeof(SwitchExpression), new [] {"SwitchValue", "Cases", "DefaultBody"}),
-            (typeof(TryExpression), new [] {"Body", "Handlers", "Finally", "Fault"})
+            (typeof(TryExpression), new [] {"Body", "Handlers", "Finally", "Fault"}),
+            (typeof(DynamicExpression), new [] {"Binder", "Arguments"})
         };
 
         public event PropertyChangedEventHandler PropertyChanged;

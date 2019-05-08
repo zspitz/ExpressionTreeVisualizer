@@ -29,6 +29,10 @@ namespace ExpressionToString.Tests {
                     testCSharpCode = catchBlock.ToString(CSharp);
                     testVBCode = catchBlock.ToString(VisualBasic);
                     break;
+                case LabelTarget labelTarget:
+                    testCSharpCode = labelTarget.ToString(CSharp);
+                    testVBCode = labelTarget.ToString(VisualBasic);
+                    break;
             }
 
 
