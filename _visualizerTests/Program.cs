@@ -13,9 +13,9 @@ namespace _visualizerTests {
         [STAThread]
         static void Main(string[] args) {
             //var i = 7;
-            //var j = 8;
+            var j = 8;
 
-            //Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100) && new Random().Next() > 15 || new DateTime(2001, 10, 12).Month < 5;
+            Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100) && new Random().Next() > 15 || new DateTime(2001, 10, 12).Month < 5;
 
             //var i = 5;
             //Expression<Func<int, int>> expr = j => (i + j + 17) * (i + j + 17);
@@ -79,50 +79,50 @@ namespace _visualizerTests {
             //IQueryable<Person> personSource = null;
             //Expression<Func<Person, bool>> expr = person => person.LastName.StartsWith("A");
 
-            var hour = Variable(typeof(int), "hour");
-            var msg = Variable(typeof(string), "msg");
-            var block = Block(
-                // specify the variables available within the block
-                new[] { hour, msg },
-                // hour =
-                Assign(hour,
-                    // DateTime.Now.Hour
-                    MakeMemberAccess(
-                        MakeMemberAccess(
-                            null,
-                            typeof(DateTime).GetMember("Now").Single()
-                        ),
-                        typeof(DateTime).GetMember("Hour").Single()
-                    )
-                ),
-                // if ( ... ) { ... } else { ... }
-                IfThenElse(
-                    // ... && ...
-                    AndAlso(
-                        // hour >= 6
-                        GreaterThanOrEqual(
-                            hour,
-                            Constant(6)
-                        ),
-                        // hour <= 18
-                        LessThanOrEqual(
-                            hour,
-                            Constant(18)
-                        )
-                    ),
-                    // msg = "Good day"
-                    Assign(msg, Constant("Good day")),
-                    // msg = Good night"
-                    Assign(msg, Constant("Good night"))
-                ),
-                // Console.WriteLine(msg);
-                Call(
-                    typeof(Console).GetMethod("WriteLine", new[] { typeof(object) }),
-                    msg
-                ),
-                hour
-            );
-            Expression<Action> expr = Lambda<Action>(block);
+            //var hour = Variable(typeof(int), "hour");
+            //var msg = Variable(typeof(string), "msg");
+            //var block = Block(
+            //    // specify the variables available within the block
+            //    new[] { hour, msg },
+            //    // hour =
+            //    Assign(hour,
+            //        // DateTime.Now.Hour
+            //        MakeMemberAccess(
+            //            MakeMemberAccess(
+            //                null,
+            //                typeof(DateTime).GetMember("Now").Single()
+            //            ),
+            //            typeof(DateTime).GetMember("Hour").Single()
+            //        )
+            //    ),
+            //    // if ( ... ) { ... } else { ... }
+            //    IfThenElse(
+            //        // ... && ...
+            //        AndAlso(
+            //            // hour >= 6
+            //            GreaterThanOrEqual(
+            //                hour,
+            //                Constant(6)
+            //            ),
+            //            // hour <= 18
+            //            LessThanOrEqual(
+            //                hour,
+            //                Constant(18)
+            //            )
+            //        ),
+            //        // msg = "Good day"
+            //        Assign(msg, Constant("Good day")),
+            //        // msg = Good night"
+            //        Assign(msg, Constant("Good night"))
+            //    ),
+            //    // Console.WriteLine(msg);
+            //    Call(
+            //        typeof(Console).GetMethod("WriteLine", new[] { typeof(object) }),
+            //        msg
+            //    ),
+            //    hour
+            //);
+            //Expression<Action> expr = Lambda<Action>(block);
 
             //var constant = Constant(new List<int>());
             //Expression expr = Or(

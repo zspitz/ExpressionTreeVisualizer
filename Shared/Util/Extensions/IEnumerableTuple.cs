@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ExpressionToString.Util {
@@ -12,5 +13,7 @@ namespace ExpressionToString.Util {
             src.Joined(delimiter, x => selector(x.Item1, x.Item2));
         public static string Joined<T1, T2>(this IEnumerable<(T1, T2)> src, string delimiter, Func<T1, T2, int, string> selector) =>
             src.Joined(delimiter, (x, index) => selector(x.Item1, x.Item2, index));
+
+        public static IEnumerable<T2> Item2s<T1, T2>(this IEnumerable<(T1, T2)> src) => src.Select(x => x.Item2);
     }
 }

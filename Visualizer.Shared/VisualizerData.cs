@@ -46,7 +46,7 @@ namespace ExpressionTreeVisualizer {
             var current = NodeData;
             while (true) {
                 // we should really use SingleOrDefault, except that multiple instances of the same ParameterExpression might be returned, because we can't figure out the right start and end for multiple ParameterExpression
-                var child = current.Children.Values.FirstOrDefault(x => x.Span.start <= start && x.SpanEnd >= end);
+                var child = current.Children.Values().FirstOrDefault(x => x.Span.start <= start && x.SpanEnd >= end);
                 if (child == null) { break; }
                 current = child;
             }
@@ -61,26 +61,6 @@ namespace ExpressionTreeVisualizer {
             Source = CodeWriter.Create(Options.Language, o, out var visitedObjects).ToString();
             VisitedObjects = visitedObjects;
             CollectedEndNodes = new List<ExpressionNodeData>();
-
-            //switch (o) {
-            //    case Expression expr:
-            //        NodeData = new ExpressionNodeData(expr, this, (0, Source.Length));
-            //        break;
-            //    case MemberBinding mbind:
-            //        NodeData = new ExpressionNodeData(mbind, this);
-            //        break;
-            //    case ElementInit init:
-            //        NodeData = new ExpressionNodeData(init, this);
-            //        break;
-            //    case SwitchCase switchCase:
-            //        NodeData = new ExpressionNodeData(switchCase, this);
-            //        break;
-            //    case CatchBlock catchBlock:
-            //        NodeData = new ExpressionNodeData(catchBlock, this);
-            //        break;
-            //    default:
-            //        throw new ArgumentException($"Unable to visualize type {o.GetType().Name}");
-            //}
             NodeData = new ExpressionNodeData(o, this, (0, Source.Length), false);
 
             // TODO it should be possible to write the following using LINQ
@@ -119,7 +99,7 @@ namespace ExpressionTreeVisualizer {
 
     [Serializable]
     public class ExpressionNodeData : INotifyPropertyChanged {
-        public Dictionary<string, ExpressionNodeData> Children { get; set; }
+        public  List<KeyValuePair<string, ExpressionNodeData>> Children { get; set; }
         public string NodeType { get; set; } // ideally this should be an intersection type of multiple enums
         public string ReflectionTypeName { get; set; }
         public (int start, int length) Span { get; set; }
@@ -233,134 +213,25 @@ namespace ExpressionTreeVisualizer {
                     }
                 })
                 .Where(x => x.Item2 != null)
-                .Select(x => (x.Item1, new ExpressionNodeData(x.Item2, visualizerData, Span)))
-                .ToDictionary();
+                .Select(x => KVP(x.Item1, new ExpressionNodeData(x.Item2, visualizerData, Span)))
+                .ToList();
         }
 
         private static List<(Type, string[])> preferredPropertyOrders = new List<(Type, string[])> {
-            (typeof(LambdaExpression), new [] {"Parameters", "Body" } )
+            (typeof(LambdaExpression), new [] {"Parameters", "Body" } ),
+            (typeof(BinaryExpression), new [] {"Left", "Right", "Conversion"}),
+            (typeof(BlockExpression), new [] { "Variables", "Expressions", "Result"}),
+            (typeof(CatchBlock), new [] { "Variable", "Filter", "Body"}),
+            (typeof(ConditionalExpression), new [] { "Test", "IfTrue", "IfFalse"}),
+            (typeof(IndexExpression), new [] { "Object", "Arguments" }),
+            (typeof(InvocationExpression), new [] {"Arguments", "Expression"}),
+            (typeof(ListInitExpression), new [] {"NewExpression", "Initializers"}),
+            (typeof(MemberInitExpression), new [] {"NewExpression", "Bindings"}),
+            (typeof(MethodCallExpression), new [] {"Object", "Arguments"}),
+            (typeof(SwitchCase), new [] {"TestValues", "Body"}),
+            (typeof(SwitchExpression), new [] {"SwitchValue", "Cases", "DefaultBody"}),
+            (typeof(TryExpression), new [] {"Body", "Handlers", "Finally", "Fault"})
         };
-
-
-        //internal ExpressionNodeData(ElementInit init, VisualizerData visualizerData) {
-        //    NodeType = "ElementInit";
-        //    if (visualizerData.VisitedObjects.TryGetValue(init, out var spans)) {
-        //        Span = spans.Single();
-        //    }
-        //    Children = init.Arguments.Select((x, index) => {
-        //        return ($"Argument[{index}]", new ExpressionNodeData(x, visualizerData, Span));
-        //    }).ToDictionary();
-        //}
-
-        //internal ExpressionNodeData(MemberBinding binding, VisualizerData visualizerData) {
-        //    Name = binding.Member.Name;
-        //    NodeType = binding.BindingType.ToString();
-        //    if (visualizerData.VisitedObjects.TryGetValue(binding, out var spans)) {
-        //        Span = spans.Single();
-        //    }
-        //    switch (binding) {
-        //        case MemberAssignment assignmentBinding:
-        //            Children = new[] {
-        //                ( "Expression", new ExpressionNodeData(assignmentBinding.Expression, visualizerData, Span) )
-        //            }.ToDictionary();
-        //            break;
-        //        case MemberListBinding listBinding:
-        //            Children = listBinding.Initializers.Select((x, index) => ($"Iinitializers[{index}]", new ExpressionNodeData(x, visualizerData))).ToDictionary();
-        //            break;
-        //        case MemberMemberBinding memberBinding:
-        //            Children = memberBinding.Bindings.Select((x, index) => ($"Bindings[{index}]", new ExpressionNodeData(x, visualizerData))).ToDictionary();
-        //            break;
-        //        default:
-        //            throw new NotImplementedException();
-        //    }
-        //}
-
-        //internal ExpressionNodeData(CatchBlock catchBlock, VisualizerData visualizerData) {
-        //    NodeType = "CatchBlock";
-        //    if (visualizerData.VisitedObjects.TryGetValue(catchBlock, out var spans)) {
-        //        Span = spans.Single();
-        //    }
-        //    throw new NotImplementedException();
-        //}
-
-        //internal ExpressionNodeData(Expression expr, VisualizerData visualizerData, (int start, int length) parentSpan, bool isParameterDeclaration = false) {
-        //    var language = visualizerData.Options.Language;
-
-        //    // populate properties
-        //    NodeType = expr.NodeType.ToString();
-        //    ReflectionTypeName = expr.Type.FriendlyName(language);
-        //    if (visualizerData.VisitedObjects.TryGetValue(expr, out var spans)) {
-        //        Span = spans.Where(x => x.start >= parentSpan.start && (x.start + x.length) <= (parentSpan.start + parentSpan.length)).OrderBy(x => x.start).SingleOrDefault();
-        //        //if (expr is ParameterExpression pexpr1) {
-        //        //    Span = spans.Where(x => x.start >= parentSpan.start && (x.start + x.length) <= (parentSpan.start + parentSpan.length)).OrderBy(x => x.start).FirstOrDefault();
-        //        //}  else if (expr is ConstantExpression) {
-        //        //    Span = spans.Single();
-        //        //}
-        //    }
-        //    IsDeclaration = isParameterDeclaration;
-
-        //    // fill the Name and Closure properties
-        //    switch (expr) {
-        //        case ParameterExpression pexpr:
-        //            Name = pexpr.Name;
-        //            break;
-        //        case MemberExpression mexpr:
-        //            Name = mexpr.Member.Name;
-        //            var expressionType = mexpr.Expression.Type;
-        //            if (expressionType.IsClosureClass()) {
-        //                Closure = expressionType.FriendlyName(language);
-        //            }
-        //            break;
-        //        case MethodCallExpression callexpr:
-        //            Name = callexpr.Method.Name;
-        //            break;
-        //    }
-
-        //    // fill StringValue and EndNodeType properties
-        //    switch (expr) {
-        //        case ConstantExpression cexpr when !cexpr.Type.IsClosureClass():
-        //            StringValue = StringValue(cexpr.Value, language);
-        //            EndNodeType = Constant;
-        //            break;
-        //        case ParameterExpression pexpr1:
-        //            EndNodeType = Parameter;
-        //            break;
-        //        case Expression e1 when expr.IsClosedVariable():
-        //            StringValue = StringValue(expr.ExtractValue(), language);
-        //            EndNodeType = ClosedVar;
-        //            break;
-        //        case DefaultExpression defexpr:
-        //            EndNodeType = Default;
-        //            break;
-        //    }
-        //    if (EndNodeType != null) { visualizerData.CollectedEndNodes.Add(this); }
-
-        //    // populate child nodes
-        //    if (expr is LambdaExpression lambda) {
-        //        // lambda expression needs special handling, because there is no other way to distinguish between parameter declaration and usage
-        //        Children = lambda.Parameters.Select((x, index) => ($"Parameter[{index}]", new ExpressionNodeData(x, visualizerData, Span, true))).ToDictionary();
-        //        Children["Body"] = new ExpressionNodeData(lambda.Body, visualizerData, Span);
-        //    } else {
-        //        Children = expr.GetType().GetProperties().OrderBy(x => x.Name).SelectMany(prp => {
-        //            IEnumerable<(string, Expression)> ret = Enumerable.Empty<(string, Expression)>();
-        //            if (prp.PropertyType.InheritsFromOrImplements<Expression>()) {
-        //                ret = new[] { (prp.Name, prp.GetValue(expr) as Expression) };
-        //            } else if (prp.PropertyType.InheritsFromOrImplements<IEnumerable<Expression>>()) {
-        //                ret = (prp.GetValue(expr) as IEnumerable<Expression>).Select((x, index) => ($"{prp.Name}[{index}]", x));
-        //            }
-        //            return ret.Where(x => x.Item2 != null);
-        //        }).Select(x => (x.Item1, new ExpressionNodeData(x.Item2, visualizerData, Span))).ToDictionary();
-
-        //        switch (expr) {
-        //            case MemberInitExpression initexpr:
-        //                initexpr.Bindings.Select((x, index) => ($"Binding[{index}]", new ExpressionNodeData(x, visualizerData))).AddRangeTo(Children);
-        //                break;
-        //            case ListInitExpression listinitexpr:
-        //                listinitexpr.Initializers.Select((x, index) => ($"Initializer[{index}]", new ExpressionNodeData(x, visualizerData))).AddRangeTo(Children);
-        //                break;
-        //        }
-        //    }
-        //}
 
         public event PropertyChangedEventHandler PropertyChanged;
 
