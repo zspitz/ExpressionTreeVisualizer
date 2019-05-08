@@ -30,7 +30,7 @@ namespace ExpressionToString.Util {
         public static bool InheritsFromOrImplements<T>(this Type type) => typeof(T).IsAssignableFrom(type);
 
         public static bool IsClosureClass(this Type type) =>
-            type.HasAttribute<CompilerGeneratedAttribute>() && type.Name.ContainsAny("DisplayClass", "Closure$");
+            type != null && type.HasAttribute<CompilerGeneratedAttribute>() && type.Name.ContainsAny("DisplayClass", "Closure$");
 
         public static bool IsAnonymous(this Type type) =>
             type.HasAttribute<CompilerGeneratedAttribute>() && type.Name.Contains("Anonymous") && type.Name.ContainsAny("<>", "VB$");
@@ -169,6 +169,35 @@ namespace ExpressionToString.Util {
             var memberName = type.GetAttributes<DefaultMemberAttribute>(inherit).FirstOrDefault()?.MemberName;
             if (memberName == null) { return new PropertyInfo[] { }; }
             return type.GetProperties().Where(x => x.Name == memberName).ToArray();
+        }
+
+        // https://stackoverflow.com/a/55244482
+        /// <summary>Returns T for T[] and types that implement IEnumerable&lt;T&gt;</summary>
+        public static Type ItemType(this Type type) {
+            if (type.IsArray) {
+                return type.GetElementType();
+            }
+
+            // type is IEnumerable<T>;
+            if (ImplIEnumT(type)) {
+                return type.GetGenericArguments().First();
+            }
+
+            // type implements/extends IEnumerable<T>;
+            var enumType = type.GetInterfaces().Where(ImplIEnumT).Select(t => t.GetGenericArguments().First()).FirstOrDefault();
+            if (enumType != null) {
+                return enumType;
+            }
+
+            // type is IEnumerable
+            if (IsIEnum(type) || type.GetInterfaces().Any(IsIEnum)) {
+                return typeof(object);
+            }
+
+            return null;
+
+            bool IsIEnum(Type t) => t == typeof(System.Collections.IEnumerable);
+            bool ImplIEnumT(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
         }
     }
 }

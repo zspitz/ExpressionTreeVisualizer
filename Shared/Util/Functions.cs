@@ -63,7 +63,7 @@ namespace ExpressionToString.Util {
         /// <summary>Returns a string representation of the value, which may or may not be a valid literal in the language</summary>
         public static string StringValue(object o, string language) {
             var (isLiteral, repr) = TryRenderLiteral(o, language);
-            if (!isLiteral && o.GetType().GetMethod("ToString").DeclaringType != typeof(object)) {
+            if (!isLiteral && o.GetType().GetMethods().Where(x => x.Name=="ToString" && x.GetParameters().None() && x.DeclaringType != typeof(object)).Any()) {
                 return o.ToString();
             }
             return repr;

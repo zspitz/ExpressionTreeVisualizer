@@ -67,21 +67,5 @@ target:
     End Block
 End Block"
         );
-
-        [Fact]
-        [Trait("Category", Labels)]
-        public void ConstructLabelTarget() => RunTest(
-            Label("target"),
-            "target",
-            "target"
-        );
-
-        [Fact]
-        [Trait("Category", Labels)]
-        public void ConstructEmptyLabelTarget() => RunTest(
-            Label(""),
-            "",
-            ""
-        );
     }
 }

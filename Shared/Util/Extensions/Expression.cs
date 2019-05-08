@@ -4,10 +4,10 @@ using static System.Linq.Expressions.Expression;
 namespace ExpressionToString.Util {
     public static class ExpressionExtensions {
         public static object ExtractValue(this Expression expr) {
-            if (!(expr is LambdaExpression lexpr)) {
-                lexpr = Lambda(expr);
+            if (!(expr is LambdaExpression lambda)) {
+                lambda = Lambda(expr);
             }
-            return lexpr.Compile().DynamicInvoke();
+            return lambda.Compile().DynamicInvoke();
         }
 
         public static bool TryExtractValue(this Expression expr, out object value) {
@@ -26,5 +26,8 @@ namespace ExpressionToString.Util {
 
         public static bool IsEmpty(this Expression expr) =>
             expr is DefaultExpression && expr.Type == typeof(void);
+
+        public static bool IsClosedVariable(this Expression expr) =>
+            expr is MemberExpression mexpr && (mexpr.Expression?.Type.IsClosureClass() ?? false);
     }
 }
