@@ -74,21 +74,23 @@ namespace ExpressionToString.Util {
         };
 
         public static string FriendlyName(this Type type, string language) {
+            if (language.NotIn(CSharp, VisualBasic)) { return type.Name; }
+
             if (type.IsAnonymous()) {
                 return "{ " + type.GetProperties().Joined(", ", p => {
                     var name = p.Name;
                     var typename = p.PropertyType.FriendlyName(language);
-                    return language == CSharp ? $"{typename} {name}" :
-                    language == VisualBasic ? $"{name} As {typename}" :
-                    throw new ArgumentException("Invalid language");
+                    return language == CSharp ?
+                        $"{typename} {name}" :
+                        $"{name} As {typename}"; // language == VisualBasic 
                 }) + " }";
             }
 
             if (type.IsArray) {
                 (string left, string right) =
-                    language == CSharp ? ("[", "]") :
-                    language == VisualBasic ? ("(", ")") :
-                    throw new ArgumentException("Invalid language");
+                    language == CSharp ?
+                        ("[", "]") :
+                        ("(", ")"); // language == VisualBasic
                 var nestedArrayTypes = type.NestedArrayTypes().ToList();
                 string arraySpecifiers = nestedArrayTypes.Joined("",
                     (current, _, index) => left + Repeat("", current.GetArrayRank()).Joined() + right
@@ -97,9 +99,9 @@ namespace ExpressionToString.Util {
             }
 
             if (!type.IsGenericType) {
-                var dict = language == CSharp ? CSKeywordTypes :
-                    language == VisualBasic ? VBKeywordTypes :
-                    throw new ArgumentException("Invalid language");
+                var dict = language == CSharp ?
+                    CSKeywordTypes :
+                    VBKeywordTypes; // language == VisualBasic
                 if (dict.TryGetValue(type, out var ret)) { return ret; }
                 return type.Name;
             }
@@ -113,13 +115,9 @@ namespace ExpressionToString.Util {
             var parts = type.GetGenericArguments().Joined(", ", t => t.FriendlyName(language));
             var backtickIndex = type.Name.IndexOf('`');
             var nongenericName = type.Name.Substring(0, backtickIndex);
-            if (language == CSharp) {
-                return $"{nongenericName}<{parts}>";
-            } else if (language == VisualBasic) {
-                return $"{nongenericName}(Of {parts})";
-            } else {
-                throw new NotImplementedException("Invalid language");
-            }
+            return language == CSharp ?
+                $"{nongenericName}<{parts}>" :
+                $"{nongenericName}(Of {parts})";
         }
 
         // from .NET Standard 2.1 and above, test against the ITuple interface (https://docs.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.ituple)
@@ -144,7 +142,7 @@ namespace ExpressionToString.Util {
             )) {
                 return true;
             }
-            return (openType.In(typeof(ValueTuple<,,,,,,,>), typeof(Tuple<,,,,,,,>)) 
+            return (openType.In(typeof(ValueTuple<,,,,,,,>), typeof(Tuple<,,,,,,,>))
                 && type.GetGenericArguments()[7].IsTupleType());
         }
 
