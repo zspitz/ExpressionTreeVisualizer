@@ -2,40 +2,41 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using static ExpressionToString.FormatterNames;
 using static System.Linq.Expressions.ExpressionType;
 
 namespace ExpressionToString {
-    public abstract class FormatterBase {
-        public static FormatterBase Create(string language, object o) =>
-            language == CSharp ? (FormatterBase)new CSharpCodeWriter(o) :
+    public abstract class WriterBase {
+        public static WriterBase Create(string language, object o) =>
+            language == CSharp ? (WriterBase)new CSharpCodeWriter(o) :
             language == VisualBasic ? new VBCodeWriter(o) :
             throw new NotImplementedException("Unknown language");
 
-        public static FormatterBase Create(string language, object o, out Dictionary<object, List<(int start, int length)>> visitedObjects) =>
-            language == CSharp ? (FormatterBase)new CSharpCodeWriter(o, out visitedObjects) :
-            language == VisualBasic ? new VBCodeWriter(o, out visitedObjects) :
+        public static WriterBase Create(string language, object o, out Dictionary<string, (int start, int length)> pathSpans) =>
+            language == CSharp ? (WriterBase)new CSharpCodeWriter(o, out pathSpans) :
+            language == VisualBasic ? new VBCodeWriter(o, out pathSpans) :
             throw new NotImplementedException("Unknown language");
 
         private readonly StringBuilder sb = new StringBuilder();
-        private readonly Dictionary<object, List<(int start, int length)>> visitedObjects;
+        private readonly Dictionary<string, (int start, int length)> pathSpans;
 
         /// <summary>Determines how to render literals and types</summary>
         protected string language { get; private set; }
 
         // Unfortunately, C# doesn't support union types ...
-        protected FormatterBase(object o, string language) {
+        protected WriterBase(object o, string language) {
             this.language = language;
-            Write(o);
+            WriteNode("", o);
         }
 
-        protected FormatterBase(object o, string language, out Dictionary<object, List<(int start, int length)>> visitedObjects) {
+        protected WriterBase(object o, string language, out Dictionary<string, (int start, int length)> pathSpans) {
             this.language = language;
-            this.visitedObjects = new Dictionary<object, List<(int start, int length)>>();
-            Write(o);
-            visitedObjects = this.visitedObjects;
+            this.pathSpans = new Dictionary<string, (int start, int length)>();
+            WriteNode("", o);
+            pathSpans = this.pathSpans;
         }
 
         private int indentationLevel = 0;
@@ -50,11 +51,14 @@ namespace ExpressionToString {
 
         protected void Write(string s) => s.AppendTo(sb);
 
+        private List<string> pathSegments = new List<string>();
+
         /// <summary>Write a string-rendering of an expression or other type used in expression trees</summary>
         /// <param name="o">Object to be rendered</param>
         /// <param name="parameterDeclaration">For ParameterExpression, this is a parameter declaration</param>
         /// <param name="explicitBlock">For BlockExpression, controls explicit block rendering: true forces the rendering; false prevents the rendering; and null determines automatically</param>
-        protected void Write(object o, bool parameterDeclaration = false, bool? explicitBlock = null) {
+        protected void WriteNode(string pathSegment, object o, bool parameterDeclaration = false, bool? explicitBlock = null) {
+            if (!pathSegment.IsNullOrWhitespace()) { pathSegments.Add(pathSegment); }
             var start = sb.Length;
             try {
                 switch (o) {
@@ -91,8 +95,15 @@ namespace ExpressionToString {
                 $"----- {ex.GetType().Name} - {ex.Message} ()".AppendLineTo(sb);
             }
 
-            registerVisited(o, start);
+            if (pathSpans != null) {
+                pathSpans.Add(pathSegments.Joined("."), (start, sb.Length - start));
+                if (pathSegments.Any()) {
+                    if (pathSegments.Last() != pathSegment) { throw new InvalidOperationException(); }
+                    pathSegments.RemoveLast();
+                }
+            }
         }
+        protected void WriteNode((string pathSegment, object o) x) => WriteNode(x.pathSegment, x.o);
 
         private readonly HashSet<ExpressionType> binaryExpressionTypes = new[] {
             Add, AddChecked, Divide, Modulo, Multiply, MultiplyChecked, Power, Subtract, SubtractChecked,   // mathematical operators
@@ -270,29 +281,37 @@ namespace ExpressionToString {
             }
         }
 
-        protected void WriteList<T>(IEnumerable<T> items, bool writeEOL, string delimiter = ", ") {
+        protected void WriteNodes<T>(IEnumerable<(string pathSegment, T o)> pathsItems, bool writeEOL, string delimiter = ", ") {
             if (writeEOL) { delimiter = delimiter.TrimEnd(); }
-            items.ForEach((arg, index) => {
+            pathsItems.ForEachT((pathSegment, arg, index) => {
                 if (index > 0) {
                     delimiter.AppendTo(sb);
                     if (writeEOL) { WriteEOL(); }
                 }
-                Write(arg);
+                WriteNode(pathSegment, arg);
             });
         }
+        protected void WriteNodes<T>(IEnumerable<(string pathSegment, T o)> pathsItems, string delimiter = ", ") => 
+            WriteNodes(pathsItems, false, delimiter);
 
-        protected void WriteList<T>(IEnumerable<T> items, string delimiter = ", ") => WriteList(items, false, delimiter);
+        protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, bool writeEOL, string delimiter = ", ") => 
+            WriteNodes(items.Select((arg, index) => ($"{pathSegment}[{index}]", arg)), writeEOL, delimiter);
+
+        protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, string delimiter = ", ") => WriteNodes(pathSegment, items, false, delimiter);
+
+
+        //// TODO do we need some sort of caching on the expression compilation?
+        //protected void WriteNode<TResult>(Expression<Func<TResult>> expr, bool writeEOL, string delimiter = ", ") where TResult : Expression {
+        //    var me = expr as MemberExpression;
+        //    WriteNode(me.Member.Name, expr.Compile().Invoke());
+        //}
+
+        //protected void WriteNodes<TResult>(Expression<Func<IEnumerable<TResult>>> expr, bool writeEOL, string delimiter = ", ") where TResult : Expression {
+        //    var me = expr as MemberExpression;
+        //    WriteNode(me.Member.Name, expr.Compile().DynamicInvoke())
+        //}
 
         protected void TrimEnd(bool trimEOL = false) => sb.TrimEnd(trimEOL);
-
-        private void registerVisited(object o, int start) {
-            if (visitedObjects == null) { return; }
-            if (!visitedObjects.TryGetValue(o, out var spans)) {
-                spans = new List<(int start, int length)>();
-                visitedObjects[o] = spans;
-            }
-            spans.Add((start, sb.Length - start));
-        }
 
         public override string ToString() => sb.ToString();
 

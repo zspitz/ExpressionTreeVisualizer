@@ -11,6 +11,7 @@ using static ExpressionToString.FormatterNames;
 using System.Collections;
 using System.Runtime.CompilerServices;
 using ExpressionTreeVisualizer.Util;
+using static ExpressionToString.Globals;
 
 namespace ExpressionTreeVisualizer {
     [Serializable]
@@ -34,7 +35,7 @@ namespace ExpressionTreeVisualizer {
         [NonSerialized] // the items in this List are grouped and serialized into separate collections
         public List<ExpressionNodeData> CollectedEndNodes;
         [NonSerialized]
-        public Dictionary<object, List<(int start, int length)>> VisitedObjects;
+        public Dictionary<string, (int start, int length)> PathSpans;
 
         public Dictionary<EndNodeData, List<ExpressionNodeData>> Constants { get; }
         public Dictionary<EndNodeData, List<ExpressionNodeData>> Parameters { get; }
@@ -60,10 +61,10 @@ namespace ExpressionTreeVisualizer {
 
         public VisualizerData(object o, VisualizerDataOptions options = null) {
             Options = options ?? new VisualizerDataOptions();
-            Source = FormatterBase.Create(Options.Language, o, out var visitedObjects).ToString();
-            VisitedObjects = visitedObjects;
+            Source = WriterBase.Create(Options.Language, o, out var pathSpans).ToString();
+            PathSpans = pathSpans;
             CollectedEndNodes = new List<ExpressionNodeData>();
-            NodeData = new ExpressionNodeData(o, this, (0, Source.Length), false);
+            NodeData = new ExpressionNodeData(o, "", this, false);
 
             // TODO it should be possible to write the following using LINQ
             Constants = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
@@ -111,6 +112,7 @@ namespace ExpressionTreeVisualizer {
         public string Closure { get; set; }
         public EndNodeTypes? EndNodeType { get; set; }
         public bool IsDeclaration { get; set; }
+        public string Path { get; set; } = "";
 
         public EndNodeData EndNodeData => new EndNodeData {
             Closure = Closure,
@@ -122,18 +124,10 @@ namespace ExpressionTreeVisualizer {
         // for deserialization
         public ExpressionNodeData() { }
 
-        private static HashSet<Type> types = new HashSet<Type>() {
-            typeof(Expression),
-            typeof(MemberBinding),
-            typeof(ElementInit),
-            typeof(SwitchCase),
-            typeof(CatchBlock),
-            typeof(CallSiteBinder)
-        };
+        private static HashSet<Type> propertyTypes = NodeTypes.SelectMany(x => new[] { x, typeof(IEnumerable<>).MakeGenericType(x) }).ToHashSet();
 
-        private static HashSet<Type> propertyTypes = types.SelectMany(x => new[] { x, typeof(IEnumerable<>).MakeGenericType(x) }).ToHashSet();
-
-        internal ExpressionNodeData(object o, VisualizerData visualizerData, (int start, int length) parentSpan, bool isParameterDeclaration = false) {
+        internal ExpressionNodeData(object o, string path, VisualizerData visualizerData, bool isParameterDeclaration = false) {
+            Path = path;
             var language = visualizerData.Options.Language;
             switch (o) {
                 case Expression expr:
@@ -191,12 +185,8 @@ namespace ExpressionTreeVisualizer {
                     break;
             }
 
-            if (visualizerData.VisitedObjects.TryGetValue(o, out var spans)) {
-                var matchedSpans = spans.Where(x => parentSpan.start <= x.start && parentSpan.length >= x.length).ToList();
-                if (matchedSpans.Count >= 1) {
-                    Span = matchedSpans.First();
-                    spans.Remove(Span);
-                }
+            if (visualizerData.PathSpans.TryGetValue(Path, out var span)) {
+                Span = span;
             }
 
             // TODO specify order for properties; sometimes alphabetical order is not preferred; e.g. Parameters then Body for LambdaExpression
@@ -220,7 +210,7 @@ namespace ExpressionTreeVisualizer {
                     }
                 })
                 .Where(x => x.Item2 != null)
-                .Select(x => KVP(x.Item1, new ExpressionNodeData(x.Item2, visualizerData, Span)))
+                .Select(x => KVP(x.Item1, new ExpressionNodeData(x.Item2, (Path.IsNullOrWhitespace() ? "" : $"{Path}.") + x.Item1, visualizerData)))
                 .ToList();
         }
 

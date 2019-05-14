@@ -9,7 +9,9 @@
     <Import_RootNamespace>ExpressionToString</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)FormatterBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FactoryMethodsFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\IListT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WriterBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CSharpCodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Dictionary.cs" />

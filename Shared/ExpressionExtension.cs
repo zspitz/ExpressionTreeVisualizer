@@ -4,39 +4,39 @@ using System.Linq.Expressions;
 namespace ExpressionToString {
     public static class ExpressionExtension {
         public static string ToString(this Expression expr, string formatter) =>
-            FormatterBase.Create(formatter, expr).ToString();
+            WriterBase.Create(formatter, expr).ToString();
 
-        public static string ToString(this Expression expr, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
-            FormatterBase.Create(formatter, expr, out visitedParts).ToString();
+        public static string ToString(this Expression expr, string formatter, out Dictionary<string, (int start, int length)> pathSpans) =>
+            WriterBase.Create(formatter, expr, out pathSpans).ToString();
 
         public static string ToString(this ElementInit init, string formatter) =>
-            FormatterBase.Create(formatter, init).ToString();
+            WriterBase.Create(formatter, init).ToString();
 
-        public static string ToString(this ElementInit init, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
-            FormatterBase.Create(formatter, init, out visitedParts).ToString();
+        public static string ToString(this ElementInit init, string formatter, out Dictionary<string, (int start, int length)> pathSpans) =>
+            WriterBase.Create(formatter, init, out pathSpans).ToString();
 
         public static string ToString(this MemberBinding mbind, string formatter) =>
-            FormatterBase.Create(formatter, mbind).ToString();
+            WriterBase.Create(formatter, mbind).ToString();
 
-        public static string ToString(this MemberBinding mbind, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
-            FormatterBase.Create(formatter, mbind, out visitedParts).ToString();
+        public static string ToString(this MemberBinding mbind, string formatter, out Dictionary<string, (int start, int length)> pathSpans) =>
+            WriterBase.Create(formatter, mbind, out pathSpans).ToString();
 
         public static string ToString(this SwitchCase switchCase, string formatter) =>
-            FormatterBase.Create(formatter, switchCase).ToString();
+            WriterBase.Create(formatter, switchCase).ToString();
 
-        public static string ToString(this SwitchCase switchCase, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
-            FormatterBase.Create(formatter, switchCase, out visitedParts).ToString();
+        public static string ToString(this SwitchCase switchCase, string formatter, out Dictionary<string, (int start, int length)> pathSpans) =>
+            WriterBase.Create(formatter, switchCase, out pathSpans).ToString();
 
         public static string ToString(this CatchBlock catchBlock, string formatter) =>
-            FormatterBase.Create(formatter, catchBlock).ToString();
+            WriterBase.Create(formatter, catchBlock).ToString();
 
-        public static string ToString(this CatchBlock catchBlock, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
-            FormatterBase.Create(formatter, catchBlock, out visitedParts).ToString();
+        public static string ToString(this CatchBlock catchBlock, string formatter, out Dictionary<string, (int start, int length)> pathSpans) =>
+            WriterBase.Create(formatter, catchBlock, out pathSpans).ToString();
 
         public static string ToString(this LabelTarget labelTarget, string formatter) =>
-            FormatterBase.Create(formatter, labelTarget).ToString();
+            WriterBase.Create(formatter, labelTarget).ToString();
 
-        public static string ToString(this LabelTarget labelTarget, string formatter, out Dictionary<object, List<(int start, int length)>> visitedParts) =>
-            FormatterBase.Create(formatter, labelTarget, out visitedParts).ToString();
+        public static string ToString(this LabelTarget labelTarget, string formatter, out Dictionary<string, (int start, int length)> pathSpans) =>
+            WriterBase.Create(formatter, labelTarget, out pathSpans).ToString();
     }
 }

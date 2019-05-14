@@ -1,7 +1,10 @@
 ﻿using ExpressionToString.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace ExpressionToString {
     public static class FormatterNames {
@@ -32,5 +35,14 @@ namespace ExpressionToString {
             stringConcats = methods["Concat"].ToHashSet();
             stringFormats = methods["Format"].ToHashSet();
         }
+
+        public static List<Type> NodeTypes = new List<Type>() {
+            typeof(Expression),
+            typeof(MemberBinding),
+            typeof(ElementInit),
+            typeof(SwitchCase),
+            typeof(CatchBlock),
+            typeof(CallSiteBinder)
+        };
     }
 }
