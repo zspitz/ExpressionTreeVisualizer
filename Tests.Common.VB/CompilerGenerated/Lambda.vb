@@ -1,5 +1,5 @@
 ﻿Partial Public Class VBCompilerGeneratedBase
-    <Fact>
+    <Fact> <Trait("Category", Lambdas)>
     Sub NoParametersVoidReturn()
         RunTest(
             Sub() Console.WriteLine(),
@@ -8,7 +8,7 @@
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Lambdas)>
     Sub OneParameterVoidReturn()
         RunTest(Of String)(
             Sub(s) Console.WriteLine(s),
@@ -17,7 +17,7 @@
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Lambdas)>
     Sub TwoParametersVoidReturn()
         RunTest(Of String, String)(
             Sub(s1, s2) Console.WriteLine(s1 + s2),
@@ -26,7 +26,7 @@
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Lambdas)>
     Sub NoParametersNonVoidReturn()
         RunTest(
             Function() "abcd",
@@ -35,7 +35,7 @@
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Lambdas)>
     Sub OneParameterNonVoidReturn()
         RunTest(Of String, String)(
             Function(s) s,
@@ -44,7 +44,7 @@
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Lambdas)>
     Sub TwoParametersNonVoidReturn()
         RunTest(Of String, String, String)(
             Function(s1, s2) s1 + s2,

@@ -29,7 +29,7 @@ Friend Class NodeData
 End Class
 
 Partial Public Class VBCompilerGeneratedBase
-    <Fact>
+    <Fact> <Trait("Category", NewObject)>
     Public Sub NamedType()
         RunTest(
             Function() New Random(),
@@ -38,7 +38,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", NewObject)>
     Public Sub NamedTypeWithInitializer()
         RunTest(
             Function() New Foo With {.Bar = "abcd"},
@@ -51,7 +51,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", NewObject)>
     Public Sub NamedTypeWithInitializers()
         RunTest(
             Function() New Foo With {.Bar = "abcd", .Baz = "efgh"},
@@ -66,7 +66,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", NewObject)>
     Public Sub NamedTypeConstructorParameters()
         RunTest(
             Function() New Foo("ijkl"),
@@ -75,7 +75,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", NewObject)>
     Public Sub NamedTypeConstructorParametersWithInitializers()
         RunTest(
             Function() New Foo("ijkl") With {.Bar = "abcd", .Baz = "efgh"},
@@ -90,7 +90,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", NewObject)>
     Public Sub AnonymousType()
         RunTest(
             Function() New With {.Bar = "abcd", .Baz = "efgh"},
@@ -105,7 +105,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", NewObject)>
     Public Sub AnonymousTypeFromVariables()
         Dim Bar = "abcd"
         Dim Baz = "efgh"
@@ -122,7 +122,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", NewObject)>
     Public Sub CollectionTypeWithInitializer()
         RunTest(
             Function() New List(Of String) From {"abcd", "efgh"},
@@ -137,7 +137,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", NewObject)>
     Public Sub CollectionTypeWithMultipleElementsInitializers()
         RunTest(
             Function() New Wrapper From {{"ab", "cd"}, {"ef", "gh"}},
@@ -164,7 +164,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", NewObject)>
     Public Sub CollectionTypeWithSingleOrMultipleElementsInitializers()
         RunTest(
             Function() New Wrapper From {{"ab", "cd"}, "ef"},

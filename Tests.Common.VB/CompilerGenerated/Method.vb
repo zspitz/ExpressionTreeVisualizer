@@ -4,7 +4,7 @@
 End Module
 
 Partial Public Class VBCompilerGeneratedBase
-    <Fact>
+    <Fact> <Trait("Category", Method)>
     Sub InstanceMethod0Arguments()
         Dim s = ""
         RunTest(
@@ -14,7 +14,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Method)>
     Sub StaticMethod0Arguments()
         RunTest(
             Sub() DummyMethod(),
@@ -23,7 +23,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Method)>
     Sub ExtensionMethod0Arguments()
         Dim lst As IEnumerable(Of String) = New List(Of String)()
         RunTest(
@@ -33,7 +33,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Method)>
     Sub InstanceMethod1Argument()
         Dim s = ""
         RunTest(
@@ -43,7 +43,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Method)>
     Sub StaticMethod1Argument()
         RunTest(
             Function() String.Intern(""),
@@ -52,7 +52,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Method)>
     Sub ExtensionMethod1Argument()
         Dim lst As IEnumerable(Of String) = New List(Of String)()
         RunTest(
@@ -62,7 +62,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Method)>
     Sub InstanceMethod2Arguments()
         Dim s = ""
         RunTest(
@@ -72,7 +72,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Method)>
     Sub StaticMethod2Arguments()
         Dim arr As IEnumerable(Of Char) = New Char() {"a"c, "b"c}
         RunTest(
@@ -82,7 +82,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Method)>
     Sub ExtensionMethod2Arguments()
         Dim lst As IEnumerable(Of String) = New List(Of String)()
         Dim comparer As IComparer(Of String) = StringComparer.OrdinalIgnoreCase
@@ -93,7 +93,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Method)>
     Sub StringConcat()
         RunTest(
             Function(s1 As String, s2 As String) String.Concat(s1, s2),
@@ -102,7 +102,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Method)>
     Sub StringConcatOperator()
         RunTest(
             Function(s1 As String, s2 As String) s1 + s2,
@@ -111,7 +111,7 @@ Partial Public Class VBCompilerGeneratedBase
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Method)>
     Sub StringConcatOperatorParamArray()
         RunTest(
             Function(s1 As String, s2 As String) s1 + s2 + s1 + s2 + s1 + s2,
@@ -121,7 +121,7 @@ Partial Public Class VBCompilerGeneratedBase
     End Sub
 
     ' This will not compile -- Like operator not supported for current project type
-    '<Fact>
+    '<Fact> <Trait("Category", Method)>
     'Sub LikeOperatorStrings()
     '    BuildAssert(
     '        Function(s1 As String, s2 As String) s1 Like s2,
@@ -130,7 +130,7 @@ Partial Public Class VBCompilerGeneratedBase
     '    )
     'End Sub
 
-    '<Fact>
+    '<Fact> <Trait("Category", Method)>
     'Sub LikeOperatorObjects()
     '    BuildAssert(
     '        Function(o1 As Object, o2 As Object) o1 Like o2,

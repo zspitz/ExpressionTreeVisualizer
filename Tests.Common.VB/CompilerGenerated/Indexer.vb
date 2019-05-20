@@ -11,7 +11,7 @@
         End Property
     End Class
 
-    <Fact>
+    <Fact> <Trait("Category", Indexer)>
     Public Sub ArraySingleIndex()
         Dim arr = New String() {}
         RunTest(
@@ -21,7 +21,7 @@
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Indexer)>
     Public Sub ArrayMultipleIndex()
         Dim arr = New String(,) {}
         RunTest(
@@ -31,7 +31,7 @@
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Indexer)>
     Public Sub TypeIndexer()
         Dim lst = New List(Of String)()
         RunTest(
@@ -41,7 +41,7 @@
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Indexer)>
     Public Sub VBDeclaredTypeIndexer()
         Dim x As New DummyWithDefault
         RunTest(

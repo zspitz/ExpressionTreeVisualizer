@@ -1,5 +1,5 @@
 ﻿Partial Public Class VBCompilerGeneratedBase
-    <Fact>
+    <Fact> <Trait("Category", Member)>
     Sub InstanceMember()
         Dim s = ""
         RunTest(
@@ -9,7 +9,7 @@
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Member)>
     Sub ClosedVariable()
         Dim s = ""
         RunTest(
@@ -19,7 +19,7 @@
         )
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Member)>
     Sub StaticMember()
         RunTest(
             Function() String.Empty,
@@ -28,7 +28,7 @@
         )
     End Sub
 
-    <Fact(Skip:="Test for nested scope")>
+    <Fact(Skip:="Test for nested scope")> <Trait("Category", Member)>
     Sub NestedClosureScope()
         Assert.False(True)
     End Sub
