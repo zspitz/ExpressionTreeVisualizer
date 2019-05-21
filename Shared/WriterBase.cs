@@ -11,13 +11,15 @@ using static System.Linq.Expressions.ExpressionType;
 namespace ExpressionToString {
     public abstract class WriterBase {
         public static WriterBase Create(string language, object o) =>
-            language == CSharp ? (WriterBase)new CSharpCodeWriter(o) :
+            language == CSharp ? new CSharpCodeWriter(o) :
             language == VisualBasic ? new VBCodeWriter(o) :
+            language == FactoryMethods ? (WriterBase)new FactoryMethodsFormatter(o, CSharp) :
             throw new NotImplementedException("Unknown language");
 
         public static WriterBase Create(string language, object o, out Dictionary<string, (int start, int length)> pathSpans) =>
-            language == CSharp ? (WriterBase)new CSharpCodeWriter(o, out pathSpans) :
+            language == CSharp ? new CSharpCodeWriter(o, out pathSpans) :
             language == VisualBasic ? new VBCodeWriter(o, out pathSpans) :
+            language == FactoryMethods ? (WriterBase)new FactoryMethodsFormatter(o, CSharp, out pathSpans) :
             throw new NotImplementedException("Unknown language");
 
         private readonly StringBuilder sb = new StringBuilder();
@@ -281,21 +283,21 @@ namespace ExpressionToString {
             }
         }
 
-        protected void WriteNodes<T>(IEnumerable<(string pathSegment, T o)> pathsItems, bool writeEOL, string delimiter = ", ") {
+        protected void WriteNodes<T>(IEnumerable<(string pathSegment, T o)> pathsItems, bool writeEOL, string delimiter = ", ", bool parameterDeclaration = false) {
             if (writeEOL) { delimiter = delimiter.TrimEnd(); }
             pathsItems.ForEachT((pathSegment, arg, index) => {
                 if (index > 0) {
                     delimiter.AppendTo(sb);
                     if (writeEOL) { WriteEOL(); }
                 }
-                WriteNode(pathSegment, arg);
+                WriteNode(pathSegment, arg, parameterDeclaration);
             });
         }
-        protected void WriteNodes<T>(IEnumerable<(string pathSegment, T o)> pathsItems, string delimiter = ", ") => 
+        protected void WriteNodes<T>(IEnumerable<(string pathSegment, T o)> pathsItems, string delimiter = ", ") =>
             WriteNodes(pathsItems, false, delimiter);
 
-        protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, bool writeEOL, string delimiter = ", ") => 
-            WriteNodes(items.Select((arg, index) => ($"{pathSegment}[{index}]", arg)), writeEOL, delimiter);
+        protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, bool writeEOL, string delimiter = ", ", bool parameterDeclaration = false) =>
+            WriteNodes(items.Select((arg, index) => ($"{pathSegment}[{index}]", arg)), writeEOL, delimiter, parameterDeclaration);
 
         protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, string delimiter = ", ") => WriteNodes(pathSegment, items, false, delimiter);
 

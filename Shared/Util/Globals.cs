@@ -10,6 +10,7 @@ namespace ExpressionToString {
     public static class FormatterNames {
         public const string CSharp = "C#";
         public const string VisualBasic = "Visual Basic";
+        public const string FactoryMethods = "Factory methods";
     }
 
     public static class Globals {
@@ -42,7 +43,10 @@ namespace ExpressionToString {
             typeof(ElementInit),
             typeof(SwitchCase),
             typeof(CatchBlock),
-            typeof(CallSiteBinder)
+            typeof(CallSiteBinder),
+            typeof(LabelTarget)
         };
+
+        public static List<Type> PropertyTypes = NodeTypes.Select(x => typeof(IEnumerable<>).MakeGenericType(x)).ToList();
     }
 }

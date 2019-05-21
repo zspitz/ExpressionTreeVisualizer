@@ -200,11 +200,7 @@ namespace ExpressionToString {
 
         protected override void WriteLambda(LambdaExpression expr) {
             Write("(");
-            // we can't use WriteList here, because we have to call WriteParameterDeclaration
-            expr.Parameters.ForEach((prm, index) => {
-                if (index > 0) { Write(", "); }
-                WriteNode($"Parameters[{index}]", prm, true);
-            });
+            WriteNodes("Parameters", expr.Parameters, false, ", ", true);
             Write(") => ");
             WriteNode("Body", expr.Body);
         }

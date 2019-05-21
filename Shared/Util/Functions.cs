@@ -35,10 +35,45 @@ namespace ExpressionToString.Util {
             } else if (o is Enum e) {
                 ret = $"{e.GetType().Name}.{e.ToString()}";
             } else if (o is Type t) {
-                if (language==CSharp) {
+                if (language == CSharp) {
                     ret = $"typeof({t.FriendlyName(CSharp)})";
                 } else {
                     ret = $"GetType({t.FriendlyName(VisualBasic)})";
+                }
+            } else if (o is MemberInfo mi) {
+                bool isType;
+                if (mi is Type t1) {
+                    isType = true;
+                } else {
+                    isType = false;
+                    t1 = mi.DeclaringType;
+                }
+                if (language == CSharp) {
+                    ret = $"typeof({t1.FriendlyName(CSharp)})";
+                } else {
+                    ret = $"GetType({t1.FriendlyName(VisualBasic)})";
+                }
+                if (!isType) {
+                    string methodName = null;
+                    // event, field, constructor, method
+                    switch (mi) {
+                        case EventInfo _:
+                            methodName = "GetEvent";
+                            break;
+                        case FieldInfo _:
+                            methodName = "GetField";
+                            break;
+                        case ConstructorInfo _:
+                            methodName = "GetConstructor";
+                            break;
+                        case MethodInfo _:
+                            methodName = "GetMethod";
+                            break;
+                        case PropertyInfo _:
+                            methodName = "GetProperty";
+                            break;
+                    }
+                    ret += $".{methodName}(\"{mi.Name}\")";
                 }
             } else if (type.IsArray && !type.GetElementType().IsArray && type.GetArrayRank() == 1) {
                 var values = (o as dynamic[]).Joined(", ", x => RenderLiteral(x, language));
@@ -87,6 +122,12 @@ namespace ExpressionToString.Util {
             var fields = tuple.GetType().GetFields();
             if (fields.Any()) { return tuple.GetType().GetFields().Select(x => x.GetValue(tuple)).ToArray(); }
             return tuple.GetType().GetProperties().Select(x => x.GetValue(tuple)).ToArray();
+        }
+
+        public static bool TryTupleValues(object tuple, out object[] values) {
+            var isTupleType = tuple.GetType().IsTupleType();
+            values = isTupleType ? TupleValues(tuple) : null;
+            return isTupleType;
         }
 
         // based on https://github.com/dotnet/corefx/blob/7cf002ec36109943c048ec8da8ef80621190b4be/src/Common/src/CoreLib/System/Text/StringBuilder.cs#L1514

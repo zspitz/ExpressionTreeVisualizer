@@ -15,9 +15,9 @@ namespace _visualizerTests {
         [STAThread]
         static void Main(string[] args) {
             ////var i = 7;
-            var j = 8;
+            //var j = 8;
 
-            Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100) && new Random().Next() > 15 || new DateTime(2001, 10, 12).Month < 5;
+            //Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100) && new Random().Next() > 15 || new DateTime(2001, 10, 12).Month < 5;
 
             ////var i = 5;
             //Expression<Func<int, int>> expr = j => (i + j + 17) * (i + j + 17);
@@ -138,7 +138,13 @@ namespace _visualizerTests {
             //var binder = GetIndex(flags, context, argInfos);
             //var expr = Dynamic(binder, typeof(object), Parameter(typeof(object), "obj"), Constant("key1"), Constant(42));
 
-            var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
+            Expression<Func<int, float, float>> multiplier = (i, f) => i * f;
+
+
+
+
+
+            var visualizerHost = new VisualizerDevelopmentHost(multiplier, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
 
             //Console.ReadKey(true);

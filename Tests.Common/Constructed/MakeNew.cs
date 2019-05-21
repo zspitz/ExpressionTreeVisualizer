@@ -109,7 +109,7 @@ namespace ExpressionToString.Tests {
 
         [Fact]
         [Trait("Category", NewObject)]
-        public void CollectionTypeWithMultipleElementsInitializers() => RunTest(
+        public void CollectionTypeWithMultiElementInitializers() => RunTest(
             ListInit(
                 New(typeof(Wrapper)),
                 ElementInit(add2, Constant("ab"), Constant("cd")),
@@ -139,7 +139,7 @@ namespace ExpressionToString.Tests {
 
         [Fact]
         [Trait("Category", NewObject)]
-        public void CollectionTypeWithSingleOrMultipleElementsInitializers() => RunTest(
+        public void CollectionTypeWithSingleOrMultiElementInitializers() => RunTest(
             ListInit(
                 New(typeof(Wrapper)),
                 ElementInit(add2, Constant("ab"), Constant("cd")),

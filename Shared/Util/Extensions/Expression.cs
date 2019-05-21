@@ -1,8 +1,10 @@
-﻿using System.Linq.Expressions;
+﻿using System.Linq;
+using System.Linq.Expressions;
 using static System.Linq.Expressions.Expression;
 
 namespace ExpressionToString.Util {
     public static class ExpressionExtensions {
+        // TODO take argument values as keyvalue pair, and create parameters for 
         public static object ExtractValue(this Expression expr) {
             if (!(expr is LambdaExpression lambda)) {
                 lambda = Lambda(expr);

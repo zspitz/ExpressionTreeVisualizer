@@ -29,6 +29,8 @@ namespace ExpressionToString.Util {
 
         public static bool InheritsFromOrImplements<T>(this Type type) => typeof(T).IsAssignableFrom(type);
 
+        public static bool InheritsFromOrImplementsAny(this Type type, IEnumerable<Type> types) => types.Any(t => t.IsAssignableFrom(type));
+
         public static bool IsClosureClass(this Type type) =>
             type != null && type.HasAttribute<CompilerGeneratedAttribute>() && type.Name.ContainsAny("DisplayClass", "Closure$");
 

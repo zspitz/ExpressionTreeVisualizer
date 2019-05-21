@@ -6,6 +6,7 @@ using static System.Linq.Expressions.Expression;
 using static ExpressionToString.Util.Functions;
 using ExpressionToString.Util;
 using System.Linq;
+using System.Diagnostics;
 
 namespace ExpressionToString.Tests {
     public static class Globals {
@@ -36,7 +37,7 @@ namespace ExpressionToString.Tests {
         public static readonly MethodInfo concat = GetMethod(() => string.Concat("", ""));
 
         public static readonly ParameterExpression arr2D = Parameter(typeof(string[,]), "arr");
-        
+
         public static readonly PropertyInfo listIndexer = typeof(List<string>).GetIndexers(true).Single();
 
         static Globals() {

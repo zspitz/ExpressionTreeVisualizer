@@ -5,8 +5,9 @@ Imports Microsoft.VisualStudio.DebuggerVisualizers
 Module Module1
 
     Sub Main()
-        Dim expr As Expression(Of Func(Of String, Object, Boolean)) = Function(s1, s2) s1 Like s2
-        Dim visualizerHost = New VisualizerDevelopmentHost(expr, GetType(Visualizer), GetType(VisualizerDataObjectSource))
+        Dim multiplier As Expression(Of Func(Of Integer, Single, Single)) = Function(i, f) i * f
+
+        Dim visualizerHost = New VisualizerDevelopmentHost(multiplier, GetType(Visualizer), GetType(VisualizerDataObjectSource))
         visualizerHost.ShowVisualizer()
     End Sub
 
