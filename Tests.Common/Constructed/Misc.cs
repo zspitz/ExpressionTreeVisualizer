@@ -17,7 +17,16 @@ namespace ExpressionToString.Tests {
                     Add(i, Constant(10))
                 ),
                 "i > 10 ? i : i + 10",
-                "If(i > 10, i, i + 10)"
+                "If(i > 10, i, i + 10)", 
+                @"Condition(
+    GreaterThan(i,
+        Constant(10)
+    ),
+    i,
+    Add(i,
+        Constant(10)
+    )
+)"
             );
         }
 
@@ -28,7 +37,11 @@ namespace ExpressionToString.Tests {
                 typeof(string)
             ),
             "\"\" is string",
-            "TypeOf \"\" Is String"
+            "TypeOf \"\" Is String", 
+            @"TypeIs(
+    Constant(""""),
+    typeof(string)
+)"
         );
 
         [Fact]
@@ -38,7 +51,11 @@ namespace ExpressionToString.Tests {
                 typeof(IEnumerable)
             ),
             "\"\".GetType() == typeof(IEnumerable)",
-            "\"\".GetType = GetType(IEnumerable)"
+            "\"\".GetType = GetType(IEnumerable)", 
+            @"TypeEqual(
+    Constant(""),
+    typeof(IEnumerable)
+)"
         );
 
         [Fact]
@@ -48,7 +65,12 @@ namespace ExpressionToString.Tests {
                 Lambda(Constant(5))
             ),
             "(() => 5)()",
-            "(Function() 5)()"
+            "(Function() 5)()", 
+            @"Invoke(
+    Lambda(
+        Constant(5)
+    )
+)"
         );
 
         [Fact]
@@ -59,7 +81,15 @@ namespace ExpressionToString.Tests {
                 Parameter(typeof(string).MakeByRefType(), "s4")
             ),
             "(ref string s4) => true",
-            "Function(ByRef s4 As String) True"
+            "Function(ByRef s4 As String) True", @"Lambda(
+    Constant(true),
+    new [] {
+        var s4 = Parameter(
+            typeof(string).MakeByRef(),
+            ""s4""
+        )
+    }
+)"
         );
 
         [Fact]
@@ -82,7 +112,19 @@ namespace ExpressionToString.Tests {
     ' --- Quoted - begin
         Sub() Console.WriteLine(True)
     ' --- Quoted - end
-End Block"
+End Block",
+            @"Block(new [] { x }, new [] {
+    Quote(
+        Lambda(
+            Call(
+                typeof(Console).GetMethod(""WriteLine""),
+                new[] {
+                    Constant(true)
+                }
+            )
+        )
+    )
+})"
         );
 
         [Fact]
@@ -100,7 +142,19 @@ End Block"
             @"Function()
 ' --- Quoted - begin
     Sub() Console.WriteLine(True)
-' --- Quoted - end"
+' --- Quoted - end",
+            @"Lambda(
+    Quote(
+        Lambda(
+            Call(
+                typeof(Console).GetMethod(""WriteLine""),
+                new[] {
+                    Constant(true)
+                }
+            )
+        )
+    )
+)"
         );
 
         SymbolDocumentInfo document = SymbolDocument("source.txt");
@@ -110,7 +164,8 @@ End Block"
         public void MakeDebugInfo() => RunTest(
             DebugInfo(document,1,2,3,4),
             "// Debug to source.txt -- L1C2 : L3C4",
-            "' Debug to source.txt -- L1C2 : L3C4"
+            "' Debug to source.txt -- L1C2 : L3C4",
+            "DebugInfo(#SymbolDocumentInfo, 1, 2, 3, 4)"
         );
 
         [Fact]
@@ -118,7 +173,8 @@ End Block"
         public void MakeClearDebugInfo() => RunTest(
             ClearDebugInfo(document),
             "// Clear debug info from source.txt",
-            "' Clear debug info from source.txt"
+            "' Clear debug info from source.txt", 
+            "ClearDebugInfo(#SymbolDocumentInfo)"
         );
     }
 }

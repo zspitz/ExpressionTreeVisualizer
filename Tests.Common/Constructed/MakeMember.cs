@@ -10,7 +10,11 @@ namespace ExpressionToString.Tests {
         public void InstanceMember() => RunTest(
             MakeMemberAccess(Constant(""), typeof(string).GetMember("Length").Single()),
             "\"\".Length",
-            "\"\".Length"
+            "\"\".Length",
+            @"MakeMemberAccess(
+    Constant(""),
+    typeof(string).GetProperty(""Length"")
+)"
         );
 
         [Fact]
@@ -18,7 +22,10 @@ namespace ExpressionToString.Tests {
         public void StaticMember() => RunTest(
             MakeMemberAccess(null, typeof(string).GetMember("Empty").Single()),
             "string.Empty",
-            "String.Empty"
+            "String.Empty", 
+            @"MakeMemberAccess(null,
+    typeof(string).GetField(""Empty"")
+)"
         );
     }
 }

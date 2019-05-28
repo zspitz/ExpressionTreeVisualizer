@@ -16,8 +16,8 @@ namespace ExpressionToString.Tests {
             CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null)
         };
         readonly ParameterExpression obj = Parameter(typeof(object), "obj");
-        readonly ConstantExpression key1 = Constant("key");
-        readonly ConstantExpression key2 = Constant(1);
+        readonly ConstantExpression key = Constant("key");
+        readonly ConstantExpression key1 = Constant(1);
         readonly ConstantExpression value = Constant(42);
         readonly ConstantExpression arg1 = Constant("arg1");
         readonly ConstantExpression arg2 = Constant(15);
@@ -32,12 +32,19 @@ namespace ExpressionToString.Tests {
         [Trait("Category", Dynamics)]
         public void ConstructGetIndex() {
             var binder = GetIndex(flags, context, argInfos);
-            var expr = Dynamic(binder, typeof(object), obj, key1);
+            var expr = Dynamic(binder, typeof(object), obj, key);
 
             RunTest(
                 expr,
                 "obj[\"key\"]",
-                "obj(\"key\")"
+                "obj(\"key\")", 
+                @"Dynamic(
+    #CSharpGetIndexBinder,
+    typeof(object), new [] {
+        obj,
+        Constant(""key"")
+    }
+)"
             );
         }
 
@@ -45,12 +52,20 @@ namespace ExpressionToString.Tests {
         [Trait("Category", Dynamics)]
         public void ConstructGetIndexMultipleKeys() {
             var binder = GetIndex(flags, context, argInfos);
-            var expr = Dynamic(binder, typeof(object), obj, key1, key2);
+            var expr = Dynamic(binder, typeof(object), obj, key, key1);
 
             RunTest(
                 expr,
                 "obj[\"key\", 1]",
-                "obj(\"key\", 1)"
+                "obj(\"key\", 1)", 
+                @"Dynamic(
+    #CSharpGetIndexBinder,
+    typeof(object), new [] {
+        obj,
+        Constant(""key""),
+        Constant(1)
+    }
+)"
             );
         }
 
@@ -63,7 +78,11 @@ namespace ExpressionToString.Tests {
             RunTest(
                 expr,
                 "obj.Data",
-                "obj.Data"
+                "obj.Data",
+                @"Dynamic(
+    #CSharpGetMemberBinder,
+    typeof(object), new [] { obj }
+)"
             );
         }
 
@@ -76,7 +95,11 @@ namespace ExpressionToString.Tests {
             RunTest(
                 expr,
                 "obj()",
-                "obj"
+                "obj",
+                @"Dynamic(
+    #CSharpInvokeBinder,
+    typeof(object), new [] { obj }
+)"
             );
         }
 
@@ -89,7 +112,15 @@ namespace ExpressionToString.Tests {
             RunTest(
                 expr,
                 "obj(\"arg1\", 15)",
-                "obj(\"arg1\", 15)"
+                "obj(\"arg1\", 15)", 
+                @"Dynamic(
+    #CSharpInvokeBinder,
+    typeof(object), new [] {
+        obj,
+        Constant(""arg1""),
+        Constant(15)
+    }
+)"
             );
         }
 
@@ -102,7 +133,11 @@ namespace ExpressionToString.Tests {
             RunTest(
                 expr,
                 "obj.Method()",
-                "obj.Method"
+                "obj.Method",
+                @"Dynamic(
+    #CSharpInvokeMemberBinder,
+    typeof(object), new [] { obj }
+)"
             );
         }
 
@@ -115,7 +150,15 @@ namespace ExpressionToString.Tests {
             RunTest(
                 expr,
                 "obj.Method(\"arg1\", 15)",
-                "obj.Method(\"arg1\", 15)"
+                "obj.Method(\"arg1\", 15)", 
+                @"Dynamic(
+    #CSharpInvokeMemberBinder,
+    typeof(object), new [] {
+        obj,
+        Constant(""arg1""),
+        Constant(15)
+    }
+)"
             );
         }
 
@@ -123,12 +166,20 @@ namespace ExpressionToString.Tests {
         [Trait("Category", Dynamics)]
         public void ConstructSetIndex() {
             var binder = SetIndex(flags, context, argInfos2);
-            var expr = Dynamic(binder, typeof(object), obj, value, key1);
+            var expr = Dynamic(binder, typeof(object), obj, value, key);
 
             RunTest(
                 expr,
                 "obj[\"key\"] = 42",
-                "obj(\"key\") = 42"
+                "obj(\"key\") = 42", 
+                @"Dynamic(
+    #CSharpSetIndexBinder,
+    typeof(object), new [] {
+        obj,
+        Constant(42),
+        Constant(""key"")
+    }
+)"
             );
         }
 
@@ -136,12 +187,21 @@ namespace ExpressionToString.Tests {
         [Trait("Category", Dynamics)]
         public void ConstructSetIndexMultipleKeys() {
             var binder = SetIndex(flags, context, argInfos2);
-            var expr = Dynamic(binder, typeof(object), obj, value, key1, key2);
+            var expr = Dynamic(binder, typeof(object), obj, value, key, key1);
 
             RunTest(
                 expr,
                 "obj[\"key\", 1] = 42",
-                "obj(\"key\", 1) = 42"
+                "obj(\"key\", 1) = 42",
+                @"Dynamic(
+    #CSharpSetIndexBinder,
+    typeof(object), new [] {
+        obj,
+        Constant(42),
+        Constant(""key""),
+        Constant(1)
+    }
+)"
             );
         }
 
@@ -154,7 +214,14 @@ namespace ExpressionToString.Tests {
             RunTest(
                 expr,
                 "obj.Data = 42",
-                "obj.Data = 42"
+                "obj.Data = 42", 
+                @"Dynamic(
+    #CSharpSetMemberBinder,
+    typeof(object), new [] {
+        obj,
+        Constant(42)
+    }
+)"
             );
         }
 

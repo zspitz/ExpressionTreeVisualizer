@@ -18,7 +18,7 @@ namespace ExpressionToString.Tests {
 
         [Fact]
         [Trait("Category", SwitchCases)]
-       
+
         public void SingleValueSwitchCase() => RunTest(
             singleValueCase,
             @"case 5:
@@ -27,7 +27,27 @@ namespace ExpressionToString.Tests {
     break;",
             @"Case 5
     Console.WriteLine(True)
-    Console.WriteLine(True)"
+    Console.WriteLine(True)",
+            @"SwitchCase(
+    Block(new [] {
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new[] {
+                Constant(true)
+            }
+        ),
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new [] {
+                Constant(true)
+            }
+        )
+    }),
+    new [] {
+        Constant(5)
+    }
+)"
+
         );
 
         [Fact]
@@ -41,7 +61,27 @@ case 6:
     break;",
             @"Case 5, 6
     Console.WriteLine(True)
-    Console.WriteLine(True)"
+    Console.WriteLine(True)",
+            @"SwitchCase(
+    Block(new [] {
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new[] {
+                Constant(true)
+            }
+        ),
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new [] {
+                Constant(true)
+            }
+        )
+    }),
+    new [] {
+        Constant(5),
+        Constant(6)
+    }
+)"
         );
 
         [Fact]
@@ -52,8 +92,19 @@ case 6:
     Console.WriteLine(true);
     break;",
             @"Case 5
-    Console.WriteLine(True)"
-);
+    Console.WriteLine(True)", 
+            @"SwitchCase(
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    ),
+    new [] {
+        Constant(5)
+    }
+)"
+        );
 
         [Fact]
         [Trait("Category", SwitchCases)]
@@ -64,7 +115,19 @@ case 6:
     Console.WriteLine(true);
     break;",
             @"Case 5, 6
-    Console.WriteLine(True)"
+    Console.WriteLine(True)",
+            @"SwitchCase(
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    ),
+    new [] {
+        Constant(5),
+        Constant(6)
+    }
+)"
         );
 
         [Fact]
@@ -94,7 +157,34 @@ case 6:
         Console.WriteLine(False)
     Case Else
         CType(Nothing, Void)
-End Select"
+End Select", 
+            @"Switch(i,
+    Empty(),
+    new [] {
+        SwitchCase(
+            Call(
+                typeof(Console).GetMethod(""WriteLine""),
+                new[] {
+                    Constant(true)
+                }
+            ),
+            new [] {
+                Constant(4)
+            }
+        ),
+        SwitchCase(
+            Call(
+                typeof(Console).GetMethod(""WriteLine""),
+                new [] {
+                    Constant(false)
+                }
+            ),
+            new [] {
+                Constant(5)
+            }
+        )
+    }
+)"
         );
 
         [Fact]
@@ -130,8 +220,39 @@ End Select"
     Case Else
         True
         True
-End Select"
-);
+End Select", 
+    @"Switch(i,
+    Block(new [] {
+        typeof(void),
+        Constant(true),
+        Constant(true)
+    }),
+    new [] {
+        SwitchCase(
+            Call(
+                typeof(Console).GetMethod(""WriteLine""),
+                new[] {
+                    Constant(true)
+                }
+            ),
+            new [] {
+                Constant(4)
+            }
+        ),
+        SwitchCase(
+            Call(
+                typeof(Console).GetMethod(""WriteLine""),
+                new [] {
+                    Constant(false)
+                }
+            ),
+            new [] {
+                Constant(5)
+            }
+        )
+    }
+)"
+        );
 
         [Fact]
         [Trait("Category", SwitchCases)]
@@ -172,7 +293,37 @@ End Select"
     Case Else
         True
         True
-End Select"
+End Select", 
+            @"Switch(
+    Block(new [] { i, j }),
+    Block(new [] {
+        Constant(true),
+        Constant(true)
+    }), new [] {
+        SwitchCase(
+            Call(
+                typeof(Console).GetMethod(""WriteLine""),
+                new[] {
+                    Constant(true)
+                }
+            ),
+            new [] {
+                Constant(4)
+            }
+        ),
+        SwitchCase(
+            Call(
+                typeof(Console).GetMethod(""WriteLine""),
+                new [] {
+                    Constant(false)
+                }
+            ),
+            new [] {
+                Constant(5)
+            }
+        )
+    }
+)"
         );
 
         [Fact]
@@ -198,12 +349,36 @@ End Select"
         Console.WriteLine(True)
     Case 5
         Console.WriteLine(False)
-End Select"
+End Select", 
+            @"Switch(i, new [] {
+    SwitchCase(
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new[] {
+                Constant(true)
+            }
+        ),
+        new [] {
+            Constant(4)
+        }
+    ),
+    SwitchCase(
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new [] {
+                Constant(false)
+            }
+        ),
+        new [] {
+            Constant(5)
+        }
+    )
+})"
         );
 
         [Fact]
         [Trait("Category", SwitchCases)]
-        public void SwithOnMultipleStatementsWithoutDefault() => RunTest(
+        public void SwitchOnMultipleStatementsWithoutDefault() => RunTest(
             Switch(Block(i, j), SwitchCase(
                     writeLineTrue,
                     Constant(4)
@@ -230,7 +405,34 @@ End Select"
         Console.WriteLine(True)
     Case 5
         Console.WriteLine(False)
-End Select"
+End Select", 
+            @"Switch(
+    Block(new [] { i, j }),
+    new [] {
+        SwitchCase(
+            Call(
+                typeof(Console).GetMethod(""WriteLine""),
+                new[] {
+                    Constant(true)
+                }
+            ),
+            new [] {
+                Constant(4)
+            }
+        ),
+        SwitchCase(
+            Call(
+                typeof(Console).GetMethod(""WriteLine""),
+                new [] {
+                    Constant(false)
+                }
+            ),
+            new [] {
+                Constant(5)
+            }
+        )
+    }
+)"
         );
     }
 }

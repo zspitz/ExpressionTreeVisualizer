@@ -9,7 +9,8 @@ namespace ExpressionToString.Tests {
         public void NoParametersVoidReturn() => RunTest(
             () => Console.WriteLine(),
             "() => Console.WriteLine()",
-            "Sub() Console.WriteLine"
+            "Sub() Console.WriteLine",
+            ""
         );
 
         [Fact]

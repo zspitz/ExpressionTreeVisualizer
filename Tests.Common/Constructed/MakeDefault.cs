@@ -9,7 +9,10 @@ namespace ExpressionToString.Tests {
         public void MakeDefaultRefType() => RunTest(
             Default(typeof(string)),
             "default(string)",
-            "CType(Nothing, String)"
+            "CType(Nothing, String)", 
+            @"Default(
+    typeof(string)
+)"
         );
 
         [Fact]
@@ -17,7 +20,10 @@ namespace ExpressionToString.Tests {
         public void MakeDefaultValueType() => RunTest(
             Default(typeof(int)),
             "default(int)",
-            "CType(Nothing, Integer)"
+            "CType(Nothing, Integer)", 
+            @"Default(
+    typeof(int)
+)"
         );
     }
 }

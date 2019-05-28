@@ -10,7 +10,12 @@ namespace ExpressionToString.Tests {
         public void NoParametersVoidReturn() => RunTest(
             Lambda(Call(writeline0)), 
             "() => Console.WriteLine()", 
-            "Sub() Console.WriteLine"
+            "Sub() Console.WriteLine", 
+            @"Lambda(
+    Call(
+        typeof(Console).GetMethod(""WriteLine"")
+    )
+)"
         );
 
         [Fact]
@@ -18,7 +23,19 @@ namespace ExpressionToString.Tests {
         public void OneParameterVoidReturn() => RunTest(
             Lambda(Call(writeline1, s), s), 
             "(string s) => Console.WriteLine(s)", 
-            "Sub(s As String) Console.WriteLine(s)"
+            "Sub(s As String) Console.WriteLine(s)", 
+            @"Lambda(
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] { s }
+    ),
+    new [] {
+        var s = Parameter(
+            typeof(string),
+            ""s""
+        )
+    }
+)"
         );
 
         [Fact]
@@ -26,7 +43,25 @@ namespace ExpressionToString.Tests {
         public void TwoParametersVoidReturn() => RunTest(
             Lambda(Call(writeline1, Add(s1, s2, concat)), s1, s2),
             "(string s1, string s2) => Console.WriteLine(s1 + s2)",
-            "Sub(s1 As String, s2 As String) Console.WriteLine(s1 + s2)"
+            "Sub(s1 As String, s2 As String) Console.WriteLine(s1 + s2)", 
+            @"Lambda(
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Add(s1, s2)
+        }
+    ),
+    new [] {
+        var s1 = Parameter(
+            typeof(string),
+            ""s1""
+        ),
+        var s2 = Parameter(
+            typeof(string),
+            ""s2""
+        )
+    }
+)"
         );
 
         [Fact]
@@ -34,7 +69,10 @@ namespace ExpressionToString.Tests {
         public void NoParametersNonVoidReturn() => RunTest(
             Lambda(Constant("abcd")),
             "() => \"abcd\"",
-            "Function() \"abcd\""
+            "Function() \"abcd\"", 
+            @"Lambda(
+    Constant(""abcd"")
+)"
         );
 
         [Fact]
@@ -42,7 +80,13 @@ namespace ExpressionToString.Tests {
         public void OneParameterNonVoidReturn() => RunTest(
             Lambda(s, s),
             "(string s) => s",
-            "Function(s As String) s"
+            "Function(s As String) s", 
+            @"Lambda(s, new [] {
+    var s = Parameter(
+        typeof(string),
+        ""s""
+    )
+})"
         );
 
         [Fact]
@@ -50,7 +94,20 @@ namespace ExpressionToString.Tests {
         public void TwoParametersNonVoidReturn() => RunTest(
             Lambda(Add(s1, s2, concat), s1, s2),
             "(string s1, string s2) => s1 + s2",
-            "Function(s1 As String, s2 As String) s1 + s2"
+            "Function(s1 As String, s2 As String) s1 + s2",
+            @"Lambda(
+    Add(s1, s2),
+    new [] {
+        var s1 = Parameter(
+            typeof(string),
+            ""s1""
+        ),
+        var s2 = Parameter(
+            typeof(string),
+            ""s2""
+        )
+    }
+)"
         );
     }
 }

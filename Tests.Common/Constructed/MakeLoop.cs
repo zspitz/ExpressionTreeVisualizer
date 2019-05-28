@@ -13,7 +13,10 @@ namespace ExpressionToString.Tests {
 }",
             @"Do
     True
-Loop"
+Loop",
+            @"Loop(
+    Constant(true)
+)"
             );
 
         [Fact]
@@ -32,7 +35,13 @@ Loop"
             @"Do
     True
     True
-Loop"
+Loop", 
+            @"Loop(
+    Block(new [] {
+        Constant(true),
+        Constant(true)
+    })
+)"
             );
 
     }

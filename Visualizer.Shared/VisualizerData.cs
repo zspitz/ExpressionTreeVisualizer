@@ -150,6 +150,9 @@ namespace ExpressionTreeVisualizer {
                         case MethodCallExpression callexpr:
                             Name = callexpr.Method.Name;
                             break;
+                        case LambdaExpression lambdaExpression:
+                            Name = lambdaExpression.Name;
+                            break;
                     }
 
                     // fill StringValue and EndNodeType properties, for expressions

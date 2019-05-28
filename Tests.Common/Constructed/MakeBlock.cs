@@ -16,7 +16,11 @@ namespace ExpressionToString.Tests {
             @"true;
 true;",
             @"True
-True"
+True",
+            @"Block(new [] {
+    Constant(true),
+    Constant(true)
+})"
         );
 
         [Fact]
@@ -36,7 +40,11 @@ True"
     Dim i As Integer
     True
     True
-End Block"
+End Block",
+            @"Block(new [] { i }, new [] {
+    Constant(true),
+    Constant(true)
+})"
         );
 
         [Fact]
@@ -58,7 +66,11 @@ End Block"
     Dim s1 As String
     True
     True
-End Block"
+End Block",
+    @"Block(new [] { i, s1 }, new [] {
+    Constant(true),
+    Constant(true)
+})"
         );
     }
 }

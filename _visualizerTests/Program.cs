@@ -81,50 +81,50 @@ namespace _visualizerTests {
             //IQueryable<Person> personSource = null;
             //Expression<Func<Person, bool>> expr = person => person.LastName.StartsWith("A");
 
-            //var hour = Variable(typeof(int), "hour");
-            //var msg = Variable(typeof(string), "msg");
-            //var block = Block(
-            //    // specify the variables available within the block
-            //    new[] { hour, msg },
-            //    // hour =
-            //    Assign(hour,
-            //        // DateTime.Now.Hour
-            //        MakeMemberAccess(
-            //            MakeMemberAccess(
-            //                null,
-            //                typeof(DateTime).GetMember("Now").Single()
-            //            ),
-            //            typeof(DateTime).GetMember("Hour").Single()
-            //        )
-            //    ),
-            //    // if ( ... ) { ... } else { ... }
-            //    IfThenElse(
-            //        // ... && ...
-            //        AndAlso(
-            //            // hour >= 6
-            //            GreaterThanOrEqual(
-            //                hour,
-            //                Constant(6)
-            //            ),
-            //            // hour <= 18
-            //            LessThanOrEqual(
-            //                hour,
-            //                Constant(18)
-            //            )
-            //        ),
-            //        // msg = "Good day"
-            //        Assign(msg, Constant("Good day")),
-            //        // msg = Good night"
-            //        Assign(msg, Constant("Good night"))
-            //    ),
-            //    // Console.WriteLine(msg);
-            //    Call(
-            //        typeof(Console).GetMethod("WriteLine", new[] { typeof(object) }),
-            //        msg
-            //    ),
-            //    hour
-            //);
-            //Expression<Action> expr = Lambda<Action>(block);
+            var hour = Variable(typeof(int), "hour");
+            var msg = Variable(typeof(string), "msg");
+            var block = Block(
+                // specify the variables available within the block
+                new[] { hour, msg },
+                // hour =
+                Assign(hour,
+                    // DateTime.Now.Hour
+                    MakeMemberAccess(
+                        MakeMemberAccess(
+                            null,
+                            typeof(DateTime).GetMember("Now").Single()
+                        ),
+                        typeof(DateTime).GetMember("Hour").Single()
+                    )
+                ),
+                // if ( ... ) { ... } else { ... }
+                IfThenElse(
+                    // ... && ...
+                    AndAlso(
+                        // hour >= 6
+                        GreaterThanOrEqual(
+                            hour,
+                            Constant(6)
+                        ),
+                        // hour <= 18
+                        LessThanOrEqual(
+                            hour,
+                            Constant(18)
+                        )
+                    ),
+                    // msg = "Good day"
+                    Assign(msg, Constant("Good day")),
+                    // msg = Good night"
+                    Assign(msg, Constant("Good night"))
+                ),
+                // Console.WriteLine(msg);
+                Call(
+                    typeof(Console).GetMethod("WriteLine", new[] { typeof(object) }),
+                    msg
+                ),
+                hour
+            );
+            Expression<Action> expr = Lambda<Action>(block);
 
             //var constant = Constant(new List<int>());
             //Expression expr = Or(
@@ -138,13 +138,13 @@ namespace _visualizerTests {
             //var binder = GetIndex(flags, context, argInfos);
             //var expr = Dynamic(binder, typeof(object), Parameter(typeof(object), "obj"), Constant("key1"), Constant(42));
 
-            Expression<Func<int, float, float>> multiplier = (i, f) => i * f;
+            //Expression<Func<int, float, float>> multiplier = (i, f) => i * f;
 
 
 
 
 
-            var visualizerHost = new VisualizerDevelopmentHost(multiplier, typeof(Visualizer), typeof(VisualizerDataObjectSource));
+            var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
 
             //Console.ReadKey(true);

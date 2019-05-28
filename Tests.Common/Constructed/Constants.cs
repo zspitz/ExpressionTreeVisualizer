@@ -10,7 +10,8 @@ namespace ExpressionToString.Tests {
         public void Random() => RunTest(
             Constant(new Random()), 
             "#Random", 
-            "#Random"
+            "#Random", 
+            "Constant(#Random)"
         );
 
         [Fact]
@@ -18,7 +19,8 @@ namespace ExpressionToString.Tests {
         public void ValueTuple() => RunTest(
             Constant(("abcd", 5)), 
             "(\"abcd\", 5)",
-            "(\"abcd\", 5)"
+            "(\"abcd\", 5)", 
+            @"Constant((""abcd"", 5))"
         );
 
         [Fact]
@@ -26,7 +28,8 @@ namespace ExpressionToString.Tests {
         public void OldTuple() => RunTest(
             Constant(Tuple.Create("abcd", 5)),
             "(\"abcd\", 5)",
-            "(\"abcd\", 5)"
+            "(\"abcd\", 5)", 
+            @"Constant((""abcd"", 5))"
         );
 
         [Fact]
@@ -37,7 +40,8 @@ namespace ExpressionToString.Tests {
             RunTest(
                 Constant(dte), 
                 "#DateTime", 
-                $"#{dte.ToString()}#"
+                $"#{dte.ToString()}#", 
+                "Constant(#DateTime)"
             );
         }
 
@@ -49,7 +53,8 @@ namespace ExpressionToString.Tests {
             RunTest(
                 Constant(ts), 
                 "#TimeSpan", 
-                $"#{ts.ToString()}#"
+                $"#{ts.ToString()}#", 
+                "Constant(#TimeSpan)"
             );
         }
 
@@ -58,7 +63,8 @@ namespace ExpressionToString.Tests {
         public void Array() => RunTest(
             Constant(new object[] { "abcd", 5, new Random() }),
             "new [] { \"abcd\", 5, #Random }",
-            "{ \"abcd\", 5, #Random }"
+            "{ \"abcd\", 5, #Random }",
+            @"Constant(new [] { ""abcd"", 5, #Random })"
         );
 
         [Fact]
@@ -66,7 +72,10 @@ namespace ExpressionToString.Tests {
         public void Type() => RunTest(
             Constant(typeof(string)),
             "typeof(string)",
-            "GetType(String)"
+            "GetType(String)", 
+            @"Constant(
+    typeof(string)
+)"
         );
     }
 }

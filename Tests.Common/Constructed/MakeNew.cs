@@ -27,7 +27,10 @@ namespace ExpressionToString.Tests {
         public void NamedType() => RunTest(
             New(typeof(Random)),
             "new Random()",
-            "New Random"
+            "New Random", 
+            @"New(
+    typeof(Random).GetConstructor()
+)"
         );
 
         [Fact]
@@ -42,7 +45,18 @@ namespace ExpressionToString.Tests {
 }",
             @"New Foo With {
     .Bar = ""abcd""
-}"
+}",
+            @"MemberInit(
+    New(
+        typeof(Foo).GetConstructor()
+    ),
+    new [] {
+        Bind(
+            typeof(Foo).GetProperty(""Bar""),
+            Constant(""abcd"")
+        )
+    }
+)"
         );
 
         [Fact]
@@ -60,7 +74,22 @@ namespace ExpressionToString.Tests {
             @"New Foo With {
     .Bar = ""abcd"",
     .Baz = ""efgh""
-}"
+}",
+            @"MemberInit(
+    New(
+        typeof(Foo).GetConstructor()
+    ),
+    new [] {
+        Bind(
+            typeof(Foo).GetProperty(""Bar""),
+            Constant(""abcd"")
+        ),
+        Bind(
+            typeof(Foo).GetProperty(""Baz""),
+            Constant(""efgh"")
+        )
+    }
+)"
         );
 
         [Fact]
@@ -68,7 +97,13 @@ namespace ExpressionToString.Tests {
         public void NamedTypeConstructorParameters() => RunTest(
             New(fooCtor1, Constant("ijkl")),
             @"new Foo(""ijkl"")",
-            @"New Foo(""ijkl"")"
+            @"New Foo(""ijkl"")", 
+            @"New(
+    typeof(Foo).GetConstructor(),
+    new [] {
+        Constant(""ijkl"")
+    }
+)"
         );
 
         [Fact]
@@ -86,7 +121,25 @@ namespace ExpressionToString.Tests {
             @"New Foo(""ijkl"") With {
     .Bar = ""abcd"",
     .Baz = ""efgh""
-}"
+}", 
+            @"MemberInit(
+    New(
+        typeof(Foo).GetConstructor(),
+        new [] {
+            Constant(""ijkl"")
+        }
+    ),
+    new [] {
+        Bind(
+            typeof(Foo).GetProperty(""Bar""),
+            Constant(""abcd"")
+        ),
+        Bind(
+            typeof(Foo).GetProperty(""Baz""),
+            Constant(""efgh"")
+        )
+    }
+)"
         );
 
         [Fact]
@@ -104,7 +157,18 @@ namespace ExpressionToString.Tests {
             @"New List(Of String) From {
     ""abcd"",
     ""efgh""
-}"
+}",
+            @"ListInit(
+    New(#RuntimeConstructorInfo, new [] {}),
+    new [] {
+        ElementInit(#RuntimeMethodInfo, new [] {
+            Constant(""abcd"")
+        }),
+        ElementInit(#RuntimeMethodInfo, new [] {
+            Constant(""efgh"")
+        })
+    }
+)"
         );
 
         [Fact]
@@ -134,7 +198,20 @@ namespace ExpressionToString.Tests {
         ""ef"",
         ""gh""
     }
-}"
+}",
+            @"ListInit(
+    New(#RuntimeConstructorInfo, new [] {}),
+    new [] {
+        ElementInit(#RuntimeMethodInfo, new [] {
+            Constant(""ab""),
+            Constant(""cd"")
+        }),
+        ElementInit(#RuntimeMethodInfo, new [] {
+            Constant(""ef""),
+            Constant(""gh"")
+        })
+    }
+)"
         );
 
         [Fact]
@@ -158,7 +235,19 @@ namespace ExpressionToString.Tests {
         ""cd""
     },
     ""ef""
-}"
+}",
+            @"ListInit(
+    New(#RuntimeConstructorInfo, new [] {}),
+    new [] {
+        ElementInit(#RuntimeMethodInfo, new [] {
+            Constant(""ab""),
+            Constant(""cd"")
+        }),
+        ElementInit(#RuntimeMethodInfo, new [] {
+            Constant(""ef"")
+        })
+    }
+)"
         );
     }
 }

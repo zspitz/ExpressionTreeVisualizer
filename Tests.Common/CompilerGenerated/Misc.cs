@@ -40,7 +40,12 @@ namespace ExpressionToString.Tests {
             RunTest(
                 () => del(5),
                 "() => del(5)",
-                "Function() del(5)"
+                "Function() del(5)",
+                @"Lambda(
+    Invoke( del, new [] {
+        Constant(5)
+    })
+)"
             );
         }
     }

@@ -15,15 +15,22 @@ namespace ExpressionToString.Tests {
         public void MakeArrayIndex() => RunTest(
             ArrayIndex(arr, Constant(0)),
             "arr[0]",
-            "arr(0)"
+            "arr(0)",
+            @"ArrayIndex(arr,
+    Constant(0)
+)"
         );
 
         [Fact]
         [Trait("Category", Indexer)]
         public void MakeArrayMultipleIndex() => RunTest(
             ArrayIndex(arr2D, Constant(0), Constant(1)),
-            "arr[0, 1]",
-            "arr(0, 1)"
+            "arr2d[0, 1]",
+            "arr(0, 1)", 
+            @"ArrayIndex(arr, new [] {
+    Constant(0),
+    Constant(1)
+})"
         );
 
         [Fact]
@@ -31,7 +38,10 @@ namespace ExpressionToString.Tests {
         public void MakeArrayAccess() => RunTest(
             ArrayAccess(arr, Constant(0)),
             "arr[0]",
-            "arr(0)"
+            "arr(0)",
+            @"ArrayAccess(arr, new [] {
+    Constant(0)
+})"
         );
 
         [Fact]
@@ -41,7 +51,13 @@ namespace ExpressionToString.Tests {
                 lstString, listIndexer, new[] { Constant(0) as Expression }
             ),
             "lst[0]",
-            "lst(0)"
+            "lst(0)", 
+            @"MakeIndex(lstString,
+    typeof(List<string>).GetProperty(""Item""),
+    new[] {
+        Constant(0)
+    }
+)"
         );
 
         [Fact]
@@ -49,7 +65,13 @@ namespace ExpressionToString.Tests {
         public void PropertyIndexer() => RunTest(
             Property(lstString, listIndexer, Constant(0)),
             "lst[0]",
-            "lst(0)"
+            "lst(0)", 
+            @"MakeIndex(lstString,
+    typeof(List<string>).GetProperty(""Item""),
+    new[] {
+        Constant(0)
+    }
+)"
         );
     }
 }

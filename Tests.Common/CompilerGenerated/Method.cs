@@ -26,7 +26,8 @@ namespace ExpressionToString.Tests {
         public void StaticMethod0Arguments() => RunTest(
             () => Dummy.DummyMethod(),
             "() => Dummy.DummyMethod()",
-            "Sub() Dummy.DummyMethod"
+            "Sub() Dummy.DummyMethod",
+            ""
         );
 
         [Fact]

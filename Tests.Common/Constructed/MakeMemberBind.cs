@@ -22,7 +22,11 @@ namespace ExpressionToString.Tests {
                 typeof(DummyMember).GetMember("Foo", Instance | NonPublic).Single(), Constant("abcd")
             ),
             "Foo = \"abcd\"",
-            ".Foo = \"abcd\""
+            ".Foo = \"abcd\"", 
+            @"Bind(
+    typeof(DummyMember).GetProperty(""Foo""),
+    Constant(""abcd"")
+)"
         );
 
         [Fact]
@@ -33,7 +37,13 @@ namespace ExpressionToString.Tests {
                 Constant("abcd")
             ),
             "\"abcd\"",
-            "\"abcd\""
+            "\"abcd\"",
+            @"ElementInit(
+    typeof(List<string>).GetMethod(""Add""),
+    new[] {
+        Constant(""abcd"")
+    }
+)"
         );
 
         [Fact]
@@ -51,13 +61,20 @@ namespace ExpressionToString.Tests {
             @"{
     ""abcd"",
     ""efgh""
-}"
+}",
+            @"ElementInit(
+    typeof(Wrapper).GetMethod(""Add""),
+    new[] {
+        Constant(""abcd""),
+        Constant(""efgh"")
+    }
+)"
         );
 
         [Fact]
         [Trait("Category", MemberBindings)]
         public void MakeMemberMemberBind() => RunTest(
-            Expression.MemberBind(
+            MemberBind(
                 GetMember(() => ((Node)null).Data),
                 Bind(
                     GetMember(() => ((NodeData)null).Name),
@@ -69,7 +86,16 @@ namespace ExpressionToString.Tests {
 }",
             @".Data = With {
     .Name = ""abcd""
-}"
+}",
+            @"MemberBind(
+    typeof(Node).GetProperty(""Data""),
+    new[] {
+        Bind(
+            typeof(NodeData).GetProperty(""Name""),
+            Constant(""abcd"")
+        )
+    }
+)"
         );
 
         static readonly MethodInfo addMethod = GetMethod(() => ((IList<Node>)null).Add(new Node()));
@@ -90,7 +116,28 @@ namespace ExpressionToString.Tests {
             @".Children = From {
     New Node,
     New Node
-}"
+}",
+            @"ListBind(
+    typeof(Node).GetProperty(""Children""),
+    new[] {
+        ElementInit(
+            typeof(ICollection<Node>).GetMethod(""Add""),
+            new [] {
+                New(
+                    typeof(Node).GetConstructor()
+                )
+            }
+        ),
+        ElementInit(
+            typeof(ICollection<Node>).GetMethod(""Add""),
+            new [] {
+                New(
+                    typeof(Node).GetConstructor()
+                )
+            }
+        )
+    }
+)"
         );
     }
 }

@@ -25,7 +25,7 @@ namespace ExpressionToString.Tests {
         public static readonly ParameterExpression s2 = Parameter(typeof(string), "s2");
         public static readonly ParameterExpression arr = Parameter(typeof(string[]), "arr");
         public static readonly ParameterExpression lst = Parameter(typeof(List<int>), "lst");
-        public static readonly ParameterExpression lstString = Parameter(typeof(List<string>), "lst");
+        public static readonly ParameterExpression lstString = Parameter(typeof(List<string>), "lstString");
 
         public static readonly MethodCallExpression writeLineTrue;
         public static readonly MethodCallExpression writeLineFalse;
@@ -36,7 +36,7 @@ namespace ExpressionToString.Tests {
         public static readonly MethodInfo writeline1 = GetMethod(() => Console.WriteLine(""));
         public static readonly MethodInfo concat = GetMethod(() => string.Concat("", ""));
 
-        public static readonly ParameterExpression arr2D = Parameter(typeof(string[,]), "arr");
+        public static readonly ParameterExpression arr2D = Parameter(typeof(string[,]), "arr2d");
 
         public static readonly PropertyInfo listIndexer = typeof(List<string>).GetIndexers(true).Single();
 

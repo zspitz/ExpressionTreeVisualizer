@@ -18,7 +18,16 @@ namespace ExpressionToString.Tests {
     Console.WriteLine(true);
 }",
                 @"Catch
-    Console.WriteLine(True)"
+    Console.WriteLine(True)",
+                @"Catch(
+    typeof(Exception),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -29,7 +38,15 @@ namespace ExpressionToString.Tests {
     Console.WriteLine(true);
 }",
             @"Catch ex As Exception
-    Console.WriteLine(True)"
+    Console.WriteLine(True)",
+            @"Catch(ex,
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -42,7 +59,23 @@ namespace ExpressionToString.Tests {
 }",
             @"Catch ex As Exception
     Console.WriteLine(True)
-    Console.WriteLine(True)"
+    Console.WriteLine(True)", 
+            @"Catch(ex,
+    Block(new [] {
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new[] {
+                Constant(true)
+            }
+        ),
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new [] {
+                Constant(true)
+            }
+        )
+    })
+)"
         );
 
         [Fact]
@@ -53,7 +86,16 @@ namespace ExpressionToString.Tests {
     Console.WriteLine(true);
 }",
             @"Catch _ As InvalidCastException
-    Console.WriteLine(True)"
+    Console.WriteLine(True)",
+            @"Catch(
+    typeof(InvalidCastException),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -66,7 +108,24 @@ namespace ExpressionToString.Tests {
 }",
             @"Catch _ As InvalidCastException
     Console.WriteLine(True)
-    Console.WriteLine(True)"
+    Console.WriteLine(True)",
+            @"Catch(
+    typeof(InvalidCastException),
+    Block(new [] {
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new[] {
+                Constant(true)
+            }
+        ),
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new [] {
+                Constant(true)
+            }
+        )
+    })
+)"
         );
 
         [Fact]
@@ -77,7 +136,16 @@ namespace ExpressionToString.Tests {
     Console.WriteLine(true);
 }",
             @"Catch ex As Exception When True
-    Console.WriteLine(True)"
+    Console.WriteLine(True)",
+            @"Catch(ex,
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    ),
+    Constant(true)
+)"
         );
 
         [Fact]
@@ -90,7 +158,19 @@ namespace ExpressionToString.Tests {
 }",
             @"Catch ex As Exception When True
     Console.WriteLine(True)
-    Console.WriteLine(True)"
+    Console.WriteLine(True)",
+            @"Catch(ex,
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    ),
+    Block(new [] {
+        Constant(true),
+        Constant(true)
+    })
+)"
         );
 
         [Fact]
@@ -107,7 +187,19 @@ namespace ExpressionToString.Tests {
     True
     True
 End Block
-    Console.WriteLine(True)"
+    Console.WriteLine(True)", 
+            @"Catch(ex,
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    ),
+    Block(new [] {
+        Constant(true),
+        Constant(true)
+    })
+)"
         );
 
         [Fact]
@@ -123,7 +215,16 @@ End Block
     True
 Catch
     True
-End Try"
+End Try",
+            @"TryCatch(
+    Constant(true),
+    new [] {
+        Catch(
+            typeof(Exception),
+            Constant(true)
+        )
+    }
+)"
         );
 
         [Fact]
@@ -143,7 +244,20 @@ Catch ex As Exception
     True
 Finally
     Console.WriteLine(True)
-End Try"
+End Try", 
+            @"TryCatchFinally(
+    Constant(true),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    ), new [] {
+        Catch(ex,
+            Constant(true)
+        )
+    }
+)"
         );
 
         [Fact]
@@ -159,7 +273,21 @@ End Try"
     Console.WriteLine(True)
 Fault
     Console.WriteLine(True)
-End Try"
+End Try", 
+            @"TryFault(
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    ),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new [] {
+            Constant(true)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -175,7 +303,21 @@ End Try"
     Console.WriteLine(True)
 Finally
     Console.WriteLine(True)
-End Try"
+End Try",
+            @"TryFinally(
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    ),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new [] {
+            Constant(true)
+        }
+    )
+)"
         );
     }
 }

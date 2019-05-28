@@ -18,8 +18,23 @@ namespace ExpressionToString.Tests {
                 writeLineTrue,
                 writeLineFalse
             ),
-            @"if (true) Console.WriteLine(true); else Console.WriteLine(false);",
-            @"If True Then Console.WriteLine(True) Else Console.WriteLine(False)"
+            "if (true) Console.WriteLine(true); else Console.WriteLine(false);",
+            "If True Then Console.WriteLine(True) Else Console.WriteLine(False)", 
+            @"IfThenElse(
+    Constant(true),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    ),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new [] {
+            Constant(false)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -31,7 +46,22 @@ namespace ExpressionToString.Tests {
                 writeLineFalse
             ),
             @"if (true) Console.WriteLine(true); else Console.WriteLine(false);",
-            @"If True Then Console.WriteLine(True) Else Console.WriteLine(False)"
+            @"If True Then Console.WriteLine(True) Else Console.WriteLine(False)", 
+            @"IfThenElse(
+    Constant(true),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    ),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new [] {
+            Constant(false)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -42,8 +72,17 @@ namespace ExpressionToString.Tests {
                 writeLineTrue,
                 Empty()
             ), 
-            @"if (true) Console.WriteLine(true);", 
-            @"If True Then Console.WriteLine(True)"
+            "if (true) Console.WriteLine(true);", 
+            "If True Then Console.WriteLine(True)", 
+            @"IfThen(
+    Constant(true),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -53,8 +92,17 @@ namespace ExpressionToString.Tests {
                 Constant(true),
                 writeLineTrue
             ), 
-            @"if (true) Console.WriteLine(true);", 
-            @"If True Then Console.WriteLine(True)"
+            "if (true) Console.WriteLine(true);", 
+            "If True Then Console.WriteLine(True)", 
+            @"IfThen(
+    Constant(true),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -66,7 +114,18 @@ namespace ExpressionToString.Tests {
                 falseLength
             ),
             "true ? \"true\".Length : \"false\".Length",
-            "If(True, \"true\".Length, \"false\".Length)"
+            "If(True, \"true\".Length, \"false\".Length)", 
+            @"Condition(
+    Constant(true),
+    MakeMemberAccess(
+        Constant(""true""),
+        typeof(string).GetProperty(""Length"")
+    ),
+    MakeMemberAccess(
+        Constant(""false""),
+        typeof(string).GetProperty(""Length"")
+    )
+)"
         );
 
         [Fact]
@@ -78,7 +137,17 @@ namespace ExpressionToString.Tests {
                 Expression.Default(typeof(int))
             ),
             "true ? \"true\".Length : default(int)",
-            "If(True, \"true\".Length, CType(Nothing, Integer))"
+            "If(True, \"true\".Length, CType(Nothing, Integer))", 
+            @"Condition(
+    Constant(true),
+    MakeMemberAccess(
+        Constant(""true""),
+        typeof(string).GetProperty(""Length"")
+    ),
+    Default(
+        typeof(int)
+    )
+)"
         );
 
         [Fact]
@@ -96,7 +165,21 @@ namespace ExpressionToString.Tests {
             @"If(Block
     True
     True
-End Block, ""true"".Length, ""false"".Length)"
+End Block, ""true"".Length, ""false"".Length)", 
+            @"Condition(
+    Block(new [] {
+        Constant(true),
+        Constant(true)
+    }),
+    MakeMemberAccess(
+        Constant(""true""),
+        typeof(string).GetProperty(""Length"")
+    ),
+    MakeMemberAccess(
+        Constant(""false""),
+        typeof(string).GetProperty(""Length"")
+    )
+)"
         );
 
         [Fact]
@@ -113,7 +196,19 @@ End Block, ""true"".Length, ""false"".Length)"
             @"If
     True
     True
-Then Console.WriteLine(True)"
+Then Console.WriteLine(True)", 
+            @"IfThen(
+    Block(new [] {
+        Constant(true),
+        Constant(true)
+    }),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -130,7 +225,24 @@ Then Console.WriteLine(True)"
             @"If True Then
     Console.WriteLine(True)
     Console.WriteLine(True)
-End If"
+End If", 
+            @"IfThen(
+    Constant(true),
+    Block(new [] {
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new[] {
+                Constant(true)
+            }
+        ),
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new [] {
+                Constant(true)
+            }
+        )
+    })
+)"
         );
 
         [Fact]
@@ -146,7 +258,19 @@ End If"
                 @"if (true) if (true) Console.WriteLine(true);",
                 @"If True Then
     If True Then Console.WriteLine(True)
-End If"
+End If", 
+                @"IfThen(
+    Constant(true),
+    IfThen(
+        Constant(true),
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new[] {
+                Constant(true)
+            }
+        )
+    )
+)"
         );
 
         [Fact]
@@ -163,7 +287,25 @@ End If"
             @"if (true) Console.WriteLine(true); else if (true) Console.WriteLine(true);",
             @"If True Then Console.WriteLine(True) Else
     If True Then Console.WriteLine(True)
-End If"
+End If", 
+            @"IfThenElse(
+    Constant(true),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        new[] {
+            Constant(true)
+        }
+    ),
+    IfThen(
+        Constant(true),
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new [] {
+                Constant(true)
+            }
+        )
+    )
+)"
         );
     }
 }

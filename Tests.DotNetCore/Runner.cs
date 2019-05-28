@@ -4,54 +4,57 @@ using System.Linq.Expressions;
 using Xunit;
 using static ExpressionToString.FormatterNames;
 using Pather.CSharp;
-//using static ExpressionToString.Tests.Globals;
+using ExpressionToString.Util;
 
 namespace ExpressionToString.Tests {
     public static class Runner {
-        public static void RunTest(object o, string csharp, string vb) {
+        public static void RunTest(object o, string csharp, string vb, string factoryMethods) {
             string testCSharpCode="";
             Dictionary<string, (int start, int length)> csharpPathSpans = null;
             string testVBCode="";
             Dictionary<string, (int start, int length)> vbPathSpans = null;
-            string factoryMethods = "";
+            string testFactoryMethods = "";
             Dictionary<string, (int start, int length)> factoryMethodsPathSpans = null;
 
             switch (o) {
                 case Expression expr:
                     testCSharpCode = expr.ToString(CSharp, out csharpPathSpans);
                     testVBCode = expr.ToString(VisualBasic, out vbPathSpans);
-                    factoryMethods = expr.ToString(FactoryMethods, out factoryMethodsPathSpans);
+                    testFactoryMethods = expr.ToString(FactoryMethods, out factoryMethodsPathSpans);
                     break;
                 case MemberBinding mbind:
                     testCSharpCode = mbind.ToString(CSharp, out csharpPathSpans);
                     testVBCode = mbind.ToString(VisualBasic, out vbPathSpans);
-                    factoryMethods = mbind.ToString(FactoryMethods, out factoryMethodsPathSpans);
+                    testFactoryMethods = mbind.ToString(FactoryMethods, out factoryMethodsPathSpans);
                     break;
                 case ElementInit init:
                     testCSharpCode = init.ToString(CSharp, out csharpPathSpans);
                     testVBCode = init.ToString(VisualBasic, out vbPathSpans);
-                    factoryMethods = init.ToString(FactoryMethods, out factoryMethodsPathSpans);
+                    testFactoryMethods = init.ToString(FactoryMethods, out factoryMethodsPathSpans);
                     break;
                 case SwitchCase switchCase:
                     testCSharpCode = switchCase.ToString(CSharp, out csharpPathSpans);
                     testVBCode = switchCase.ToString(VisualBasic, out vbPathSpans);
-                    factoryMethods = switchCase.ToString(FactoryMethods, out factoryMethodsPathSpans);
+                    testFactoryMethods = switchCase.ToString(FactoryMethods, out factoryMethodsPathSpans);
                     break;
                 case CatchBlock catchBlock:
                     testCSharpCode = catchBlock.ToString(CSharp, out csharpPathSpans);
                     testVBCode = catchBlock.ToString(VisualBasic, out vbPathSpans);
-                    factoryMethods = catchBlock.ToString(FactoryMethods, out factoryMethodsPathSpans);
+                    testFactoryMethods = catchBlock.ToString(FactoryMethods, out factoryMethodsPathSpans);
                     break;
                 case LabelTarget labelTarget:
                     testCSharpCode = labelTarget.ToString(CSharp, out csharpPathSpans);
                     testVBCode = labelTarget.ToString(VisualBasic, out vbPathSpans);
-                    factoryMethods = labelTarget.ToString(FactoryMethods, out factoryMethodsPathSpans);
+                    testFactoryMethods = labelTarget.ToString(FactoryMethods, out factoryMethodsPathSpans);
                     break;
             }
 
             // check that the string results are equivalent, for both C# and VB code
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
+            if (!factoryMethods.IsNullOrWhitespace()) {
+                Assert.Equal(factoryMethods, testFactoryMethods);
+            }
 
             // using factory methods formatter as source for paths; other formatters may skip paths or introduce new onee
             var paths = factoryMethodsPathSpans.Keys.ToHashSet();
@@ -67,10 +70,6 @@ namespace ExpressionToString.Tests {
             var vbPaths = vbPathSpans.Keys.Select(x => x.Replace("_0", "")).ToHashSet();
             Assert.True(paths.IsSupersetOf(csharpPaths));
             Assert.True(paths.IsSupersetOf(vbPaths));
-
-            //using (var outfile = File.AppendText(@"C:\Users\Spitz\source\repos\zspitz\ExpressionToString\generated test data.txt")) {
-            //    outfile.Write()
-            //}
         }
     }
 }

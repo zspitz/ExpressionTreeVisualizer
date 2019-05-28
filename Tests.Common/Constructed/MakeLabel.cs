@@ -36,7 +36,17 @@ target:
 target:
         True
     End Block
-End Block"
+End Block",
+            @"Block(new [] { i }, new [] {
+    Block(new [] { j }, new [] {
+        Constant(true),
+        Label(
+            Label(""target""),
+            null
+        ),
+        Constant(true)
+    })
+})"
         );
 
         [Fact]
@@ -65,21 +75,32 @@ target:
 target:
         True
     End Block
-End Block"
+End Block",
+            @"Block(new [] { i }, new [] {
+    Block(new [] { j }, new [] {
+        Label(
+            Label(""target""),
+            null
+        ),
+        Constant(true)
+    })
+})"
         );
 
         [Fact]
         public void ConstructLabelTarget() => RunTest(
             Label("target"),
             "target",
-            "target"
+            "target", 
+            @"Label(""target"")"
         );
 
         [Fact]
         public void ConstructEmptyLabelTarget() => RunTest(
             Label(""),
             "",
-            ""
+            "",
+            @"Label("""")"
         );
     }
 }

@@ -4,7 +4,8 @@
         RunTest(
             Sub() Console.WriteLine(),
             "() => Console.WriteLine()",
-            "Sub() Console.WriteLine"
+            "Sub() Console.WriteLine",
+            ""
         )
     End Sub
 

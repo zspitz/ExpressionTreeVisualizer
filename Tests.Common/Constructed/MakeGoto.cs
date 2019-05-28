@@ -12,7 +12,10 @@ namespace ExpressionToString.Tests {
         public void MakeBreak() => RunTest(
             Break(labelTarget),
             "break target",
-            "Exit target"
+            "Exit target", 
+            @"Break(
+    Label(""target"")
+)"
         );
 
         [Fact]
@@ -20,7 +23,10 @@ namespace ExpressionToString.Tests {
         public void MakeBreakWithValue() => RunTest(
             Break(labelTarget, Constant(5)),
             "break target 5",
-            "Exit target 5"
+            "Exit target 5", @"Break(
+    Label(""target""),
+    Constant(5)
+)"
         );
 
         [Fact]
@@ -28,7 +34,10 @@ namespace ExpressionToString.Tests {
         public void MakeContinue() => RunTest(
             Continue(labelTarget),
             "continue target",
-            "Continue target"
+            "Continue target",
+            @"Continue(
+    Label(""target"")
+)"
         );
 
         [Fact]
@@ -36,7 +45,10 @@ namespace ExpressionToString.Tests {
         public void MakeGotoWithoutValue() => RunTest(
             Goto(labelTarget),
             "goto target",
-            "Goto target"
+            "Goto target", 
+            @"Goto(
+    Label(""target"")
+)"
         );
 
         [Fact]
@@ -44,7 +56,11 @@ namespace ExpressionToString.Tests {
         public void MakeGotoWithValue() => RunTest(
             Goto(labelTarget, Constant(5)),
             "goto target 5",
-            "Goto target 5"
+            "Goto target 5", 
+            @"Goto(
+    Label(""target""),
+    Constant(5)
+)"
         );
 
         [Fact]
@@ -52,7 +68,10 @@ namespace ExpressionToString.Tests {
         public void MakeReturn() => RunTest(
             Return(labelTarget),
             "return target",
-            "Return target"
+            "Return target",
+            @"Return(
+    Label(""target"")
+)"
         );
 
         [Fact]
@@ -60,7 +79,11 @@ namespace ExpressionToString.Tests {
         public void MakeReturnWithValue() => RunTest(
             Return(labelTarget, Constant(5)),
             "return target 5",
-            "Return target 5"
+            "Return target 5", 
+            @"Return(
+    Label(""target""),
+    Constant(5)
+)"
         );
     }
 }

@@ -19,7 +19,8 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Sub() DummyMethod(),
             "() => Dummy.DummyMethod()",
-            "Sub() Dummy.DummyMethod"
+            "Sub() Dummy.DummyMethod",
+            ""
         )
     End Sub
 
