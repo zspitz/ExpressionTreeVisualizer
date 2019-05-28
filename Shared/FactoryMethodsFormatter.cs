@@ -10,6 +10,8 @@ using static System.Linq.Expressions.ExpressionType;
 using static ExpressionToString.FormatterNames;
 using static System.Linq.Expressions.Expression;
 using System.Collections;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace ExpressionToString {
     public class FactoryMethodsFormatter : WriterBase {
@@ -40,51 +42,108 @@ namespace ExpressionToString {
         private void WriteMethodCall(string name, IEnumerable args) {
             Write(name);
             Write("(");
-            bool dedentAfterLast = false;
-            var args1 = args.Cast<object>().ToArray();
-            args1.ForEach((x, index) => {
-                if (index > 0) { Write(", "); }
+
+            bool wrapPreviousInNewline = false;
+            bool indented = false;
+
+            args.Cast<object>().ForEach((x, index) => {
                 var isTuple = TryTupleValues(x, out var values) && values.Length == 2;
                 (string path, object arg) = isTuple ? ((string)values[0], values[1]) : ("", null);
                 var parameterDeclaration = name == "Lambda" && path == "Parameters";
-                if (isTuple && arg.GetType().InheritsFromOrImplementsAny(PropertyTypes)) {
-                    dedentAfterLast = false;
+
+                bool writeNewline = false;
+                var argType = arg?.GetType();
+                if (wrapPreviousInNewline) {
+                    writeNewline = true;
+                    wrapPreviousInNewline = false;
+                } else if (arg != null) {
+                    if (
+                        (
+                            argType.InheritsFromOrImplementsAny(NodeTypes) ||
+                            arg is MemberInfo || 
+                            arg is CallSiteBinder
+                        ) && !(
+                            arg is ParameterExpression && !parameterDeclaration
+                        ) && !(
+                            arg is MemberExpression mexpr && mexpr.IsClosedVariable()
+                        )
+                    ) {
+                        writeNewline = true;
+                        wrapPreviousInNewline = true;
+                    }
+                }
+
+                if (index > 0) {
+                    Write(",");
+                }
+                if (writeNewline) {
+                    if (!indented) {
+                        Indent();
+                        indented = true;
+                    }
+                    WriteEOL();
+                } else if (index > 0) {
+                    Write(" ");
+                }
+
+                if (argType.InheritsFromOrImplementsAny(NodeTypes)) {
+                    WriteNode(path, arg);
+                } else if (argType.InheritsFromOrImplementsAny(PropertyTypes)) {
                     if (language == CSharp) {
                         Write("new [] {");
                     } else { // language == VisualBasic
                         Write("{");
                     }
-                    Indent();
-                    WriteEOL();
-                    WriteNodes(path, (IEnumerable<object>)arg, true, ", ", parameterDeclaration);
-                    WriteEOL(true);
+
+                    // TODO refactor this logic into separate method, and use for entire loop
+                    var argList = (arg as IEnumerable).ToObjectList();
+                    if (argList.Any()) {
+                        if (parameterDeclaration || argList.Any(y => !(y is ParameterExpression))) {
+                            Indent();
+                            WriteEOL();
+                            WriteNodes(path, argList, true, ", ", parameterDeclaration);
+                            WriteEOL(true);
+                        } else {
+                            Write(" ");
+                            WriteNodes(path, argList, false, ", ", parameterDeclaration);
+                            Write(" ");
+                        }
+                    }
+
                     Write("}");
-                } else if (isTuple && arg.GetType().InheritsFromOrImplementsAny(NodeTypes)) {
-                    dedentAfterLast = true;
-                    Indent();
-                    WriteEOL();
-                    WriteNode(path, arg);
                 } else {
-                    dedentAfterLast = false;
                     Write(RenderLiteral(arg, language));
                 }
             });
-            if (dedentAfterLast) { WriteEOL(true); }
+
+            if (indented) { Dedent(); }
+            if (wrapPreviousInNewline || indented) {
+                WriteEOL();
+            }
+
             Write(")");
         }
 
         private void WriteMethodCall(Expression<Action> expr) {
             if (!(expr.Body is MethodCallExpression callExpr)) { throw new ArgumentException("Not a MethodCallExpression"); }
 
-            // TODO refactor into separate function
-            var args = NewArrayInit(typeof(object), callExpr.Arguments).ExtractValue() as object[];
+            var args = NewArrayInit(typeof(object), callExpr.Arguments.Select(x => {
+                var xType = x.Type;
+                if (!xType.IsValueType) { return x; }
+                return Convert(x, typeof(object));
+            })).ExtractValue() as object[];
             var names = callExpr.Arguments.Select(x => {
                 if (x is MethodCallExpression callExpr1 && callExpr1.Method.Name == "ToArray") { x = callExpr1.Arguments[0]; }
-                return (x as MemberExpression).Member.Name;
-                // TODO what if it isn't a MemberExpression?
+                if (x is UnaryExpression unary && unary.NodeType == ExpressionType.Convert) { x = unary.Operand; }
+                return (x as MemberExpression)?.Member.Name ?? "";
             });
-            var pairs = names.Zip(args, (name, arg) => (name, arg));
-            WriteMethodCall(callExpr.Method.Name, pairs.ToArray());
+            var pairs = names.Zip(args, (name, arg) => (name, arg)).ToList();
+            var lastArg = pairs.LastOrDefault().arg as IEnumerable;
+            if ((lastArg?.GetType().IsArray ?? false) && lastArg.None() && callExpr.Method.GetParameters().Last().HasAttribute<ParamArrayAttribute>()) {
+                pairs.RemoveLast();
+                // TODO if the last parameter is a params, expand the individual parts of the array into the pairs
+            }
+            WriteMethodCall(callExpr.Method.Name, pairs.ToList());
         }
 
         static Dictionary<ExpressionType, string> binaryUnaryMethods = new Dictionary<ExpressionType, string>() {
@@ -186,10 +245,23 @@ namespace ExpressionToString {
         }
 
         protected override void WriteLambda(LambdaExpression expr) {
-            WriteMethodCall("Lambda", new (string, object)[] {
-                ("Parameters", expr.Parameters),
-                ("Body", expr.Body )
-            });
+            if (expr.Name.IsNullOrWhitespace() && expr.Parameters.None()) {
+                if (expr.TailCall) {
+                    WriteMethodCall(() => Lambda(expr.Body, expr.TailCall));
+                } else {
+                    WriteMethodCall(() => Lambda(expr.Body));
+                }
+            } else {
+                if (!expr.Name.IsNullOrWhitespace() && expr.TailCall) {
+                    WriteMethodCall(() => Lambda(expr.Body, expr.Name, expr.TailCall, expr.Parameters));
+                } else if (expr.TailCall) {
+                    WriteMethodCall(() => Lambda(expr.Body, expr.TailCall, expr.Parameters));
+                } else if (!expr.Name.IsNullOrWhitespace()) {
+                    WriteMethodCall(() => Lambda(expr.Body, expr.Name, expr.Parameters));
+                } else {
+                    WriteMethodCall(() => Lambda(expr.Body, expr.Parameters));
+                }
+            }
         }
 
         protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
@@ -208,7 +280,13 @@ namespace ExpressionToString {
             WriteMethodCall(() => MakeMemberAccess(expr.Expression, expr.Member));
         }
 
-        protected override void WriteNew(NewExpression expr) => WriteMethodCall(() => New(expr.Constructor, expr.Arguments));
+        protected override void WriteNew(NewExpression expr) {
+            if (expr.Arguments.None()) {
+                WriteMethodCall(() => New(expr.Constructor));
+                return;
+            }
+            WriteMethodCall(() => New(expr.Constructor, expr.Arguments));
+        }
 
         protected override void WriteCall(MethodCallExpression expr) {
             if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
@@ -217,9 +295,17 @@ namespace ExpressionToString {
             }
 
             if (expr.Object == null) {
-                WriteMethodCall(() => Call(expr.Method, expr.Arguments));
+                if (expr.Arguments.Any()) {
+                    WriteMethodCall(() => Call(expr.Method, expr.Arguments));
+                } else {
+                    WriteMethodCall(() => Call(expr.Method));
+                }
             } else {
-                WriteMethodCall(() => Call(expr.Object, expr.Method, expr.Arguments));
+                if (expr.Arguments.Any()) {
+                    WriteMethodCall(() => Call(expr.Object, expr.Method, expr.Arguments));
+                } else {
+                    WriteMethodCall(() => Call(expr.Object, expr.Method));
+                }
             }
         }
 
@@ -230,10 +316,10 @@ namespace ExpressionToString {
         protected override void WriteNewArray(NewArrayExpression expr) {
             switch (expr.NodeType) {
                 case ExpressionType.NewArrayInit:
-                    WriteMethodCall(() => NewArrayInit(expr.Type, expr.Expressions));
+                    WriteMethodCall(() => NewArrayInit(expr.Type.GetElementType(), expr.Expressions));
                     break;
                 case ExpressionType.NewArrayBounds:
-                    WriteMethodCall(() => NewArrayBounds(expr.Type, expr.Expressions));
+                    WriteMethodCall(() => NewArrayBounds(expr.Type.GetElementType(), expr.Expressions));
                     break;
                 default:
                     throw new NotImplementedException();
@@ -271,9 +357,21 @@ namespace ExpressionToString {
             }
         }
 
-        protected override void WriteInvocation(InvocationExpression expr) => WriteMethodCall(() => Invoke(expr.Expression, expr.Arguments));
+        protected override void WriteInvocation(InvocationExpression expr) {
+            if (expr.Arguments.None()) {
+                WriteMethodCall(() => Invoke(expr.Expression));
+                return;
+            }
+            WriteMethodCall(() => Invoke(expr.Expression, expr.Arguments));
+        }
 
-        protected override void WriteIndex(IndexExpression expr) => WriteMethodCall(() => ArrayAccess(expr.Object, expr.Arguments));
+        protected override void WriteIndex(IndexExpression expr) {
+            if (expr.Indexer != null) {
+                WriteMethodCall(() => MakeIndex(expr.Object, expr.Indexer, expr.Arguments));
+                return;
+            }
+            WriteMethodCall(() => ArrayAccess(expr.Object, expr.Arguments));
+        }
 
         protected override void WriteBlock(BlockExpression expr, bool? explicitBlock = null) {
             if (expr.Variables.Any()) {

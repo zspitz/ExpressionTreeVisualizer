@@ -92,9 +92,9 @@ namespace ExpressionToString {
                     default:
                         throw new NotImplementedException($"Code generation not implemented for type '{o.GetType().Name}'");
                 }
-            } catch (Exception ex) {
+            } catch (NotImplementedException ex) {
                 sb.AppendLine();
-                $"----- {ex.GetType().Name} - {ex.Message} ()".AppendLineTo(sb);
+                $"----- Not implemented - {ex.Message} ()".AppendLineTo(sb);
             }
 
             if (pathSpans != null) {
@@ -300,18 +300,6 @@ namespace ExpressionToString {
             WriteNodes(items.Select((arg, index) => ($"{pathSegment}[{index}]", arg)), writeEOL, delimiter, parameterDeclaration);
 
         protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, string delimiter = ", ") => WriteNodes(pathSegment, items, false, delimiter);
-
-
-        //// TODO do we need some sort of caching on the expression compilation?
-        //protected void WriteNode<TResult>(Expression<Func<TResult>> expr, bool writeEOL, string delimiter = ", ") where TResult : Expression {
-        //    var me = expr as MemberExpression;
-        //    WriteNode(me.Member.Name, expr.Compile().Invoke());
-        //}
-
-        //protected void WriteNodes<TResult>(Expression<Func<IEnumerable<TResult>>> expr, bool writeEOL, string delimiter = ", ") where TResult : Expression {
-        //    var me = expr as MemberExpression;
-        //    WriteNode(me.Member.Name, expr.Compile().DynamicInvoke())
-        //}
 
         protected void TrimEnd(bool trimEOL = false) => sb.TrimEnd(trimEOL);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ExpressionToString.Util {
@@ -13,5 +14,7 @@ namespace ExpressionToString.Util {
             return false;
         }
         public static bool None(this IEnumerable src) => !src.Any();
+
+        public static List<object> ToObjectList(this IEnumerable src) => src.Cast<object>().ToList();
     }
 }

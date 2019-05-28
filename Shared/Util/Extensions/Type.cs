@@ -10,6 +10,11 @@ namespace ExpressionToString.Util {
     public static class TypeExtensions {
         public static Type UnderlyingIfNullable(this Type type) => Nullable.GetUnderlyingType(type) ?? type;
 
+        public static bool IsNullable(this Type t, bool orReferenceType = false) {
+            if (orReferenceType && !t.IsValueType) { return true; }
+            return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
         private static readonly HashSet<Type> numericTypes = new HashSet<Type>() {
             typeof(byte),
             typeof(short),

@@ -34,16 +34,12 @@ namespace ExpressionToString.Util {
                 ret = s.ToVerbatimString(language);
             } else if (o is Enum e) {
                 ret = $"{e.GetType().Name}.{e.ToString()}";
-            } else if (o is Type t) {
-                if (language == CSharp) {
-                    ret = $"typeof({t.FriendlyName(CSharp)})";
-                } else {
-                    ret = $"GetType({t.FriendlyName(VisualBasic)})";
-                }
             } else if (o is MemberInfo mi) {
                 bool isType;
+                bool isByRef = false;
                 if (mi is Type t1) {
                     isType = true;
+                    isByRef = t1.IsByRef;
                 } else {
                     isType = false;
                     t1 = mi.DeclaringType;
@@ -53,27 +49,34 @@ namespace ExpressionToString.Util {
                 } else {
                     ret = $"GetType({t1.FriendlyName(VisualBasic)})";
                 }
+                if (isByRef) { ret += ".MakeByRef()"; }
                 if (!isType) {
-                    string methodName = null;
-                    // event, field, constructor, method
-                    switch (mi) {
-                        case EventInfo _:
-                            methodName = "GetEvent";
-                            break;
-                        case FieldInfo _:
-                            methodName = "GetField";
-                            break;
-                        case ConstructorInfo _:
-                            methodName = "GetConstructor";
-                            break;
-                        case MethodInfo _:
-                            methodName = "GetMethod";
-                            break;
-                        case PropertyInfo _:
-                            methodName = "GetProperty";
-                            break;
+                    if (mi is ConstructorInfo) {
+                        ret += ".GetConstructor()";
+                    } else {
+                        string methodName = null;
+                        switch (mi) {
+                            case EventInfo _:
+                                methodName = "GetEvent";
+                                break;
+                            case FieldInfo _:
+                                methodName = "GetField";
+                                break;
+                            case MethodInfo _:
+                                methodName = "GetMethod";
+                                break;
+                            case PropertyInfo _:
+                                methodName = "GetProperty";
+                                break;
+                        }
+                        ret += $".{methodName}(\"{mi.Name}\")";
                     }
-                    ret += $".{methodName}(\"{mi.Name}\")";
+                }
+            } else if (o is Type t1) {
+                if (language == CSharp) {
+                    ret = $"typeof({t1.FriendlyName(CSharp)})";
+                } else {
+                    ret = $"GetType({t1.FriendlyName(VisualBasic)})";
                 }
             } else if (type.IsArray && !type.GetElementType().IsArray && type.GetArrayRank() == 1) {
                 var values = (o as dynamic[]).Joined(", ", x => RenderLiteral(x, language));
@@ -83,10 +86,11 @@ namespace ExpressionToString.Util {
                     ret = $"{{ {values} }}";
                 }
             } else if (type.IsTupleType()) {
+                // TODO render System.Tuple using Tuple.Create("abcd",5) ? #Tuple?
                 ret = "(" + TupleValues(o).Select(x => RenderLiteral(x, language)).Joined(", ") + ")";
             } else if (type.IsNumeric()) {
                 ret = o.ToString();
-            }else {
+            } else {
                 rendered = false;
                 ret = $"#{type.FriendlyName(language)}";
             }
@@ -98,7 +102,7 @@ namespace ExpressionToString.Util {
         /// <summary>Returns a string representation of the value, which may or may not be a valid literal in the language</summary>
         public static string StringValue(object o, string language) {
             var (isLiteral, repr) = TryRenderLiteral(o, language);
-            if (!isLiteral && o.GetType().GetMethods().Where(x => x.Name=="ToString" && x.GetParameters().None() && x.DeclaringType != typeof(object)).Any()) {
+            if (!isLiteral && o.GetType().GetMethods().Where(x => x.Name == "ToString" && x.GetParameters().None() && x.DeclaringType != typeof(object)).Any()) {
                 return o.ToString();
             }
             return repr;

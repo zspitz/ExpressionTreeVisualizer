@@ -43,7 +43,6 @@ namespace ExpressionToString {
             typeof(ElementInit),
             typeof(SwitchCase),
             typeof(CatchBlock),
-            typeof(CallSiteBinder),
             typeof(LabelTarget)
         };
 
