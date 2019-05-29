@@ -32,7 +32,12 @@ namespace ExpressionToString.Tests {
         public void NamedType() => RunTest(
             () => new Random(),
             "() => new Random()",
-            "Function() New Random"
+            "Function() New Random", 
+            @"Lambda(
+    New(
+        typeof(Random).GetConstructor()
+    )
+)"
         );
 
         [Fact]
@@ -44,7 +49,20 @@ namespace ExpressionToString.Tests {
 }",
             @"Function() New Foo With {
     .Bar = ""abcd""
-}"
+}", 
+            @"Lambda(
+    MemberInit(
+        New(
+            typeof(Foo).GetConstructor()
+        ),
+        new[] {
+            Bind(
+                typeof(Foo).GetProperty(""Bar""),
+                Constant(""abcd"")
+            )
+        }
+    )
+)"
         );
 
         [Fact]
@@ -58,7 +76,24 @@ namespace ExpressionToString.Tests {
             @"Function() New Foo With {
     .Bar = ""abcd"",
     .Baz = ""efgh""
-}"
+}", 
+            @"Lambda(
+    MemberInit(
+        New(
+            typeof(Foo).GetConstructor()
+        ),
+        new[] {
+            Bind(
+                typeof(Foo).GetProperty(""Bar""),
+                Constant(""abcd"")
+            ),
+            Bind(
+                typeof(Foo).GetProperty(""Baz""),
+                Constant(""efgh"")
+            )
+        }
+    )
+)"
         );
 
         [Fact]
@@ -66,7 +101,15 @@ namespace ExpressionToString.Tests {
         public void NamedTypeConstructorParameters() => RunTest(
             () => new Foo("ijkl"),
             @"() => new Foo(""ijkl"")",
-            @"Function() New Foo(""ijkl"")"
+            @"Function() New Foo(""ijkl"")", 
+            @"Lambda(
+    New(
+        typeof(Foo).GetConstructor(),
+        new[] {
+            Constant(""ijkl"")
+        }
+    )
+)"
         );
 
         [Fact]
@@ -80,7 +123,27 @@ namespace ExpressionToString.Tests {
             @"Function() New Foo(""ijkl"") With {
     .Bar = ""abcd"",
     .Baz = ""efgh""
-}"
+}", 
+            @"Lambda(
+    MemberInit(
+        New(
+            typeof(Foo).GetConstructor(),
+            new[] {
+                Constant(""ijkl"")
+            }
+        ),
+        new[] {
+            Bind(
+                typeof(Foo).GetProperty(""Bar""),
+                Constant(""abcd"")
+            ),
+            Bind(
+                typeof(Foo).GetProperty(""Baz""),
+                Constant(""efgh"")
+            )
+        }
+    )
+)"
         );
 
         [Fact]
@@ -94,7 +157,16 @@ namespace ExpressionToString.Tests {
             @"Function() New With {
     .Bar = ""abcd"",
     .Baz = ""efgh""
-}"
+}", 
+            @"Lambda(
+    New(
+        typeof({ string Bar, string Baz }).GetConstructor(),
+        new[] {
+            Constant(""abcd""),
+            Constant(""efgh"")
+        }
+    )
+)"
         );
 
         [Fact]
@@ -111,7 +183,16 @@ namespace ExpressionToString.Tests {
                 @"Function() New With {
     Bar,
     Baz
-}"
+}", 
+                @"Lambda(
+    New(
+        typeof({ string Bar, string Baz }).GetConstructor(),
+        new[] {
+            Bar,
+            Baz
+        }
+    )
+)"
             );
         }
 
@@ -126,7 +207,28 @@ namespace ExpressionToString.Tests {
             @"Function() New List(Of String) From {
     ""abcd"",
     ""efgh""
-}"
+}", 
+            @"Lambda(
+    ListInit(
+        New(
+            typeof(List<string>).GetConstructor()
+        ),
+        new[] {
+            ElementInit(
+                typeof(List<string>).GetMethod(""Add""),
+                new[] {
+                    Constant(""abcd"")
+                }
+            ),
+            ElementInit(
+                typeof(List<string>).GetMethod(""Add""),
+                new[] {
+                    Constant(""efgh"")
+                }
+            )
+        }
+    )
+)"
         );
 
         [Fact]
@@ -152,7 +254,30 @@ namespace ExpressionToString.Tests {
         ""ef"",
         ""gh""
     }
-}"
+}",
+            @"Lambda(
+    ListInit(
+        New(
+            typeof(Wrapper).GetConstructor()
+        ),
+        new[] {
+            ElementInit(
+                typeof(Wrapper).GetMethod(""Add""),
+                new[] {
+                    Constant(""ab""),
+                    Constant(""cd"")
+                }
+            ),
+            ElementInit(
+                typeof(Wrapper).GetMethod(""Add""),
+                new[] {
+                    Constant(""ef""),
+                    Constant(""gh"")
+                }
+            )
+        }
+    )
+)"
         );
 
         [Fact]
@@ -172,7 +297,29 @@ namespace ExpressionToString.Tests {
         ""cd""
     },
     ""ef""
-}"
+}",
+            @"Lambda(
+    ListInit(
+        New(
+            typeof(Wrapper).GetConstructor()
+        ),
+        new[] {
+            ElementInit(
+                typeof(Wrapper).GetMethod(""Add""),
+                new[] {
+                    Constant(""ab""),
+                    Constant(""cd"")
+                }
+            ),
+            ElementInit(
+                typeof(List<string>).GetMethod(""Add""),
+                new[] {
+                    Constant(""ef"")
+                }
+            )
+        }
+    )
+)"
         );
 
         [Fact]
@@ -188,7 +335,25 @@ namespace ExpressionToString.Tests {
     .Data = With {
         .Name = ""abcd""
     }
-}"
+}", 
+            @"Lambda(
+    MemberInit(
+        New(
+            typeof(Node).GetConstructor()
+        ),
+        new[] {
+            MemberBind(
+                typeof(Node).GetProperty(""Data""),
+                new[] {
+                    Bind(
+                        typeof(NodeData).GetProperty(""Name""),
+                        Constant(""abcd"")
+                    )
+                }
+            )
+        }
+    )
+)"
         );
 
         [Fact]
@@ -206,7 +371,37 @@ namespace ExpressionToString.Tests {
         New Node,
         New Node
     }
-}"
+}", 
+            @"Lambda(
+    MemberInit(
+        New(
+            typeof(Node).GetConstructor()
+        ),
+        new[] {
+            ListBind(
+                typeof(Node).GetProperty(""Children""),
+                new[] {
+                    ElementInit(
+                        typeof(ICollection<Node>).GetMethod(""Add""),
+                        new[] {
+                            New(
+                                typeof(Node).GetConstructor()
+                            )
+                        }
+                    ),
+                    ElementInit(
+                        typeof(ICollection<Node>).GetMethod(""Add""),
+                        new[] {
+                            New(
+                                typeof(Node).GetConstructor()
+                            )
+                        }
+                    )
+                }
+            )
+        }
+    )
+)"
         );
     }
 }

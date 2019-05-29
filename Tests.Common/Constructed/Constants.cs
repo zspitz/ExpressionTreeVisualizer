@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Xunit;
 using static System.Linq.Expressions.Expression;
 using static ExpressionToString.Tests.Categories;
@@ -75,6 +77,17 @@ namespace ExpressionToString.Tests {
             "GetType(String)", 
             @"Constant(
     typeof(string)
+)"
+        );
+
+        [Fact]
+        [Trait("Category", Constants)]
+        public void DifferentTypeForNodeAndValue() => RunTest(
+            Constant(new List<string>(), typeof(IEnumerable)),
+            "#List<string>",
+            "#List(Of String)",
+            @"Constant(#List<string>,
+    typeof(IEnumerable)
 )"
         );
     }

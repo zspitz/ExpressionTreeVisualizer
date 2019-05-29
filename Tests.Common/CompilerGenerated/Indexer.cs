@@ -11,7 +11,12 @@ namespace ExpressionToString.Tests {
             RunTest(
                 () => arr[5],
                 "() => arr[5]",
-                "Function() arr(5)"
+                "Function() arr(5)", 
+                @"Lambda(
+    ArrayIndex(arr,
+        Constant(5)
+    )
+)"
             );
         }
 
@@ -22,7 +27,13 @@ namespace ExpressionToString.Tests {
             RunTest(
                 () => arr[5, 6],
                 "() => arr[5, 6]",
-                "Function() arr(5, 6)"
+                "Function() arr(5, 6)", 
+                @"Lambda(
+    ArrayIndex(arr, new[] {
+        Constant(5),
+        Constant(6)
+    })
+)"
             );
         }
 
@@ -33,7 +44,15 @@ namespace ExpressionToString.Tests {
             RunTest(
                 () => lst[3],
                 "() => lst[3]",
-                "Function() lst(3)"
+                "Function() lst(3)", 
+                @"Lambda(
+    Property(lst,
+        typeof(List<string>).GetMethod(""Item""),
+        new[] {
+            Constant(3)
+        }
+    )
+)"
             );
         }
     }

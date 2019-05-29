@@ -12,8 +12,13 @@ Partial Public Class VBCompilerGeneratedBase
     End Sub
 
     <Fact> <Trait("Category", Literal)>
-    Sub [Nothing]()
+    Sub NothingString()
         RunTest(Function() CType(Nothing, String), "() => null", "Function() Nothing")
+    End Sub
+
+    <Fact> <Trait("Category", Literal)>
+    Sub [Nothing]()
+        RunTest(Function() Nothing, "() => null", "Function() Nothing")
     End Sub
 
     <Fact> <Trait("Category", Literal)>

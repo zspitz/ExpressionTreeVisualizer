@@ -4,7 +4,9 @@ using static System.Linq.Expressions.Expression;
 
 namespace ExpressionToString.Util {
     public static class ExpressionExtensions {
-        // TODO take argument values as keyvalue pair, and create parameters for 
+        // TODO what about expressions which contain ParameterExpressions?
+        // we'd have to pass in the values to use when calling the compiled lambda, and also which name corresponds to which value
+        // parhaps an array of tuples?
         public static object ExtractValue(this Expression expr) {
             if (!(expr is LambdaExpression lambda)) {
                 lambda = Lambda(expr);

@@ -9,7 +9,24 @@ namespace ExpressionToString.Tests {
         public void Conditional() => RunTest(
             (int i) => i > 10 ? i : i + 10,
             "(int i) => i > 10 ? i : i + 10",
-            "Function(i As Integer) If(i > 10, i, i + 10)"
+            "Function(i As Integer) If(i > 10, i, i + 10)", 
+            @"Lambda(
+    Condition(
+        GreaterThan(i,
+            Constant(10)
+        ),
+        i,
+        Add(i,
+            Constant(10)
+        )
+    ),
+    new[] {
+        var i = Parameter(
+            typeof(int),
+            ""i""
+        )
+    }
+)"
         );
 
         [Fact]
@@ -18,7 +35,12 @@ namespace ExpressionToString.Tests {
             RunTest(
                 () => o is string,
                 "() => o is string",
-                "Function() TypeOf o Is String"
+                "Function() TypeOf o Is String", 
+                @"Lambda(
+    TypeIs(o,
+        typeof(string)
+    )
+)"
             );
         }
 
@@ -29,7 +51,10 @@ namespace ExpressionToString.Tests {
             RunTest(
                 () => del(),
                 "() => del()",
-                "Function() del()"
+                "Function() del()", 
+                @"Lambda(
+    Invoke(del)
+)"
             );
         }
 

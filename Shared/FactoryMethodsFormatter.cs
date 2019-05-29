@@ -275,7 +275,16 @@ namespace ExpressionToString {
 
         protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
 
-        protected override void WriteConstant(ConstantExpression expr) => WriteMethodCall(() => Constant(expr.Value));
+        protected override void WriteConstant(ConstantExpression expr) {
+            if (
+                (expr.Value == null && expr.Type != typeof(object)) ||
+                (expr.Value != null && expr.Value.GetType() != expr.Type)
+            ) {
+                WriteMethodCall(() => Constant(expr.Value, expr.Type));
+                return;
+            }
+            WriteMethodCall(() => Constant(expr.Value));
+        }
 
         protected override void WriteMemberAccess(MemberExpression expr) {
             // closed over variable from oute scope

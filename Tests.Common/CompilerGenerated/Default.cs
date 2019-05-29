@@ -8,7 +8,12 @@ namespace ExpressionToString.Tests {
         public void DefaultRefType() => RunTest(
             () => default(string),
             "() => null",
-            "Function() Nothing"
+            "Function() Nothing", 
+            @"Lambda(
+    Constant(null,
+        typeof(string)
+    )
+)"
         );
 
         [Fact]
@@ -16,7 +21,10 @@ namespace ExpressionToString.Tests {
         public void DefaultValueType() => RunTest(
             () => default(int),
             "() => 0",
-            "Function() 0"
+            "Function() 0", 
+            @"Lambda(
+    Constant(0)
+)"
         );
     }
 }

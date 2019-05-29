@@ -10,7 +10,12 @@ namespace ExpressionToString.Tests {
             RunTest(
                 () => s.Length,
                 "() => s.Length",
-                "Function() s.Length"
+                "Function() s.Length", 
+                @"Lambda(
+    MakeMemberAccess(s,
+        typeof(string).GetProperty(""Length"")
+    )
+)"
             );
         }
 
@@ -21,7 +26,8 @@ namespace ExpressionToString.Tests {
             RunTest(
                 () => s,
                 "() => s",
-                "Function() s"
+                "Function() s", 
+                "Lambda(s)"
             );
         }
 
@@ -30,7 +36,12 @@ namespace ExpressionToString.Tests {
         public void StaticMember() => RunTest(
             () => string.Empty,
             "() => string.Empty",
-            "Function() String.Empty"
+            "Function() String.Empty", 
+            @"Lambda(
+    MakeMemberAccess(null,
+        typeof(string).GetField(""Empty"")
+    )
+)"
         );
 
         [Fact(Skip ="Test for nested closure scopes")]

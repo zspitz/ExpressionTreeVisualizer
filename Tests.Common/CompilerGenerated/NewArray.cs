@@ -8,7 +8,15 @@ namespace ExpressionToString.Tests {
         public void SingleDimensionInit() => RunTest(
             () => new string[] { "" },
             "() => new[] { \"\" }",
-            "Function() { \"\" }"
+            "Function() { \"\" }", 
+            @"Lambda(
+    NewArrayInit(
+        typeof(string),
+        new[] {
+            Constant("")
+        }
+    )
+)"
         );
 
         [Fact]
@@ -16,7 +24,15 @@ namespace ExpressionToString.Tests {
         public void SingleDimensionInitExplicitType() => RunTest(
             () => new object[] { "" },
             "() => new object[] { \"\" }",
-            "Function() New Object() { \"\" }"
+            "Function() New Object() { \"\" }", 
+            @"Lambda(
+    NewArrayInit(
+        typeof(object),
+        new[] {
+            Constant("")
+        }
+    )
+)"
         );
 
         [Fact]
@@ -24,7 +40,15 @@ namespace ExpressionToString.Tests {
         public void SingleDimensionWithBounds() => RunTest(
             () => new string[5],
             "() => new string[5]",
-            "Function() New String(4) {}"
+            "Function() New String(4) {}", 
+            @"Lambda(
+    NewArrayBounds(
+        typeof(string),
+        new[] {
+            Constant(5)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -32,7 +56,16 @@ namespace ExpressionToString.Tests {
         public void MultidimensionWithBounds() => RunTest(
             () => new string[2, 3],
             "() => new string[2, 3]",
-            "Function() New String(1, 2) {}"
+            "Function() New String(1, 2) {}", 
+            @"Lambda(
+    NewArrayBounds(
+        typeof(string),
+        new[] {
+            Constant(2),
+            Constant(3)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -43,7 +76,28 @@ namespace ExpressionToString.Tests {
                 new [] {"ef","gh"}
             },
             "() => new string[][] { new[] { \"ab\", \"cd\" }, new[] { \"ef\", \"gh\" } }",
-            "Function() { ({ \"ab\", \"cd\" }), ({ \"ef\", \"gh\" }) }"
+            "Function() { ({ \"ab\", \"cd\" }), ({ \"ef\", \"gh\" }) }", 
+            @"Lambda(
+    NewArrayInit(
+        typeof(string[]),
+        new[] {
+            NewArrayInit(
+                typeof(string),
+                new[] {
+                    Constant(""ab""),
+                    Constant(""cd"")
+                }
+            ),
+            NewArrayInit(
+                typeof(string),
+                new[] {
+                    Constant(""ef""),
+                    Constant(""gh"")
+                }
+            )
+        }
+    )
+)"
         );
 
         [Fact]
@@ -54,7 +108,28 @@ namespace ExpressionToString.Tests {
                 new [] {"ef","gh"}
             },
             "() => new object[][] { new[] { \"ab\", \"cd\" }, new[] { \"ef\", \"gh\" } }",
-            "Function() New Object()() { ({ \"ab\", \"cd\" }), ({ \"ef\", \"gh\" }) }"
+            "Function() New Object()() { ({ \"ab\", \"cd\" }), ({ \"ef\", \"gh\" }) }", 
+            @"Lambda(
+    NewArrayInit(
+        typeof(object[]),
+        new[] {
+            NewArrayInit(
+                typeof(string),
+                new[] {
+                    Constant(""ab""),
+                    Constant(""cd"")
+                }
+            ),
+            NewArrayInit(
+                typeof(string),
+                new[] {
+                    Constant(""ef""),
+                    Constant(""gh"")
+                }
+            )
+        }
+    )
+)"
         );
 
         [Fact]
@@ -62,7 +137,15 @@ namespace ExpressionToString.Tests {
         public void JaggedWithBounds() => RunTest(
             () => new string[5][],
             "() => new string[5][]",
-            "Function() New String(4)() {}"
+            "Function() New String(4)() {}", 
+            @"Lambda(
+    NewArrayBounds(
+        typeof(string[]),
+        new[] {
+            Constant(5)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -70,7 +153,15 @@ namespace ExpressionToString.Tests {
         public void ArrayOfMultidimensionalArray() => RunTest(
             () => new string[5][,],
             "() => new string[5][,]",
-            "Function() New String(4)(,) {}"
+            "Function() New String(4)(,) {}", 
+            @"Lambda(
+    NewArrayBounds(
+        typeof(string[,]),
+        new[] {
+            Constant(5)
+        }
+    )
+)"
         );
 
         [Fact]
@@ -78,7 +169,16 @@ namespace ExpressionToString.Tests {
         public void MultidimensionalArrayOfArray() => RunTest(
             () => new string[3, 2][],
             "() => new string[3, 2][]",
-            "Function() New String(2, 1)() {}"
+            "Function() New String(2, 1)() {}", 
+            @"Lambda(
+    NewArrayBounds(
+        typeof(string[]),
+        new[] {
+            Constant(3),
+            Constant(2)
+        }
+    )
+)"
         );
     }
 }
