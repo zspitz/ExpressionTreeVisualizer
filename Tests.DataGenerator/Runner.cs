@@ -38,7 +38,7 @@ namespace Tests.DataGenerator {
                     throw new NotImplementedException();
             }
 
-            if (testData != toWrite) {
+            if (testData.IsNullOrWhitespace()) {
                 counter += 1;
                 lines.AddRange(new[] {
                     ",@\"" + toWrite + "\"",

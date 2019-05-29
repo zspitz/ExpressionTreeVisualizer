@@ -220,13 +220,15 @@ End Select",
     Case Else
         True
         True
-End Select", 
+End Select",
     @"Switch(i,
-    Block(new[] {
+    Block(
         typeof(void),
-        Constant(true),
-        Constant(true)
-    }),
+        new[] {
+            Constant(true),
+            Constant(true)
+        }
+    ),
     new[] {
         SwitchCase(
             Call(
@@ -296,10 +298,13 @@ End Select",
 End Select", 
             @"Switch(
     Block(new[] { i, j }),
-    Block(new[] {
-        Constant(true),
-        Constant(true)
-    }), new[] {
+    Block(
+        typeof(void),
+        new[] {
+            Constant(true),
+            Constant(true)
+        }
+    ), new[] {
         SwitchCase(
             Call(
                 typeof(Console).GetMethod(""WriteLine""),

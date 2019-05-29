@@ -158,18 +158,23 @@ namespace ExpressionToString.Tests {
 }",
             @"Catch ex As Exception When True
     Console.WriteLine(True)
-    Console.WriteLine(True)",
+    Console.WriteLine(True)", 
             @"Catch(ex,
-    Call(
-        typeof(Console).GetMethod(""WriteLine""),
-        new[] {
-            Constant(true)
-        }
-    ),
     Block(new[] {
-        Constant(true),
-        Constant(true)
-    })
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new[] {
+                Constant(true)
+            }
+        ),
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            new[] {
+                Constant(true)
+            }
+        )
+    }),
+    Constant(true)
 )"
         );
 

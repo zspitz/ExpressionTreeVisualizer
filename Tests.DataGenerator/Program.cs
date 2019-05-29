@@ -10,7 +10,7 @@ namespace Tests.DataGenerator {
     class Program {
         static void Main(string[] args) {
             var instances = new TestsBase[] {
-                //new CompilerGeneratedTestData(),
+                new CompilerGeneratedTestData(),
                 new ConstructedTestData(),
                 //new VBCompilerGeneratedTestData()
             };

@@ -27,7 +27,7 @@ namespace ExpressionToString.Tests {
             @"NewArrayInit(
     typeof(object),
     new[] {
-        Constant("")
+        Constant("""")
     }
 )"
         );

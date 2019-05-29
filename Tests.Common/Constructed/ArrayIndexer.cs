@@ -64,8 +64,8 @@ namespace ExpressionToString.Tests {
         [Trait("Category", Indexer)]
         public void PropertyIndexer() => RunTest(
             Property(lstString, listIndexer, Constant(0)),
-            "lst[0]",
-            "lst(0)", 
+            "lstString[0]",
+            "lstString(0)", 
             @"MakeIndex(lstString,
     typeof(List<string>).GetProperty(""Item""),
     new[] {

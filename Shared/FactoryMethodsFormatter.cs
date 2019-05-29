@@ -383,10 +383,18 @@ namespace ExpressionToString {
         }
 
         protected override void WriteBlock(BlockExpression expr, bool? explicitBlock = null) {
-            if (expr.Variables.Any()) {
-                WriteMethodCall(() => Block(expr.Variables, expr.Expressions));
+            if (expr.Type != expr.Expressions.Last().Type) {
+                if (expr.Variables.Any()) {
+                    WriteMethodCall(() => Block(expr.Type, expr.Variables, expr.Expressions));
+                } else {
+                    WriteMethodCall(() => Block(expr.Type, expr.Expressions));
+                }
             } else {
-                WriteMethodCall(() => Block(expr.Expressions));
+                if (expr.Variables.Any()) {
+                    WriteMethodCall(() => Block(expr.Variables, expr.Expressions));
+                } else {
+                    WriteMethodCall(() => Block(expr.Expressions));
+                }
             }
         }
 

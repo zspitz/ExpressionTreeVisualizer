@@ -53,7 +53,7 @@ namespace ExpressionToString.Tests {
             "\"\".GetType() == typeof(IEnumerable)",
             "\"\".GetType = GetType(IEnumerable)", 
             @"TypeEqual(
-    Constant(""),
+    Constant(""""),
     typeof(IEnumerable)
 )"
         );
