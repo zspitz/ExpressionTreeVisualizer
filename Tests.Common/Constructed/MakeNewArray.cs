@@ -8,11 +8,11 @@ namespace ExpressionToString.Tests {
         [Trait("Category",NewArray)]
         public void SingleDimensionInit() => RunTest(
             NewArrayInit(typeof(string), Constant("")),
-            "new [] { \"\" }",
+            "new[] { \"\" }",
             "{ \"\" }",
             @"NewArrayInit(
     typeof(string),
-    new [] {
+    new[] {
         Constant("""")
     }
 )"
@@ -26,7 +26,7 @@ namespace ExpressionToString.Tests {
             "New Object() { \"\" }", 
             @"NewArrayInit(
     typeof(object),
-    new [] {
+    new[] {
         Constant("")
     }
 )"
@@ -40,7 +40,7 @@ namespace ExpressionToString.Tests {
             "New String(4) {}", 
             @"NewArrayBounds(
     typeof(string),
-    new [] {
+    new[] {
         Constant(5)
     }
 )"
@@ -54,7 +54,7 @@ namespace ExpressionToString.Tests {
             "New String(1, 2) {}", 
             @"NewArrayBounds(
     typeof(string),
-    new [] {
+    new[] {
         Constant(2),
         Constant(3)
     }
@@ -68,21 +68,21 @@ namespace ExpressionToString.Tests {
                 NewArrayInit(typeof(string), Constant("ab"), Constant("cd")),
                 NewArrayInit(typeof(string), Constant("ef"), Constant("gh"))
             ),
-            "new string[][] { new [] { \"ab\", \"cd\" }, new [] { \"ef\", \"gh\" } }",
+            "new string[][] { new[] { \"ab\", \"cd\" }, new[] { \"ef\", \"gh\" } }",
             "{ ({ \"ab\", \"cd\" }), ({ \"ef\", \"gh\" }) }", 
             @"NewArrayInit(
     typeof(string[]),
-    new [] {
+    new[] {
         NewArrayInit(
             typeof(string),
-            new [] {
+            new[] {
                 Constant(""ab""),
                 Constant(""cd"")
             }
         ),
         NewArrayInit(
             typeof(string),
-            new [] {
+            new[] {
                 Constant(""ef""),
                 Constant(""gh"")
             }
@@ -98,21 +98,21 @@ namespace ExpressionToString.Tests {
                 NewArrayInit(typeof(string), Constant("ab"), Constant("cd")),
                 NewArrayInit(typeof(string), Constant("ef"), Constant("gh"))
             ),
-            "new object[][] { new [] { \"ab\", \"cd\" }, new [] { \"ef\", \"gh\" } }",
+            "new object[][] { new[] { \"ab\", \"cd\" }, new[] { \"ef\", \"gh\" } }",
             "New Object()() { ({ \"ab\", \"cd\" }), ({ \"ef\", \"gh\" }) }",
             @"NewArrayInit(
-    typeof(object[][]),
-    new [] {
+    typeof(object[]),
+    new[] {
         NewArrayInit(
-            typeof(string[]),
-            new [] {
+            typeof(string),
+            new[] {
                 Constant(""ab""),
                 Constant(""cd"")
             }
         ),
         NewArrayInit(
-            typeof(string[]),
-            new [] {
+            typeof(string),
+            new[] {
                 Constant(""ef""),
                 Constant(""gh"")
             }
@@ -128,8 +128,8 @@ namespace ExpressionToString.Tests {
             "new string[5][]",
             "New String(4)() {}", 
             @"NewArrayBounds(
-    typeof(string[][]),
-    new [] {
+    typeof(string[]),
+    new[] {
         Constant(5)
     }
 )"
@@ -142,8 +142,8 @@ namespace ExpressionToString.Tests {
             "new string[5][,]",
             "New String(4)(,) {}", 
             @"NewArrayBounds(
-    typeof(string[][,]),
-    new [] {
+    typeof(string[,]),
+    new[] {
         Constant(5)
     }
 )"
@@ -157,7 +157,7 @@ namespace ExpressionToString.Tests {
             "New String(2, 1)() {}", 
             @"NewArrayBounds(
     typeof(string[]),
-    new [] {
+    new[] {
         Constant(3),
         Constant(2)
     }

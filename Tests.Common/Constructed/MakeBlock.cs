@@ -17,7 +17,7 @@ namespace ExpressionToString.Tests {
 true;",
             @"True
 True",
-            @"Block(new [] {
+            @"Block(new[] {
     Constant(true),
     Constant(true)
 })"
@@ -41,7 +41,7 @@ True",
     True
     True
 End Block",
-            @"Block(new [] { i }, new [] {
+            @"Block(new[] { i }, new[] {
     Constant(true),
     Constant(true)
 })"
@@ -67,7 +67,7 @@ End Block",
     True
     True
 End Block",
-    @"Block(new [] { i, s1 }, new [] {
+    @"Block(new[] { i, s1 }, new[] {
     Constant(true),
     Constant(true)
 })"

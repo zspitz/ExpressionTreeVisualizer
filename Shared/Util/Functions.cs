@@ -39,7 +39,10 @@ namespace ExpressionToString.Util {
                 bool isByRef = false;
                 if (mi is Type t1) {
                     isType = true;
-                    isByRef = t1.IsByRef;
+                    if (t1.IsByRef) {
+                        isByRef = true;
+                        t1 = t1.GetElementType();
+                    }
                 } else {
                     isType = false;
                     t1 = mi.DeclaringType;
@@ -72,16 +75,10 @@ namespace ExpressionToString.Util {
                         ret += $".{methodName}(\"{mi.Name}\")";
                     }
                 }
-            } else if (o is Type t1) {
-                if (language == CSharp) {
-                    ret = $"typeof({t1.FriendlyName(CSharp)})";
-                } else {
-                    ret = $"GetType({t1.FriendlyName(VisualBasic)})";
-                }
             } else if (type.IsArray && !type.GetElementType().IsArray && type.GetArrayRank() == 1) {
                 var values = (o as dynamic[]).Joined(", ", x => RenderLiteral(x, language));
                 if (language == CSharp) {
-                    ret = $"new [] {{ {values} }}";
+                    ret = $"new[] {{ {values} }}";
                 } else {
                     ret = $"{{ {values} }}";
                 }

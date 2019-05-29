@@ -48,7 +48,7 @@ namespace ExpressionToString {
 
             args.Cast<object>().ForEach((x, index) => {
                 var isTuple = TryTupleValues(x, out var values) && values.Length == 2;
-                (string path, object arg) = isTuple ? ((string)values[0], values[1]) : ("", null);
+                (string path, object arg) = isTuple ? ((string)values[0], values[1]) : ("", x);
                 var parameterDeclaration = name == "Lambda" && path == "Parameters";
 
                 bool writeNewline = false;
@@ -90,7 +90,7 @@ namespace ExpressionToString {
                     WriteNode(path, arg);
                 } else if (argType.InheritsFromOrImplementsAny(PropertyTypes)) {
                     if (language == CSharp) {
-                        Write("new [] {");
+                        Write("new[] {");
                     } else { // language == VisualBasic
                         Write("{");
                     }
@@ -241,7 +241,16 @@ namespace ExpressionToString {
 
         protected override void WriteUnary(UnaryExpression expr) {
             if (!binaryUnaryMethods.TryGetValue(expr.NodeType, out var name)) { throw new InvalidOperationException($"Method not found for '{expr.NodeType}' node type"); }
-            WriteMethodCall(name, new[] { ("Operand", expr.Operand) });
+            switch (expr.NodeType) {
+                case ExpressionType.Convert:
+                case ExpressionType.ConvertChecked:
+                case ExpressionType.TypeAs:
+                    WriteMethodCall(name, new object[] { ("Operand", expr.Operand), expr.Type });
+                    break;
+                default:
+                    WriteMethodCall(name, new[] { ("Operand", expr.Operand) });
+                    break;
+            }
         }
 
         protected override void WriteLambda(LambdaExpression expr) {
@@ -529,10 +538,18 @@ namespace ExpressionToString {
             } else { // language == VisualBasic
                 Write($"Dim {prm.Name} = ");
             }
-            if (prm.Name.IsNullOrWhitespace()) {
-                WriteMethodCall(() => Parameter(prm.Type));
+            if (prm.IsByRef) {
+                var type = prm.Type.MakeByRefType();
+                (string, object)[] args = prm.Name.IsNullOrWhitespace() ?
+                    new (string, object)[] { ("Type", type)} :
+                    new (string, object)[] { ("Type", type), ("Name", prm.Name) };
+                WriteMethodCall("Parameter", args);
             } else {
-                WriteMethodCall(() => Parameter(prm.Type, prm.Name));
+                if (prm.Name.IsNullOrWhitespace()) {
+                    WriteMethodCall(() => Parameter(prm.Type));
+                } else {
+                    WriteMethodCall(() => Parameter(prm.Type, prm.Name));
+                }
             }
         }
     }

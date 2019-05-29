@@ -122,7 +122,7 @@ namespace ExpressionToString.Tests {
     new[] {
         ElementInit(
             typeof(ICollection<Node>).GetMethod(""Add""),
-            new [] {
+            new[] {
                 New(
                     typeof(Node).GetConstructor()
                 )
@@ -130,7 +130,7 @@ namespace ExpressionToString.Tests {
         ),
         ElementInit(
             typeof(ICollection<Node>).GetMethod(""Add""),
-            new [] {
+            new[] {
                 New(
                     typeof(Node).GetConstructor()
                 )

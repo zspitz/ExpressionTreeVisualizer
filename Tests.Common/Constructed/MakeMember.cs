@@ -12,7 +12,7 @@ namespace ExpressionToString.Tests {
             "\"\".Length",
             "\"\".Length",
             @"MakeMemberAccess(
-    Constant(""),
+    Constant(""""),
     typeof(string).GetProperty(""Length"")
 )"
         );

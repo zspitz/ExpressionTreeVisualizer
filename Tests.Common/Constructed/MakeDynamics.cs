@@ -40,7 +40,7 @@ namespace ExpressionToString.Tests {
                 "obj(\"key\")", 
                 @"Dynamic(
     #CSharpGetIndexBinder,
-    typeof(object), new [] {
+    typeof(object), new[] {
         obj,
         Constant(""key"")
     }
@@ -60,7 +60,7 @@ namespace ExpressionToString.Tests {
                 "obj(\"key\", 1)", 
                 @"Dynamic(
     #CSharpGetIndexBinder,
-    typeof(object), new [] {
+    typeof(object), new[] {
         obj,
         Constant(""key""),
         Constant(1)
@@ -81,7 +81,7 @@ namespace ExpressionToString.Tests {
                 "obj.Data",
                 @"Dynamic(
     #CSharpGetMemberBinder,
-    typeof(object), new [] { obj }
+    typeof(object), new[] { obj }
 )"
             );
         }
@@ -98,7 +98,7 @@ namespace ExpressionToString.Tests {
                 "obj",
                 @"Dynamic(
     #CSharpInvokeBinder,
-    typeof(object), new [] { obj }
+    typeof(object), new[] { obj }
 )"
             );
         }
@@ -115,7 +115,7 @@ namespace ExpressionToString.Tests {
                 "obj(\"arg1\", 15)", 
                 @"Dynamic(
     #CSharpInvokeBinder,
-    typeof(object), new [] {
+    typeof(object), new[] {
         obj,
         Constant(""arg1""),
         Constant(15)
@@ -136,7 +136,7 @@ namespace ExpressionToString.Tests {
                 "obj.Method",
                 @"Dynamic(
     #CSharpInvokeMemberBinder,
-    typeof(object), new [] { obj }
+    typeof(object), new[] { obj }
 )"
             );
         }
@@ -153,7 +153,7 @@ namespace ExpressionToString.Tests {
                 "obj.Method(\"arg1\", 15)", 
                 @"Dynamic(
     #CSharpInvokeMemberBinder,
-    typeof(object), new [] {
+    typeof(object), new[] {
         obj,
         Constant(""arg1""),
         Constant(15)
@@ -174,7 +174,7 @@ namespace ExpressionToString.Tests {
                 "obj(\"key\") = 42", 
                 @"Dynamic(
     #CSharpSetIndexBinder,
-    typeof(object), new [] {
+    typeof(object), new[] {
         obj,
         Constant(42),
         Constant(""key"")
@@ -195,7 +195,7 @@ namespace ExpressionToString.Tests {
                 "obj(\"key\", 1) = 42",
                 @"Dynamic(
     #CSharpSetIndexBinder,
-    typeof(object), new [] {
+    typeof(object), new[] {
         obj,
         Constant(42),
         Constant(""key""),
@@ -217,7 +217,7 @@ namespace ExpressionToString.Tests {
                 "obj.Data = 42", 
                 @"Dynamic(
     #CSharpSetMemberBinder,
-    typeof(object), new [] {
+    typeof(object), new[] {
         obj,
         Constant(42)
     }

@@ -408,8 +408,9 @@ namespace ExpressionToString {
             switch (expr.NodeType) {
                 case NewArrayInit:
                     var elementType = expr.Type.GetElementType();
-                    Write("new ");
+                    Write("new");
                     if (elementType.IsArray || expr.Expressions.None() || expr.Expressions.Any(x => x.Type != elementType)) {
+                        Write(" ");
                         Write(expr.Type.FriendlyName(language));
                     } else {
                         Write("[]");

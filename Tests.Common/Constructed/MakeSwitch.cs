@@ -29,7 +29,7 @@ namespace ExpressionToString.Tests {
     Console.WriteLine(True)
     Console.WriteLine(True)",
             @"SwitchCase(
-    Block(new [] {
+    Block(new[] {
         Call(
             typeof(Console).GetMethod(""WriteLine""),
             new[] {
@@ -38,12 +38,12 @@ namespace ExpressionToString.Tests {
         ),
         Call(
             typeof(Console).GetMethod(""WriteLine""),
-            new [] {
+            new[] {
                 Constant(true)
             }
         )
     }),
-    new [] {
+    new[] {
         Constant(5)
     }
 )"
@@ -63,7 +63,7 @@ case 6:
     Console.WriteLine(True)
     Console.WriteLine(True)",
             @"SwitchCase(
-    Block(new [] {
+    Block(new[] {
         Call(
             typeof(Console).GetMethod(""WriteLine""),
             new[] {
@@ -72,12 +72,12 @@ case 6:
         ),
         Call(
             typeof(Console).GetMethod(""WriteLine""),
-            new [] {
+            new[] {
                 Constant(true)
             }
         )
     }),
-    new [] {
+    new[] {
         Constant(5),
         Constant(6)
     }
@@ -100,7 +100,7 @@ case 6:
             Constant(true)
         }
     ),
-    new [] {
+    new[] {
         Constant(5)
     }
 )"
@@ -123,7 +123,7 @@ case 6:
             Constant(true)
         }
     ),
-    new [] {
+    new[] {
         Constant(5),
         Constant(6)
     }
@@ -160,7 +160,7 @@ case 6:
 End Select", 
             @"Switch(i,
     Empty(),
-    new [] {
+    new[] {
         SwitchCase(
             Call(
                 typeof(Console).GetMethod(""WriteLine""),
@@ -168,18 +168,18 @@ End Select",
                     Constant(true)
                 }
             ),
-            new [] {
+            new[] {
                 Constant(4)
             }
         ),
         SwitchCase(
             Call(
                 typeof(Console).GetMethod(""WriteLine""),
-                new [] {
+                new[] {
                     Constant(false)
                 }
             ),
-            new [] {
+            new[] {
                 Constant(5)
             }
         )
@@ -222,12 +222,12 @@ End Select",
         True
 End Select", 
     @"Switch(i,
-    Block(new [] {
+    Block(new[] {
         typeof(void),
         Constant(true),
         Constant(true)
     }),
-    new [] {
+    new[] {
         SwitchCase(
             Call(
                 typeof(Console).GetMethod(""WriteLine""),
@@ -235,18 +235,18 @@ End Select",
                     Constant(true)
                 }
             ),
-            new [] {
+            new[] {
                 Constant(4)
             }
         ),
         SwitchCase(
             Call(
                 typeof(Console).GetMethod(""WriteLine""),
-                new [] {
+                new[] {
                     Constant(false)
                 }
             ),
-            new [] {
+            new[] {
                 Constant(5)
             }
         )
@@ -295,11 +295,11 @@ End Select",
         True
 End Select", 
             @"Switch(
-    Block(new [] { i, j }),
-    Block(new [] {
+    Block(new[] { i, j }),
+    Block(new[] {
         Constant(true),
         Constant(true)
-    }), new [] {
+    }), new[] {
         SwitchCase(
             Call(
                 typeof(Console).GetMethod(""WriteLine""),
@@ -307,18 +307,18 @@ End Select",
                     Constant(true)
                 }
             ),
-            new [] {
+            new[] {
                 Constant(4)
             }
         ),
         SwitchCase(
             Call(
                 typeof(Console).GetMethod(""WriteLine""),
-                new [] {
+                new[] {
                     Constant(false)
                 }
             ),
-            new [] {
+            new[] {
                 Constant(5)
             }
         )
@@ -350,7 +350,7 @@ End Select",
     Case 5
         Console.WriteLine(False)
 End Select", 
-            @"Switch(i, new [] {
+            @"Switch(i, new[] {
     SwitchCase(
         Call(
             typeof(Console).GetMethod(""WriteLine""),
@@ -358,18 +358,18 @@ End Select",
                 Constant(true)
             }
         ),
-        new [] {
+        new[] {
             Constant(4)
         }
     ),
     SwitchCase(
         Call(
             typeof(Console).GetMethod(""WriteLine""),
-            new [] {
+            new[] {
                 Constant(false)
             }
         ),
-        new [] {
+        new[] {
             Constant(5)
         }
     )
@@ -407,8 +407,8 @@ End Select",
         Console.WriteLine(False)
 End Select", 
             @"Switch(
-    Block(new [] { i, j }),
-    new [] {
+    Block(new[] { i, j }),
+    new[] {
         SwitchCase(
             Call(
                 typeof(Console).GetMethod(""WriteLine""),
@@ -416,18 +416,18 @@ End Select",
                     Constant(true)
                 }
             ),
-            new [] {
+            new[] {
                 Constant(4)
             }
         ),
         SwitchCase(
             Call(
                 typeof(Console).GetMethod(""WriteLine""),
-                new [] {
+                new[] {
                     Constant(false)
                 }
             ),
-            new [] {
+            new[] {
                 Constant(5)
             }
         )

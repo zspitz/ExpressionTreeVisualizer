@@ -7,7 +7,7 @@ namespace ExpressionToString.Tests {
         [Trait("Category", NewArray)]
         public void SingleDimensionInit() => RunTest(
             () => new string[] { "" },
-            "() => new [] { \"\" }",
+            "() => new[] { \"\" }",
             "Function() { \"\" }"
         );
 
@@ -42,7 +42,7 @@ namespace ExpressionToString.Tests {
                 new [] {"ab","cd" },
                 new [] {"ef","gh"}
             },
-            "() => new string[][] { new [] { \"ab\", \"cd\" }, new [] { \"ef\", \"gh\" } }",
+            "() => new string[][] { new[] { \"ab\", \"cd\" }, new[] { \"ef\", \"gh\" } }",
             "Function() { ({ \"ab\", \"cd\" }), ({ \"ef\", \"gh\" }) }"
         );
 
@@ -53,7 +53,7 @@ namespace ExpressionToString.Tests {
                 new [] {"ab","cd" },
                 new [] {"ef","gh"}
             },
-            "() => new object[][] { new [] { \"ab\", \"cd\" }, new [] { \"ef\", \"gh\" } }",
+            "() => new object[][] { new[] { \"ab\", \"cd\" }, new[] { \"ef\", \"gh\" } }",
             "Function() New Object()() { ({ \"ab\", \"cd\" }), ({ \"ef\", \"gh\" }) }"
         );
 

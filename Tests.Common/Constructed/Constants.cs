@@ -62,9 +62,9 @@ namespace ExpressionToString.Tests {
         [Trait("Category", Constants)]
         public void Array() => RunTest(
             Constant(new object[] { "abcd", 5, new Random() }),
-            "new [] { \"abcd\", 5, #Random }",
+            "new[] { \"abcd\", 5, #Random }",
             "{ \"abcd\", 5, #Random }",
-            @"Constant(new [] { ""abcd"", 5, #Random })"
+            @"Constant(new[] { ""abcd"", 5, #Random })"
         );
 
         [Fact]

@@ -61,7 +61,7 @@ namespace ExpressionToString.Tests {
     Console.WriteLine(True)
     Console.WriteLine(True)", 
             @"Catch(ex,
-    Block(new [] {
+    Block(new[] {
         Call(
             typeof(Console).GetMethod(""WriteLine""),
             new[] {
@@ -70,7 +70,7 @@ namespace ExpressionToString.Tests {
         ),
         Call(
             typeof(Console).GetMethod(""WriteLine""),
-            new [] {
+            new[] {
                 Constant(true)
             }
         )
@@ -111,7 +111,7 @@ namespace ExpressionToString.Tests {
     Console.WriteLine(True)",
             @"Catch(
     typeof(InvalidCastException),
-    Block(new [] {
+    Block(new[] {
         Call(
             typeof(Console).GetMethod(""WriteLine""),
             new[] {
@@ -120,7 +120,7 @@ namespace ExpressionToString.Tests {
         ),
         Call(
             typeof(Console).GetMethod(""WriteLine""),
-            new [] {
+            new[] {
                 Constant(true)
             }
         )
@@ -166,7 +166,7 @@ namespace ExpressionToString.Tests {
             Constant(true)
         }
     ),
-    Block(new [] {
+    Block(new[] {
         Constant(true),
         Constant(true)
     })
@@ -195,7 +195,7 @@ End Block
             Constant(true)
         }
     ),
-    Block(new [] {
+    Block(new[] {
         Constant(true),
         Constant(true)
     })
@@ -218,7 +218,7 @@ Catch
 End Try",
             @"TryCatch(
     Constant(true),
-    new [] {
+    new[] {
         Catch(
             typeof(Exception),
             Constant(true)
@@ -252,7 +252,7 @@ End Try",
         new[] {
             Constant(true)
         }
-    ), new [] {
+    ), new[] {
         Catch(ex,
             Constant(true)
         )
@@ -283,7 +283,7 @@ End Try",
     ),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new [] {
+        new[] {
             Constant(true)
         }
     )
@@ -313,7 +313,7 @@ End Try",
     ),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new [] {
+        new[] {
             Constant(true)
         }
     )

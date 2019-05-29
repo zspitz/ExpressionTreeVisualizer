@@ -36,8 +36,8 @@ namespace ExpressionToString.Tests {
         [Trait("Category", Method)]
         public void ExtensionMethod0Arguments() => RunTest(
             Call(GetMethod(() => ((List<string>)null).Count()), lstString),
-            "lst.Count()",
-            "lst.Count", @"Call(
+            "lstString.Count()",
+            "lstString.Count", @"Call(
     typeof(Enumerable).GetMethod(""Count""),
     new[] { lstString }
 )"
@@ -75,8 +75,8 @@ namespace ExpressionToString.Tests {
         [Trait("Category", Method)]
         public void ExtensionMethod1Argument() => RunTest(
             Call(GetMethod(() => (null as List<string>).Take(1)), lstString, Constant(1)),
-            "lst.Take(1)",
-            "lst.Take(1)", 
+            "lstString.Take(1)",
+            "lstString.Take(1)", 
             @"Call(
     typeof(Enumerable).GetMethod(""Take""),
     new[] {
@@ -115,7 +115,7 @@ namespace ExpressionToString.Tests {
                 Constant(","),
                 NewArrayInit(typeof(string), Constant("a"), Constant("b"))
             ),
-            "string.Join(\",\", new [] { \"a\", \"b\" })",
+            "string.Join(\",\", new[] { \"a\", \"b\" })",
             "String.Join(\",\", { \"a\", \"b\" })", 
             @"Call(
     typeof(string).GetMethod(""Join""),
@@ -123,7 +123,7 @@ namespace ExpressionToString.Tests {
         Constant("",""),
         NewArrayInit(
             typeof(string),
-            new [] {
+            new[] {
                 Constant(""a""),
                 Constant(""b"")
             }
@@ -143,13 +143,13 @@ namespace ExpressionToString.Tests {
                     Lambda(x, x),
                     MakeMemberAccess(null, typeof(StringComparer).GetMember("OrdinalIgnoreCase").Single())
                 ),
-                "lst.OrderBy((string x) => x, StringComparer.OrdinalIgnoreCase)",
-                "lst.OrderBy(Function(x As String) x, StringComparer.OrdinalIgnoreCase)", 
+                "lstString.OrderBy((string x) => x, StringComparer.OrdinalIgnoreCase)",
+                "lstString.OrderBy(Function(x As String) x, StringComparer.OrdinalIgnoreCase)", 
                 @"Call(
     typeof(Enumerable).GetMethod(""OrderBy""),
     new[] {
         lstString,
-        Lambda(x, new [] {
+        Lambda(x, new[] {
             var x = Parameter(
                 typeof(string),
                 ""x""

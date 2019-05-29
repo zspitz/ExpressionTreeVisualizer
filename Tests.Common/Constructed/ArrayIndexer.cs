@@ -26,8 +26,8 @@ namespace ExpressionToString.Tests {
         public void MakeArrayMultipleIndex() => RunTest(
             ArrayIndex(arr2D, Constant(0), Constant(1)),
             "arr2d[0, 1]",
-            "arr(0, 1)", 
-            @"ArrayIndex(arr, new [] {
+            "arr2d(0, 1)", 
+            @"ArrayIndex(arr2d, new[] {
     Constant(0),
     Constant(1)
 })"
@@ -39,7 +39,7 @@ namespace ExpressionToString.Tests {
             ArrayAccess(arr, Constant(0)),
             "arr[0]",
             "arr(0)",
-            @"ArrayAccess(arr, new [] {
+            @"ArrayAccess(arr, new[] {
     Constant(0)
 })"
         );
@@ -50,8 +50,8 @@ namespace ExpressionToString.Tests {
             MakeIndex(
                 lstString, listIndexer, new[] { Constant(0) as Expression }
             ),
-            "lst[0]",
-            "lst(0)", 
+            "lstString[0]",
+            "lstString(0)", 
             @"MakeIndex(lstString,
     typeof(List<string>).GetProperty(""Item""),
     new[] {

@@ -30,7 +30,7 @@ namespace ExpressionToString.Tests {
     ),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new [] {
+        new[] {
             Constant(false)
         }
     )
@@ -57,7 +57,7 @@ namespace ExpressionToString.Tests {
     ),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new [] {
+        new[] {
             Constant(false)
         }
     )
@@ -167,7 +167,7 @@ namespace ExpressionToString.Tests {
     True
 End Block, ""true"".Length, ""false"".Length)", 
             @"Condition(
-    Block(new [] {
+    Block(new[] {
         Constant(true),
         Constant(true)
     }),
@@ -198,7 +198,7 @@ End Block, ""true"".Length, ""false"".Length)",
     True
 Then Console.WriteLine(True)", 
             @"IfThen(
-    Block(new [] {
+    Block(new[] {
         Constant(true),
         Constant(true)
     }),
@@ -228,7 +228,7 @@ Then Console.WriteLine(True)",
 End If", 
             @"IfThen(
     Constant(true),
-    Block(new [] {
+    Block(new[] {
         Call(
             typeof(Console).GetMethod(""WriteLine""),
             new[] {
@@ -237,7 +237,7 @@ End If",
         ),
         Call(
             typeof(Console).GetMethod(""WriteLine""),
-            new [] {
+            new[] {
                 Constant(true)
             }
         )
@@ -300,7 +300,7 @@ End If",
         Constant(true),
         Call(
             typeof(Console).GetMethod(""WriteLine""),
-            new [] {
+            new[] {
                 Constant(true)
             }
         )

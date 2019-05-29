@@ -14,8 +14,6 @@ namespace Tests.DataGenerator {
         private static int counter = 0;
         public static readonly List<string> lines = new List<string>();
         public static void WriteData(object o, string testData) {
-            if (!testData.IsNullOrWhitespace()) { return; }
-
             string toWrite;
             switch (o) {
                 case Expression expr:
@@ -40,15 +38,17 @@ namespace Tests.DataGenerator {
                     throw new NotImplementedException();
             }
 
-            counter += 1;
-            lines.AddRange(new[] {
-                ",@\"" + toWrite + "\"",
-                $"{TestMethodName()}",
-                ""
-            });
+            if (testData != toWrite) {
+                counter += 1;
+                lines.AddRange(new[] {
+                    ",@\"" + toWrite + "\"",
+                    $"{TestMethodName()}",
+                    ""
+                });
+            }
 
             string TestMethodName() {
-                var mi= new StackTrace().GetFrames().Select(x => x.GetMethod()).FirstOrDefault(x => x.DeclaringType.BaseType == typeof(TestsBase));
+                var mi = new StackTrace().GetFrames().Select(x => x.GetMethod()).FirstOrDefault(x => x.DeclaringType.BaseType == typeof(TestsBase));
                 return $"{mi.ReflectedType.Name}.{mi.Name}";
             }
         }

@@ -83,7 +83,7 @@ namespace ExpressionToString.Tests {
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructReferenceNotEqual() => RunTest(ReferenceNotEqual(lstString, lstString), "lst != lst", "lst IsNot lst", "NotEqual(lstString, lstString)");
+        public void ConstructReferenceNotEqual() => RunTest(ReferenceNotEqual(lstString, lstString), "lstString != lstString", "lstString IsNot lstString", "NotEqual(lstString, lstString)");
 
         [Fact]
         [Trait("Category", Binary)]
@@ -123,7 +123,9 @@ namespace ExpressionToString.Tests {
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructAssign() => RunTest(Assign(x, Constant(5.2,typeof(double))), "x = 5.2", "x = 5.2", "Assign(x, Constant(5.2))");
+        public void ConstructAssign() => RunTest(Assign(x, Constant(5.2,typeof(double))), "x = 5.2", "x = 5.2", @"Assign(x,
+    Constant(5.2)
+)");
 
         [Fact]
         [Trait("Category", Binary)]

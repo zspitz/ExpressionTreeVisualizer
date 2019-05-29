@@ -12,11 +12,24 @@ namespace ExpressionToString.Tests {
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructConvert() => RunTest(Convert(arr, typeof(object)), "(object)arr", "CObj(arr)", "Convert(arr, typeof(object))");
+        public void ConstructConvert() => RunTest(Convert(arr, typeof(object)), "(object)arr", "CObj(arr)", @"Convert(arr,
+    typeof(object)
+)");
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructConvertChecked() => RunTest(ConvertChecked(arr, typeof(object)), "(object)arr", "CObj(arr)", "ConvertChecked(arr, typeof(object))");
+        public void ConstructConvertChecked() => RunTest(
+            ConvertChecked(Constant(5), typeof(float)), 
+            "(float)5", "CSng(5)", @"ConvertChecked(
+    Constant(5),
+    typeof(float)
+)");
+
+        [Fact]
+        [Trait("Category", Unary)]
+        public void ConstructConvertCheckedForReferenceType() => RunTest(ConvertChecked(arr, typeof(object)), "(object)arr", "CObj(arr)", @"Convert(arr,
+    typeof(object)
+)");
 
         [Fact]
         [Trait("Category", Unary)]
@@ -32,7 +45,9 @@ namespace ExpressionToString.Tests {
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructTypeAs() => RunTest(TypeAs(arr, typeof(object)), "arr as object", "TryCast(arr, Object)", "TypeAs(arr, typeof(object))");
+        public void ConstructTypeAs() => RunTest(TypeAs(arr, typeof(object)), "arr as object", "TryCast(arr, Object)", @"TypeAs(arr,
+    typeof(object)
+)");
 
         [Fact]
         [Trait("Category", Unary)]

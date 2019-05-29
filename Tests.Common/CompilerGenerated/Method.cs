@@ -86,7 +86,7 @@ namespace ExpressionToString.Tests {
         [Trait("Category", Method)]
         public void StaticMethod2Arguments() => RunTest(
             () => string.Join(",", new[] { "a","b" }),
-            "() => string.Join(\",\", new [] { \"a\", \"b\" })",
+            "() => string.Join(\",\", new[] { \"a\", \"b\" })",
             "Function() String.Join(\",\", { \"a\", \"b\" })"
         );
 

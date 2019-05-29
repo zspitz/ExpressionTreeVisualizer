@@ -37,8 +37,8 @@ target:
         True
     End Block
 End Block",
-            @"Block(new [] { i }, new [] {
-    Block(new [] { j }, new [] {
+            @"Block(new[] { i }, new[] {
+    Block(new[] { j }, new[] {
         Constant(true),
         Label(
             Label(""target""),
@@ -76,8 +76,8 @@ target:
         True
     End Block
 End Block",
-            @"Block(new [] { i }, new [] {
-    Block(new [] { j }, new [] {
+            @"Block(new[] { i }, new[] {
+    Block(new[] { j }, new[] {
         Label(
             Label(""target""),
             null

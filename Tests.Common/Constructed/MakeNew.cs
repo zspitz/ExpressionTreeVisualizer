@@ -50,7 +50,7 @@ namespace ExpressionToString.Tests {
     New(
         typeof(Foo).GetConstructor()
     ),
-    new [] {
+    new[] {
         Bind(
             typeof(Foo).GetProperty(""Bar""),
             Constant(""abcd"")
@@ -79,7 +79,7 @@ namespace ExpressionToString.Tests {
     New(
         typeof(Foo).GetConstructor()
     ),
-    new [] {
+    new[] {
         Bind(
             typeof(Foo).GetProperty(""Bar""),
             Constant(""abcd"")
@@ -100,7 +100,7 @@ namespace ExpressionToString.Tests {
             @"New Foo(""ijkl"")", 
             @"New(
     typeof(Foo).GetConstructor(),
-    new [] {
+    new[] {
         Constant(""ijkl"")
     }
 )"
@@ -125,11 +125,11 @@ namespace ExpressionToString.Tests {
             @"MemberInit(
     New(
         typeof(Foo).GetConstructor(),
-        new [] {
+        new[] {
             Constant(""ijkl"")
         }
     ),
-    new [] {
+    new[] {
         Bind(
             typeof(Foo).GetProperty(""Bar""),
             Constant(""abcd"")
@@ -159,14 +159,22 @@ namespace ExpressionToString.Tests {
     ""efgh""
 }",
             @"ListInit(
-    New(#RuntimeConstructorInfo, new [] {}),
-    new [] {
-        ElementInit(#RuntimeMethodInfo, new [] {
-            Constant(""abcd"")
-        }),
-        ElementInit(#RuntimeMethodInfo, new [] {
-            Constant(""efgh"")
-        })
+    New(
+        typeof(List<string>).GetConstructor()
+    ),
+    new[] {
+        ElementInit(
+            typeof(List<string>).GetMethod(""Add""),
+            new[] {
+                Constant(""abcd"")
+            }
+        ),
+        ElementInit(
+            typeof(List<string>).GetMethod(""Add""),
+            new[] {
+                Constant(""efgh"")
+            }
+        )
     }
 )"
         );
@@ -200,16 +208,24 @@ namespace ExpressionToString.Tests {
     }
 }",
             @"ListInit(
-    New(#RuntimeConstructorInfo, new [] {}),
-    new [] {
-        ElementInit(#RuntimeMethodInfo, new [] {
-            Constant(""ab""),
-            Constant(""cd"")
-        }),
-        ElementInit(#RuntimeMethodInfo, new [] {
-            Constant(""ef""),
-            Constant(""gh"")
-        })
+    New(
+        typeof(Wrapper).GetConstructor()
+    ),
+    new[] {
+        ElementInit(
+            typeof(Wrapper).GetMethod(""Add""),
+            new[] {
+                Constant(""ab""),
+                Constant(""cd"")
+            }
+        ),
+        ElementInit(
+            typeof(Wrapper).GetMethod(""Add""),
+            new[] {
+                Constant(""ef""),
+                Constant(""gh"")
+            }
+        )
     }
 )"
         );
@@ -235,17 +251,25 @@ namespace ExpressionToString.Tests {
         ""cd""
     },
     ""ef""
-}",
+}", 
             @"ListInit(
-    New(#RuntimeConstructorInfo, new [] {}),
-    new [] {
-        ElementInit(#RuntimeMethodInfo, new [] {
-            Constant(""ab""),
-            Constant(""cd"")
-        }),
-        ElementInit(#RuntimeMethodInfo, new [] {
-            Constant(""ef"")
-        })
+    New(
+        typeof(Wrapper).GetConstructor()
+    ),
+    new[] {
+        ElementInit(
+            typeof(Wrapper).GetMethod(""Add""),
+            new[] {
+                Constant(""ab""),
+                Constant(""cd"")
+            }
+        ),
+        ElementInit(
+            typeof(List<string>).GetMethod(""Add""),
+            new[] {
+                Constant(""ef"")
+            }
+        )
     }
 )"
         );
