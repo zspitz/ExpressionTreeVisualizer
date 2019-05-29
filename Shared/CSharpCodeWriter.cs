@@ -287,8 +287,7 @@ namespace ExpressionToString {
             if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
                 isIndexer = true;
             } else {
-                var indexerMethods = expr.Method.ReflectedType.GetIndexers(true).SelectMany(x => new[] { x.GetMethod, x.SetMethod }).ToList();
-                isIndexer = expr.Method.In(indexerMethods);
+                isIndexer = expr.Method.IsIndexerMethod();
             }
             if (isIndexer) {
                 WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);

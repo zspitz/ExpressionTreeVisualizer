@@ -11,7 +11,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)FactoryMethodsFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\IListT.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\ParameterInfoExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MethodInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\ParameterInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WriterBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CSharpCodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionExtension.cs" />

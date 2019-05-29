@@ -118,7 +118,8 @@ namespace ExpressionToString.Tests {
             "Function() GetType(String)", 
             @"Lambda(
     Constant(
-        typeof(string)
+        typeof(string),
+        typeof(Type)
     )
 )"
         );

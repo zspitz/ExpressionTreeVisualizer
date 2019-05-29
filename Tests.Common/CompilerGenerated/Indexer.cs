@@ -47,7 +47,7 @@ namespace ExpressionToString.Tests {
                 "Function() lst(3)", 
                 @"Lambda(
     Property(lst,
-        typeof(List<string>).GetMethod(""Item""),
+        typeof(List<string>).GetProperty(""Item""),
         new[] {
             Constant(3)
         }

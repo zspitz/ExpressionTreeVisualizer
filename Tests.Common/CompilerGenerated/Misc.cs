@@ -67,7 +67,7 @@ namespace ExpressionToString.Tests {
                 "() => del(5)",
                 "Function() del(5)",
                 @"Lambda(
-    Invoke( del, new[] {
+    Invoke(del, new[] {
         Constant(5)
     })
 )"

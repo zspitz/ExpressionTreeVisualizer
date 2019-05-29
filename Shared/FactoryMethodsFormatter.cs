@@ -310,6 +310,9 @@ namespace ExpressionToString {
             if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
                 WriteMethodCall(() => ArrayIndex(expr.Object, expr.Arguments));
                 return;
+            } else if (expr.Method.IsIndexerMethod(out var pi)) {
+                WriteMethodCall(() => Property(expr.Object, pi, expr.Arguments));
+                return;
             }
 
             if (expr.Object == null) {

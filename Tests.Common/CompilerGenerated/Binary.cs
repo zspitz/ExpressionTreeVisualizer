@@ -16,7 +16,7 @@ namespace ExpressionToString.Tests {
 )");
         }
 
-        [Fact]
+        [Fact(Skip = "Wrap in checked block")]
         [Trait("Category", Binary)]
         public void AddChecked() {
             // TODO wrap in checked block
@@ -26,7 +26,7 @@ namespace ExpressionToString.Tests {
                 "() => x + y",
                 "Function() x + y",
                 @"Lambda(
-    Add(x, y)
+    AddChecked(x, y)
 )");
         }
 
@@ -72,7 +72,7 @@ namespace ExpressionToString.Tests {
             );
         }
 
-        [Fact]
+        [Fact(Skip = "Wrap in checked block")]
         [Trait("Category", Binary)]
         public void MultiplyChecked() {
             // TODO wrap in checked block, otherwise this test is exactly the same as Multiply
@@ -101,7 +101,7 @@ namespace ExpressionToString.Tests {
             );
         }
 
-        [Fact]
+        [Fact(Skip = "Wrap in checked block")]
         [Trait("Category", Binary)]
         public void SubtractChecked() {
             // TODO wrap in checked block, otherwise this test is exactly the same as Subtract

@@ -13,7 +13,7 @@ namespace ExpressionToString.Tests {
     NewArrayInit(
         typeof(string),
         new[] {
-            Constant("")
+            Constant("""")
         }
     )
 )"
@@ -29,7 +29,7 @@ namespace ExpressionToString.Tests {
     NewArrayInit(
         typeof(object),
         new[] {
-            Constant("")
+            Constant("""")
         }
     )
 )"
