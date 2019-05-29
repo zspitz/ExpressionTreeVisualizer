@@ -95,7 +95,6 @@ namespace ExpressionToString {
                         Write("{");
                     }
 
-                    // TODO refactor this logic into separate method, and use for entire loop
                     var argList = (arg as IEnumerable).ToObjectList();
                     if (argList.Any()) {
                         if (parameterDeclaration || argList.Any(y => !(y is ParameterExpression))) {
@@ -138,10 +137,10 @@ namespace ExpressionToString {
                 return (x as MemberExpression)?.Member.Name ?? "";
             });
             var pairs = names.Zip(args, (name, arg) => (name, arg)).ToList();
-            var lastArg = pairs.LastOrDefault().arg as IEnumerable;
-            if ((lastArg?.GetType().IsArray ?? false) && lastArg.None() && callExpr.Method.GetParameters().Last().HasAttribute<ParamArrayAttribute>()) {
+            var lastPair = pairs.LastOrDefault();
+            if ((lastPair.arg?.GetType().IsArray ?? false) && callExpr.Method.GetParameters().Last().HasAttribute<ParamArrayAttribute>()) {
                 pairs.RemoveLast();
-                // TODO if the last parameter is a params, expand the individual parts of the array into the pairs
+                (lastPair.arg as IEnumerable).Cast<object>().Select((innerArg, index) => ($"{lastPair.name}[{index}]", innerArg)).AddRangeTo(pairs);
             }
             WriteMethodCall(callExpr.Method.Name, pairs.ToList());
         }
@@ -399,7 +398,7 @@ namespace ExpressionToString {
                 if (expr.Variables.Any()) {
                     WriteMethodCall(() => Block(expr.Type, expr.Variables, expr.Expressions));
                 } else {
-                    WriteMethodCall(() => Block(expr.Type, expr.Expressions));
+                    WriteMethodCall(() => Block(expr.Type, expr.Expressions.ToArray()));
                 }
             } else {
                 if (expr.Variables.Any()) {

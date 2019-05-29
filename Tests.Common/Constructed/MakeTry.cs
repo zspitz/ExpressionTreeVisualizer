@@ -223,12 +223,10 @@ Catch
 End Try",
             @"TryCatch(
     Constant(true),
-    new[] {
-        Catch(
-            typeof(Exception),
-            Constant(true)
-        )
-    }
+    Catch(
+        typeof(Exception),
+        Constant(true)
+    )
 )"
         );
 
@@ -257,11 +255,10 @@ End Try",
         new[] {
             Constant(true)
         }
-    ), new[] {
-        Catch(ex,
-            Constant(true)
-        )
-    }
+    ),
+    Catch(ex,
+        Constant(true)
+    )
 )"
         );
 
