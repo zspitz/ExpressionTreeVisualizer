@@ -3,7 +3,7 @@
     Sub SingleDimensionInit()
         RunTest(
             Function() New String() {""},
-            "() => new [] { """" }",
+            "() => new[] { """" }",
             "Function() { """" }",
             "Lambda(
     NewArrayInit(
@@ -20,7 +20,7 @@
     Sub SingleDimensionInitExplicitType()
         RunTest(
             Function() New Object() {""}, ' the VB.NET compiler adds a conversion for each element to the array type
-            "() => new [] { (object)"""" }",
+            "() => new[] { (object)"""" }",
             "Function() { CObj("""") }",
             "Lambda(
     NewArrayInit(
@@ -78,7 +78,7 @@
                 ({"ab", "cd"}),
                 ({"ef", "gh"})
             },
-            "() => new string[][] { new [] { ""ab"", ""cd"" }, new [] { ""ef"", ""gh"" } }",
+            "() => new string[][] { new[] { ""ab"", ""cd"" }, new[] { ""ef"", ""gh"" } }",
             "Function() { ({ ""ab"", ""cd"" }), ({ ""ef"", ""gh"" }) }",
             "Lambda(
     NewArrayInit(
@@ -136,7 +136,7 @@
                 ({"ab", "cd"}),
                 ({"ef", "gh"})
             },
-            "() => new object[][] { (object[])new [] { ""ab"", ""cd"" }, (object[])new [] { ""ef"", ""gh"" } }",
+            "() => new object[][] { (object[])new[] { ""ab"", ""cd"" }, (object[])new[] { ""ef"", ""gh"" } }",
             "Function() { CType({ ""ab"", ""cd"" }, Object()), CType({ ""ef"", ""gh"" }, Object()) }",
             "Lambda(
     NewArrayInit(
