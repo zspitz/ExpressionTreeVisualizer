@@ -12,7 +12,7 @@ namespace Tests.DataGenerator {
             var instances = new TestsBase[] {
                 new CompilerGeneratedTestData(),
                 new ConstructedTestData(),
-                //new VBCompilerGeneratedTestData()
+                new VBCompilerGeneratedTestData()
             };
             var methods = instances
                 .SelectMany(x =>

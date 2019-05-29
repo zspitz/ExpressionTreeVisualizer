@@ -4,7 +4,15 @@
         RunTest(
             Function() New String() {""},
             "() => new [] { """" }",
-            "Function() { """" }"
+            "Function() { """" }",
+            "Lambda(
+    NewArrayInit(
+        typeof(string),
+        new[] {
+            Constant("""")
+        }
+    )
+)"
         )
     End Sub
 
@@ -13,7 +21,18 @@
         RunTest(
             Function() New Object() {""}, ' the VB.NET compiler adds a conversion for each element to the array type
             "() => new [] { (object)"""" }",
-            "Function() { CObj("""") }"
+            "Function() { CObj("""") }",
+            "Lambda(
+    NewArrayInit(
+        typeof(object),
+        new[] {
+            Convert(
+                Constant(""""),
+                typeof(object)
+            )
+        }
+    )
+)"
         )
     End Sub
 
@@ -22,7 +41,15 @@
         RunTest(
             Function() New String(4) {},
             "() => new string[5]",
-            "Function() New String(4) {}"
+            "Function() New String(4) {}",
+            "Lambda(
+    NewArrayBounds(
+        typeof(string),
+        new[] {
+            Constant(5)
+        }
+    )
+)"
         )
     End Sub
 
@@ -31,7 +58,16 @@
         RunTest(
             Function() New String(1, 2) {},
             "() => new string[2, 3]",
-            "Function() New String(1, 2) {}"
+            "Function() New String(1, 2) {}",
+            "Lambda(
+    NewArrayBounds(
+        typeof(string),
+        new[] {
+            Constant(2),
+            Constant(3)
+        }
+    )
+)"
         )
     End Sub
 
@@ -43,7 +79,28 @@
                 ({"ef", "gh"})
             },
             "() => new string[][] { new [] { ""ab"", ""cd"" }, new [] { ""ef"", ""gh"" } }",
-            "Function() { ({ ""ab"", ""cd"" }), ({ ""ef"", ""gh"" }) }"
+            "Function() { ({ ""ab"", ""cd"" }), ({ ""ef"", ""gh"" }) }",
+            "Lambda(
+    NewArrayInit(
+        typeof(string[]),
+        new[] {
+            NewArrayInit(
+                typeof(string),
+                new[] {
+                    Constant(""ab""),
+                    Constant(""cd"")
+                }
+            ),
+            NewArrayInit(
+                typeof(string),
+                new[] {
+                    Constant(""ef""),
+                    Constant(""gh"")
+                }
+            )
+        }
+    )
+)"
         )
     End Sub
 
@@ -59,7 +116,16 @@
                 arr2
             },
             "() => new string[][] { arr1, arr2 }",
-            "Function() { arr1, arr2 }"
+            "Function() { arr1, arr2 }",
+            "Lambda(
+    NewArrayInit(
+        typeof(string[]),
+        new[] {
+            arr1,
+            arr2
+        }
+    )
+)"
         )
     End Sub
 
@@ -71,7 +137,34 @@
                 ({"ef", "gh"})
             },
             "() => new object[][] { (object[])new [] { ""ab"", ""cd"" }, (object[])new [] { ""ef"", ""gh"" } }",
-            "Function() { CType({ ""ab"", ""cd"" }, Object()), CType({ ""ef"", ""gh"" }, Object()) }"
+            "Function() { CType({ ""ab"", ""cd"" }, Object()), CType({ ""ef"", ""gh"" }, Object()) }",
+            "Lambda(
+    NewArrayInit(
+        typeof(object[]),
+        new[] {
+            Convert(
+                NewArrayInit(
+                    typeof(string),
+                    new[] {
+                        Constant(""ab""),
+                        Constant(""cd"")
+                    }
+                ),
+                typeof(object[])
+            ),
+            Convert(
+                NewArrayInit(
+                    typeof(string),
+                    new[] {
+                        Constant(""ef""),
+                        Constant(""gh"")
+                    }
+                ),
+                typeof(object[])
+            )
+        }
+    )
+)"
         )
     End Sub
 
@@ -80,7 +173,15 @@
         RunTest(
             Function() New String(4)() {},
             "() => new string[5][]",
-            "Function() New String(4)() {}"
+            "Function() New String(4)() {}",
+            "Lambda(
+    NewArrayBounds(
+        typeof(string[]),
+        new[] {
+            Constant(5)
+        }
+    )
+)"
         )
     End Sub
 
@@ -89,7 +190,15 @@
         RunTest(
             Function() New String(4)(,) {},
             "() => new string[5][,]",
-            "Function() New String(4)(,) {}"
+            "Function() New String(4)(,) {}",
+            "Lambda(
+    NewArrayBounds(
+        typeof(string[,]),
+        new[] {
+            Constant(5)
+        }
+    )
+)"
         )
     End Sub
 
@@ -98,7 +207,16 @@
         RunTest(
             Function() New String(2, 1)() {},
             "() => new string[3, 2][]",
-            "Function() New String(2, 1)() {}"
+            "Function() New String(2, 1)() {}",
+            "Lambda(
+    NewArrayBounds(
+        typeof(string[]),
+        new[] {
+            Constant(3),
+            Constant(2)
+        }
+    )
+)"
         )
     End Sub
 End Class

@@ -41,7 +41,7 @@ namespace Tests.DataGenerator {
             if (testData.IsNullOrWhitespace()) {
                 counter += 1;
                 lines.AddRange(new[] {
-                    ",@\"" + toWrite + "\"",
+                    "\"" + toWrite.Replace("\"", "\"\"") + "\"",
                     $"{TestMethodName()}",
                     ""
                 });

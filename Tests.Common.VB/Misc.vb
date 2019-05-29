@@ -4,7 +4,24 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function(i As Integer) If(i > 10, i, i + 10),
             "(int i) => i > 10 ? i : i + 10",
-            "Function(i As Integer) If(i > 10, i, i + 10)"
+            "Function(i As Integer) If(i > 10, i, i + 10)",
+            "Lambda(
+    Condition(
+        GreaterThan(i,
+            Constant(10)
+        ),
+        i,
+        AddChecked(i,
+            Constant(10)
+        )
+    ),
+    new[] {
+        var i = Parameter(
+            typeof(int),
+            ""i""
+        )
+    }
+)"
         )
     End Sub
 
@@ -13,7 +30,10 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() Nothing,
             "() => null",
-            "Function() Nothing"
+            "Function() Nothing",
+            "Lambda(
+    Constant(null)
+)"
         )
     End Sub
 
@@ -22,7 +42,12 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(Of String)(
             Function() Nothing,
             "() => null",
-            "Function() Nothing"
+            "Function() Nothing",
+            "Lambda(
+    Constant(null,
+        typeof(string)
+    )
+)"
         )
     End Sub
 
@@ -31,7 +56,10 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(Of Integer)(
             Function() Nothing,
             "() => 0",
-            "Function() 0"
+            "Function() 0",
+            "Lambda(
+    Constant(0)
+)"
         )
     End Sub
 
@@ -40,7 +68,13 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() TypeOf "" Is String,
             "() => """" is string",
-            "Function() TypeOf """" Is String"
+            "Function() TypeOf """" Is String",
+            "Lambda(
+    TypeIs(
+        Constant(""""),
+        typeof(string)
+    )
+)"
         )
     End Sub
 
@@ -50,7 +84,10 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() del(),
             "() => del()",
-            "Function() del()"
+            "Function() del()",
+            "Lambda(
+    Invoke(del)
+)"
         )
     End Sub
 
@@ -60,7 +97,12 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() del(5),
             "() => del(5)",
-            "Function() del(5)"
+            "Function() del(5)",
+            "Lambda(
+    Invoke(del, new[] {
+        Constant(5)
+    })
+)"
         )
     End Sub
 End Class

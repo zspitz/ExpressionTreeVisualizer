@@ -34,7 +34,12 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() New Random(),
             "() => new Random()",
-            "Function() New Random"
+            "Function() New Random",
+            "Lambda(
+    New(
+        typeof(Random).GetConstructor()
+    )
+)"
         )
     End Sub
 
@@ -47,7 +52,20 @@ Partial Public Class VBCompilerGeneratedBase
 }",
             "Function() New Foo With {
     .Bar = ""abcd""
-}"
+}",
+            "Lambda(
+    MemberInit(
+        New(
+            typeof(Foo).GetConstructor()
+        ),
+        new[] {
+            Bind(
+                typeof(Foo).GetProperty(""Bar""),
+                Constant(""abcd"")
+            )
+        }
+    )
+)"
         )
     End Sub
 
@@ -62,7 +80,24 @@ Partial Public Class VBCompilerGeneratedBase
             "Function() New Foo With {
     .Bar = ""abcd"",
     .Baz = ""efgh""
-}"
+}",
+            "Lambda(
+    MemberInit(
+        New(
+            typeof(Foo).GetConstructor()
+        ),
+        new[] {
+            Bind(
+                typeof(Foo).GetProperty(""Bar""),
+                Constant(""abcd"")
+            ),
+            Bind(
+                typeof(Foo).GetProperty(""Baz""),
+                Constant(""efgh"")
+            )
+        }
+    )
+)"
         )
     End Sub
 
@@ -71,7 +106,15 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() New Foo("ijkl"),
             "() => new Foo(""ijkl"")",
-            "Function() New Foo(""ijkl"")"
+            "Function() New Foo(""ijkl"")",
+            "Lambda(
+    New(
+        typeof(Foo).GetConstructor(),
+        new[] {
+            Constant(""ijkl"")
+        }
+    )
+)"
         )
     End Sub
 
@@ -86,7 +129,27 @@ Partial Public Class VBCompilerGeneratedBase
             "Function() New Foo(""ijkl"") With {
     .Bar = ""abcd"",
     .Baz = ""efgh""
-}"
+}",
+            "Lambda(
+    MemberInit(
+        New(
+            typeof(Foo).GetConstructor(),
+            new[] {
+                Constant(""ijkl"")
+            }
+        ),
+        new[] {
+            Bind(
+                typeof(Foo).GetProperty(""Bar""),
+                Constant(""abcd"")
+            ),
+            Bind(
+                typeof(Foo).GetProperty(""Baz""),
+                Constant(""efgh"")
+            )
+        }
+    )
+)"
         )
     End Sub
 
@@ -101,7 +164,16 @@ Partial Public Class VBCompilerGeneratedBase
             "Function() New With {
     .Bar = ""abcd"",
     .Baz = ""efgh""
-}"
+}",
+            "Lambda(
+    New(
+        typeof({ string Bar, string Baz }).GetConstructor(),
+        new[] {
+            Constant(""abcd""),
+            Constant(""efgh"")
+        }
+    )
+)"
         )
     End Sub
 
@@ -118,7 +190,16 @@ Partial Public Class VBCompilerGeneratedBase
             "Function() New With {
     Bar,
     Baz
-}"
+}",
+            "Lambda(
+    New(
+        typeof({ string Bar, string Baz }).GetConstructor(),
+        new[] {
+            Bar,
+            Baz
+        }
+    )
+)"
         )
     End Sub
 
@@ -133,7 +214,28 @@ Partial Public Class VBCompilerGeneratedBase
             "Function() New List(Of String) From {
     ""abcd"",
     ""efgh""
-}"
+}",
+            "Lambda(
+    ListInit(
+        New(
+            typeof(List<string>).GetConstructor()
+        ),
+        new[] {
+            ElementInit(
+                typeof(List<string>).GetMethod(""Add""),
+                new[] {
+                    Constant(""abcd"")
+                }
+            ),
+            ElementInit(
+                typeof(List<string>).GetMethod(""Add""),
+                new[] {
+                    Constant(""efgh"")
+                }
+            )
+        }
+    )
+)"
         )
     End Sub
 
@@ -160,7 +262,30 @@ Partial Public Class VBCompilerGeneratedBase
         ""ef"",
         ""gh""
     }
-}"
+}",
+            "Lambda(
+    ListInit(
+        New(
+            typeof(Wrapper).GetConstructor()
+        ),
+        new[] {
+            ElementInit(
+                typeof(Wrapper).GetMethod(""Add""),
+                new[] {
+                    Constant(""ab""),
+                    Constant(""cd"")
+                }
+            ),
+            ElementInit(
+                typeof(Wrapper).GetMethod(""Add""),
+                new[] {
+                    Constant(""ef""),
+                    Constant(""gh"")
+                }
+            )
+        }
+    )
+)"
         )
     End Sub
 
@@ -181,7 +306,29 @@ Partial Public Class VBCompilerGeneratedBase
         ""cd""
     },
     ""ef""
-}"
+}",
+            "Lambda(
+    ListInit(
+        New(
+            typeof(Wrapper).GetConstructor()
+        ),
+        new[] {
+            ElementInit(
+                typeof(Wrapper).GetMethod(""Add""),
+                new[] {
+                    Constant(""ab""),
+                    Constant(""cd"")
+                }
+            ),
+            ElementInit(
+                typeof(Wrapper).GetMethod(""Add""),
+                new[] {
+                    Constant(""ef"")
+                }
+            )
+        }
+    )
+)"
         )
     End Sub
 End Class

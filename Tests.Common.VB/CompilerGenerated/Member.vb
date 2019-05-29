@@ -5,7 +5,12 @@
         RunTest(
             Function() s.Length,
             "() => s.Length",
-            "Function() s.Length"
+            "Function() s.Length",
+            "Lambda(
+    MakeMemberAccess(s,
+        typeof(string).GetProperty(""Length"")
+    )
+)"
         )
     End Sub
 
@@ -15,7 +20,8 @@
         RunTest(
             Function() s,
             "() => s",
-            "Function() s"
+            "Function() s",
+            "Lambda(s)"
         )
     End Sub
 
@@ -24,7 +30,12 @@
         RunTest(
             Function() String.Empty,
             "() => string.Empty",
-            "Function() String.Empty"
+            "Function() String.Empty",
+            "Lambda(
+    MakeMemberAccess(null,
+        typeof(string).GetField(""Empty"")
+    )
+)"
         )
     End Sub
 

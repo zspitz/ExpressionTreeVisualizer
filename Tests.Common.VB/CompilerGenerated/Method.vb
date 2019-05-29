@@ -10,7 +10,12 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() s.ToString(),
             "() => s.ToString()",
-            "Function() s.ToString"
+            "Function() s.ToString",
+            "Lambda(
+    Call(s,
+        typeof(string).GetMethod(""ToString"")
+    )
+)"
         )
     End Sub
 
@@ -20,7 +25,11 @@ Partial Public Class VBCompilerGeneratedBase
             Sub() DummyMethod(),
             "() => Dummy.DummyMethod()",
             "Sub() Dummy.DummyMethod",
-            ""
+            "Lambda(
+    Call(
+        typeof(Dummy).GetMethod(""DummyMethod"")
+    )
+)"
         )
     End Sub
 
@@ -30,7 +39,15 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() lst.Distinct,
             "() => lst.Distinct()",
-            "Function() lst.Distinct"
+            "Function() lst.Distinct",
+            "Lambda(
+    Call(
+        typeof(Enumerable).GetMethod(""Distinct""),
+        new[] {
+            lst
+        }
+    )
+)"
         )
     End Sub
 
@@ -40,7 +57,15 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() s.CompareTo(""),
             "() => s.CompareTo("""")",
-            "Function() s.CompareTo("""")"
+            "Function() s.CompareTo("""")",
+            "Lambda(
+    Call(s,
+        typeof(string).GetMethod(""CompareTo""),
+        new[] {
+            Constant("""")
+        }
+    )
+)"
         )
     End Sub
 
@@ -49,7 +74,15 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() String.Intern(""),
             "() => string.Intern("""")",
-            "Function() String.Intern("""")"
+            "Function() String.Intern("""")",
+            "Lambda(
+    Call(
+        typeof(string).GetMethod(""Intern""),
+        new[] {
+            Constant("""")
+        }
+    )
+)"
         )
     End Sub
 
@@ -59,7 +92,16 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() lst.Take(1),
             "() => lst.Take(1)",
-            "Function() lst.Take(1)"
+            "Function() lst.Take(1)",
+            "Lambda(
+    Call(
+        typeof(Enumerable).GetMethod(""Take""),
+        new[] {
+            lst,
+            Constant(1)
+        }
+    )
+)"
         )
     End Sub
 
@@ -69,7 +111,24 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() s.Contains("a"c, StringComparer.InvariantCultureIgnoreCase),
             "() => (IEnumerable<char>)s.Contains('a', (IEqualityComparer<char>)StringComparer.InvariantCultureIgnoreCase)",
-            "Function() CType(s, IEnumerable(Of Char)).Contains(""a""C, CType(StringComparer.InvariantCultureIgnoreCase, IEqualityComparer(Of Char)))"
+            "Function() CType(s, IEnumerable(Of Char)).Contains(""a""C, CType(StringComparer.InvariantCultureIgnoreCase, IEqualityComparer(Of Char)))",
+            "Lambda(
+    Call(
+        typeof(Enumerable).GetMethod(""Contains""),
+        new[] {
+            Convert(s,
+                typeof(IEnumerable<char>)
+            ),
+            Constant('a'),
+            Convert(
+                MakeMemberAccess(null,
+                    typeof(StringComparer).GetProperty(""InvariantCultureIgnoreCase"")
+                ),
+                typeof(IEqualityComparer<char>)
+            )
+        }
+    )
+)"
         )
     End Sub
 
@@ -79,7 +138,16 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() String.Join(","c, arr),
             "() => string.Join("","", arr)",
-            "Function() String.Join("","", arr)"
+            "Function() String.Join("","", arr)",
+            "Lambda(
+    Call(
+        typeof(string).GetMethod(""Join""),
+        new[] {
+            Constant("",""),
+            arr
+        }
+    )
+)"
         )
     End Sub
 
@@ -90,7 +158,22 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function() lst.OrderBy(Function(x) x, comparer),
             "() => lst.OrderBy((string x) => x, comparer)",
-            "Function() lst.OrderBy(Function(x As String) x, comparer)"
+            "Function() lst.OrderBy(Function(x As String) x, comparer)",
+            "Lambda(
+    Call(
+        typeof(Enumerable).GetMethod(""OrderBy""),
+        new[] {
+            lst,
+            Lambda(x, new[] {
+                var x = Parameter(
+                    typeof(string),
+                    ""x""
+                )
+            }),
+            comparer
+        }
+    )
+)"
         )
     End Sub
 
@@ -99,7 +182,23 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function(s1 As String, s2 As String) String.Concat(s1, s2),
             "(string s1, string s2) => s1 + s2",
-            "Function(s1 As String, s2 As String) s1 + s2"
+            "Function(s1 As String, s2 As String) s1 + s2",
+            "Lambda(
+    Call(
+        typeof(string).GetMethod(""Concat""),
+        new[] { s1, s2 }
+    ),
+    new[] {
+        var s1 = Parameter(
+            typeof(string),
+            ""s1""
+        ),
+        var s2 = Parameter(
+            typeof(string),
+            ""s2""
+        )
+    }
+)"
         )
     End Sub
 
@@ -108,7 +207,23 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function(s1 As String, s2 As String) s1 + s2,
             "(string s1, string s2) => s1 + s2",
-            "Function(s1 As String, s2 As String) s1 + s2"
+            "Function(s1 As String, s2 As String) s1 + s2",
+            "Lambda(
+    Call(
+        typeof(string).GetMethod(""Concat""),
+        new[] { s1, s2 }
+    ),
+    new[] {
+        var s1 = Parameter(
+            typeof(string),
+            ""s1""
+        ),
+        var s2 = Parameter(
+            typeof(string),
+            ""s2""
+        )
+    }
+)"
         )
     End Sub
 
@@ -117,7 +232,28 @@ Partial Public Class VBCompilerGeneratedBase
         RunTest(
             Function(s1 As String, s2 As String) s1 + s2 + s1 + s2 + s1 + s2,
             "(string s1, string s2) => s1 + s2 + s1 + s2 + s1 + s2",
-            "Function(s1 As String, s2 As String) s1 + s2 + s1 + s2 + s1 + s2"
+            "Function(s1 As String, s2 As String) s1 + s2 + s1 + s2 + s1 + s2",
+            "Lambda(
+    Call(
+        typeof(string).GetMethod(""Concat""),
+        new[] {
+            NewArrayInit(
+                typeof(string),
+                new[] { s1, s2, s1, s2, s1, s2 }
+            )
+        }
+    ),
+    new[] {
+        var s1 = Parameter(
+            typeof(string),
+            ""s1""
+        ),
+        var s2 = Parameter(
+            typeof(string),
+            ""s2""
+        )
+    }
+)"
         )
     End Sub
 
