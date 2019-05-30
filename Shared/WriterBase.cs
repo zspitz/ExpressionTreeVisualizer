@@ -32,12 +32,14 @@ namespace ExpressionToString {
         // Unfortunately, C# doesn't support union types ...
         protected WriterBase(object o, string language) {
             this.language = language;
+            PreWrite();
             WriteNode("", o);
         }
 
         protected WriterBase(object o, string language, out Dictionary<string, (int start, int length)> pathSpans) {
             this.language = language;
             this.pathSpans = new Dictionary<string, (int start, int length)>();
+            PreWrite();
             WriteNode("", o);
             pathSpans = this.pathSpans;
         }
@@ -53,6 +55,8 @@ namespace ExpressionToString {
         }
 
         protected void Write(string s) => s.AppendTo(sb);
+
+        protected virtual void PreWrite() { }
 
         private List<string> pathSegments = new List<string>();
 

@@ -15,28 +15,25 @@ using System.Runtime.CompilerServices;
 
 namespace ExpressionToString {
     public class FactoryMethodsFormatter : WriterBase {
-        private void WriteUsing() {
-            //string @using;
-            //switch (language) {
-            //    case CSharp:
-            //        @using = "// using static System.Linq.Expressions.Expression";
-            //        break;
-            //    case VisualBasic:
-            //        @using = "' Imports System.Linq.Expressions.Expression";
-            //        break;
-            //    default:
-            //        throw new InvalidOperationException("Invalid language");
-            //}
-            //Write(@using);
-            //WriteEOL();
+        protected override void PreWrite() {
+            string @using;
+            switch (language) {
+                case CSharp:
+                    @using = "// using static System.Linq.Expressions.Expression";
+                    break;
+                case VisualBasic:
+                    @using = "' Imports System.Linq.Expressions.Expression";
+                    break;
+                default:
+                    return;
+            }
+            Write(@using);
+            WriteEOL();
+            WriteEOL();
         }
 
-        public FactoryMethodsFormatter(object o, string language) : base(o, language) {
-            WriteUsing();
-        }
-        public FactoryMethodsFormatter(object o, string language, out Dictionary<string, (int start, int length)> pathSpans) : base(o, language, out pathSpans) {
-            WriteUsing();
-        }
+        public FactoryMethodsFormatter(object o, string language) : base(o, ResolveLanguage(language)) { }
+        public FactoryMethodsFormatter(object o, string language, out Dictionary<string, (int start, int length)> pathSpans) : base(o, ResolveLanguage(language), out pathSpans) { }
 
         /// <param name="args">The arguments to write. If a tuple of string and node type, will write as single node. If a tuple of string and property type, will write as multiple nodes.</param>
         private void WriteMethodCall(string name, IEnumerable args) {

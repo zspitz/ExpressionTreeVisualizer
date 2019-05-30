@@ -53,7 +53,7 @@ namespace ExpressionTreeVisualizer {
 
         public ExpressionNodeData FindNodeBySpan(int start, int length) {
             var end = start + length;
-            if (start < NodeData.Span.start || end > NodeData.SpanEnd) { throw new ArgumentOutOfRangeException(); }
+            //if (start < NodeData.Span.start || end > NodeData.SpanEnd) { throw new ArgumentOutOfRangeException(); }
             var current = NodeData;
             while (true) {
                 // we should really use SingleOrDefault, except that multiple instances of the same ParameterExpression might be returned, because we can't figure out the right start and end for multiple ParameterExpression
