@@ -358,13 +358,8 @@ namespace ExpressionToString {
             }
         }
 
-        protected override void WriteInvocation(InvocationExpression expr) {
-            if (expr.Arguments.None()) {
-                WriteMethodCall(() => Invoke(expr.Expression));
-                return;
-            }
-            WriteMethodCall(() => Invoke(expr.Expression, expr.Arguments));
-        }
+        protected override void WriteInvocation(InvocationExpression expr) => 
+            WriteMethodCall(() => Invoke(expr.Expression, expr.Arguments.ToArray()));
 
         protected override void WriteIndex(IndexExpression expr) {
             if (expr.Indexer != null) {
