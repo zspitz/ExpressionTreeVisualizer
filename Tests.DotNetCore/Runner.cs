@@ -5,6 +5,7 @@ using Xunit;
 using static ExpressionToString.FormatterNames;
 using Pather.CSharp;
 using ExpressionToString.Util;
+using System;
 
 namespace ExpressionToString.Tests {
     public static class Runner {
@@ -52,6 +53,7 @@ namespace ExpressionToString.Tests {
             // check that the string results are equivalent, for both C# and VB code
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
+            factoryMethods = FactoryMethodsFormatter.CSharpUsing + Environment.NewLine + Environment.NewLine + factoryMethods;
             Assert.Equal(factoryMethods, testFactoryMethods);
 
             // using factory methods formatter as source for paths; other formatters may skip paths or introduce new onee

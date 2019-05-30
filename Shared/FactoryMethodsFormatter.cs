@@ -15,14 +15,17 @@ using System.Runtime.CompilerServices;
 
 namespace ExpressionToString {
     public class FactoryMethodsFormatter : WriterBase {
+        public const string CSharpUsing = "// using static System.Linq.Expressions.Expression";
+        public const string VisualBasicUsing = "' Imports System.Linq.Expressions.Expression";
+
         protected override void PreWrite() {
             string @using;
             switch (language) {
                 case CSharp:
-                    @using = "// using static System.Linq.Expressions.Expression";
+                    @using = CSharpUsing;
                     break;
                 case VisualBasic:
-                    @using = "' Imports System.Linq.Expressions.Expression";
+                    @using = VisualBasicUsing;
                     break;
                 default:
                     return;
