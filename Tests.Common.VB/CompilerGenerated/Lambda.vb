@@ -24,12 +24,10 @@
         typeof(Console).GetMethod(""WriteLine""),
         new[] { s }
     ),
-    new[] {
-        var s = Parameter(
-            typeof(string),
-            ""s""
-        )
-    }
+    var s = Parameter(
+        typeof(string),
+        ""s""
+    )
 )"
         )
     End Sub
@@ -50,16 +48,14 @@
             )
         }
     ),
-    new[] {
-        var s1 = Parameter(
-            typeof(string),
-            ""s1""
-        ),
-        var s2 = Parameter(
-            typeof(string),
-            ""s2""
-        )
-    }
+    var s1 = Parameter(
+        typeof(string),
+        ""s1""
+    ),
+    var s2 = Parameter(
+        typeof(string),
+        ""s2""
+    )
 )"
         )
     End Sub
@@ -82,12 +78,12 @@
             Function(s) s,
             "(string s) => s",
             "Function(s As String) s",
-            "Lambda(s, new[] {
+            "Lambda(s,
     var s = Parameter(
         typeof(string),
         ""s""
     )
-})"
+)"
         )
     End Sub
 
@@ -102,16 +98,14 @@
         typeof(string).GetMethod(""Concat""),
         new[] { s1, s2 }
     ),
-    new[] {
-        var s1 = Parameter(
-            typeof(string),
-            ""s1""
-        ),
-        var s2 = Parameter(
-            typeof(string),
-            ""s2""
-        )
-    }
+    var s1 = Parameter(
+        typeof(string),
+        ""s1""
+    ),
+    var s2 = Parameter(
+        typeof(string),
+        ""s2""
+    )
 )"
         )
     End Sub

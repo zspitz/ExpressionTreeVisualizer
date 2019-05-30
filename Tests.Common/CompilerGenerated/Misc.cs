@@ -20,12 +20,10 @@ namespace ExpressionToString.Tests {
             Constant(10)
         )
     ),
-    new[] {
-        var i = Parameter(
-            typeof(int),
-            ""i""
-        )
-    }
+    var i = Parameter(
+        typeof(int),
+        ""i""
+    )
 )"
         );
 

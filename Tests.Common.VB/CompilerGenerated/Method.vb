@@ -164,12 +164,12 @@ Partial Public Class VBCompilerGeneratedBase
         typeof(Enumerable).GetMethod(""OrderBy""),
         new[] {
             lst,
-            Lambda(x, new[] {
+            Lambda(x,
                 var x = Parameter(
                     typeof(string),
                     ""x""
                 )
-            }),
+            ),
             comparer
         }
     )
@@ -188,16 +188,14 @@ Partial Public Class VBCompilerGeneratedBase
         typeof(string).GetMethod(""Concat""),
         new[] { s1, s2 }
     ),
-    new[] {
-        var s1 = Parameter(
-            typeof(string),
-            ""s1""
-        ),
-        var s2 = Parameter(
-            typeof(string),
-            ""s2""
-        )
-    }
+    var s1 = Parameter(
+        typeof(string),
+        ""s1""
+    ),
+    var s2 = Parameter(
+        typeof(string),
+        ""s2""
+    )
 )"
         )
     End Sub
@@ -213,16 +211,14 @@ Partial Public Class VBCompilerGeneratedBase
         typeof(string).GetMethod(""Concat""),
         new[] { s1, s2 }
     ),
-    new[] {
-        var s1 = Parameter(
-            typeof(string),
-            ""s1""
-        ),
-        var s2 = Parameter(
-            typeof(string),
-            ""s2""
-        )
-    }
+    var s1 = Parameter(
+        typeof(string),
+        ""s1""
+    ),
+    var s2 = Parameter(
+        typeof(string),
+        ""s2""
+    )
 )"
         )
     End Sub
@@ -243,16 +239,14 @@ Partial Public Class VBCompilerGeneratedBase
             )
         }
     ),
-    new[] {
-        var s1 = Parameter(
-            typeof(string),
-            ""s1""
-        ),
-        var s2 = Parameter(
-            typeof(string),
-            ""s2""
-        )
-    }
+    var s1 = Parameter(
+        typeof(string),
+        ""s1""
+    ),
+    var s2 = Parameter(
+        typeof(string),
+        ""s2""
+    )
 )"
         )
     End Sub

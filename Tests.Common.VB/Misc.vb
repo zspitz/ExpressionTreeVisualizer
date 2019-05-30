@@ -15,12 +15,10 @@ Partial Public Class VBCompilerGeneratedBase
             Constant(10)
         )
     ),
-    new[] {
-        var i = Parameter(
-            typeof(int),
-            ""i""
-        )
-    }
+    var i = Parameter(
+        typeof(int),
+        ""i""
+    )
 )"
         )
     End Sub

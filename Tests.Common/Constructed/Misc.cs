@@ -83,12 +83,10 @@ namespace ExpressionToString.Tests {
             "(ref string s4) => true",
             "Function(ByRef s4 As String) True", @"Lambda(
     Constant(true),
-    new[] {
-        var s4 = Parameter(
-            typeof(string).MakeByRef(),
-            ""s4""
-        )
-    }
+    var s4 = Parameter(
+        typeof(string).MakeByRef(),
+        ""s4""
+    )
 )"
         );
 

@@ -49,7 +49,7 @@ namespace ExpressionToString {
             args.Cast<object>().ForEach((x, index) => {
                 var isTuple = TryTupleValues(x, out var values) && values.Length == 2;
                 (string path, object arg) = isTuple ? ((string)values[0], values[1]) : ("", x);
-                var parameterDeclaration = name == "Lambda" && path == "Parameters";
+                var parameterDeclaration = name == "Lambda" && path.StartsWith("Parameters");
 
                 bool writeNewline = false;
                 var argType = arg?.GetType();
@@ -87,7 +87,7 @@ namespace ExpressionToString {
                 }
 
                 if (argType.InheritsFromOrImplementsAny(NodeTypes)) {
-                    WriteNode(path, arg);
+                    WriteNode(path, arg, parameterDeclaration);
                 } else if (argType.InheritsFromOrImplementsAny(PropertyTypes)) {
                     if (language == CSharp) {
                         Write("new[] {");
@@ -261,13 +261,13 @@ namespace ExpressionToString {
                 }
             } else {
                 if (!expr.Name.IsNullOrWhitespace() && expr.TailCall) {
-                    WriteMethodCall(() => Lambda(expr.Body, expr.Name, expr.TailCall, expr.Parameters));
+                    WriteMethodCall(() => Lambda(expr.Body, expr.Name, expr.TailCall, expr.Parameters.ToArray()));
                 } else if (expr.TailCall) {
-                    WriteMethodCall(() => Lambda(expr.Body, expr.TailCall, expr.Parameters));
+                    WriteMethodCall(() => Lambda(expr.Body, expr.TailCall, expr.Parameters.ToArray()));
                 } else if (!expr.Name.IsNullOrWhitespace()) {
                     WriteMethodCall(() => Lambda(expr.Body, expr.Name, expr.Parameters));
                 } else {
-                    WriteMethodCall(() => Lambda(expr.Body, expr.Parameters));
+                    WriteMethodCall(() => Lambda(expr.Body, expr.Parameters.ToArray()));
                 }
             }
         }

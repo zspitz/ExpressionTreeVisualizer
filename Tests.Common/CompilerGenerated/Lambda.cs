@@ -28,12 +28,10 @@ namespace ExpressionToString.Tests {
         typeof(Console).GetMethod(""WriteLine""),
         new[] { s }
     ),
-    new[] {
-        var s = Parameter(
-            typeof(string),
-            ""s""
-        )
-    }
+    var s = Parameter(
+        typeof(string),
+        ""s""
+    )
 )"
         );
 
@@ -50,16 +48,14 @@ namespace ExpressionToString.Tests {
             Add(s1, s2)
         }
     ),
-    new[] {
-        var s1 = Parameter(
-            typeof(string),
-            ""s1""
-        ),
-        var s2 = Parameter(
-            typeof(string),
-            ""s2""
-        )
-    }
+    var s1 = Parameter(
+        typeof(string),
+        ""s1""
+    ),
+    var s2 = Parameter(
+        typeof(string),
+        ""s2""
+    )
 )"
         );
 
@@ -80,12 +76,12 @@ namespace ExpressionToString.Tests {
             s => s,
             "(string s) => s",
             "Function(s As String) s", 
-            @"Lambda(s, new[] {
+            @"Lambda(s,
     var s = Parameter(
         typeof(string),
         ""s""
     )
-})"
+)"
         );
 
         [Fact]
@@ -96,16 +92,14 @@ namespace ExpressionToString.Tests {
             "Function(s1 As String, s2 As String) s1 + s2", 
             @"Lambda(
     Add(s1, s2),
-    new[] {
-        var s1 = Parameter(
-            typeof(string),
-            ""s1""
-        ),
-        var s2 = Parameter(
-            typeof(string),
-            ""s2""
-        )
-    }
+    var s1 = Parameter(
+        typeof(string),
+        ""s1""
+    ),
+    var s2 = Parameter(
+        typeof(string),
+        ""s2""
+    )
 )"
         );
     }

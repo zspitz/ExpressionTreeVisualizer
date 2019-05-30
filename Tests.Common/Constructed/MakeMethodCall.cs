@@ -149,12 +149,12 @@ namespace ExpressionToString.Tests {
     typeof(Enumerable).GetMethod(""OrderBy""),
     new[] {
         lstString,
-        Lambda(x, new[] {
+        Lambda(x,
             var x = Parameter(
                 typeof(string),
                 ""x""
             )
-        }),
+        ),
         MakeMemberAccess(null,
             typeof(StringComparer).GetProperty(""OrdinalIgnoreCase"")
         )
