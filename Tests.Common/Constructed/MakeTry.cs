@@ -57,7 +57,7 @@ namespace ExpressionToString.Tests {
     Console.WriteLine(True)
     Console.WriteLine(True)", 
             @"Catch(ex,
-    Block(new[] {
+    Block(
         Call(
             typeof(Console).GetMethod(""WriteLine""),
             Constant(true)
@@ -66,7 +66,7 @@ namespace ExpressionToString.Tests {
             typeof(Console).GetMethod(""WriteLine""),
             Constant(true)
         )
-    })
+    )
 )"
         );
 
@@ -101,7 +101,7 @@ namespace ExpressionToString.Tests {
     Console.WriteLine(True)",
             @"Catch(
     typeof(InvalidCastException),
-    Block(new[] {
+    Block(
         Call(
             typeof(Console).GetMethod(""WriteLine""),
             Constant(true)
@@ -110,7 +110,7 @@ namespace ExpressionToString.Tests {
             typeof(Console).GetMethod(""WriteLine""),
             Constant(true)
         )
-    })
+    )
 )"
         );
 
@@ -144,7 +144,7 @@ namespace ExpressionToString.Tests {
     Console.WriteLine(True)
     Console.WriteLine(True)", 
             @"Catch(ex,
-    Block(new[] {
+    Block(
         Call(
             typeof(Console).GetMethod(""WriteLine""),
             Constant(true)
@@ -153,7 +153,7 @@ namespace ExpressionToString.Tests {
             typeof(Console).GetMethod(""WriteLine""),
             Constant(true)
         )
-    }),
+    ),
     Constant(true)
 )"
         );
@@ -178,10 +178,10 @@ End Block
         typeof(Console).GetMethod(""WriteLine""),
         Constant(true)
     ),
-    Block(new[] {
+    Block(
         Constant(true),
         Constant(true)
-    })
+    )
 )"
         );
 

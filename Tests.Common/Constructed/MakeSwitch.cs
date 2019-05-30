@@ -29,7 +29,7 @@ namespace ExpressionToString.Tests {
     Console.WriteLine(True)
     Console.WriteLine(True)",
             @"SwitchCase(
-    Block(new[] {
+    Block(
         Call(
             typeof(Console).GetMethod(""WriteLine""),
             Constant(true)
@@ -38,7 +38,7 @@ namespace ExpressionToString.Tests {
             typeof(Console).GetMethod(""WriteLine""),
             Constant(true)
         )
-    }),
+    ),
     new[] {
         Constant(5)
     }
@@ -59,7 +59,7 @@ case 6:
     Console.WriteLine(True)
     Console.WriteLine(True)",
             @"SwitchCase(
-    Block(new[] {
+    Block(
         Call(
             typeof(Console).GetMethod(""WriteLine""),
             Constant(true)
@@ -68,7 +68,7 @@ case 6:
             typeof(Console).GetMethod(""WriteLine""),
             Constant(true)
         )
-    }),
+    ),
     new[] {
         Constant(5),
         Constant(6)
@@ -271,7 +271,7 @@ End Select",
         True
 End Select", 
             @"Switch(
-    Block(new[] { i, j }),
+    Block(i, j),
     Block(
         typeof(void),
         Constant(true),
@@ -375,7 +375,7 @@ End Select",
         Console.WriteLine(False)
 End Select", 
             @"Switch(
-    Block(new[] { i, j }),
+    Block(i, j),
     SwitchCase(
         Call(
             typeof(Console).GetMethod(""WriteLine""),

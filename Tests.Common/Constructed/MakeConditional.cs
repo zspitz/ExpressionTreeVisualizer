@@ -155,10 +155,10 @@ namespace ExpressionToString.Tests {
     True
 End Block, ""true"".Length, ""false"".Length)", 
             @"Condition(
-    Block(new[] {
+    Block(
         Constant(true),
         Constant(true)
-    }),
+    ),
     MakeMemberAccess(
         Constant(""true""),
         typeof(string).GetProperty(""Length"")
@@ -186,10 +186,10 @@ End Block, ""true"".Length, ""false"".Length)",
     True
 Then Console.WriteLine(True)", 
             @"IfThen(
-    Block(new[] {
+    Block(
         Constant(true),
         Constant(true)
-    }),
+    ),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
         Constant(true)
@@ -214,7 +214,7 @@ Then Console.WriteLine(True)",
 End If", 
             @"IfThen(
     Constant(true),
-    Block(new[] {
+    Block(
         Call(
             typeof(Console).GetMethod(""WriteLine""),
             Constant(true)
@@ -223,7 +223,7 @@ End If",
             typeof(Console).GetMethod(""WriteLine""),
             Constant(true)
         )
-    })
+    )
 )"
         );
 

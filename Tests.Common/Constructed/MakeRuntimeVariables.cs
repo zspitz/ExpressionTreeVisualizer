@@ -32,10 +32,10 @@ namespace ExpressionToString.Tests {
     True
     ' Variables -- x As Double, s1 As String
 End Block", 
-            @"Block(new[] { s2 }, new[] {
+            @"Block(new[] { s2 },
     Constant(true),
     RuntimeVariables(new[] { x, s1 })
-})"
+)"
         );
     }
 }

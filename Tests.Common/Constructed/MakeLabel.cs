@@ -37,16 +37,16 @@ target:
         True
     End Block
 End Block",
-            @"Block(new[] { i }, new[] {
-    Block(new[] { j }, new[] {
+            @"Block(new[] { i },
+    Block(new[] { j },
         Constant(true),
         Label(
             Label(""target""),
             null
         ),
         Constant(true)
-    })
-})"
+    )
+)"
         );
 
         [Fact]
@@ -76,15 +76,15 @@ target:
         True
     End Block
 End Block",
-            @"Block(new[] { i }, new[] {
-    Block(new[] { j }, new[] {
+            @"Block(new[] { i },
+    Block(new[] { j },
         Label(
             Label(""target""),
             null
         ),
         Constant(true)
-    })
-})"
+    )
+)"
         );
 
         [Fact]

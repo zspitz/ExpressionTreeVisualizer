@@ -39,9 +39,9 @@ namespace ExpressionToString.Tests {
             ArrayAccess(arr, Constant(0)),
             "arr[0]",
             "arr(0)",
-            @"ArrayAccess(arr, new[] {
+            @"ArrayAccess(arr,
     Constant(0)
-})"
+)"
         );
 
         [Fact]

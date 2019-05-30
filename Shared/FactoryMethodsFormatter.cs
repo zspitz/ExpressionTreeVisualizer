@@ -366,21 +366,21 @@ namespace ExpressionToString {
                 WriteMethodCall(() => MakeIndex(expr.Object, expr.Indexer, expr.Arguments));
                 return;
             }
-            WriteMethodCall(() => ArrayAccess(expr.Object, expr.Arguments));
+            WriteMethodCall(() => ArrayAccess(expr.Object, expr.Arguments.ToArray()));
         }
 
         protected override void WriteBlock(BlockExpression expr, bool? explicitBlock = null) {
             if (expr.Type != expr.Expressions.Last().Type) {
                 if (expr.Variables.Any()) {
-                    WriteMethodCall(() => Block(expr.Type, expr.Variables, expr.Expressions));
+                    WriteMethodCall(() => Block(expr.Type, expr.Variables, expr.Expressions.ToArray()));
                 } else {
                     WriteMethodCall(() => Block(expr.Type, expr.Expressions.ToArray()));
                 }
             } else {
                 if (expr.Variables.Any()) {
-                    WriteMethodCall(() => Block(expr.Variables, expr.Expressions));
+                    WriteMethodCall(() => Block(expr.Variables, expr.Expressions.ToArray()));
                 } else {
-                    WriteMethodCall(() => Block(expr.Expressions));
+                    WriteMethodCall(() => Block(expr.Expressions.ToArray()));
                 }
             }
         }

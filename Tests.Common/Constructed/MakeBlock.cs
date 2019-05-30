@@ -17,10 +17,10 @@ namespace ExpressionToString.Tests {
 true;",
             @"True
 True",
-            @"Block(new[] {
+            @"Block(
     Constant(true),
     Constant(true)
-})"
+)"
         );
 
         [Fact]
@@ -41,10 +41,10 @@ True",
     True
     True
 End Block",
-            @"Block(new[] { i }, new[] {
+            @"Block(new[] { i },
     Constant(true),
     Constant(true)
-})"
+)"
         );
 
         [Fact]
@@ -67,10 +67,10 @@ End Block",
     True
     True
 End Block",
-    @"Block(new[] { i, s1 }, new[] {
+    @"Block(new[] { i, s1 },
     Constant(true),
     Constant(true)
-})"
+)"
         );
     }
 }

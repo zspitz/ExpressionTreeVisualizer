@@ -111,7 +111,7 @@ namespace ExpressionToString.Tests {
         Sub() Console.WriteLine(True)
     ' --- Quoted - end
 End Block",
-            @"Block(new[] { x }, new[] {
+            @"Block(new[] { x },
     Quote(
         Lambda(
             Call(
@@ -120,7 +120,7 @@ End Block",
             )
         )
     )
-})"
+)"
         );
 
         [Fact]

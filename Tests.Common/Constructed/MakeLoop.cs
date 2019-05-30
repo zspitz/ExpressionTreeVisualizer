@@ -37,10 +37,10 @@ Loop",
     True
 Loop", 
             @"Loop(
-    Block(new[] {
+    Block(
         Constant(true),
         Constant(true)
-    })
+    )
 )"
             );
 
