@@ -135,10 +135,8 @@ namespace ExpressionToString.Tests {
         Constant("",""),
         NewArrayInit(
             typeof(string),
-            new[] {
-                Constant(""a""),
-                Constant(""b"")
-            }
+            Constant(""a""),
+            Constant(""b"")
         )
     )
 )"

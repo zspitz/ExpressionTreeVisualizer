@@ -219,7 +219,7 @@ Partial Public Class VBCompilerGeneratedBase
         typeof(string).GetMethod(""Concat""),
         NewArrayInit(
             typeof(string),
-            new[] { s1, s2, s1, s2, s1, s2 }
+            s1, s2, s1, s2, s1, s2
         )
     ),
     var s1 = Parameter(

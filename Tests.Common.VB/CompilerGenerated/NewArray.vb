@@ -8,9 +8,7 @@
             "Lambda(
     NewArrayInit(
         typeof(string),
-        new[] {
-            Constant("""")
-        }
+        Constant("""")
     )
 )"
         )
@@ -25,12 +23,10 @@
             "Lambda(
     NewArrayInit(
         typeof(object),
-        new[] {
-            Convert(
-                Constant(""""),
-                typeof(object)
-            )
-        }
+        Convert(
+            Constant(""""),
+            typeof(object)
+        )
     )
 )"
         )
@@ -45,9 +41,7 @@
             "Lambda(
     NewArrayBounds(
         typeof(string),
-        new[] {
-            Constant(5)
-        }
+        Constant(5)
     )
 )"
         )
@@ -62,10 +56,8 @@
             "Lambda(
     NewArrayBounds(
         typeof(string),
-        new[] {
-            Constant(2),
-            Constant(3)
-        }
+        Constant(2),
+        Constant(3)
     )
 )"
         )
@@ -83,22 +75,16 @@
             "Lambda(
     NewArrayInit(
         typeof(string[]),
-        new[] {
-            NewArrayInit(
-                typeof(string),
-                new[] {
-                    Constant(""ab""),
-                    Constant(""cd"")
-                }
-            ),
-            NewArrayInit(
-                typeof(string),
-                new[] {
-                    Constant(""ef""),
-                    Constant(""gh"")
-                }
-            )
-        }
+        NewArrayInit(
+            typeof(string),
+            Constant(""ab""),
+            Constant(""cd"")
+        ),
+        NewArrayInit(
+            typeof(string),
+            Constant(""ef""),
+            Constant(""gh"")
+        )
     )
 )"
         )
@@ -120,10 +106,7 @@
             "Lambda(
     NewArrayInit(
         typeof(string[]),
-        new[] {
-            arr1,
-            arr2
-        }
+        arr1, arr2
     )
 )"
         )
@@ -141,28 +124,22 @@
             "Lambda(
     NewArrayInit(
         typeof(object[]),
-        new[] {
-            Convert(
-                NewArrayInit(
-                    typeof(string),
-                    new[] {
-                        Constant(""ab""),
-                        Constant(""cd"")
-                    }
-                ),
-                typeof(object[])
+        Convert(
+            NewArrayInit(
+                typeof(string),
+                Constant(""ab""),
+                Constant(""cd"")
             ),
-            Convert(
-                NewArrayInit(
-                    typeof(string),
-                    new[] {
-                        Constant(""ef""),
-                        Constant(""gh"")
-                    }
-                ),
-                typeof(object[])
-            )
-        }
+            typeof(object[])
+        ),
+        Convert(
+            NewArrayInit(
+                typeof(string),
+                Constant(""ef""),
+                Constant(""gh"")
+            ),
+            typeof(object[])
+        )
     )
 )"
         )
@@ -177,9 +154,7 @@
             "Lambda(
     NewArrayBounds(
         typeof(string[]),
-        new[] {
-            Constant(5)
-        }
+        Constant(5)
     )
 )"
         )
@@ -194,9 +169,7 @@
             "Lambda(
     NewArrayBounds(
         typeof(string[,]),
-        new[] {
-            Constant(5)
-        }
+        Constant(5)
     )
 )"
         )
@@ -211,10 +184,8 @@
             "Lambda(
     NewArrayBounds(
         typeof(string[]),
-        new[] {
-            Constant(3),
-            Constant(2)
-        }
+        Constant(3),
+        Constant(2)
     )
 )"
         )

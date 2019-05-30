@@ -317,10 +317,10 @@ namespace ExpressionToString {
         protected override void WriteNewArray(NewArrayExpression expr) {
             switch (expr.NodeType) {
                 case ExpressionType.NewArrayInit:
-                    WriteMethodCall(() => NewArrayInit(expr.Type.GetElementType(), expr.Expressions));
+                    WriteMethodCall(() => NewArrayInit(expr.Type.GetElementType(), expr.Expressions.ToArray()));
                     break;
                 case ExpressionType.NewArrayBounds:
-                    WriteMethodCall(() => NewArrayBounds(expr.Type.GetElementType(), expr.Expressions));
+                    WriteMethodCall(() => NewArrayBounds(expr.Type.GetElementType(), expr.Expressions.ToArray()));
                     break;
                 default:
                     throw new NotImplementedException();

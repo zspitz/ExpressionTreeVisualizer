@@ -12,9 +12,7 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     NewArrayInit(
         typeof(string),
-        new[] {
-            Constant("""")
-        }
+        Constant("""")
     )
 )"
         );
@@ -28,9 +26,7 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     NewArrayInit(
         typeof(object),
-        new[] {
-            Constant("""")
-        }
+        Constant("""")
     )
 )"
         );
@@ -44,9 +40,7 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     NewArrayBounds(
         typeof(string),
-        new[] {
-            Constant(5)
-        }
+        Constant(5)
     )
 )"
         );
@@ -60,10 +54,8 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     NewArrayBounds(
         typeof(string),
-        new[] {
-            Constant(2),
-            Constant(3)
-        }
+        Constant(2),
+        Constant(3)
     )
 )"
         );
@@ -80,22 +72,16 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     NewArrayInit(
         typeof(string[]),
-        new[] {
-            NewArrayInit(
-                typeof(string),
-                new[] {
-                    Constant(""ab""),
-                    Constant(""cd"")
-                }
-            ),
-            NewArrayInit(
-                typeof(string),
-                new[] {
-                    Constant(""ef""),
-                    Constant(""gh"")
-                }
-            )
-        }
+        NewArrayInit(
+            typeof(string),
+            Constant(""ab""),
+            Constant(""cd"")
+        ),
+        NewArrayInit(
+            typeof(string),
+            Constant(""ef""),
+            Constant(""gh"")
+        )
     )
 )"
         );
@@ -112,22 +98,16 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     NewArrayInit(
         typeof(object[]),
-        new[] {
-            NewArrayInit(
-                typeof(string),
-                new[] {
-                    Constant(""ab""),
-                    Constant(""cd"")
-                }
-            ),
-            NewArrayInit(
-                typeof(string),
-                new[] {
-                    Constant(""ef""),
-                    Constant(""gh"")
-                }
-            )
-        }
+        NewArrayInit(
+            typeof(string),
+            Constant(""ab""),
+            Constant(""cd"")
+        ),
+        NewArrayInit(
+            typeof(string),
+            Constant(""ef""),
+            Constant(""gh"")
+        )
     )
 )"
         );
@@ -141,9 +121,7 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     NewArrayBounds(
         typeof(string[]),
-        new[] {
-            Constant(5)
-        }
+        Constant(5)
     )
 )"
         );
@@ -157,9 +135,7 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     NewArrayBounds(
         typeof(string[,]),
-        new[] {
-            Constant(5)
-        }
+        Constant(5)
     )
 )"
         );
@@ -173,10 +149,8 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     NewArrayBounds(
         typeof(string[]),
-        new[] {
-            Constant(3),
-            Constant(2)
-        }
+        Constant(3),
+        Constant(2)
     )
 )"
         );
