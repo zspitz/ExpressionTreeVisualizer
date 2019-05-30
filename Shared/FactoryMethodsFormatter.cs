@@ -479,7 +479,8 @@ namespace ExpressionToString {
             }
         }
 
-        protected override void WriteSwitchCase(SwitchCase switchCase) => WriteMethodCall(() => SwitchCase(switchCase.Body, switchCase.TestValues));
+        protected override void WriteSwitchCase(SwitchCase switchCase) => 
+            WriteMethodCall(() => SwitchCase(switchCase.Body, switchCase.TestValues.ToArray()));
 
         protected override void WriteCatchBlock(CatchBlock catchBlock) {
             if (catchBlock.Variable != null) {
