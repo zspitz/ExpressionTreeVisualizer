@@ -1,4 +1,5 @@
 # Expression To String and Expression Tree Visualizer
+
 This project provides the following:
 
 * [![NuGet Status](https://img.shields.io/nuget/v/ExpressionTreeToString.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeToString/) Extension methods to create a C# or VB.NET code-like string representation, of expression trees or expression tree parts (.NET Standard library)
@@ -10,21 +11,36 @@ This project provides the following:
 * Star the project and/or upvote the posts on [reddit](https://www.reddit.com/r/dotnet/comments/bk2f05/expressiontostring_debugger_visualizer_v12_net_4/) or [Hacker News](https://news.ycombinator.com/item?id=19814493)
 * File an [issue](https://github.com/zspitz/ExpressionToString/issues)
 
-
 ## String representations of expression trees
+
 ```csharp
 Expression<Func<bool>> expr = () => true;
 
-Console.WriteLine(expr.ToString("C#")); 
+Console.WriteLine(expr.ToString("C#"));
 // prints: () => true
 
 Console.WriteLine(expr.ToString("Visual Basic"));
 // prints: Function() True
+
+Console.WriteLine(expr.ToString("Factory methods"));
+// prints:
+/*
+    // using static System.Linq.Expressions.Expression
+
+    Lambda(
+        Constant(true)
+    )
+*/
+
 ```
 
 Features:
 
-* Support for outputting C#- and VB.NET-style pseudocode (with [more to come](https://github.com/zspitz/ExpressionToString/issues/38))
+* Multiple formatters ([with more planned](https://github.com/zspitz/ExpressionToString/issues/38)):
+
+  * Pseudo-code in C# or VB.NET
+  * Factory methods to create a similar expression
+
 * Extension methods are rendered as instance methods
 
     ```csharp
@@ -51,6 +67,7 @@ Features:
     Console.WriteLine(expr.ToString("C#"));
     // prints: () => $"Hello, {name}!"
     ```
+
 * Supports the full range of types in `System.Linq.Expressions`, including .NET 4 expression types, and `DynamicExpression`
 
 ## Visual Studio debugger visualizer for expression trees
@@ -69,10 +86,10 @@ The UI consists of three parts:
 
 Features:
 
-* Live switching between C# and VB.NET
+* Live switching between formatters
 
-    ![Language switch](language-switch.gif)
-    
+    ![Language switch](formatter-switch.gif)
+
 * Selection syncing when selecting from the tree:
 
   ![Selection sync from tree](sync-from-tree.gif)
@@ -85,7 +102,7 @@ Features:
 
   ![Selection sync from end nodes](sync-from-endnodes.gif)
   
-# Credits
+## Credits
 
 * John M. Wright's series on [writing debugger visualizers](https://wrightfully.com/writing-a-readonly-debugger-visualizer)
 * Multiple-selection treeview is provided by [MultiSelectTreeView](https://github.com/ygoe/MultiSelectTreeView)
