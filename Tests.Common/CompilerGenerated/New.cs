@@ -198,20 +198,18 @@ namespace ExpressionToString.Tests {
         New(
             typeof(List<string>).GetConstructor()
         ),
-        new[] {
-            ElementInit(
-                typeof(List<string>).GetMethod(""Add""),
-                new[] {
-                    Constant(""abcd"")
-                }
-            ),
-            ElementInit(
-                typeof(List<string>).GetMethod(""Add""),
-                new[] {
-                    Constant(""efgh"")
-                }
-            )
-        }
+        ElementInit(
+            typeof(List<string>).GetMethod(""Add""),
+            new[] {
+                Constant(""abcd"")
+            }
+        ),
+        ElementInit(
+            typeof(List<string>).GetMethod(""Add""),
+            new[] {
+                Constant(""efgh"")
+            }
+        )
     )
 )"
         );
@@ -245,22 +243,20 @@ namespace ExpressionToString.Tests {
         New(
             typeof(Wrapper).GetConstructor()
         ),
-        new[] {
-            ElementInit(
-                typeof(Wrapper).GetMethod(""Add""),
-                new[] {
-                    Constant(""ab""),
-                    Constant(""cd"")
-                }
-            ),
-            ElementInit(
-                typeof(Wrapper).GetMethod(""Add""),
-                new[] {
-                    Constant(""ef""),
-                    Constant(""gh"")
-                }
-            )
-        }
+        ElementInit(
+            typeof(Wrapper).GetMethod(""Add""),
+            new[] {
+                Constant(""ab""),
+                Constant(""cd"")
+            }
+        ),
+        ElementInit(
+            typeof(Wrapper).GetMethod(""Add""),
+            new[] {
+                Constant(""ef""),
+                Constant(""gh"")
+            }
+        )
     )
 )"
         );
@@ -288,21 +284,19 @@ namespace ExpressionToString.Tests {
         New(
             typeof(Wrapper).GetConstructor()
         ),
-        new[] {
-            ElementInit(
-                typeof(Wrapper).GetMethod(""Add""),
-                new[] {
-                    Constant(""ab""),
-                    Constant(""cd"")
-                }
-            ),
-            ElementInit(
-                typeof(List<string>).GetMethod(""Add""),
-                new[] {
-                    Constant(""ef"")
-                }
-            )
-        }
+        ElementInit(
+            typeof(Wrapper).GetMethod(""Add""),
+            new[] {
+                Constant(""ab""),
+                Constant(""cd"")
+            }
+        ),
+        ElementInit(
+            typeof(List<string>).GetMethod(""Add""),
+            new[] {
+                Constant(""ef"")
+            }
+        )
     )
 )"
         );

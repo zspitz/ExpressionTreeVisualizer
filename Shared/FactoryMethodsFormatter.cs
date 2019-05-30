@@ -312,7 +312,7 @@ namespace ExpressionToString {
             WriteMethodCall(() => MemberInit(expr.NewExpression, expr.Bindings.ToArray()));
 
         protected override void WriteListInit(ListInitExpression expr) => 
-            WriteMethodCall(() => ListInit(expr.NewExpression, expr.Initializers));
+            WriteMethodCall(() => ListInit(expr.NewExpression, expr.Initializers.ToArray()));
 
         protected override void WriteNewArray(NewArrayExpression expr) {
             switch (expr.NodeType) {
