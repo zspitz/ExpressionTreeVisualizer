@@ -50,7 +50,7 @@ namespace ExpressionTreeVisualizer {
             var window = new VisualizerWindow();
             var control = window.Content as VisualizerDataControl;
             control.ObjectProvider = objectProvider;
-            control.Options = new VisualizerDataOptions() { Language = CSharp }; // TODO options could come from a VS extension
+            control.Options = new VisualizerDataOptions() { Formatter = CSharp }; // TODO options could come from a VS extension
 
             window.ShowDialog();
         }

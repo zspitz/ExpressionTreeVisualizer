@@ -16,6 +16,15 @@ using static ExpressionToString.Globals;
 namespace ExpressionTreeVisualizer {
     [Serializable]
     public class VisualizerDataOptions : INotifyPropertyChanged {
+        private string _formatter = CSharp;
+        public string Formatter {
+            get => _formatter;
+            set {
+                Language = ResolveLanguage(value);
+                this.NotifyChanged(ref _formatter, value, args => PropertyChanged?.Invoke(this, args));
+            }
+        }
+
         private string _language = CSharp;
         public string Language {
             get => _language;
@@ -41,7 +50,6 @@ namespace ExpressionTreeVisualizer {
         public Dictionary<EndNodeData, List<ExpressionNodeData>> Parameters { get; }
         public Dictionary<EndNodeData, List<ExpressionNodeData>> ClosedVars { get; }
         public Dictionary<EndNodeData, List<ExpressionNodeData>> Defaults { get; }
-        internal HashSet<(object o, int start, int length)> VisitedSpans { get; }
 
         public ExpressionNodeData FindNodeBySpan(int start, int length) {
             var end = start + length;
@@ -61,7 +69,7 @@ namespace ExpressionTreeVisualizer {
 
         public VisualizerData(object o, VisualizerDataOptions options = null) {
             Options = options ?? new VisualizerDataOptions();
-            Source = WriterBase.Create(Options.Language, o, out var pathSpans).ToString();
+            Source = WriterBase.Create(o, Options.Formatter, Options.Language, out var pathSpans).ToString();
             PathSpans = pathSpans;
             CollectedEndNodes = new List<ExpressionNodeData>();
             NodeData = new ExpressionNodeData(o, "", this, false);
@@ -206,8 +214,7 @@ namespace ExpressionTreeVisualizer {
                 .ThenBy(prp => prp.Name)
                 .SelectMany(prp => {
                     if (prp.PropertyType.InheritsFromOrImplements<IEnumerable>()) {
-                        var (left, right)= visualizerData.Options.Language == CSharp ? ('[',']') : ('(',')');
-                        return (prp.GetValue(o) as IEnumerable).Cast<object>().Select((x, index) => ($"{prp.Name}{left}{index}{right}", x));
+                        return (prp.GetValue(o) as IEnumerable).Cast<object>().Select((x, index) => ($"{prp.Name}[{index}]", x));
                     } else {
                         return new[] { (prp.Name, prp.GetValue(o)) };
                     }

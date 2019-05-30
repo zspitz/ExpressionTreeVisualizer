@@ -92,6 +92,8 @@
                     <Popup Name="optionsPopup" AllowsTransparency="True" Placement="Custom" PlacementTarget="{Binding ElementName=optionsButton}" StaysOpen="False">
                         <Border Background="White" BorderBrush="Black" BorderThickness="1">
                             <ag:AutoGrid Margin="6" ChildMargin="3" ChildVerticalAlignment="Center" ColumnCount="2">
+                                <TextBlock Background="White" Text="Formatter" />
+                                <ComboBox Name="cmbFormatters" SelectedItem="{Binding Formatter}" />
                                 <TextBlock Background="White" Text="Language" />
                                 <ComboBox Name="cmbLanguages" SelectedItem="{Binding Language}" />
                             </ag:AutoGrid>
@@ -100,7 +102,7 @@
                 </StackPanel>
             </Button>
         </Grid>
-        <TextBox Name="source" Margin="0,0,0,12" MinWidth="300"  BorderBrush="Gray" BorderThickness="1" FontFamily="Consolas" FontSize="14" IsInactiveSelectionHighlightEnabled="True" IsReadOnly="True" IsReadOnlyCaretVisible="True" SelectionBrush="Blue" Text="{Binding Source}" TextWrapping="Wrap" />
+        <TextBox Name="source" Margin="0,0,0,12" MinWidth="500"  BorderBrush="Gray" BorderThickness="1" FontFamily="Consolas" FontSize="14" IsInactiveSelectionHighlightEnabled="True" IsReadOnly="True" IsReadOnlyCaretVisible="True" SelectionBrush="Blue" Text="{Binding Source}" TextWrapping="Wrap" />
     </DockPanel>
     <DockPanel Margin="12">
         <StackPanel Margin="0,0,0,5" VerticalAlignment="Bottom" DockPanel.Dock="Top" Orientation="Horizontal">
