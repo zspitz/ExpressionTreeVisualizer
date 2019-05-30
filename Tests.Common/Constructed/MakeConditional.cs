@@ -24,15 +24,11 @@ namespace ExpressionToString.Tests {
     Constant(true),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new[] {
-            Constant(true)
-        }
+        Constant(true)
     ),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new[] {
-            Constant(false)
-        }
+        Constant(false)
     )
 )"
         );
@@ -51,15 +47,11 @@ namespace ExpressionToString.Tests {
     Constant(true),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new[] {
-            Constant(true)
-        }
+        Constant(true)
     ),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new[] {
-            Constant(false)
-        }
+        Constant(false)
     )
 )"
         );
@@ -78,9 +70,7 @@ namespace ExpressionToString.Tests {
     Constant(true),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new[] {
-            Constant(true)
-        }
+        Constant(true)
     )
 )"
         );
@@ -98,9 +88,7 @@ namespace ExpressionToString.Tests {
     Constant(true),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new[] {
-            Constant(true)
-        }
+        Constant(true)
     )
 )"
         );
@@ -204,9 +192,7 @@ Then Console.WriteLine(True)",
     }),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new[] {
-            Constant(true)
-        }
+        Constant(true)
     )
 )"
         );
@@ -231,15 +217,11 @@ End If",
     Block(new[] {
         Call(
             typeof(Console).GetMethod(""WriteLine""),
-            new[] {
-                Constant(true)
-            }
+            Constant(true)
         ),
         Call(
             typeof(Console).GetMethod(""WriteLine""),
-            new[] {
-                Constant(true)
-            }
+            Constant(true)
         )
     })
 )"
@@ -265,9 +247,7 @@ End If",
         Constant(true),
         Call(
             typeof(Console).GetMethod(""WriteLine""),
-            new[] {
-                Constant(true)
-            }
+            Constant(true)
         )
     )
 )"
@@ -292,17 +272,13 @@ End If",
     Constant(true),
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new[] {
-            Constant(true)
-        }
+        Constant(true)
     ),
     IfThen(
         Constant(true),
         Call(
             typeof(Console).GetMethod(""WriteLine""),
-            new[] {
-                Constant(true)
-            }
+            Constant(true)
         )
     )
 )"

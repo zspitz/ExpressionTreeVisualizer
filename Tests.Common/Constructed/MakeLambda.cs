@@ -27,7 +27,7 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new[] { s }
+        s
     ),
     var s = Parameter(
         typeof(string),
@@ -45,9 +45,7 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new[] {
-            Add(s1, s2)
-        }
+        Add(s1, s2)
     ),
     var s1 = Parameter(
         typeof(string),

@@ -27,10 +27,10 @@ namespace ExpressionToString.Tests {
             ArrayIndex(arr2D, Constant(0), Constant(1)),
             "arr2d[0, 1]",
             "arr2d(0, 1)", 
-            @"ArrayIndex(arr2d, new[] {
+            @"ArrayIndex(arr2d,
     Constant(0),
     Constant(1)
-})"
+)"
         );
 
         [Fact]

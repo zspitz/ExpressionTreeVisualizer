@@ -29,10 +29,10 @@ namespace ExpressionToString.Tests {
                 "() => arr[5, 6]",
                 "Function() arr(5, 6)", 
                 @"Lambda(
-    ArrayIndex(arr, new[] {
+    ArrayIndex(arr,
         Constant(5),
         Constant(6)
-    })
+    )
 )"
             );
         }
@@ -48,9 +48,7 @@ namespace ExpressionToString.Tests {
                 @"Lambda(
     Property(lst,
         typeof(List<string>).GetProperty(""Item""),
-        new[] {
-            Constant(3)
-        }
+        Constant(3)
     )
 )"
             );

@@ -92,18 +92,16 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     Call(
         typeof(string).GetMethod(""Format""),
-        new[] {
-            Constant(""{0}""),
-            Convert(
-                New(
-                    typeof(DateTime).GetConstructor(),
-                    Constant(2001),
-                    Constant(1),
-                    Constant(1)
-                ),
-                typeof(object)
-            )
-        }
+        Constant(""{0}""),
+        Convert(
+            New(
+                typeof(DateTime).GetConstructor(),
+                Constant(2001),
+                Constant(1),
+                Constant(1)
+            ),
+            typeof(object)
+        )
     )
 )"
         );

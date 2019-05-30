@@ -22,7 +22,7 @@
             "Lambda(
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new[] { s }
+        s
     ),
     var s = Parameter(
         typeof(string),
@@ -41,12 +41,10 @@
             "Lambda(
     Call(
         typeof(Console).GetMethod(""WriteLine""),
-        new[] {
-            Call(
-                typeof(string).GetMethod(""Concat""),
-                new[] { s1, s2 }
-            )
-        }
+        Call(
+            typeof(string).GetMethod(""Concat""),
+            s1, s2
+        )
     ),
     var s1 = Parameter(
         typeof(string),
@@ -96,7 +94,7 @@
             "Lambda(
     Call(
         typeof(string).GetMethod(""Concat""),
-        new[] { s1, s2 }
+        s1, s2
     ),
     var s1 = Parameter(
         typeof(string),

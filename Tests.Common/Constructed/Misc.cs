@@ -116,9 +116,7 @@ End Block",
         Lambda(
             Call(
                 typeof(Console).GetMethod(""WriteLine""),
-                new[] {
-                    Constant(true)
-                }
+                Constant(true)
             )
         )
     )
@@ -146,9 +144,7 @@ End Block",
         Lambda(
             Call(
                 typeof(Console).GetMethod(""WriteLine""),
-                new[] {
-                    Constant(true)
-                }
+                Constant(true)
             )
         )
     )

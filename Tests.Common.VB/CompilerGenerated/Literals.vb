@@ -132,13 +132,11 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(string).GetMethod(""Format""),
-        new[] {
-            Constant(""{0}""),
-            Convert(
-                Constant(#DateTime),
-                typeof(object)
-            )
-        }
+        Constant(""{0}""),
+        Convert(
+            Constant(#DateTime),
+            typeof(object)
+        )
     )
 )"
         )

@@ -34,10 +34,10 @@
             "() => arr[5, 6]",
             "Function() arr(5, 6)",
             "Lambda(
-    ArrayIndex(arr, new[] {
+    ArrayIndex(arr,
         Constant(5),
         Constant(6)
-    })
+    )
 )"
         )
     End Sub
@@ -52,9 +52,7 @@
             "Lambda(
     Property(lst,
         typeof(List<string>).GetProperty(""Item""),
-        new[] {
-            Constant(3)
-        }
+        Constant(3)
     )
 )"
         )
@@ -70,9 +68,7 @@
             "Lambda(
     Property(x,
         typeof(DummyWithDefault).GetProperty(""Item""),
-        new[] {
-            Constant(5)
-        }
+        Constant(5)
     )
 )"
         )

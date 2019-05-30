@@ -39,7 +39,7 @@ namespace ExpressionToString.Tests {
             "lstString.Count()",
             "lstString.Count", @"Call(
     typeof(Enumerable).GetMethod(""Count""),
-    new[] { lstString }
+    lstString
 )"
         );
 
@@ -51,9 +51,7 @@ namespace ExpressionToString.Tests {
             "s.CompareTo(\"\")", 
             @"Call(s,
     typeof(string).GetMethod(""CompareTo""),
-    new[] {
-        Constant("""")
-    }
+    Constant("""")
 )"
         );
 
@@ -65,9 +63,7 @@ namespace ExpressionToString.Tests {
             "String.Intern(\"\")", 
             @"Call(
     typeof(string).GetMethod(""Intern""),
-    new[] {
-        Constant("""")
-    }
+    Constant("""")
 )"
         );
 
@@ -79,10 +75,8 @@ namespace ExpressionToString.Tests {
             "lstString.Take(1)", 
             @"Call(
     typeof(Enumerable).GetMethod(""Take""),
-    new[] {
-        lstString,
-        Constant(1)
-    }
+    lstString,
+    Constant(1)
 )"
         );
 
@@ -100,10 +94,8 @@ namespace ExpressionToString.Tests {
             "s.IndexOf(\"a\"C, 2)",
             @"Call(s,
     typeof(string).GetMethod(""IndexOf""),
-    new[] {
-        Constant('a'),
-        Constant(2)
-    }
+    Constant('a'),
+    Constant(2)
 )"
         );
 
@@ -119,16 +111,14 @@ namespace ExpressionToString.Tests {
             "String.Join(\",\", { \"a\", \"b\" })", 
             @"Call(
     typeof(string).GetMethod(""Join""),
-    new[] {
-        Constant("",""),
-        NewArrayInit(
-            typeof(string),
-            new[] {
-                Constant(""a""),
-                Constant(""b"")
-            }
-        )
-    }
+    Constant("",""),
+    NewArrayInit(
+        typeof(string),
+        new[] {
+            Constant(""a""),
+            Constant(""b"")
+        }
+    )
 )"
         );
 
@@ -147,18 +137,16 @@ namespace ExpressionToString.Tests {
                 "lstString.OrderBy(Function(x As String) x, StringComparer.OrdinalIgnoreCase)", 
                 @"Call(
     typeof(Enumerable).GetMethod(""OrderBy""),
-    new[] {
-        lstString,
-        Lambda(x,
-            var x = Parameter(
-                typeof(string),
-                ""x""
-            )
-        ),
-        MakeMemberAccess(null,
-            typeof(StringComparer).GetProperty(""OrdinalIgnoreCase"")
+    lstString,
+    Lambda(x,
+        var x = Parameter(
+            typeof(string),
+            ""x""
         )
-    }
+    ),
+    MakeMemberAccess(null,
+        typeof(StringComparer).GetProperty(""OrdinalIgnoreCase"")
+    )
 )"
             );
         }
@@ -175,7 +163,7 @@ namespace ExpressionToString.Tests {
             "s1 + s2", 
             @"Call(
     typeof(string).GetMethod(""Concat""),
-    new[] { s1, s2 }
+    s1, s2
 )"
         );
     }

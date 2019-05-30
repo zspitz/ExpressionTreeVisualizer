@@ -307,22 +307,22 @@ namespace ExpressionToString {
 
         protected override void WriteCall(MethodCallExpression expr) {
             if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
-                WriteMethodCall(() => ArrayIndex(expr.Object, expr.Arguments));
+                WriteMethodCall(() => ArrayIndex(expr.Object, expr.Arguments.ToArray()));
                 return;
             } else if (expr.Method.IsIndexerMethod(out var pi)) {
-                WriteMethodCall(() => Property(expr.Object, pi, expr.Arguments));
+                WriteMethodCall(() => Property(expr.Object, pi, expr.Arguments.ToArray()));
                 return;
             }
 
             if (expr.Object == null) {
                 if (expr.Arguments.Any()) {
-                    WriteMethodCall(() => Call(expr.Method, expr.Arguments));
+                    WriteMethodCall(() => Call(expr.Method, expr.Arguments.ToArray()));
                 } else {
                     WriteMethodCall(() => Call(expr.Method));
                 }
             } else {
                 if (expr.Arguments.Any()) {
-                    WriteMethodCall(() => Call(expr.Object, expr.Method, expr.Arguments));
+                    WriteMethodCall(() => Call(expr.Object, expr.Method, expr.Arguments.ToArray()));
                 } else {
                     WriteMethodCall(() => Call(expr.Object, expr.Method));
                 }

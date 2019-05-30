@@ -43,9 +43,7 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(Enumerable).GetMethod(""Distinct""),
-        new[] {
-            lst
-        }
+        lst
     )
 )"
         )
@@ -61,9 +59,7 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(s,
         typeof(string).GetMethod(""CompareTo""),
-        new[] {
-            Constant("""")
-        }
+        Constant("""")
     )
 )"
         )
@@ -78,9 +74,7 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(string).GetMethod(""Intern""),
-        new[] {
-            Constant("""")
-        }
+        Constant("""")
     )
 )"
         )
@@ -96,10 +90,8 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(Enumerable).GetMethod(""Take""),
-        new[] {
-            lst,
-            Constant(1)
-        }
+        lst,
+        Constant(1)
     )
 )"
         )
@@ -115,18 +107,16 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(Enumerable).GetMethod(""Contains""),
-        new[] {
-            Convert(s,
-                typeof(IEnumerable<char>)
+        Convert(s,
+            typeof(IEnumerable<char>)
+        ),
+        Constant('a'),
+        Convert(
+            MakeMemberAccess(null,
+                typeof(StringComparer).GetProperty(""InvariantCultureIgnoreCase"")
             ),
-            Constant('a'),
-            Convert(
-                MakeMemberAccess(null,
-                    typeof(StringComparer).GetProperty(""InvariantCultureIgnoreCase"")
-                ),
-                typeof(IEqualityComparer<char>)
-            )
-        }
+            typeof(IEqualityComparer<char>)
+        )
     )
 )"
         )
@@ -142,10 +132,7 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(string).GetMethod(""Join""),
-        new[] {
-            Constant("",""),
-            arr
-        }
+        Constant("",""), arr
     )
 )"
         )
@@ -162,16 +149,14 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(Enumerable).GetMethod(""OrderBy""),
-        new[] {
-            lst,
-            Lambda(x,
-                var x = Parameter(
-                    typeof(string),
-                    ""x""
-                )
-            ),
-            comparer
-        }
+        lst,
+        Lambda(x,
+            var x = Parameter(
+                typeof(string),
+                ""x""
+            )
+        ),
+        comparer
     )
 )"
         )
@@ -186,7 +171,7 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(string).GetMethod(""Concat""),
-        new[] { s1, s2 }
+        s1, s2
     ),
     var s1 = Parameter(
         typeof(string),
@@ -209,7 +194,7 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(string).GetMethod(""Concat""),
-        new[] { s1, s2 }
+        s1, s2
     ),
     var s1 = Parameter(
         typeof(string),
@@ -232,12 +217,10 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(string).GetMethod(""Concat""),
-        new[] {
-            NewArrayInit(
-                typeof(string),
-                new[] { s1, s2, s1, s2, s1, s2 }
-            )
-        }
+        NewArrayInit(
+            typeof(string),
+            new[] { s1, s2, s1, s2, s1, s2 }
+        )
     ),
     var s1 = Parameter(
         typeof(string),
