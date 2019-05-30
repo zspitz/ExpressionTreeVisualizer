@@ -39,7 +39,7 @@ Features:
 * Multiple formatters ([with more planned](https://github.com/zspitz/ExpressionToString/issues/38)):
 
   * Pseudo-code in C# or VB.NET
-  * Factory methods to create a similar expression
+  * Factory method calls which generate this expression
 
 * Extension methods are rendered as instance methods
 
