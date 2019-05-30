@@ -110,9 +110,7 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     New(
         typeof(Foo).GetConstructor(),
-        new[] {
-            Constant(""ijkl"")
-        }
+        Constant(""ijkl"")
     )
 )"
         )
@@ -134,9 +132,7 @@ Partial Public Class VBCompilerGeneratedBase
     MemberInit(
         New(
             typeof(Foo).GetConstructor(),
-            new[] {
-                Constant(""ijkl"")
-            }
+            Constant(""ijkl"")
         ),
         new[] {
             Bind(
@@ -168,10 +164,8 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     New(
         typeof({ string Bar, string Baz }).GetConstructor(),
-        new[] {
-            Constant(""abcd""),
-            Constant(""efgh"")
-        }
+        Constant(""abcd""),
+        Constant(""efgh"")
     )
 )"
         )
@@ -194,10 +188,7 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     New(
         typeof({ string Bar, string Baz }).GetConstructor(),
-        new[] {
-            Bar,
-            Baz
-        }
+        Bar, Baz
     )
 )"
         )

@@ -100,9 +100,7 @@ namespace ExpressionToString.Tests {
             @"New Foo(""ijkl"")", 
             @"New(
     typeof(Foo).GetConstructor(),
-    new[] {
-        Constant(""ijkl"")
-    }
+    Constant(""ijkl"")
 )"
         );
 
@@ -125,9 +123,7 @@ namespace ExpressionToString.Tests {
             @"MemberInit(
     New(
         typeof(Foo).GetConstructor(),
-        new[] {
-            Constant(""ijkl"")
-        }
+        Constant(""ijkl"")
     ),
     new[] {
         Bind(

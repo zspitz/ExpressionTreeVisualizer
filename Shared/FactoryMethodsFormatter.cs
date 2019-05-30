@@ -302,7 +302,7 @@ namespace ExpressionToString {
                 WriteMethodCall(() => New(expr.Constructor));
                 return;
             }
-            WriteMethodCall(() => New(expr.Constructor, expr.Arguments));
+            WriteMethodCall(() => New(expr.Constructor, expr.Arguments.ToArray()));
         }
 
         protected override void WriteCall(MethodCallExpression expr) {

@@ -97,11 +97,9 @@ namespace ExpressionToString.Tests {
             Convert(
                 New(
                     typeof(DateTime).GetConstructor(),
-                    new[] {
-                        Constant(2001),
-                        Constant(1),
-                        Constant(1)
-                    }
+                    Constant(2001),
+                    Constant(1),
+                    Constant(1)
                 ),
                 typeof(object)
             )

@@ -105,9 +105,7 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     New(
         typeof(Foo).GetConstructor(),
-        new[] {
-            Constant(""ijkl"")
-        }
+        Constant(""ijkl"")
     )
 )"
         );
@@ -128,9 +126,7 @@ namespace ExpressionToString.Tests {
     MemberInit(
         New(
             typeof(Foo).GetConstructor(),
-            new[] {
-                Constant(""ijkl"")
-            }
+            Constant(""ijkl"")
         ),
         new[] {
             Bind(
@@ -161,10 +157,8 @@ namespace ExpressionToString.Tests {
             @"Lambda(
     New(
         typeof({ string Bar, string Baz }).GetConstructor(),
-        new[] {
-            Constant(""abcd""),
-            Constant(""efgh"")
-        }
+        Constant(""abcd""),
+        Constant(""efgh"")
     )
 )"
         );
@@ -187,10 +181,7 @@ namespace ExpressionToString.Tests {
                 @"Lambda(
     New(
         typeof({ string Bar, string Baz }).GetConstructor(),
-        new[] {
-            Bar,
-            Baz
-        }
+        Bar, Baz
     )
 )"
             );
