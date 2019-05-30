@@ -12,19 +12,6 @@
             )
     End Sub
 
-    <Fact(Skip:="Does VB support checked?")> <Trait("Category", Binary)>
-    Sub AddChecked()
-        Dim x As Double = 0, y As Double = 0
-        RunTest(
-            Function() x + y,
-            "() => x + y",
-            "Function() x + y",
-            "Lambda(
-    AddChecked(x, y)
-)"
-        )
-    End Sub
-
     <Fact> <Trait("Category", Binary)>
     Sub Divide()
         Dim x As Double = 0, y As Double = 0
@@ -64,19 +51,6 @@
         )
     End Sub
 
-    <Fact(Skip:="Does VB.NET support checked operations?")> <Trait("Category", Binary)>
-    Sub MultiplyChecked()
-        Dim x As Double = 0, y As Double = 0
-        RunTest(
-            Function() x * y,
-            "() => x * y",
-            "Function() x * y",
-            "Lambda(
-    MultiplyChecked(x, y)
-)"
-        )
-    End Sub
-
     <Fact> <Trait("Category", Binary)>
     Sub Subtract()
         Dim x As Double = 0, y As Double = 0
@@ -86,19 +60,6 @@
             "Function() x - y",
             "Lambda(
     Subtract(x, y)
-)"
-        )
-    End Sub
-
-    <Fact(Skip:="Does VB.NET support checked?")> <Trait("Category", Binary)>
-    Sub SubtractChecked()
-        Dim x As Double = 0, y As Double = 0
-        RunTest(
-            Function() x - y,
-            "() => x - y",
-            "Function() x - y",
-            "Lambda(
-    SubtractChecked(x, y)
 )"
         )
     End Sub

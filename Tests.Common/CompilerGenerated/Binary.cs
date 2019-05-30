@@ -16,20 +16,6 @@ namespace ExpressionToString.Tests {
 )");
         }
 
-        [Fact(Skip = "Wrap in checked block")]
-        [Trait("Category", Binary)]
-        public void AddChecked() {
-            // TODO wrap in checked block
-            double x = 0, y = 0;
-            RunTest(
-                () => x + y,
-                "() => x + y",
-                "Function() x + y",
-                @"Lambda(
-    AddChecked(x, y)
-)");
-        }
-
         [Fact]
         [Trait("Category", Binary)]
         public void Divide() {
@@ -72,21 +58,6 @@ namespace ExpressionToString.Tests {
             );
         }
 
-        [Fact(Skip = "Wrap in checked block")]
-        [Trait("Category", Binary)]
-        public void MultiplyChecked() {
-            // TODO wrap in checked block, otherwise this test is exactly the same as Multiply
-            double x = 0, y = 0;
-            RunTest(
-                () => x * y, 
-                "() => x * y", 
-                "Function() x * y", 
-                @"Lambda(
-    MultiplyChecked(x, y)
-)"
-            );
-        }
-
         [Fact]
         [Trait("Category", Binary)]
         public void Subtract() {
@@ -97,21 +68,6 @@ namespace ExpressionToString.Tests {
                 "Function() x - y", 
                 @"Lambda(
     Subtract(x, y)
-)"
-            );
-        }
-
-        [Fact(Skip = "Wrap in checked block")]
-        [Trait("Category", Binary)]
-        public void SubtractChecked() {
-            // TODO wrap in checked block, otherwise this test is exactly the same as Subtract
-            double x = 0, y = 0;
-            RunTest(
-                () => x - y, 
-                "() => x - y", 
-                "Function() x - y", 
-                @"Lambda(
-    SubtractChecked(x, y)
 )"
             );
         }
