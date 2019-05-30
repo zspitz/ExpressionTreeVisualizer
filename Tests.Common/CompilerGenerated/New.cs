@@ -55,12 +55,10 @@ namespace ExpressionToString.Tests {
         New(
             typeof(Foo).GetConstructor()
         ),
-        new[] {
-            Bind(
-                typeof(Foo).GetProperty(""Bar""),
-                Constant(""abcd"")
-            )
-        }
+        Bind(
+            typeof(Foo).GetProperty(""Bar""),
+            Constant(""abcd"")
+        )
     )
 )"
         );
@@ -82,16 +80,14 @@ namespace ExpressionToString.Tests {
         New(
             typeof(Foo).GetConstructor()
         ),
-        new[] {
-            Bind(
-                typeof(Foo).GetProperty(""Bar""),
-                Constant(""abcd"")
-            ),
-            Bind(
-                typeof(Foo).GetProperty(""Baz""),
-                Constant(""efgh"")
-            )
-        }
+        Bind(
+            typeof(Foo).GetProperty(""Bar""),
+            Constant(""abcd"")
+        ),
+        Bind(
+            typeof(Foo).GetProperty(""Baz""),
+            Constant(""efgh"")
+        )
     )
 )"
         );
@@ -128,16 +124,14 @@ namespace ExpressionToString.Tests {
             typeof(Foo).GetConstructor(),
             Constant(""ijkl"")
         ),
-        new[] {
-            Bind(
-                typeof(Foo).GetProperty(""Bar""),
-                Constant(""abcd"")
-            ),
-            Bind(
-                typeof(Foo).GetProperty(""Baz""),
-                Constant(""efgh"")
-            )
-        }
+        Bind(
+            typeof(Foo).GetProperty(""Bar""),
+            Constant(""abcd"")
+        ),
+        Bind(
+            typeof(Foo).GetProperty(""Baz""),
+            Constant(""efgh"")
+        )
     )
 )"
         );
@@ -332,17 +326,15 @@ namespace ExpressionToString.Tests {
         New(
             typeof(Node).GetConstructor()
         ),
-        new[] {
-            MemberBind(
-                typeof(Node).GetProperty(""Data""),
-                new[] {
-                    Bind(
-                        typeof(NodeData).GetProperty(""Name""),
-                        Constant(""abcd"")
-                    )
-                }
-            )
-        }
+        MemberBind(
+            typeof(Node).GetProperty(""Data""),
+            new[] {
+                Bind(
+                    typeof(NodeData).GetProperty(""Name""),
+                    Constant(""abcd"")
+                )
+            }
+        )
     )
 )"
         );
@@ -368,29 +360,27 @@ namespace ExpressionToString.Tests {
         New(
             typeof(Node).GetConstructor()
         ),
-        new[] {
-            ListBind(
-                typeof(Node).GetProperty(""Children""),
-                new[] {
-                    ElementInit(
-                        typeof(ICollection<Node>).GetMethod(""Add""),
-                        new[] {
-                            New(
-                                typeof(Node).GetConstructor()
-                            )
-                        }
-                    ),
-                    ElementInit(
-                        typeof(ICollection<Node>).GetMethod(""Add""),
-                        new[] {
-                            New(
-                                typeof(Node).GetConstructor()
-                            )
-                        }
-                    )
-                }
-            )
-        }
+        ListBind(
+            typeof(Node).GetProperty(""Children""),
+            new[] {
+                ElementInit(
+                    typeof(ICollection<Node>).GetMethod(""Add""),
+                    new[] {
+                        New(
+                            typeof(Node).GetConstructor()
+                        )
+                    }
+                ),
+                ElementInit(
+                    typeof(ICollection<Node>).GetMethod(""Add""),
+                    new[] {
+                        New(
+                            typeof(Node).GetConstructor()
+                        )
+                    }
+                )
+            }
+        )
     )
 )"
         );

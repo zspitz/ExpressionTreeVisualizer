@@ -253,22 +253,14 @@ namespace ExpressionToString {
         }
 
         protected override void WriteLambda(LambdaExpression expr) {
-            if (expr.Name.IsNullOrWhitespace() && expr.Parameters.None()) {
-                if (expr.TailCall) {
-                    WriteMethodCall(() => Lambda(expr.Body, expr.TailCall));
-                } else {
-                    WriteMethodCall(() => Lambda(expr.Body));
-                }
+            if (!expr.Name.IsNullOrWhitespace() && expr.TailCall) {
+                WriteMethodCall(() => Lambda(expr.Body, expr.Name, expr.TailCall, expr.Parameters.ToArray()));
+            } else if (expr.TailCall) {
+                WriteMethodCall(() => Lambda(expr.Body, expr.TailCall, expr.Parameters.ToArray()));
+            } else if (!expr.Name.IsNullOrWhitespace()) {
+                WriteMethodCall(() => Lambda(expr.Body, expr.Name, expr.Parameters));
             } else {
-                if (!expr.Name.IsNullOrWhitespace() && expr.TailCall) {
-                    WriteMethodCall(() => Lambda(expr.Body, expr.Name, expr.TailCall, expr.Parameters.ToArray()));
-                } else if (expr.TailCall) {
-                    WriteMethodCall(() => Lambda(expr.Body, expr.TailCall, expr.Parameters.ToArray()));
-                } else if (!expr.Name.IsNullOrWhitespace()) {
-                    WriteMethodCall(() => Lambda(expr.Body, expr.Name, expr.Parameters));
-                } else {
-                    WriteMethodCall(() => Lambda(expr.Body, expr.Parameters.ToArray()));
-                }
+                WriteMethodCall(() => Lambda(expr.Body, expr.Parameters.ToArray()));
             }
         }
 
@@ -297,13 +289,8 @@ namespace ExpressionToString {
             WriteMethodCall(() => MakeMemberAccess(expr.Expression, expr.Member));
         }
 
-        protected override void WriteNew(NewExpression expr) {
-            if (expr.Arguments.None()) {
-                WriteMethodCall(() => New(expr.Constructor));
-                return;
-            }
+        protected override void WriteNew(NewExpression expr) => 
             WriteMethodCall(() => New(expr.Constructor, expr.Arguments.ToArray()));
-        }
 
         protected override void WriteCall(MethodCallExpression expr) {
             if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
@@ -315,23 +302,17 @@ namespace ExpressionToString {
             }
 
             if (expr.Object == null) {
-                if (expr.Arguments.Any()) {
-                    WriteMethodCall(() => Call(expr.Method, expr.Arguments.ToArray()));
-                } else {
-                    WriteMethodCall(() => Call(expr.Method));
-                }
+                WriteMethodCall(() => Call(expr.Method, expr.Arguments.ToArray()));
             } else {
-                if (expr.Arguments.Any()) {
-                    WriteMethodCall(() => Call(expr.Object, expr.Method, expr.Arguments.ToArray()));
-                } else {
-                    WriteMethodCall(() => Call(expr.Object, expr.Method));
-                }
+                WriteMethodCall(() => Call(expr.Object, expr.Method, expr.Arguments.ToArray()));
             }
         }
 
-        protected override void WriteMemberInit(MemberInitExpression expr) => WriteMethodCall(() => MemberInit(expr.NewExpression, expr.Bindings));
+        protected override void WriteMemberInit(MemberInitExpression expr) => 
+            WriteMethodCall(() => MemberInit(expr.NewExpression, expr.Bindings.ToArray()));
 
-        protected override void WriteListInit(ListInitExpression expr) => WriteMethodCall(() => ListInit(expr.NewExpression, expr.Initializers));
+        protected override void WriteListInit(ListInitExpression expr) => 
+            WriteMethodCall(() => ListInit(expr.NewExpression, expr.Initializers));
 
         protected override void WriteNewArray(NewArrayExpression expr) {
             switch (expr.NodeType) {

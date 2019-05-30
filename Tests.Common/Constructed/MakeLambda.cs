@@ -101,5 +101,26 @@ namespace ExpressionToString.Tests {
     )
 )"
         );
+
+        [Fact]
+        [Trait("Category", Lambdas)]
+        public void NamedLambda() => RunTest(
+            Lambda(Add(s1, s2, concat), "name", new [] { s1, s2 }),
+            "(string s1, string s2) => s1 + s2",
+            "Function(s1 As String, s2 As String) s1 + s2",
+                        @"Lambda(
+    Add(s1, s2),
+    ""name"", new[] {
+        var s1 = Parameter(
+            typeof(string),
+            ""s1""
+        ),
+        var s2 = Parameter(
+            typeof(string),
+            ""s2""
+        )
+    }
+)"
+        );
     }
 }

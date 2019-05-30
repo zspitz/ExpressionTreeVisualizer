@@ -50,12 +50,10 @@ namespace ExpressionToString.Tests {
     New(
         typeof(Foo).GetConstructor()
     ),
-    new[] {
-        Bind(
-            typeof(Foo).GetProperty(""Bar""),
-            Constant(""abcd"")
-        )
-    }
+    Bind(
+        typeof(Foo).GetProperty(""Bar""),
+        Constant(""abcd"")
+    )
 )"
         );
 
@@ -79,16 +77,14 @@ namespace ExpressionToString.Tests {
     New(
         typeof(Foo).GetConstructor()
     ),
-    new[] {
-        Bind(
-            typeof(Foo).GetProperty(""Bar""),
-            Constant(""abcd"")
-        ),
-        Bind(
-            typeof(Foo).GetProperty(""Baz""),
-            Constant(""efgh"")
-        )
-    }
+    Bind(
+        typeof(Foo).GetProperty(""Bar""),
+        Constant(""abcd"")
+    ),
+    Bind(
+        typeof(Foo).GetProperty(""Baz""),
+        Constant(""efgh"")
+    )
 )"
         );
 
@@ -125,16 +121,14 @@ namespace ExpressionToString.Tests {
         typeof(Foo).GetConstructor(),
         Constant(""ijkl"")
     ),
-    new[] {
-        Bind(
-            typeof(Foo).GetProperty(""Bar""),
-            Constant(""abcd"")
-        ),
-        Bind(
-            typeof(Foo).GetProperty(""Baz""),
-            Constant(""efgh"")
-        )
-    }
+    Bind(
+        typeof(Foo).GetProperty(""Bar""),
+        Constant(""abcd"")
+    ),
+    Bind(
+        typeof(Foo).GetProperty(""Baz""),
+        Constant(""efgh"")
+    )
 )"
         );
 

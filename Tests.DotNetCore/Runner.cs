@@ -52,9 +52,7 @@ namespace ExpressionToString.Tests {
             // check that the string results are equivalent, for both C# and VB code
             Assert.Equal(csharp, testCSharpCode);
             Assert.Equal(vb, testVBCode);
-            if (!factoryMethods.IsNullOrWhitespace()) {
-                Assert.Equal(factoryMethods, testFactoryMethods);
-            }
+            Assert.Equal(factoryMethods, testFactoryMethods);
 
             // using factory methods formatter as source for paths; other formatters may skip paths or introduce new onee
             var paths = factoryMethodsPathSpans.Keys.ToHashSet();

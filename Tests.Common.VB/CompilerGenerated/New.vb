@@ -58,12 +58,10 @@ Partial Public Class VBCompilerGeneratedBase
         New(
             typeof(Foo).GetConstructor()
         ),
-        new[] {
-            Bind(
-                typeof(Foo).GetProperty(""Bar""),
-                Constant(""abcd"")
-            )
-        }
+        Bind(
+            typeof(Foo).GetProperty(""Bar""),
+            Constant(""abcd"")
+        )
     )
 )"
         )
@@ -86,16 +84,14 @@ Partial Public Class VBCompilerGeneratedBase
         New(
             typeof(Foo).GetConstructor()
         ),
-        new[] {
-            Bind(
-                typeof(Foo).GetProperty(""Bar""),
-                Constant(""abcd"")
-            ),
-            Bind(
-                typeof(Foo).GetProperty(""Baz""),
-                Constant(""efgh"")
-            )
-        }
+        Bind(
+            typeof(Foo).GetProperty(""Bar""),
+            Constant(""abcd"")
+        ),
+        Bind(
+            typeof(Foo).GetProperty(""Baz""),
+            Constant(""efgh"")
+        )
     )
 )"
         )
@@ -134,16 +130,14 @@ Partial Public Class VBCompilerGeneratedBase
             typeof(Foo).GetConstructor(),
             Constant(""ijkl"")
         ),
-        new[] {
-            Bind(
-                typeof(Foo).GetProperty(""Bar""),
-                Constant(""abcd"")
-            ),
-            Bind(
-                typeof(Foo).GetProperty(""Baz""),
-                Constant(""efgh"")
-            )
-        }
+        Bind(
+            typeof(Foo).GetProperty(""Bar""),
+            Constant(""abcd"")
+        ),
+        Bind(
+            typeof(Foo).GetProperty(""Baz""),
+            Constant(""efgh"")
+        )
     )
 )"
         )
