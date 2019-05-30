@@ -264,5 +264,15 @@ namespace ExpressionToString.Util {
             !hasMethod &&
             !left.Type.IsValueType &&
             !right.Type.IsValueType;
+
+        public static string ResolveLanguage(string language) {
+            switch (language) {
+                case CSharp:
+                case VisualBasic:
+                    return language;
+                default:
+                    return CSharp;
+            }
+        }
     }
 }

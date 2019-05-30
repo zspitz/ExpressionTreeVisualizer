@@ -7,19 +7,20 @@ using System.Linq.Expressions;
 using System.Text;
 using static ExpressionToString.FormatterNames;
 using static System.Linq.Expressions.ExpressionType;
+using static ExpressionToString.Util.Functions;
 
 namespace ExpressionToString {
     public abstract class WriterBase {
-        public static WriterBase Create(string language, object o) =>
-            language == CSharp ? new CSharpCodeWriter(o) :
-            language == VisualBasic ? new VBCodeWriter(o) :
-            language == FactoryMethods ? (WriterBase)new FactoryMethodsFormatter(o, CSharp) :
-            throw new NotImplementedException("Unknown language");
+        internal static WriterBase Create(object o, string formatterName, string language) =>
+            formatterName == CSharp ? new CSharpCodeWriter(o) :
+            formatterName == VisualBasic ? new VBCodeWriter(o) :
+            formatterName == FactoryMethods ? (WriterBase)new FactoryMethodsFormatter(o, ResolveLanguage(language)) :
+            throw new NotImplementedException("Unknown formatter");
 
-        public static WriterBase Create(string language, object o, out Dictionary<string, (int start, int length)> pathSpans) =>
-            language == CSharp ? new CSharpCodeWriter(o, out pathSpans) :
-            language == VisualBasic ? new VBCodeWriter(o, out pathSpans) :
-            language == FactoryMethods ? (WriterBase)new FactoryMethodsFormatter(o, CSharp, out pathSpans) :
+        public static WriterBase Create(object o, string formatterName, string language, out Dictionary<string, (int start, int length)> pathSpans) =>
+            formatterName == CSharp ? new CSharpCodeWriter(o, out pathSpans) :
+            formatterName == VisualBasic ? new VBCodeWriter(o, out pathSpans) :
+            formatterName == FactoryMethods ? (WriterBase)new FactoryMethodsFormatter(o, ResolveLanguage(language), out pathSpans) :
             throw new NotImplementedException("Unknown language");
 
         private readonly StringBuilder sb = new StringBuilder();
