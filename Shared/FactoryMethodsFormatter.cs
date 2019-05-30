@@ -452,7 +452,8 @@ namespace ExpressionToString {
             }
         }
 
-        protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) => WriteMethodCall(() => RuntimeVariables(expr.Variables));
+        protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) => 
+            WriteMethodCall(() => RuntimeVariables(expr.Variables.ToArray()));
         protected override void WriteDebugInfo(DebugInfoExpression expr) {
             if (expr.IsClear) {
                 WriteMethodCall(() => ClearDebugInfo(expr.Document));
@@ -461,7 +462,8 @@ namespace ExpressionToString {
             }
         }
 
-        protected override void WriteElementInit(ElementInit elementInit) => WriteMethodCall(() => ElementInit(elementInit.AddMethod, elementInit.Arguments));
+        protected override void WriteElementInit(ElementInit elementInit) => 
+            WriteMethodCall(() => ElementInit(elementInit.AddMethod, elementInit.Arguments.ToArray()));
 
         protected override void WriteBinding(MemberBinding binding) {
             switch (binding) {
@@ -469,10 +471,10 @@ namespace ExpressionToString {
                     WriteMethodCall(() => Bind(assignmentBinding.Member, assignmentBinding.Expression));
                     break;
                 case MemberListBinding listBinding:
-                    WriteMethodCall(() => ListBind(listBinding.Member, listBinding.Initializers));
+                    WriteMethodCall(() => ListBind(listBinding.Member, listBinding.Initializers.ToArray()));
                     break;
                 case MemberMemberBinding memberMemberBinding:
-                    WriteMethodCall(() => MemberBind(memberMemberBinding.Member, memberMemberBinding.Bindings));
+                    WriteMethodCall(() => MemberBind(memberMemberBinding.Member, memberMemberBinding.Bindings.ToArray()));
                     break;
             }
         }

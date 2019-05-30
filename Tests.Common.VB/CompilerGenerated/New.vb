@@ -207,15 +207,11 @@ Partial Public Class VBCompilerGeneratedBase
         ),
         ElementInit(
             typeof(List<string>).GetMethod(""Add""),
-            new[] {
-                Constant(""abcd"")
-            }
+            Constant(""abcd"")
         ),
         ElementInit(
             typeof(List<string>).GetMethod(""Add""),
-            new[] {
-                Constant(""efgh"")
-            }
+            Constant(""efgh"")
         )
     )
 )"
@@ -253,17 +249,13 @@ Partial Public Class VBCompilerGeneratedBase
         ),
         ElementInit(
             typeof(Wrapper).GetMethod(""Add""),
-            new[] {
-                Constant(""ab""),
-                Constant(""cd"")
-            }
+            Constant(""ab""),
+            Constant(""cd"")
         ),
         ElementInit(
             typeof(Wrapper).GetMethod(""Add""),
-            new[] {
-                Constant(""ef""),
-                Constant(""gh"")
-            }
+            Constant(""ef""),
+            Constant(""gh"")
         )
     )
 )"
@@ -295,16 +287,12 @@ Partial Public Class VBCompilerGeneratedBase
         ),
         ElementInit(
             typeof(Wrapper).GetMethod(""Add""),
-            new[] {
-                Constant(""ab""),
-                Constant(""cd"")
-            }
+            Constant(""ab""),
+            Constant(""cd"")
         ),
         ElementInit(
             typeof(Wrapper).GetMethod(""Add""),
-            new[] {
-                Constant(""ef"")
-            }
+            Constant(""ef"")
         )
     )
 )"

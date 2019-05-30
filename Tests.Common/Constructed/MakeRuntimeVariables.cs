@@ -11,7 +11,7 @@ namespace ExpressionToString.Tests {
             RuntimeVariables(x, s1),
             "// variables -- double x, string s1",
             "' Variables -- x As Double, s1 As String", 
-            "RuntimeVariables(new[] { x, s1 })"
+            "RuntimeVariables(x, s1)"
         );
 
         [Fact]
@@ -34,7 +34,7 @@ namespace ExpressionToString.Tests {
 End Block", 
             @"Block(new[] { s2 },
     Constant(true),
-    RuntimeVariables(new[] { x, s1 })
+    RuntimeVariables(x, s1)
 )"
         );
     }

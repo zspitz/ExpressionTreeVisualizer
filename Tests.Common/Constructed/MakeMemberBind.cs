@@ -40,9 +40,7 @@ namespace ExpressionToString.Tests {
             "\"abcd\"",
             @"ElementInit(
     typeof(List<string>).GetMethod(""Add""),
-    new[] {
-        Constant(""abcd"")
-    }
+    Constant(""abcd"")
 )"
         );
 
@@ -64,10 +62,8 @@ namespace ExpressionToString.Tests {
 }",
             @"ElementInit(
     typeof(Wrapper).GetMethod(""Add""),
-    new[] {
-        Constant(""abcd""),
-        Constant(""efgh"")
-    }
+    Constant(""abcd""),
+    Constant(""efgh"")
 )"
         );
 
@@ -89,12 +85,10 @@ namespace ExpressionToString.Tests {
 }",
             @"MemberBind(
     typeof(Node).GetProperty(""Data""),
-    new[] {
-        Bind(
-            typeof(NodeData).GetProperty(""Name""),
-            Constant(""abcd"")
-        )
-    }
+    Bind(
+        typeof(NodeData).GetProperty(""Name""),
+        Constant(""abcd"")
+    )
 )"
         );
 
@@ -119,24 +113,18 @@ namespace ExpressionToString.Tests {
 }",
             @"ListBind(
     typeof(Node).GetProperty(""Children""),
-    new[] {
-        ElementInit(
-            typeof(ICollection<Node>).GetMethod(""Add""),
-            new[] {
-                New(
-                    typeof(Node).GetConstructor()
-                )
-            }
-        ),
-        ElementInit(
-            typeof(ICollection<Node>).GetMethod(""Add""),
-            new[] {
-                New(
-                    typeof(Node).GetConstructor()
-                )
-            }
+    ElementInit(
+        typeof(ICollection<Node>).GetMethod(""Add""),
+        New(
+            typeof(Node).GetConstructor()
         )
-    }
+    ),
+    ElementInit(
+        typeof(ICollection<Node>).GetMethod(""Add""),
+        New(
+            typeof(Node).GetConstructor()
+        )
+    )
 )"
         );
     }

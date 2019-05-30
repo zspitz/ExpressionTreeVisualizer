@@ -200,15 +200,11 @@ namespace ExpressionToString.Tests {
         ),
         ElementInit(
             typeof(List<string>).GetMethod(""Add""),
-            new[] {
-                Constant(""abcd"")
-            }
+            Constant(""abcd"")
         ),
         ElementInit(
             typeof(List<string>).GetMethod(""Add""),
-            new[] {
-                Constant(""efgh"")
-            }
+            Constant(""efgh"")
         )
     )
 )"
@@ -245,17 +241,13 @@ namespace ExpressionToString.Tests {
         ),
         ElementInit(
             typeof(Wrapper).GetMethod(""Add""),
-            new[] {
-                Constant(""ab""),
-                Constant(""cd"")
-            }
+            Constant(""ab""),
+            Constant(""cd"")
         ),
         ElementInit(
             typeof(Wrapper).GetMethod(""Add""),
-            new[] {
-                Constant(""ef""),
-                Constant(""gh"")
-            }
+            Constant(""ef""),
+            Constant(""gh"")
         )
     )
 )"
@@ -286,16 +278,12 @@ namespace ExpressionToString.Tests {
         ),
         ElementInit(
             typeof(Wrapper).GetMethod(""Add""),
-            new[] {
-                Constant(""ab""),
-                Constant(""cd"")
-            }
+            Constant(""ab""),
+            Constant(""cd"")
         ),
         ElementInit(
             typeof(List<string>).GetMethod(""Add""),
-            new[] {
-                Constant(""ef"")
-            }
+            Constant(""ef"")
         )
     )
 )"
@@ -322,12 +310,10 @@ namespace ExpressionToString.Tests {
         ),
         MemberBind(
             typeof(Node).GetProperty(""Data""),
-            new[] {
-                Bind(
-                    typeof(NodeData).GetProperty(""Name""),
-                    Constant(""abcd"")
-                )
-            }
+            Bind(
+                typeof(NodeData).GetProperty(""Name""),
+                Constant(""abcd"")
+            )
         )
     )
 )"
@@ -356,24 +342,18 @@ namespace ExpressionToString.Tests {
         ),
         ListBind(
             typeof(Node).GetProperty(""Children""),
-            new[] {
-                ElementInit(
-                    typeof(ICollection<Node>).GetMethod(""Add""),
-                    new[] {
-                        New(
-                            typeof(Node).GetConstructor()
-                        )
-                    }
-                ),
-                ElementInit(
-                    typeof(ICollection<Node>).GetMethod(""Add""),
-                    new[] {
-                        New(
-                            typeof(Node).GetConstructor()
-                        )
-                    }
+            ElementInit(
+                typeof(ICollection<Node>).GetMethod(""Add""),
+                New(
+                    typeof(Node).GetConstructor()
                 )
-            }
+            ),
+            ElementInit(
+                typeof(ICollection<Node>).GetMethod(""Add""),
+                New(
+                    typeof(Node).GetConstructor()
+                )
+            )
         )
     )
 )"
