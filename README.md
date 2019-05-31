@@ -58,6 +58,8 @@ Features:
     Console.WriteLine(expr.ToString("C#"));
     // prints: () => i + j
     ```
+    
+* Type names are rendered using language keywords, instead of just the type name; e.g. `List<string>` or `List(Of Date)` instead of ``List`1``
 
 * Special handling of calls to `String.Concat` and `String.Format`
 
