@@ -60,5 +60,7 @@ namespace ExpressionToString.Util {
         }
 
         public static HashSet<T> ToHashSet<T>(this IEnumerable<T> src, IEqualityComparer<T> comparer = null) => new HashSet<T>(src, comparer);
+
+        public static IEnumerable<T> SelectMany<T>(this IEnumerable<IEnumerable<T>> src) => src.SelectMany(x => x);
     }
 }

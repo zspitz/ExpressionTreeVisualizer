@@ -8,33 +8,38 @@ using static ExpressionToString.FormatterNames;
 namespace ExpressionToString.Util {
     public static class Functions {
         public static (bool isLiteral, string repr) TryRenderLiteral(object o, string language) {
-            if (language.NotIn(CSharp, VisualBasic)) { throw new NotImplementedException("Invalid language"); }
-
             var type = o?.GetType().UnderlyingIfNullable();
             bool rendered = true;
             string ret = null;
 
             if (o == null) {
-                ret = language == CSharp ? "null" : "Nothing";
+                ret = 
+                    language == CSharp ? "null" : 
+                    language == VisualBasic ? "Nothing" :
+                    "␀";
             } else if (o is bool b) {
                 if (language == CSharp) {
                     ret = b ? "true" : "false";
-                } else {
+                } else { // Visual Basic and Boolean.ToString are the same
                     ret = b ? "True" : "False";
                 }
             } else if (o is char c) {
                 if (language == CSharp) {
                     ret = $"'{c}'";
-                } else {
+                } else if (language==VisualBasic) {
                     ret = $"\"{c}\"C";
                 }
             } else if ((o is DateTime || o is TimeSpan) && language == VisualBasic) {
                 ret = $"#{o.ToString()}#";
             } else if (o is string s) {
-                ret = s.ToVerbatimString(language);
+                if (language.In(CSharp, VisualBasic)) {
+                    ret = s.ToVerbatimString(language);
+                } else if (!s.HasSpecialCharacters()) {
+                    ret = $"\"{s}\"";
+                }
             } else if (o is Enum e) {
                 ret = $"{e.GetType().Name}.{e.ToString()}";
-            } else if (o is MemberInfo mi) {
+            } else if (o is MemberInfo mi && language.In(CSharp, VisualBasic)) {
                 bool isType;
                 bool isByRef = false;
                 if (mi is Type t1) {
@@ -75,7 +80,7 @@ namespace ExpressionToString.Util {
                         ret += $".{methodName}(\"{mi.Name}\")";
                     }
                 }
-            } else if (type.IsArray && !type.GetElementType().IsArray && type.GetArrayRank() == 1) {
+            } else if (type.IsArray && !type.GetElementType().IsArray && type.GetArrayRank() == 1 && language.In(CSharp, VisualBasic)) {
                 var values = (o as dynamic[]).Joined(", ", x => RenderLiteral(x, language));
                 if (language == CSharp) {
                     ret = $"new[] {{ {values} }}";
@@ -87,7 +92,9 @@ namespace ExpressionToString.Util {
                 ret = "(" + TupleValues(o).Select(x => RenderLiteral(x, language)).Joined(", ") + ")";
             } else if (type.IsNumeric()) {
                 ret = o.ToString();
-            } else {
+            }
+            
+            if (ret == null) {
                 rendered = false;
                 ret = $"#{type.FriendlyName(language)}";
             }

@@ -41,6 +41,12 @@ namespace ExpressionToString.Util {
             return literal.ToString();
         }
 
+        private static char[] specialChars = new[] {
+            '\'','\"', '\\','\0','\a','\b','\f','\n','\r', '\t','\v'
+        };
+        public static bool HasSpecialCharacters(this string s) =>
+            s.IndexOfAny(specialChars) > -1;
+
         public static string ToVerbatimString(this string s, string language) {
             switch (language) {
                 case CSharp:

@@ -20,7 +20,7 @@ namespace _visualizerTests {
 
             //Expression<Func<int, string, bool>> expr = (i, s) => (i * i * i + 15) >= 10 && s.Length <= 25 || (Math.Pow(j, 3) > 100 && j + 15 < 100) && new Random().Next() > 15 || new DateTime(2001, 10, 12).Month < 5;
 
-            ////var i = 5;
+            //var i = 5;
             //Expression<Func<int, int>> expr = j => (i + j + 17) * (i + j + 17);
 
             //Expression<Func<bool>> expr = () => true;
@@ -36,15 +36,18 @@ namespace _visualizerTests {
             //var lst = new List<string>();
             //Expression<Func<string>> expr = () => lst[5];
 
-            var arr = new string[,][] { };
-            Expression<Func<string>> expr = () => arr[5, 2][7];
+            //var arr = new string[,][] { };
+            //Expression<Func<string>> expr = () => arr[5, 2][7];
 
             //Expression<Func<int, int, int>> expr = (int i, int j) => i + j;
 
             //Func<int> del = () => DateTime.Now.Day;
             //Expression<Func<int>> expr = () => del();
 
-            //Expression<Func<Foo>> expr = () => new Foo("ijkl") { Bar = "abcd", Baz = "efgh" };
+            //Expression<Func<Foo>> expr = () => new Foo("abcd") {
+            //    Bar = "abcd",
+            //    Baz = "efgh"
+            //};
             //var binding = ((MemberInitExpression)expr.Body).Bindings[0];
 
             //Expression<Func<Wrapper>> expr = () => new Wrapper { { "ab", "cd" }, "ef" };
@@ -141,17 +144,64 @@ namespace _visualizerTests {
 
             //Expression<Func<int, float, float>> multiplier = (i, f) => i * f;
 
-            var s = ((Expression<Func<bool>>)(() => true)).ToString("Factory methods");
+            //IEnumerable<string> matchingNames = new List<string>() { "Smith", "Doe" };
+            //Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
 
 
+            //expr = p => matchingNames.Contains(p.LastName) && p.DOB.DayOfWeek == DayOfWeek.Tuesday;
+
+            //var i = 5;
+            //Expression<Func<int, int>> expr = j => i * j;
 
 
+            //Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
+            //Console.WriteLine(expr.ToString("C#"));
+            //Console.ReadKey(true);
+
+            Expression<Func<Person, bool>> expr = p => p.LastName.StartsWith("A");
+
+            string s = expr.ToString("C#", out Dictionary<string, (int start, int length)> pathSpans);
+            const int firstColumnAlignment = -25;
+            Console.WriteLine($"{"Path",firstColumnAlignment}Substring");
+            Console.WriteLine(new string('-', 65));
+            foreach (var kvp in pathSpans) {
+                var path = kvp.Key;
+                var (start, length) = kvp.Value;
+                Console.WriteLine(
+                    $"{path,firstColumnAlignment}{new string(' ', start)}{s.Substring(start, length)}"
+                );
+            }
+
+            Console.ReadKey(true);
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
 
             //Console.ReadKey(true);
         }
+
+
+        static Expression<Func<int, int>> expr1 = ((Func<Expression<Func<int, int>>>)(() => {
+            var value = Parameter(typeof(int), "value");
+            var result = Parameter(typeof(int), "result");
+            var label = Label(typeof(int));
+
+            BlockExpression block = Block(
+                new[] { result },
+                Assign(result, Constant(1)),
+                Loop(
+                    IfThenElse(
+                        GreaterThan(value, Constant(1)),
+                        MultiplyAssign(result,
+                            PostDecrementAssign(value)
+                        ),
+                        Break(label, result)
+                    ),
+                    label
+                )
+            );
+            return Lambda<Func<int, int>>(block, value);
+        })).Invoke();
     }
 
     class Foo {
@@ -173,5 +223,6 @@ namespace _visualizerTests {
     class Person {
         public string LastName { get; set; }
         public string FirstName { get; set; }
+        public DateTime DOB { get; set; }
     }
 }
