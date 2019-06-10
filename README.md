@@ -2,13 +2,13 @@
 
 This project provides the following:
 
-* [![NuGet Status](https://img.shields.io/nuget/v/ExpressionTreeToString.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeToString/) Extension methods to create a C# or VB.NET code-like string representation, of expression trees or expression tree parts (.NET Standard library)
-* [![GitHub Release](https://img.shields.io/github/release/zspitz/expressiontostring.svg?style=flat&max-age=86400)](https://github.com/zspitz/ExpressionToString/releases) A debugging visualizer for expression trees / expression tree parts  
+* [![NuGet Status](https://img.shields.io/nuget/v/ExpressionTreeToString.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeToString/) Extension methods to [create a C# or VB.NET code-like string representation](https://github.com/zspitz/ExpressionToString#string-representations-of-expression-trees), of expression trees or expression tree parts (.NET Standard library)
+* [![GitHub Release](https://img.shields.io/github/release/zspitz/expressiontostring.svg?style=flat&max-age=86400)](https://github.com/zspitz/ExpressionToString/releases) A [debugging visualizer for expression trees / expression tree parts](https://github.com/zspitz/ExpressionToString#visual-studio-debugger-visualizer-for-expression-trees)  
   **Installation:** The visualizer DLL and the dependent DLL (`MultiSelectTreeView.DLL`), on the [release page](https://github.com/zspitz/ExpressionToString/releases), should be placed in the appropriate folder, as described [here](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2017). It may be necessary to unblock the DLLs.
   
 ### Feedback
 
-* Star the project and/or upvote the posts on [reddit](https://www.reddit.com/r/dotnet/comments/bk2f05/expressiontostring_debugger_visualizer_v12_net_4/) or [Hacker News](https://news.ycombinator.com/item?id=19814493)
+* Star the project and/or upvote the posts on [reddit](https://www.reddit.com/r/dotnet/comments/buxdqq/expressiontreetostring_13_get_the_factory_methods/) or [Hacker News](https://news.ycombinator.com/item?id=20055067)
 * File an [issue](https://github.com/zspitz/ExpressionToString/issues)
 
 ## String representations of expression trees
@@ -58,6 +58,8 @@ Features:
     Console.WriteLine(expr.ToString("C#"));
     // prints: () => i + j
     ```
+    
+* Type names are rendered using language keywords, instead of just the type name; e.g. `List<string>` or `List(Of Date)` instead of ``List`1``
 
 * Special handling of calls to `String.Concat` and `String.Format`
 
