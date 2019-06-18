@@ -229,10 +229,10 @@ End Select",
                     Constant(5)
                 )
             ),
-            @"switch ({
-    i;
-    j;
-}) {
+            @"switch (
+    i,
+    j
+) {
     case 4:
         Console.WriteLine(true);
         break;
@@ -331,10 +331,10 @@ End Select",
                     Constant(5)
                 )
             ),
-            @"switch ({
-    i;
-    j;
-}) {
+            @"switch (
+    i,
+    j
+) {
     case 4:
         Console.WriteLine(true);
         break;

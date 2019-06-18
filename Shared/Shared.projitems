@@ -9,10 +9,14 @@
     <Import_RootNamespace>ExpressionToString</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CSharpBlockMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CSharpMultilineBlockTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FactoryMethodsFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\BlockExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\IListT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MethodInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\ParameterInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VBBlockMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WriterBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CSharpCodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionExtension.cs" />

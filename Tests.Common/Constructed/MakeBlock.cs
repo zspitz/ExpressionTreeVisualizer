@@ -13,10 +13,14 @@ namespace ExpressionToString.Tests {
                 Constant(true),
                 Constant(true)
             ),
-            @"true;
-true;",
-            @"True
-True",
+            @"(
+    true,
+    true
+)",
+            @"Block
+    True
+    True
+End Block",
             @"Block(
     Constant(true),
     Constant(true)
@@ -31,11 +35,11 @@ True",
                 Constant(true),
                 Constant(true)
             ),
-            @"{
-    int i;
-    true;
-    true;
-}",
+            @"(
+    int i,
+    true,
+    true
+)",
             @"Block
     Dim i As Integer
     True
@@ -55,12 +59,12 @@ End Block",
                 Constant(true),
                 Constant(true)
             ),
-            @"{
-    int i;
-    string s1;
-    true;
-    true;
-}",
+            @"(
+    int i,
+    string s1,
+    true,
+    true
+)",
     @"Block
     Dim i As Integer
     Dim s1 As String

@@ -22,11 +22,11 @@ namespace ExpressionToString.Tests {
                 Constant(true),
                 RuntimeVariables(x, s1)
             ),
-            @"{
-    string s2;
-    true;
+            @"(
+    string s2,
+    true
     // variables -- double x, string s1
-}",
+)",
             @"Block
     Dim s2 As String
     True

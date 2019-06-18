@@ -63,8 +63,9 @@ namespace ExpressionToString {
         /// <summary>Write a string-rendering of an expression or other type used in expression trees</summary>
         /// <param name="o">Object to be rendered</param>
         /// <param name="parameterDeclaration">For ParameterExpression, this is a parameter declaration</param>
-        /// <param name="explicitBlock">For BlockExpression, controls explicit block rendering: true forces the rendering; false prevents the rendering; and null determines automatically</param>
-        protected void WriteNode(string pathSegment, object o, bool parameterDeclaration = false, bool? explicitBlock = null) {
+        /// <param name="blockType">For BlockExpression, sets the preferred block type</param>
+        /// 
+        protected void WriteNode(string pathSegment, object o, bool parameterDeclaration = false, object blockMetadata = null) {
             if (!pathSegment.IsNullOrWhitespace()) { pathSegments.Add(pathSegment); }
             var start = sb.Length;
             try {
@@ -72,8 +73,8 @@ namespace ExpressionToString {
                     case ParameterExpression pexpr when parameterDeclaration:
                         WriteParameterDeclarationImpl(pexpr);
                         break;
-                    case BlockExpression bexpr when explicitBlock != null:
-                        WriteBlock(bexpr, explicitBlock);
+                    case BlockExpression bexpr when blockMetadata != null:
+                        WriteBlock(bexpr, blockMetadata);
                         break;
                     case Expression expr:
                         WriteExpression(expr);
@@ -111,6 +112,7 @@ namespace ExpressionToString {
             }
         }
         protected void WriteNode((string pathSegment, object o) x) => WriteNode(x.pathSegment, x.o);
+        protected void WriteNode(string pathSegment, object o, object blockMetadata) => WriteNode(pathSegment, o, false, blockMetadata);
 
         private readonly HashSet<ExpressionType> binaryExpressionTypes = new[] {
             Add, AddChecked, Divide, Modulo, Multiply, MultiplyChecked, Power, Subtract, SubtractChecked,   // mathematical operators
@@ -204,7 +206,7 @@ namespace ExpressionToString {
                     break;
 
                 case Block:
-                    WriteBlock(expr as BlockExpression);
+                    WriteBlock(expr as BlockExpression, null);
                     break;
 
                 case Switch:
@@ -304,7 +306,8 @@ namespace ExpressionToString {
         protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, bool writeEOL, string delimiter = ", ", bool parameterDeclaration = false) =>
             WriteNodes(items.Select((arg, index) => ($"{pathSegment}[{index}]", arg)), writeEOL, delimiter, parameterDeclaration);
 
-        protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, string delimiter = ", ") => WriteNodes(pathSegment, items, false, delimiter);
+        protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, string delimiter = ", ", bool parameterDeclaration=false) => 
+            WriteNodes(pathSegment, items, false, delimiter, parameterDeclaration);
 
         protected void TrimEnd(bool trimEOL = false) => sb.TrimEnd(trimEOL);
 
@@ -329,7 +332,7 @@ namespace ExpressionToString {
         protected abstract void WriteIndex(IndexExpression expr);
 
         // .NET 4 expression types
-        protected abstract void WriteBlock(BlockExpression expr, bool? explicitBlock = null);
+        protected abstract void WriteBlock(BlockExpression expr, object metadata);
         protected abstract void WriteSwitch(SwitchExpression expr);
         protected abstract void WriteTry(TryExpression expr);
         protected abstract void WriteLabel(LabelExpression expr);

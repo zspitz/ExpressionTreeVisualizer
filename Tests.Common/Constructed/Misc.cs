@@ -99,12 +99,12 @@ namespace ExpressionToString.Tests {
                     Lambda(writeLineTrue)
                 )
             ),
-            @"{
-    double x;
+            @"(
+    double x,
     // --- Quoted - begin
         () => Console.WriteLine(true)
     // --- Quoted - end
-}",
+)",
             @"Block
     Dim x As Double
     ' --- Quoted - begin

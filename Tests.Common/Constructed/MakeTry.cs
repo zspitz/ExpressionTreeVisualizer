@@ -162,10 +162,10 @@ namespace ExpressionToString.Tests {
         [Trait("Category", Try)]
         public void ConstructCatchWithMultiStatementFilter() => RunTest(
             Catch(ex, writeLineTrue, Block(Constant(true), Constant(true))),
-            @"catch (Exception ex) when ({
-    true;
-    true;
-}) {
+            @"catch (Exception ex) when (
+    true,
+    true
+) {
     Console.WriteLine(true);
 }",
             @"Catch ex As Exception When Block

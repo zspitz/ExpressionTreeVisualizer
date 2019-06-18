@@ -12,6 +12,7 @@ using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Expressions.GotoExpressionKind;
 using static ExpressionToString.Util.Methods;
+using static ExpressionToString.VBBlockMetadata;
 
 namespace ExpressionToString {
     public class VBCodeWriter : WriterBase {
@@ -253,18 +254,26 @@ namespace ExpressionToString {
             WriteUnary(expr.NodeType, "Operand", expr.Operand, expr.Type, expr.GetType().Name);
 
         protected override void WriteLambda(LambdaExpression expr) {
-            if (expr.ReturnType == typeof(void)) {
-                Write("Sub");
-            } else {
-                Write("Function");
-            }
-            Write("(");
+            var lambdaKeyword = expr.ReturnType == typeof(void) ? "Sub" : "Function";
+            Write($"{lambdaKeyword}(");
             expr.Parameters.ForEach((prm, index) => {
                 if (index > 0) { Write(", "); }
                 WriteNode($"Parameters[{index}]", prm, true);
             });
-            Write(") ");
-            WriteNode("Body", expr.Body);
+            Write(")");
+
+            if (CanInline(expr.Body)) {
+                Write(" ");
+                WriteNode("Body", expr.Body);
+                return;
+            }
+
+            Indent();
+            WriteEOL();
+            if (expr.Body.Type != typeof(void)) { Write("Return "); }
+            WriteNode("Body", expr.Body, CreateMetadata(true,false));
+            WriteEOL(true);
+            Write($"End {lambdaKeyword}");
         }
 
         protected override void WriteParameterDeclarationImpl(ParameterExpression prm) {
@@ -541,49 +550,56 @@ namespace ExpressionToString {
             }
         }
 
-        private bool IndentIfBlockSyntax(string path, Expression expr, (bool leading, bool trailing) nonblockSpaces, bool? explicitBlock = false) {
-            if (IsBlockSyntax(expr)) {
-                if (explicitBlock ?? false) {
-                    WriteNode(path, expr, false, true);
-                } else {
-                    Indent();
-                    WriteEOL();
-                    WriteNode(path, expr, false, explicitBlock);
-                    WriteEOL(true);
-                }
-                return true;
-            } else {
-                if (nonblockSpaces.leading) { Write(" "); }
-                WriteNode(path, expr);
-                if (nonblockSpaces.trailing) { Write(" "); }
-                return false;
-            }
-        }
-
         protected override void WriteConditional(ConditionalExpression expr) {
-            if (expr.Type == typeof(void)) {
-                var lastClauseIsBlock = false;
-                Write("If");
-                IndentIfBlockSyntax("Test", expr.Test, (true, true));
-                Write("Then");
-                lastClauseIsBlock = IsBlockSyntax(expr.IfTrue);
-                IndentIfBlockSyntax("IfTrue", expr.IfTrue, (true, !expr.IfFalse.IsEmpty()));
-                if (!expr.IfFalse.IsEmpty()) {
-                    Write("Else");
-                    lastClauseIsBlock = IndentIfBlockSyntax("IfFalse", expr.IfFalse, (true, false));
-                }
-                if (lastClauseIsBlock) {
-                    Write("End If");
-                }
-            } else {
+            if (expr.Type != typeof(void)) {
                 Write("If(");
-                IndentIfBlockSyntax("Test", expr.Test, (false, false), true);
+                WriteNode("Test", expr.Test);
                 Write(", ");
                 WriteNode("IfTrue", expr.IfTrue);
                 Write(", ");
                 WriteNode("IfFalse", expr.IfFalse);
                 Write(")");
+                return;
             }
+
+            var metadata = CreateMetadata(true, false);
+
+            if (CanInline(expr.Test)) {
+                Write("If ");
+                WriteNode("Test", expr.Test);
+                Write(" Then");
+            } else {
+                Write("If");
+                Indent();
+                WriteEOL();
+                WriteNode("Test", expr.Test, metadata);
+                WriteEOL(true);
+                Write("Then");
+            }
+
+            var canInline = new[] { expr.IfTrue, expr.IfFalse }.All(x => CanInline(x));
+            if (canInline) {
+                Write(" ");
+                WriteNode("IfTrue", expr.IfTrue);
+                if (!expr.IfFalse.IsEmpty()) {
+                    Write(" Else ");
+                    WriteNode("IfFalse", expr.IfFalse);
+                }
+                return;
+            }
+
+            Indent();
+            WriteEOL();
+            WriteNode("IfTrue", expr.IfTrue, metadata);
+            WriteEOL(true);
+            if (!expr.IfFalse.IsEmpty()) {
+                Write("Else");
+                Indent();
+                WriteEOL();
+                WriteNode("IfFalse", expr.IfFalse, metadata);
+                WriteEOL(true);
+            }
+            Write("End If");
         }
 
         protected override void WriteDefault(DefaultExpression expr) =>
@@ -615,39 +631,45 @@ namespace ExpressionToString {
         protected override void WriteIndex(IndexExpression expr) =>
             WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
 
-        protected override void WriteBlock(BlockExpression expr, bool? explicitBlock = null) {
-            var useExplicitBlock = explicitBlock ?? expr.Variables.Count > 0;
-            if (useExplicitBlock) {
+        protected override void WriteBlock(BlockExpression expr, object metadata) {
+            var blockMetedata = metadata as VBBlockMetadata ?? CreateMetadata(false, false);
+            var useBlockConstruct = !blockMetedata.IsInMutiline || (expr.Variables.Any() && blockMetedata.ParentIsBlock);
+            if (useBlockConstruct) {
                 Write("Block");
                 Indent();
                 WriteEOL();
-                expr.Variables.ForEach((v, index) => {
-                    if (index > 0) { WriteEOL(); }
-                    Write("Dim ");
-                    WriteNode($"Variables[{index}]", v, true);
-                });
             }
+            expr.Variables.ForEach((v, index) => {
+                if (index > 0) { WriteEOL(); }
+                Write("Dim ");
+                WriteNode($"Variables[{index}]", v, true);
+            });
             expr.Expressions.ForEach((subexpr, index) => {
                 if (index > 0 || expr.Variables.Count > 0) { WriteEOL(); }
                 if (subexpr is LabelExpression) { TrimEnd(); }
-                WriteNode($"Expressions[{index}]", subexpr);
+                WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(true, true));
             });
-            if (useExplicitBlock) {
+            if (useBlockConstruct) {
                 WriteEOL(true);
                 Write("End Block");
             }
         }
 
-        private bool IsBlockSyntax(Expression expr) {
+        private bool CanInline(Expression expr) {
             switch (expr) {
                 case ConditionalExpression cexpr when cexpr.Type == typeof(void):
-                case BlockExpression _:
+                case BlockExpression bexpr when
+                    bexpr.Expressions.Count > 1 ||
+                    bexpr.Variables.Any() ||
+                    (bexpr.Expressions.Count == 1 && CanInline(bexpr.Expressions.First())):
                 case SwitchExpression _:
+                case LambdaExpression _:
                 case TryExpression _:
+                    return false;
                 case RuntimeVariablesExpression _:
-                    return true;
+                    throw new NotImplementedException();
             }
-            return false;
+            return true;
         }
 
         protected override void WriteSwitchCase(SwitchCase switchCase) {
@@ -655,25 +677,22 @@ namespace ExpressionToString {
             WriteNodes("TestValues", switchCase.TestValues);
             Indent();
             WriteEOL();
-            WriteNode("Body", switchCase.Body);
+            WriteNode("Body", switchCase.Body, CreateMetadata(true, false));
+            Dedent();
         }
 
         protected override void WriteSwitch(SwitchExpression expr) {
             Write("Select Case ");
             Indent();
-            WriteNode("SwitchValue", expr.SwitchValue, false, true);
+            WriteNode("SwitchValue", expr.SwitchValue);
             WriteEOL();
-            expr.Cases.ForEach((switchCase, index) => {
-                if (index > 0) { WriteEOL(); }
-                WriteNode($"Cases[{index}]", switchCase);
-                Dedent();
-            });
+            WriteNodes("Cases", expr.Cases, true, "");
             if (expr.DefaultBody != null) {
                 if (expr.Cases.Count > 0) { WriteEOL(); }
                 Write("Case Else");
                 Indent();
                 WriteEOL();
-                WriteNode("DefaultBody", expr.DefaultBody);
+                WriteNode("DefaultBody", expr.DefaultBody, CreateMetadata(true, false));
                 Dedent();
             }
             WriteEOL(true);
@@ -690,18 +709,18 @@ namespace ExpressionToString {
             }
             if (catchBlock.Filter != null) {
                 Write(" When ");
-                WriteNode("Filter", catchBlock.Filter, false, true);
+                WriteNode("Filter", catchBlock.Filter);
             }
             Indent();
             WriteEOL();
-            WriteNode("Body", catchBlock.Body);
+            WriteNode("Body", catchBlock.Body, CreateMetadata(true, false));
         }
 
         protected override void WriteTry(TryExpression expr) {
             Write("Try");
             Indent();
             WriteEOL();
-            WriteNode("Body", expr.Body, false, false);
+            WriteNode("Body", expr.Body, CreateMetadata(true, false));
             WriteEOL(true);
             expr.Handlers.ForEach((catchBlock, index) => {
                 WriteNode($"Handlers[{index}]", catchBlock);
@@ -711,14 +730,14 @@ namespace ExpressionToString {
                 Write("Fault");
                 Indent();
                 WriteEOL();
-                WriteNode("Fault", expr.Fault, false, false);
+                WriteNode("Fault", expr.Fault, CreateMetadata(true, false));
                 WriteEOL(true);
             }
             if (expr.Finally != null) {
                 Write("Finally");
                 Indent();
                 WriteEOL();
-                WriteNode("Finally", expr.Finally, false, false);
+                WriteNode("Finally", expr.Finally, CreateMetadata(true, false));
                 WriteEOL(true);
             }
             Write("End Try");
@@ -764,7 +783,7 @@ namespace ExpressionToString {
             Write("Do");
             Indent();
             WriteEOL();
-            WriteNode("Body", expr.Body);
+            WriteNode("Body", expr.Body, CreateMetadata(true, false));
             WriteEOL(true);
             Write("Loop");
         }
@@ -833,7 +852,7 @@ namespace ExpressionToString {
             VerifyCount(args, 1, null);
             WriteNode("Arguments[0]", args[0]);
             Write($".{binder.Name}");
-            if (args.Count>1) {
+            if (args.Count > 1) {
                 Write("(");
                 WriteNodes(args.Skip(1).Select((arg, index) => ($"Arguments[{index + 1}]", arg)));
                 Write(")");

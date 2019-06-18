@@ -19,15 +19,15 @@ namespace ExpressionToString.Tests {
                     Constant(true)
                 )
             ),
-            @"{
-    int i;
-    {
-        int j;
-        true;
+            @"(
+    int i,
+    (
+        int j,
+        true,
 target:
-        true;
-    }
-}",
+        true
+    )
+)",
             @"Block
     Dim i As Integer
     Block
@@ -60,14 +60,14 @@ End Block",
                     Constant(true)
                 )
             ),
-            @"{
-    int i;
-    {
-        int j;
+            @"(
+    int i,
+    (
+        int j,
 target:
-        true;
-    }
-}",
+        true
+    )
+)",
             @"Block
     Dim i As Integer
     Block

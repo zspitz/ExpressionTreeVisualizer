@@ -18,7 +18,11 @@ namespace ExpressionToString.Tests {
                 writeLineTrue,
                 writeLineFalse
             ),
-            "if (true) Console.WriteLine(true); else Console.WriteLine(false);",
+            @"if (true) {
+    Console.WriteLine(true);
+} else {
+    Console.WriteLine(false);
+}",
             "If True Then Console.WriteLine(True) Else Console.WriteLine(False)", 
             @"IfThenElse(
     Constant(true),
@@ -41,7 +45,11 @@ namespace ExpressionToString.Tests {
                 writeLineTrue,
                 writeLineFalse
             ),
-            @"if (true) Console.WriteLine(true); else Console.WriteLine(false);",
+            @"if (true) {
+    Console.WriteLine(true);
+} else {
+    Console.WriteLine(false);
+}",
             @"If True Then Console.WriteLine(True) Else Console.WriteLine(False)", 
             @"IfThenElse(
     Constant(true),
@@ -64,7 +72,9 @@ namespace ExpressionToString.Tests {
                 writeLineTrue,
                 Empty()
             ), 
-            "if (true) Console.WriteLine(true);", 
+            @"if (true) {
+    Console.WriteLine(true);
+}", 
             "If True Then Console.WriteLine(True)", 
             @"IfThen(
     Constant(true),
@@ -82,7 +92,9 @@ namespace ExpressionToString.Tests {
                 Constant(true),
                 writeLineTrue
             ), 
-            "if (true) Console.WriteLine(true);", 
+            @"if (true) {
+    Console.WriteLine(true);
+}", 
             "If True Then Console.WriteLine(True)", 
             @"IfThen(
     Constant(true),
@@ -146,10 +158,10 @@ namespace ExpressionToString.Tests {
                 trueLength,
                 falseLength
             ),
-            @"{
-    true;
-    true;
-} ? ""true"".Length : ""false"".Length",
+            @"(
+    true,
+    true
+) ? ""true"".Length : ""false"".Length",
             @"If(Block
     True
     True
@@ -177,10 +189,12 @@ End Block, ""true"".Length, ""false"".Length)",
                 Block(Constant(true), Constant(true)),
                 writeLineTrue
             ),
-            @"if ({
-    true;
-    true;
-}) Console.WriteLine(true);",
+            @"if (
+    true,
+    true
+) {
+    Console.WriteLine(true);
+}",
             @"If
     True
     True
@@ -237,7 +251,11 @@ End If",
                         writeLineTrue
                     )
                 ),
-                @"if (true) if (true) Console.WriteLine(true);",
+                @"if (true) {
+    if (true) {
+        Console.WriteLine(true);
+    }
+}",
                 @"If True Then
     If True Then Console.WriteLine(True)
 End If", 
@@ -253,6 +271,7 @@ End If",
 )"
         );
 
+        // TODO nested ifs look strange in VB.NET
         [Fact]
         [Trait("Category", Conditionals)]
         public void NestedElse() => RunTest(
@@ -264,8 +283,14 @@ End If",
                     writeLineTrue
                 )
             ),
-            @"if (true) Console.WriteLine(true); else if (true) Console.WriteLine(true);",
-            @"If True Then Console.WriteLine(True) Else
+            @"if (true) {
+    Console.WriteLine(true);
+} else if (true) {
+    Console.WriteLine(true);
+}",
+            @"If True Then
+    Console.WriteLine(True)
+Else
     If True Then Console.WriteLine(True)
 End If", 
             @"IfThenElse(

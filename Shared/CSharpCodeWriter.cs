@@ -11,6 +11,7 @@ using static ExpressionToString.Util.Methods;
 using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Expressions.GotoExpressionKind;
+using static ExpressionToString.CSharpMultilineBlockTypes;
 
 namespace ExpressionToString {
     public class CSharpCodeWriter : WriterBase {
@@ -202,7 +203,20 @@ namespace ExpressionToString {
             Write("(");
             WriteNodes("Parameters", expr.Parameters, false, ", ", true);
             Write(") => ");
-            WriteNode("Body", expr.Body);
+
+            if (CanInline(expr.Body)) {
+                WriteNode("Body", expr.Body);
+                return;
+            }
+
+            Write("{");
+            Indent();
+            WriteEOL();
+            if (expr.Body.Type != typeof(void)) { Write("return "); }
+            WriteNode("Body", expr.Body, CSharpMultilineBlockTypes.Block);
+            WriteStatementEnd(expr.Body);
+            WriteEOL(true);
+            Write("}");
         }
 
         protected override void WriteParameterDeclarationImpl(ParameterExpression prm) {
@@ -437,24 +451,55 @@ namespace ExpressionToString {
             }
         }
 
+        private bool CanInline(Expression expr) {
+            switch (expr) {
+                case ConditionalExpression cexpr when cexpr.Type == typeof(void):
+                case BlockExpression bexpr when
+                    bexpr.Expressions.Count > 1 ||
+                    bexpr.Variables.Any() ||
+                    (bexpr.Expressions.Count == 1 && CanInline(bexpr.Expressions.First())):
+                case SwitchExpression _:
+                case LambdaExpression _:
+                case TryExpression _:
+                    return false;
+                case RuntimeVariablesExpression _:
+                    throw new NotImplementedException();
+            }
+            return true;
+        }
+
         protected override void WriteConditional(ConditionalExpression expr) {
-            if (expr.Type == typeof(void)) { // if block, or if..else block
-                Write("if (");
-                WriteNode("Test", expr.Test, false, true);
-                Write(") ");
-                WriteNode("IfTrue", expr.IfTrue, false, true);
-                WriteSemicolon(expr.IfTrue);
-                if (!expr.IfFalse.IsEmpty()) {
-                    Write(" else ");
-                    WriteNode("IfFalse", expr.IfFalse, false, true);
-                    WriteSemicolon(expr.IfFalse);
-                }
-            } else {
-                WriteNode("Test", expr.Test, false, true);
+            if (expr.Type != typeof(void)) {
+                WriteNode("Test", expr.Test);
                 Write(" ? ");
                 WriteNode("IfTrue", expr.IfTrue);
                 Write(" : ");
                 WriteNode("IfFalse", expr.IfFalse);
+                return;
+            }
+
+            Write("if (");
+            WriteNode("Test", expr.Test, Test);
+            Write(") {");
+            Indent();
+            WriteEOL();
+            WriteNode("IfTrue", expr.IfTrue, CSharpMultilineBlockTypes.Block);
+            WriteStatementEnd(expr.IfTrue);
+            WriteEOL(true);
+            Write("}");
+            if (!expr.IfFalse.IsEmpty()) {
+                Write(" else ");
+                if (!(expr.IfFalse is ConditionalExpression)) {
+                    Write("{");
+                    Indent();
+                    WriteEOL();
+                }
+                WriteNode("IfFalse", expr.IfFalse, false, true);
+                WriteStatementEnd(expr.IfFalse);
+                if (!(expr.IfFalse is ConditionalExpression)) {
+                    WriteEOL(true);
+                    Write("}");
+                }
             }
         }
 
@@ -486,31 +531,46 @@ namespace ExpressionToString {
         protected override void WriteIndex(IndexExpression expr) =>
             WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
 
-        protected override void WriteBlock(BlockExpression expr, bool? explicitBlock) {
-            var useExplicitBlock = explicitBlock ?? expr.Variables.Count > 0;
-            if (useExplicitBlock) {
-                Write("{");
+        protected override void WriteBlock(BlockExpression expr, object metadata) {
+            var blockType = (CSharpMultilineBlockTypes)(metadata ?? Inline);
+            if (blockType == CSharpMultilineBlockTypes.Block) {
+                expr.Variables.ForEach((subexpr, index) => {
+                    WriteNode($"Variable[{index}]", subexpr, true);
+                    Write(";");
+                    WriteEOL();
+                });
+                expr.Expressions.ForEach((subexpr, index) => {
+                    if (index > 0) { WriteEOL(); }
+                    if (subexpr is LabelExpression) { TrimEnd(); }
+                    WriteNode($"Expressions[{index}]", subexpr, CSharpMultilineBlockTypes.Block);
+                    WriteStatementEnd(subexpr);
+                });
+                return;
+            }
+
+            if (expr.HasMultipleLines()) {
+                if (blockType == Inline) { Write("("); }
                 Indent();
                 WriteEOL();
-                expr.Variables.ForEach((v, index) => {
-                    if (index > 0) { WriteEOL(); }
-                    WriteNode($"Variables[{index}]", v, true);
-                    Write(";");
-                });
             }
+            WriteNodes("Variables", expr.Variables, true, ",", true);
             expr.Expressions.ForEach((subexpr, index) => {
-                if (index > 0 || expr.Variables.Count > 0) { WriteEOL(); }
+                if (index > 0 || expr.Variables.Count > 0) {
+                    var previousExpr = index > 0 ? expr.Expressions[index - 1] : null;
+                    if (previousExpr is null || !(previousExpr is LabelExpression || subexpr is RuntimeVariablesExpression)) { Write(","); }
+                    WriteEOL();
+                }
                 if (subexpr is LabelExpression) { TrimEnd(); }
                 WriteNode($"Expressions[{index}]", subexpr);
-                WriteSemicolon(subexpr);
             });
-            if (useExplicitBlock) {
+            if (expr.HasMultipleLines()) {
                 WriteEOL(true);
-                Write("}");
+                if (blockType == Inline) { Write(")"); }
             }
+            return;
         }
 
-        private void WriteSemicolon(Expression expr) {
+        private void WriteStatementEnd(Expression expr) {
             switch (expr) {
                 case ConditionalExpression cexpr when cexpr.Type == typeof(void):
                 case BlockExpression _:
@@ -533,15 +593,15 @@ namespace ExpressionToString {
             });
             Indent();
             WriteEOL();
-            WriteNode("Body", switchCase.Body, false, false);
-            WriteSemicolon(switchCase.Body);
+            WriteNode("Body", switchCase.Body, CSharpMultilineBlockTypes.Block);
+            WriteStatementEnd(switchCase.Body);
             WriteEOL();
             Write("break;");
         }
 
         protected override void WriteSwitch(SwitchExpression expr) {
             Write("switch (");
-            WriteNode("SwitchValue", expr.SwitchValue, false, true);
+            WriteNode("SwitchValue", expr.SwitchValue, Test);
             Write(") {");
             Indent();
             WriteEOL();
@@ -555,8 +615,8 @@ namespace ExpressionToString {
                 Write("default:");
                 Indent();
                 WriteEOL();
-                WriteNode("DefaultBody", expr.DefaultBody);
-                WriteSemicolon(expr.DefaultBody);
+                WriteNode("DefaultBody", expr.DefaultBody, CSharpMultilineBlockTypes.Block);
+                WriteStatementEnd(expr.DefaultBody);
                 Dedent();
             }
             WriteEOL(true);
@@ -575,15 +635,15 @@ namespace ExpressionToString {
                 Write(") ");
                 if (catchBlock.Filter != null) {
                     Write("when (");
-                    WriteNode("Filter", catchBlock.Filter, false, true);
+                    WriteNode("Filter", catchBlock.Filter, false, Test);
                     Write(") ");
                 }
             }
             Write("{");
             Indent();
             WriteEOL();
-            WriteNode("Body", catchBlock.Body);
-            WriteSemicolon(catchBlock.Body);
+            WriteNode("Body", catchBlock.Body, CSharpMultilineBlockTypes.Block);
+            WriteStatementEnd(catchBlock.Body);
             WriteEOL(true);
             Write("}");
         }
@@ -593,7 +653,7 @@ namespace ExpressionToString {
             Indent();
             WriteEOL();
             WriteNode("Body", expr.Body);
-            WriteSemicolon(expr.Body);
+            WriteStatementEnd(expr.Body);
             WriteEOL(true);
             Write("}");
             expr.Handlers.ForEach((catchBlock, index) => {
@@ -605,7 +665,7 @@ namespace ExpressionToString {
                 Indent();
                 WriteEOL();
                 WriteNode("Fault", expr.Fault);
-                WriteSemicolon(expr.Fault);
+                WriteStatementEnd(expr.Fault);
                 WriteEOL(true);
                 Write("}");
             }
@@ -614,7 +674,7 @@ namespace ExpressionToString {
                 Indent();
                 WriteEOL();
                 WriteNode("Finally", expr.Finally);
-                WriteSemicolon(expr.Finally);
+                WriteStatementEnd(expr.Finally);
                 WriteEOL(true);
                 Write("}");
             }
@@ -660,8 +720,8 @@ namespace ExpressionToString {
             Write("while (true) {");
             Indent();
             WriteEOL();
-            WriteNode("Body", expr.Body);
-            WriteSemicolon(expr.Body);
+            WriteNode("Body", expr.Body,CSharpMultilineBlockTypes.Block);
+            WriteStatementEnd(expr.Body);
             WriteEOL(true);
             Write("}");
         }

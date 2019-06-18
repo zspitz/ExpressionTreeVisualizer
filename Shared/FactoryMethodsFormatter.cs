@@ -369,7 +369,7 @@ namespace ExpressionToString {
             WriteMethodCall(() => ArrayAccess(expr.Object, expr.Arguments.ToArray()));
         }
 
-        protected override void WriteBlock(BlockExpression expr, bool? explicitBlock = null) {
+        protected override void WriteBlock(BlockExpression expr, object metadata) {
             if (expr.Type != expr.Expressions.Last().Type) {
                 if (expr.Variables.Any()) {
                     WriteMethodCall(() => Block(expr.Type, expr.Variables, expr.Expressions.ToArray()));
