@@ -134,7 +134,7 @@ namespace ExpressionToString.Tests {
             Condition(
                 Constant(true),
                 trueLength,
-                Expression.Default(typeof(int))
+                Default(typeof(int))
             ),
             "true ? \"true\".Length : default(int)",
             "If(True, \"true\".Length, CType(Nothing, Integer))", 
@@ -290,8 +290,8 @@ End If",
 }",
             @"If True Then
     Console.WriteLine(True)
-Else
-    If True Then Console.WriteLine(True)
+Else If
+    True Then Console.WriteLine(True)
 End If", 
             @"IfThenElse(
     Constant(true),

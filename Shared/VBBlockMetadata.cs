@@ -12,5 +12,9 @@ namespace ExpressionToString {
             IsInMutiline = isInMultiline,
             ParentIsBlock = parentIsBlock
         };
+        internal void Deconstruct(out bool isInMultiline, out bool parentIsBlock) {
+            isInMultiline = IsInMutiline;
+            parentIsBlock = ParentIsBlock;
+        }
     }
 }

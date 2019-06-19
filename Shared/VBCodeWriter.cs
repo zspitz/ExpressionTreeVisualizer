@@ -632,8 +632,9 @@ namespace ExpressionToString {
             WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
 
         protected override void WriteBlock(BlockExpression expr, object metadata) {
-            var blockMetedata = metadata as VBBlockMetadata ?? CreateMetadata(false, false);
-            var useBlockConstruct = !blockMetedata.IsInMutiline || (expr.Variables.Any() && blockMetedata.ParentIsBlock);
+            var (isInMultiline, parentIsBlock) = (VBBlockMetadata)metadata ?? CreateMetadata(false, false);
+            var useBlockConstruct = !isInMultiline || 
+                (expr.Variables.Any() && parentIsBlock) ;
             if (useBlockConstruct) {
                 Write("Block");
                 Indent();

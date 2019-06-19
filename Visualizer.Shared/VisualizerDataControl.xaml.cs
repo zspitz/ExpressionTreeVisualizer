@@ -2,6 +2,7 @@
 using ExpressionTreeVisualizer.Util;
 using Microsoft.VisualStudio.DebuggerVisualizers;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -126,6 +127,14 @@ namespace ExpressionTreeVisualizer {
         public void LoadDataContext() {
             if (_options == null || ObjectProvider == null) { return; }
             DataContext = ObjectProvider.TransferObject(Options);
+        }
+
+        private void ContextMenu_Loaded(object sender, RoutedEventArgs e) {
+            var menu = sender as ContextMenu;
+            
+        }
+        private void Test_Click(object sender, RoutedEventArgs e) {
+            new Window().Show();
         }
     }
 }

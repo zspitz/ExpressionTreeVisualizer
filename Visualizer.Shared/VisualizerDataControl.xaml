@@ -20,6 +20,11 @@
                         <TextBlock FontWeight="Bold" Text="{Binding Value.StringValue}" />
                     </ag:AutoGrid>
                 </TextBlock.ToolTip>
+                <TextBlock.ContextMenu>
+                    <ContextMenu Loaded="ContextMenu_Loaded">
+                        <MenuItem Header="Test" Click="Test_Click" />
+                    </ContextMenu>
+                </TextBlock.ContextMenu>
                 <Run Foreground="DarkGray" Text="{Binding Key, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
                 <Run FontWeight="Bold" Text="{Binding Value.NodeType, Mode=OneTime}" />
                 <Run Foreground="{StaticResource TypeColor}" Text="{Binding Value.ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=({0})}" />

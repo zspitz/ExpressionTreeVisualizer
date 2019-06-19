@@ -12,6 +12,7 @@ using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Expressions.GotoExpressionKind;
 using static ExpressionToString.CSharpMultilineBlockTypes;
+using static ExpressionToString.CSharpBlockMetadata;
 
 namespace ExpressionToString {
     public class CSharpCodeWriter : WriterBase {
@@ -213,7 +214,7 @@ namespace ExpressionToString {
             Indent();
             WriteEOL();
             if (expr.Body.Type != typeof(void)) { Write("return "); }
-            WriteNode("Body", expr.Body, CSharpMultilineBlockTypes.Block);
+            WriteNode("Body", expr.Body, CreateMetadata(CSharpMultilineBlockTypes.Block));
             WriteStatementEnd(expr.Body);
             WriteEOL(true);
             Write("}");
@@ -479,11 +480,11 @@ namespace ExpressionToString {
             }
 
             Write("if (");
-            WriteNode("Test", expr.Test, Test);
+            WriteNode("Test", expr.Test, CreateMetadata(Test));
             Write(") {");
             Indent();
             WriteEOL();
-            WriteNode("IfTrue", expr.IfTrue, CSharpMultilineBlockTypes.Block);
+            WriteNode("IfTrue", expr.IfTrue, CreateMetadata(CSharpMultilineBlockTypes.Block));
             WriteStatementEnd(expr.IfTrue);
             WriteEOL(true);
             Write("}");
@@ -532,24 +533,38 @@ namespace ExpressionToString {
             WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
 
         protected override void WriteBlock(BlockExpression expr, object metadata) {
-            var blockType = (CSharpMultilineBlockTypes)(metadata ?? Inline);
+            var (blockType, parentIsBlock) = (CSharpBlockMetadata)metadata ?? CreateMetadata(Inline, false);
+            bool introduceNewBlock;
             if (blockType == CSharpMultilineBlockTypes.Block) {
+                introduceNewBlock = expr.Variables.Any() && parentIsBlock;
+                if (introduceNewBlock) {
+                    Write("{");
+                    Indent();
+                    WriteEOL();
+                }
                 expr.Variables.ForEach((subexpr, index) => {
-                    WriteNode($"Variable[{index}]", subexpr, true);
+                    WriteNode($"Variables[{index}]", subexpr, true);
                     Write(";");
                     WriteEOL();
                 });
                 expr.Expressions.ForEach((subexpr, index) => {
                     if (index > 0) { WriteEOL(); }
                     if (subexpr is LabelExpression) { TrimEnd(); }
-                    WriteNode($"Expressions[{index}]", subexpr, CSharpMultilineBlockTypes.Block);
+                    WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(blockType, true));
                     WriteStatementEnd(subexpr);
                 });
+                if (introduceNewBlock) {
+                    WriteEOL(true);
+                    Write("}");
+                }
                 return;
             }
 
-            if (expr.HasMultipleLines()) {
-                if (blockType == Inline) { Write("("); }
+            introduceNewBlock = 
+                (expr.Expressions.Count > 1 && !parentIsBlock) || 
+                expr.Variables.Any();
+            if (introduceNewBlock) {
+                if (blockType == Inline || parentIsBlock) { Write("("); }
                 Indent();
                 WriteEOL();
             }
@@ -561,11 +576,11 @@ namespace ExpressionToString {
                     WriteEOL();
                 }
                 if (subexpr is LabelExpression) { TrimEnd(); }
-                WriteNode($"Expressions[{index}]", subexpr);
+                WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(Test, true));
             });
-            if (expr.HasMultipleLines()) {
+            if (introduceNewBlock) {
                 WriteEOL(true);
-                if (blockType == Inline) { Write(")"); }
+                if (blockType == Inline || parentIsBlock) { Write(")"); }
             }
             return;
         }
@@ -593,7 +608,7 @@ namespace ExpressionToString {
             });
             Indent();
             WriteEOL();
-            WriteNode("Body", switchCase.Body, CSharpMultilineBlockTypes.Block);
+            WriteNode("Body", switchCase.Body, CreateMetadata(CSharpMultilineBlockTypes.Block));
             WriteStatementEnd(switchCase.Body);
             WriteEOL();
             Write("break;");
@@ -601,7 +616,7 @@ namespace ExpressionToString {
 
         protected override void WriteSwitch(SwitchExpression expr) {
             Write("switch (");
-            WriteNode("SwitchValue", expr.SwitchValue, Test);
+            WriteNode("SwitchValue", expr.SwitchValue, CreateMetadata(Test));
             Write(") {");
             Indent();
             WriteEOL();
@@ -615,7 +630,7 @@ namespace ExpressionToString {
                 Write("default:");
                 Indent();
                 WriteEOL();
-                WriteNode("DefaultBody", expr.DefaultBody, CSharpMultilineBlockTypes.Block);
+                WriteNode("DefaultBody", expr.DefaultBody, CreateMetadata(CSharpMultilineBlockTypes.Block));
                 WriteStatementEnd(expr.DefaultBody);
                 Dedent();
             }
@@ -635,14 +650,14 @@ namespace ExpressionToString {
                 Write(") ");
                 if (catchBlock.Filter != null) {
                     Write("when (");
-                    WriteNode("Filter", catchBlock.Filter, false, Test);
+                    WriteNode("Filter", catchBlock.Filter, CreateMetadata(Test));
                     Write(") ");
                 }
             }
             Write("{");
             Indent();
             WriteEOL();
-            WriteNode("Body", catchBlock.Body, CSharpMultilineBlockTypes.Block);
+            WriteNode("Body", catchBlock.Body, CreateMetadata(CSharpMultilineBlockTypes.Block));
             WriteStatementEnd(catchBlock.Body);
             WriteEOL(true);
             Write("}");
@@ -720,7 +735,7 @@ namespace ExpressionToString {
             Write("while (true) {");
             Indent();
             WriteEOL();
-            WriteNode("Body", expr.Body,CSharpMultilineBlockTypes.Block);
+            WriteNode("Body", expr.Body, CreateMetadata(CSharpMultilineBlockTypes.Block));
             WriteStatementEnd(expr.Body);
             WriteEOL(true);
             Write("}");

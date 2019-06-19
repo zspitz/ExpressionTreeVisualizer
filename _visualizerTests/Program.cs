@@ -158,21 +158,32 @@ namespace _visualizerTests {
             //Console.WriteLine(expr.ToString("C#"));
             //Console.ReadKey(true);
 
-            Expression<Func<Person, bool>> expr = p => p.LastName.StartsWith("A");
+            //Expression<Func<Person, bool>> expr = p => p.LastName.StartsWith("A");
 
-            string s = expr.ToString("C#", out Dictionary<string, (int start, int length)> pathSpans);
-            const int firstColumnAlignment = -25;
-            Console.WriteLine($"{"Path",firstColumnAlignment}Substring");
-            Console.WriteLine(new string('-', 65));
-            foreach (var kvp in pathSpans) {
-                var path = kvp.Key;
-                var (start, length) = kvp.Value;
-                Console.WriteLine(
-                    $"{path,firstColumnAlignment}{new string(' ', start)}{s.Substring(start, length)}"
-                );
-            }
+            //string s = expr.ToString("C#", out Dictionary<string, (int start, int length)> pathSpans);
+            //const int firstColumnAlignment = -25;
+            //Console.WriteLine($"{"Path",firstColumnAlignment}Substring");
+            //Console.WriteLine(new string('-', 65));
+            //foreach (var kvp in pathSpans) {
+            //    var path = kvp.Key;
+            //    var (start, length) = kvp.Value;
+            //    Console.WriteLine(
+            //        $"{path,firstColumnAlignment}{new string(' ', start)}{s.Substring(start, length)}"
+            //    );
+            //}
 
-            Console.ReadKey(true);
+            //Console.ReadKey(true);
+
+            var writeline = typeof(Console).GetMethods().Single(x => x.Name == "WriteLine" && x.GetParameters().Length == 0);
+            Expression expr = Block(
+                Call(writeline),
+                Block(
+                    Call(writeline),
+                    Call(writeline)
+                ),
+                Call(writeline)
+            );
+            Console.WriteLine(expr.ToString("C#"));
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
