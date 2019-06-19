@@ -12,6 +12,7 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using ExpressionTreeVisualizer.Util;
 using static ExpressionToString.Globals;
+using System.Reflection;
 
 namespace ExpressionTreeVisualizer {
     [Serializable]
@@ -206,7 +207,10 @@ namespace ExpressionTreeVisualizer {
             var type = o.GetType();
             var preferredOrder = preferredPropertyOrders.FirstOrDefault(x => x.Item1.IsAssignableFrom(type)).Item2;
             Children = type.GetProperties()
-                .Where(prp => propertyTypes.Any(x => x.IsAssignableFrom(prp.PropertyType)))
+                .Where(prp => 
+                    !(prp.DeclaringType.Name == "BlockExpression" && prp.Name == "Result") &&
+                    propertyTypes.Any(x => x.IsAssignableFrom(prp.PropertyType))
+                )
                 .OrderBy(prp => {
                     if (preferredOrder == null) { return -1; }
                     return Array.IndexOf(preferredOrder, prp.Name);
@@ -227,7 +231,7 @@ namespace ExpressionTreeVisualizer {
         private static List<(Type, string[])> preferredPropertyOrders = new List<(Type, string[])> {
             (typeof(LambdaExpression), new [] {"Parameters", "Body" } ),
             (typeof(BinaryExpression), new [] {"Left", "Right", "Conversion"}),
-            (typeof(BlockExpression), new [] { "Variables", "Expressions", "Result"}),
+            (typeof(BlockExpression), new [] { "Variables", "Expressions"}),
             (typeof(CatchBlock), new [] { "Variable", "Filter", "Body"}),
             (typeof(ConditionalExpression), new [] { "Test", "IfTrue", "IfFalse"}),
             (typeof(IndexExpression), new [] { "Object", "Arguments" }),
