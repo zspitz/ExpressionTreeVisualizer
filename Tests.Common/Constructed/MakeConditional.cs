@@ -243,6 +243,45 @@ End If",
 
         [Fact]
         [Trait("Category", Conditionals)]
+        public void MultilineIfFalse() => RunTest(
+            IfThenElse(
+                Constant(true),
+                writeLineTrue,
+                Block(writeLineFalse, writeLineFalse)
+            ),
+            @"if (true) {
+    Console.WriteLine(true);
+} else {
+    Console.WriteLine(false);
+    Console.WriteLine(false);
+}",
+            @"If True Then
+    Console.WriteLine(True)
+Else
+    Console.WriteLine(False)
+    Console.WriteLine(False)
+End If",
+            @"IfThenElse(
+    Constant(true),
+    Call(
+        typeof(Console).GetMethod(""WriteLine""),
+        Constant(true)
+    ),
+    Block(
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            Constant(false)
+        ),
+        Call(
+            typeof(Console).GetMethod(""WriteLine""),
+            Constant(false)
+        )
+    )
+)"
+        );
+
+        [Fact]
+        [Trait("Category", Conditionals)]
         public void NestedIfThen() => RunTest(
                 IfThen(
                     Constant(true),
@@ -271,7 +310,6 @@ End If",
 )"
         );
 
-        // TODO nested ifs look strange in VB.NET
         [Fact]
         [Trait("Category", Conditionals)]
         public void NestedElse() => RunTest(

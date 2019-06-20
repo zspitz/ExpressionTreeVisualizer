@@ -174,16 +174,40 @@ namespace _visualizerTests {
 
             //Console.ReadKey(true);
 
-            var writeline = typeof(Console).GetMethods().Single(x => x.Name == "WriteLine" && x.GetParameters().Length == 0);
-            Expression expr = Block(
-                Call(writeline),
-                Block(
-                    Call(writeline),
-                    Call(writeline)
+            //var writeline = typeof(Console).GetMethods().Single(x => x.Name == "WriteLine" && x.GetParameters().Length == 0);
+            //Expression expr = Block(
+            //    Call(writeline),
+            //    Block(
+            //        new[] { Parameter(typeof(string), "s1") },
+            //        Call(writeline),
+            //        Call(writeline)
+            //    ),
+            //    Call(writeline)
+            //);
+            //Console.WriteLine(expr.ToString("C#"));
+
+            var writeline = typeof(Console).GetMethods().Single(x => {
+                if (x.Name != "WriteLine") { return false; }
+                var parameters = x.GetParameters();
+                return parameters.Length == 1 && parameters[0].ParameterType == typeof(string);
+            });
+            Expression expr = IfThenElse(
+                LessThanOrEqual(
+                    Property(
+                        Property(null, typeof(DateTime).GetProperty("Now")),
+                        "Hour"
+                    ),
+                    Constant(18)
                 ),
-                Call(writeline)
+                Block(
+                    Call(writeline, Constant("Good day!")),
+                    Call(writeline, Constant("Have a nice day!"))
+                ),
+                Block(
+                    Call(writeline, Constant("Good night!")),
+                    Call(writeline, Constant("Have a nice night!"))
+                )
             );
-            Console.WriteLine(expr.ToString("C#"));
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();

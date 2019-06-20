@@ -495,7 +495,7 @@ namespace ExpressionToString {
                     Indent();
                     WriteEOL();
                 }
-                WriteNode("IfFalse", expr.IfFalse, false, true);
+                WriteNode("IfFalse", expr.IfFalse, CreateMetadata(CSharpMultilineBlockTypes.Block));
                 WriteStatementEnd(expr.IfFalse);
                 if (!(expr.IfFalse is ConditionalExpression)) {
                     WriteEOL(true);
