@@ -26,6 +26,10 @@ namespace ExpressionTreeVisualizer {
             var workingAreas = Monitor.AllMonitors.Select(x => x.WorkingArea).ToList();
             MaxWidth = workingAreas.Min(x => x.Width) * .90;
             MaxHeight = workingAreas.Min(x => x.Height) * .90;
+
+            PreviewKeyDown += (s, e) => {
+                if (e.Key == Key.Escape) { Close(); }
+            };
         }
     }
 }
