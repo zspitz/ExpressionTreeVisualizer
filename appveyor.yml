@@ -31,12 +31,10 @@ before_build:
 - cmd: nuget restore
 
 for:
--
-  matrix:
+- matrix:
     only:
       - image: Visual Studio 2019
-    configuration:
-      - ReleaseCI
+    configuration: ReleaseCI
     # artifacts:
     #   - path: ExpressionToString\bin\ReleaseCI\*.nupkg
     #     type: NuGetPackage
@@ -53,8 +51,7 @@ for:
     #     type: File
     #     name: visualizer
 
--
-  matrix:
+- matrix:
     only:
       - image: Visual Studio 2017
     configuration: ReleaseCI2017
