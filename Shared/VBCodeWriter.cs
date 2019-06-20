@@ -571,7 +571,7 @@ namespace ExpressionToString {
                 return;
             }
 
-            var outgoingMetadata = CreateMetadata(true, Conditional);
+            var outgoingMetadata = CreateMetadata(true);
 
             if (CanInline(expr.Test)) {
                 Write("If ");
@@ -609,7 +609,7 @@ namespace ExpressionToString {
             Write("Else");
             if (expr.IfFalse is ConditionalExpression) {
                 Write(" ");
-                WriteNode("IfFalse", expr.IfFalse, outgoingMetadata);
+                WriteNode("IfFalse", expr.IfFalse, CreateMetadata(true, Conditional));
             } else {
                 Indent();
                 WriteEOL();
