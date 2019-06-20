@@ -35,40 +35,36 @@ for:
   matrix:
     only:
       - image: Visual Studio 2019
-
     configuration: ReleaseCI
+    # artifacts:
+    #   - path: ExpressionToString\bin\ReleaseCI\*.nupkg
+    #     type: NuGetPackage
 
-    artifacts:
-      - path: ExpressionToString\bin\ReleaseCI\*.nupkg
-        type: NuGetPackage
+    #   - path: ExpressionTreeVisualizer.2019\bin\ReleaseCI\ExpressionTreeVisualizer.2019.dll
+    #     type: File
+    #     name: visualizer
 
-      - path: ExpressionTreeVisualizer.2019\bin\ReleaseCI\ExpressionTreeVisualizer.2019.dll
-        type: File
-        name: visualizer
+    #   - path: ExpressionTreeVisualizer.2019\bin\ReleaseCI\*.pdb
+    #     type: File
+    #     name: visualizer
 
-      - path: ExpressionTreeVisualizer.2019\bin\ReleaseCI\*.pdb
-        type: File
-        name: visualizer
-
-      - path: ExpressionTreeVisualizer.2019\bin\ReleaseCI\MultiSelectTreeView.dll
-        type: File
-        name: visualizer
+    #   - path: ExpressionTreeVisualizer.2019\bin\ReleaseCI\MultiSelectTreeView.dll
+    #     type: File
+    #     name: visualizer
 
 -
   matrix:
     only:
       - image: Visual Studio 2017
-    
     configuration: ReleaseCI2017
-    
-    artifacts:
-      - path: ExpressionTreeVisualizer.2017\bin\ReleaseCI2017\ExpressionTreeVisualizer.2017.dll
-        type: File
-        name: visualizer
+    # artifacts:
+    #   - path: ExpressionTreeVisualizer.2017\bin\ReleaseCI2017\ExpressionTreeVisualizer.2017.dll
+    #     type: File
+    #     name: visualizer
 
-      - path: ExpressionTreeVisualizer.2017\bin\ReleaseCI\*.pdb
-        type: File
-        name: visualizer
+    #   - path: ExpressionTreeVisualizer.2017\bin\ReleaseCI\*.pdb
+    #     type: File
+    #     name: visualizer
 
 deploy:
   - provider: NuGet
