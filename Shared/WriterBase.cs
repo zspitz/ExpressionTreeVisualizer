@@ -65,7 +65,7 @@ namespace ExpressionToString {
         /// <param name="parameterDeclaration">For ParameterExpression, this is a parameter declaration</param>
         /// <param name="blockType">For BlockExpression, sets the preferred block type</param>
         /// 
-        protected void WriteNode(string pathSegment, object o, bool parameterDeclaration = false, object blockMetadata = null) {
+        protected void WriteNode(string pathSegment, object o, bool parameterDeclaration = false, object metadata = null) {
             if (!pathSegment.IsNullOrWhitespace()) { pathSegments.Add(pathSegment); }
             var start = sb.Length;
             try {
@@ -73,8 +73,11 @@ namespace ExpressionToString {
                     case ParameterExpression pexpr when parameterDeclaration:
                         WriteParameterDeclarationImpl(pexpr);
                         break;
-                    case BlockExpression bexpr when blockMetadata != null:
-                        WriteBlock(bexpr, blockMetadata);
+                    case BlockExpression bexpr when metadata != null:
+                        WriteBlock(bexpr, metadata);
+                        break;
+                    case ConditionalExpression cexpr when metadata != null:
+                        WriteConditional(cexpr, metadata);
                         break;
                     case Expression expr:
                         WriteExpression(expr);
@@ -185,7 +188,7 @@ namespace ExpressionToString {
                     break;
 
                 case Conditional:
-                    WriteConditional(expr as ConditionalExpression);
+                    WriteConditional(expr as ConditionalExpression, null);
                     break;
 
                 case Default:
@@ -306,7 +309,7 @@ namespace ExpressionToString {
         protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, bool writeEOL, string delimiter = ", ", bool parameterDeclaration = false) =>
             WriteNodes(items.Select((arg, index) => ($"{pathSegment}[{index}]", arg)), writeEOL, delimiter, parameterDeclaration);
 
-        protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, string delimiter = ", ", bool parameterDeclaration=false) => 
+        protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, string delimiter = ", ", bool parameterDeclaration = false) =>
             WriteNodes(pathSegment, items, false, delimiter, parameterDeclaration);
 
         protected void TrimEnd(bool trimEOL = false) => sb.TrimEnd(trimEOL);
@@ -325,7 +328,7 @@ namespace ExpressionToString {
         protected abstract void WriteMemberInit(MemberInitExpression expr);
         protected abstract void WriteListInit(ListInitExpression expr);
         protected abstract void WriteNewArray(NewArrayExpression expr);
-        protected abstract void WriteConditional(ConditionalExpression expr);
+        protected abstract void WriteConditional(ConditionalExpression expr, object metadata);
         protected abstract void WriteDefault(DefaultExpression expr);
         protected abstract void WriteTypeBinary(TypeBinaryExpression expr);
         protected abstract void WriteInvocation(InvocationExpression expr);

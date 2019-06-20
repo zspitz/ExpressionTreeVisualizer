@@ -12,7 +12,7 @@ using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Expressions.GotoExpressionKind;
 using static ExpressionToString.Util.Methods;
-using static ExpressionToString.VBBlockMetadata;
+using static ExpressionToString.VBExpressionMetadata;
 
 namespace ExpressionToString {
     public class VBCodeWriter : WriterBase {
@@ -271,7 +271,7 @@ namespace ExpressionToString {
             Indent();
             WriteEOL();
             if (expr.Body.Type != typeof(void)) { Write("Return "); }
-            WriteNode("Body", expr.Body, CreateMetadata(true,false));
+            WriteNode("Body", expr.Body, CreateMetadata(true, Lambda));
             WriteEOL(true);
             Write($"End {lambdaKeyword}");
         }
@@ -550,7 +550,9 @@ namespace ExpressionToString {
             }
         }
 
-        protected override void WriteConditional(ConditionalExpression expr) {
+        protected override void WriteConditional(ConditionalExpression expr, object metadata) {
+            var parentIsConditional = ((VBExpressionMetadata)metadata ?? CreateMetadata(false, null)).ExpressionType == Conditional;
+
             if (expr.Type != typeof(void)) {
                 Write("If(");
                 WriteNode("Test", expr.Test);
@@ -562,7 +564,7 @@ namespace ExpressionToString {
                 return;
             }
 
-            var metadata = CreateMetadata(true, false);
+            var outgoingMetadata = CreateMetadata(true, Conditional);
 
             if (CanInline(expr.Test)) {
                 Write("If ");
@@ -572,12 +574,12 @@ namespace ExpressionToString {
                 Write("If");
                 Indent();
                 WriteEOL();
-                WriteNode("Test", expr.Test, metadata);
+                WriteNode("Test", expr.Test, outgoingMetadata);
                 WriteEOL(true);
                 Write("Then");
             }
 
-            var canInline = new[] { expr.IfTrue, expr.IfFalse }.All(x => CanInline(x));
+            var canInline = new[] { expr.IfTrue, expr.IfFalse }.All(x => CanInline(x)) && !parentIsConditional;
             if (canInline) {
                 Write(" ");
                 WriteNode("IfTrue", expr.IfTrue);
@@ -590,16 +592,24 @@ namespace ExpressionToString {
 
             Indent();
             WriteEOL();
-            WriteNode("IfTrue", expr.IfTrue, metadata);
+            WriteNode("IfTrue", expr.IfTrue, outgoingMetadata);
             WriteEOL(true);
-            if (!expr.IfFalse.IsEmpty()) {
-                Write("Else");
+            if (expr.IfFalse.IsEmpty()) {
+                Write("End If");
+                return;
+            }
+
+            Write("Else");
+            if (expr.IfFalse is ConditionalExpression) {
+                Write(" ");
+                WriteNode("IfFalse", expr.IfFalse, outgoingMetadata);
+            } else {
                 Indent();
                 WriteEOL();
-                WriteNode("IfFalse", expr.IfFalse, metadata);
+                WriteNode("IfFalse", expr.IfFalse, outgoingMetadata);
                 WriteEOL(true);
+                Write("End If");
             }
-            Write("End If");
         }
 
         protected override void WriteDefault(DefaultExpression expr) =>
@@ -632,9 +642,9 @@ namespace ExpressionToString {
             WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
 
         protected override void WriteBlock(BlockExpression expr, object metadata) {
-            var (isInMultiline, parentIsBlock) = (VBBlockMetadata)metadata ?? CreateMetadata(false, false);
-            var useBlockConstruct = !isInMultiline || 
-                (expr.Variables.Any() && parentIsBlock) ;
+            var (isInMultiline, parentType) = (VBExpressionMetadata)metadata ?? CreateMetadata(false, null);
+            var useBlockConstruct = !isInMultiline ||
+                (expr.Variables.Any() && parentType == Block);
             if (useBlockConstruct) {
                 Write("Block");
                 Indent();
@@ -648,7 +658,7 @@ namespace ExpressionToString {
             expr.Expressions.ForEach((subexpr, index) => {
                 if (index > 0 || expr.Variables.Count > 0) { WriteEOL(); }
                 if (subexpr is LabelExpression) { TrimEnd(); }
-                WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(true, true));
+                WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(true, Block));
             });
             if (useBlockConstruct) {
                 WriteEOL(true);
@@ -678,7 +688,7 @@ namespace ExpressionToString {
             WriteNodes("TestValues", switchCase.TestValues);
             Indent();
             WriteEOL();
-            WriteNode("Body", switchCase.Body, CreateMetadata(true, false));
+            WriteNode("Body", switchCase.Body, CreateMetadata(true, null));
             Dedent();
         }
 
@@ -693,7 +703,7 @@ namespace ExpressionToString {
                 Write("Case Else");
                 Indent();
                 WriteEOL();
-                WriteNode("DefaultBody", expr.DefaultBody, CreateMetadata(true, false));
+                WriteNode("DefaultBody", expr.DefaultBody, CreateMetadata(true, Switch));
                 Dedent();
             }
             WriteEOL(true);
@@ -714,14 +724,14 @@ namespace ExpressionToString {
             }
             Indent();
             WriteEOL();
-            WriteNode("Body", catchBlock.Body, CreateMetadata(true, false));
+            WriteNode("Body", catchBlock.Body, CreateMetadata(true, null));
         }
 
         protected override void WriteTry(TryExpression expr) {
             Write("Try");
             Indent();
             WriteEOL();
-            WriteNode("Body", expr.Body, CreateMetadata(true, false));
+            WriteNode("Body", expr.Body, CreateMetadata(true, Try));
             WriteEOL(true);
             expr.Handlers.ForEach((catchBlock, index) => {
                 WriteNode($"Handlers[{index}]", catchBlock);
@@ -731,14 +741,14 @@ namespace ExpressionToString {
                 Write("Fault");
                 Indent();
                 WriteEOL();
-                WriteNode("Fault", expr.Fault, CreateMetadata(true, false));
+                WriteNode("Fault", expr.Fault, CreateMetadata(true, Try));
                 WriteEOL(true);
             }
             if (expr.Finally != null) {
                 Write("Finally");
                 Indent();
                 WriteEOL();
-                WriteNode("Finally", expr.Finally, CreateMetadata(true, false));
+                WriteNode("Finally", expr.Finally, CreateMetadata(true, Try));
                 WriteEOL(true);
             }
             Write("End Try");
@@ -784,7 +794,7 @@ namespace ExpressionToString {
             Write("Do");
             Indent();
             WriteEOL();
-            WriteNode("Body", expr.Body, CreateMetadata(true, false));
+            WriteNode("Body", expr.Body, CreateMetadata(true, Loop));
             WriteEOL(true);
             Write("Loop");
         }

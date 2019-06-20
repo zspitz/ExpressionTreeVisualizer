@@ -327,7 +327,7 @@ namespace ExpressionToString {
             }
         }
 
-        protected override void WriteConditional(ConditionalExpression expr) {
+        protected override void WriteConditional(ConditionalExpression expr, object metadata) {
             if (expr.Type != typeof(void)) {
                 WriteMethodCall(() => Condition(expr.Test, expr.IfTrue, expr.IfFalse));
             } else if (expr.IfFalse.IsEmpty()) {

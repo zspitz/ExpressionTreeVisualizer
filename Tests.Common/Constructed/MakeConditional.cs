@@ -328,8 +328,8 @@ End If",
 }",
             @"If True Then
     Console.WriteLine(True)
-Else If
-    True Then Console.WriteLine(True)
+Else If True Then
+    Console.WriteLine(True)
 End If", 
             @"IfThenElse(
     Constant(true),

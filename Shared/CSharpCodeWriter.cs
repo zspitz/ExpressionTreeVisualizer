@@ -469,7 +469,7 @@ namespace ExpressionToString {
             return true;
         }
 
-        protected override void WriteConditional(ConditionalExpression expr) {
+        protected override void WriteConditional(ConditionalExpression expr, object metadata) {
             if (expr.Type != typeof(void)) {
                 WriteNode("Test", expr.Test);
                 Write(" ? ");

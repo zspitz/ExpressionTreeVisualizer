@@ -16,7 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\IListT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MethodInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\ParameterInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)VBBlockMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VBExpressionMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WriterBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CSharpCodeWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionExtension.cs" />
