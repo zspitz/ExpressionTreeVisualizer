@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -6,6 +7,8 @@
     <IsPackable>false</IsPackable>
 
     <LangVersion>latest</LangVersion>
+
+    <Configurations>Debug;Release;ReleaseCI;ReleaseCI2017</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

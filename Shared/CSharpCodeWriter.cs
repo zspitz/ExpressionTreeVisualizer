@@ -434,17 +434,17 @@ namespace ExpressionToString {
                     Write(" }");
                     break;
                 case NewArrayBounds:
-                    (string left, string right) specifierChars = ("[", "]");
+                    (string left, string right) = ("[", "]");
                     var nestedArrayTypes = expr.Type.NestedArrayTypes().ToList();
                     Write($"new {nestedArrayTypes.Last().root.FriendlyName(language)}");
                     nestedArrayTypes.ForEachT((current, _, index) => {
-                        Write(specifierChars.left);
+                        Write(left);
                         if (index == 0) {
                             WriteNodes("Expressions", expr.Expressions);
                         } else {
                             Write(Repeat("", current.GetArrayRank()).Joined());
                         }
-                        Write(specifierChars.right);
+                        Write(right);
                     });
                     break;
                 default:

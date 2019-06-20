@@ -1,9 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <RootNamespace>ExpressionToString.Tests</RootNamespace>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <Configurations>Debug;Release;ReleaseCI;ReleaseCI2017</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
