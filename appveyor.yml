@@ -35,7 +35,8 @@ for:
   matrix:
     only:
       - image: Visual Studio 2019
-    configuration: ReleaseCI
+    configuration:
+      - ReleaseCI
     # artifacts:
     #   - path: ExpressionToString\bin\ReleaseCI\*.nupkg
     #     type: NuGetPackage
