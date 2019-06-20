@@ -31,7 +31,8 @@ before_build:
 - cmd: nuget restore
 
 for:
-- matrix:
+- 
+  matrix:
     only:
       - image: Visual Studio 2019
     
@@ -52,7 +53,8 @@ for:
     #     type: File
     #     name: visualizer
 
-- matrix:
+- 
+  matrix:
     only:
       - image: Visual Studio 2017
     
