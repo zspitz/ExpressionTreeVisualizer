@@ -340,6 +340,13 @@ namespace ExpressionToString {
         static readonly MethodInfo power = typeof(Math).GetMethod("Pow");
 
         protected override void WriteCall(MethodCallExpression expr) {
+            if (expr.Method.DeclaringType.FullName == "Microsoft.VisualBasic.CompilerServices.LikeOperator" && expr.Method.Name.StartsWith("Like")) {
+                WriteNode("Arguments[0]", expr.Arguments[0]);
+                Write(" Like ");
+                WriteNode("Arguments[1]", expr.Arguments[1]);
+                return;
+            }
+
             if (expr.Method.In(stringConcats)) {
                 var firstArg = expr.Arguments[0];
                 IEnumerable<Expression> argsToWrite = null;
