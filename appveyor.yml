@@ -63,6 +63,17 @@ for:
       type: File
       name: visualizer
 
+  deploy:
+    - provider: NuGet
+      api_key:
+        secure: ggnvR8rEMLbVOYOAMBXmjD+ohPaPoCcMwwEPdQvMbpjt+HEHWFxZYNGXs+O1x8tD
+      artifact: /.*\.nupkg/
+    - provider: GitHub
+      desciprion: ''
+      auth_token:
+        secure: aJaTRXIa+zc+SOGdNPKTH+znUun60Jh5b5pdjzLslhnoKk4vh1eoqO/vnGcDEwig
+      artifact: visualizer
+
 - 
   matrix:
     only:
@@ -73,17 +84,13 @@ for:
       type: File
       name: visualizer
 
-    - path: ExpressionTreeVisualizer.2017\bin\ReleaseCI\*.pdb
+    - path: ExpressionTreeVisualizer.2017\bin\ReleaseCI2017\*.pdb
       type: File
       name: visualizer
 
-deploy:
-  - provider: NuGet
-    api_key:
-      secure: ggnvR8rEMLbVOYOAMBXmjD+ohPaPoCcMwwEPdQvMbpjt+HEHWFxZYNGXs+O1x8tD
-    artifact: /.*\.nupkg/
-  - provider: GitHub
-    desciprion: ''
-    auth_token:
-      secure: aJaTRXIa+zc+SOGdNPKTH+znUun60Jh5b5pdjzLslhnoKk4vh1eoqO/vnGcDEwig
-    artifact: visualizer
+  deploy:
+    - provider: GitHub
+      desciprion: ''
+      auth_token:
+        secure: aJaTRXIa+zc+SOGdNPKTH+znUun60Jh5b5pdjzLslhnoKk4vh1eoqO/vnGcDEwig
+      artifact: visualizer
