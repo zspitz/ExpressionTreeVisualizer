@@ -33,6 +33,14 @@ dotnet_csproj:
 before_build:
 - cmd: nuget restore
 
+matrix:
+  fast_finish: true
+  exclude:
+    - image: Visual Studio 2019
+      configuration: ReleaseCI2017
+    - image: Visual Studio 2017
+      configuration: ReleaseCI
+
 for:
 - 
   matrix:
@@ -79,5 +87,3 @@ deploy:
     auth_token:
       secure: aJaTRXIa+zc+SOGdNPKTH+znUun60Jh5b5pdjzLslhnoKk4vh1eoqO/vnGcDEwig
     artifact: visualizer
-matrix:
-  fast_finish: true
