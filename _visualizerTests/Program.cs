@@ -85,50 +85,50 @@ namespace _visualizerTests {
             //IQueryable<Person> personSource = null;
             //Expression<Func<Person, bool>> expr = person => person.LastName.StartsWith("A");
 
-            //var hour = Variable(typeof(int), "hour");
-            //var msg = Variable(typeof(string), "msg");
-            //var block = Block(
-            //    // specify the variables available within the block
-            //    new[] { hour, msg },
-            //    // hour =
-            //    Assign(hour,
-            //        // DateTime.Now.Hour
-            //        MakeMemberAccess(
-            //            MakeMemberAccess(
-            //                null,
-            //                typeof(DateTime).GetMember("Now").Single()
-            //            ),
-            //            typeof(DateTime).GetMember("Hour").Single()
-            //        )
-            //    ),
-            //    // if ( ... ) { ... } else { ... }
-            //    IfThenElse(
-            //        // ... && ...
-            //        AndAlso(
-            //            // hour >= 6
-            //            GreaterThanOrEqual(
-            //                hour,
-            //                Constant(6)
-            //            ),
-            //            // hour <= 18
-            //            LessThanOrEqual(
-            //                hour,
-            //                Constant(18)
-            //            )
-            //        ),
-            //        // msg = "Good day"
-            //        Assign(msg, Constant("Good day")),
-            //        // msg = Good night"
-            //        Assign(msg, Constant("Good night"))
-            //    ),
-            //    // Console.WriteLine(msg);
-            //    Call(
-            //        typeof(Console).GetMethod("WriteLine", new[] { typeof(object) }),
-            //        msg
-            //    ),
-            //    hour
-            //);
-            //Expression<Action> expr = Lambda<Action>(block);
+            var hour = Variable(typeof(int), "hour");
+            var msg = Variable(typeof(string), "msg");
+            var block = Block(
+                // specify the variables available within the block
+                new[] { hour, msg },
+                // hour =
+                Assign(hour,
+                    // DateTime.Now.Hour
+                    MakeMemberAccess(
+                        MakeMemberAccess(
+                            null,
+                            typeof(DateTime).GetMember("Now").Single()
+                        ),
+                        typeof(DateTime).GetMember("Hour").Single()
+                    )
+                ),
+                // if ( ... ) { ... } else { ... }
+                IfThenElse(
+                    // ... && ...
+                    AndAlso(
+                        // hour >= 6
+                        GreaterThanOrEqual(
+                            hour,
+                            Constant(6)
+                        ),
+                        // hour <= 18
+                        LessThanOrEqual(
+                            hour,
+                            Constant(18)
+                        )
+                    ),
+                    // msg = "Good day"
+                    Assign(msg, Constant("Good day")),
+                    // msg = Good night"
+                    Assign(msg, Constant("Good night"))
+                ),
+                // Console.WriteLine(msg);
+                Call(
+                    typeof(Console).GetMethod("WriteLine", new[] { typeof(object) }),
+                    msg
+                ),
+                hour
+            );
+            Expression<Action> expr = Lambda<Action>(block);
 
             //var constant = Constant(new List<int>());
             //Expression expr = Or(
@@ -186,28 +186,28 @@ namespace _visualizerTests {
             //);
             //Console.WriteLine(expr.ToString("C#"));
 
-            var writeline = typeof(Console).GetMethods().Single(x => {
-                if (x.Name != "WriteLine") { return false; }
-                var parameters = x.GetParameters();
-                return parameters.Length == 1 && parameters[0].ParameterType == typeof(string);
-            });
-            Expression expr = IfThenElse(
-                LessThanOrEqual(
-                    Property(
-                        Property(null, typeof(DateTime).GetProperty("Now")),
-                        "Hour"
-                    ),
-                    Constant(18)
-                ),
-                Block(
-                    Call(writeline, Constant("Good day!")),
-                    Call(writeline, Constant("Have a nice day!"))
-                ),
-                Block(
-                    Call(writeline, Constant("Good night!")),
-                    Call(writeline, Constant("Have a nice night!"))
-                )
-            );
+            //var writeline = typeof(Console).GetMethods().Single(x => {
+            //    if (x.Name != "WriteLine") { return false; }
+            //    var parameters = x.GetParameters();
+            //    return parameters.Length == 1 && parameters[0].ParameterType == typeof(string);
+            //});
+            //Expression expr = IfThenElse(
+            //    LessThanOrEqual(
+            //        Property(
+            //            Property(null, typeof(DateTime).GetProperty("Now")),
+            //            "Hour"
+            //        ),
+            //        Constant(18)
+            //    ),
+            //    Block(
+            //        Call(writeline, Constant("Good day!")),
+            //        Call(writeline, Constant("Have a nice day!"))
+            //    ),
+            //    Block(
+            //        Call(writeline, Constant("Good night!")),
+            //        Call(writeline, Constant("Have a nice night!"))
+            //    )
+            //);
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();

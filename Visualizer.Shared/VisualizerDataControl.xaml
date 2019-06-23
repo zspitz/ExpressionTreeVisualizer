@@ -4,32 +4,32 @@
         <my:ConditionalFormatConverter x:Key="ConditionalFormatConverter" />
         <my:AnyVisibilityConverter x:Key="AnyVisibilityConverter" />
         <SolidColorBrush x:Key="TypeColor" Color="#066555" />
-        <HierarchicalDataTemplate x:Key="ExpressionNodeTemplate" ItemsSource="{Binding Value.Children}">
+        <HierarchicalDataTemplate x:Key="ExpressionNodeTemplate" ItemsSource="{Binding Children}">
             <TextBlock>
                 <TextBlock.ToolTip>
                     <ag:AutoGrid Columns="65,Auto">
                         <TextBlock Text="Path" />
-                        <TextBlock FontWeight="Bold" Text="{Binding Key}" />
+                        <TextBlock FontWeight="Bold" Text="{Binding FullPath}" />
                         <TextBlock Text="Node type" />
-                        <TextBlock FontWeight="Bold" Text="{Binding Value.NodeType}" />
+                        <TextBlock FontWeight="Bold" Text="{Binding NodeType}" />
                         <TextBlock Text="Type" />
-                        <TextBlock FontWeight="Bold" Text="{Binding Value.ReflectionTypeName}" />
+                        <TextBlock FontWeight="Bold" Text="{Binding ReflectionTypeName}" />
                         <TextBlock Text="Name" />
-                        <TextBlock FontWeight="Bold" Text="{Binding Value.Name}" />
+                        <TextBlock FontWeight="Bold" Text="{Binding Name}" />
                         <TextBlock Text="Value" />
-                        <TextBlock FontWeight="Bold" Text="{Binding Value.StringValue}" />
+                        <TextBlock FontWeight="Bold" Text="{Binding StringValue}" />
                     </ag:AutoGrid>
                 </TextBlock.ToolTip>
                 <TextBlock.ContextMenu>
-                    <ContextMenu Loaded="ContextMenu_Loaded">
-                        <MenuItem Header="Test" Click="Test_Click" />
-                    </ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Help" Loaded="HelpContextMenu_Loaded" />
+                    </ContextMenu>                    
                 </TextBlock.ContextMenu>
-                <Run Foreground="DarkGray" Text="{Binding Key, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
-                <Run FontWeight="Bold" Text="{Binding Value.NodeType, Mode=OneTime}" />
-                <Run Foreground="{StaticResource TypeColor}" Text="{Binding Value.ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=({0})}" />
-                <Run Text="{Binding Value.Name, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\}}" />
-                <Run Text="{Binding Value.StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" />
+                <Run Foreground="DarkGray" Text="{Binding PathFromParent, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
+                <Run FontWeight="Bold" Text="{Binding NodeType, Mode=OneTime}" />
+                <Run Foreground="{StaticResource TypeColor}" Text="{Binding ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=({0})}" />
+                <Run Text="{Binding Name, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\}}" />
+                <Run Text="{Binding StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" />
             </TextBlock>
         </HierarchicalDataTemplate>
     </FrameworkElement.Resources>
@@ -129,7 +129,7 @@
                 <Style TargetType="ygoe:MultiSelectTreeViewItem">
                     <Setter Property="IsExpanded" Value="True" />
                     <Setter Property="ItemIndent" Value="18" />
-                    <Setter Property="IsSelected" Value="{Binding Value.IsSelected, Mode=TwoWay}" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                 </Style>
             </ygoe:MultiSelectTreeView.ItemContainerStyle>
         </ygoe:MultiSelectTreeView>

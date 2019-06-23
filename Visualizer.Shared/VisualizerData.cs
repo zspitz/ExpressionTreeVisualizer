@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using ExpressionTreeVisualizer.Util;
 using static ExpressionToString.Globals;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace ExpressionTreeVisualizer {
     [Serializable]
@@ -32,7 +33,7 @@ namespace ExpressionTreeVisualizer {
             set => this.NotifyChanged(ref _language, value, args => PropertyChanged?.Invoke(this, args));
         }
 
-        [field:NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
     }
 
@@ -57,8 +58,7 @@ namespace ExpressionTreeVisualizer {
             //if (start < NodeData.Span.start || end > NodeData.SpanEnd) { throw new ArgumentOutOfRangeException(); }
             var current = NodeData;
             while (true) {
-                // we should really use SingleOrDefault, except that multiple instances of the same ParameterExpression might be returned, because we can't figure out the right start and end for multiple ParameterExpression
-                var child = current.Children.Values().FirstOrDefault(x => x.Span.start <= start && x.SpanEnd >= end);
+                var child = current.Children.SingleOrDefault(x => x.Span.start <= start && x.SpanEnd >= end);
                 if (child == null) { break; }
                 current = child;
             }
@@ -73,7 +73,7 @@ namespace ExpressionTreeVisualizer {
             Source = WriterBase.Create(o, Options.Formatter, Options.Language, out var pathSpans).ToString();
             PathSpans = pathSpans;
             CollectedEndNodes = new List<ExpressionNodeData>();
-            NodeData = new ExpressionNodeData(o, "", this, false);
+            NodeData = new ExpressionNodeData(o, ("", ""), this, false);
 
             // TODO it should be possible to write the following using LINQ
             Constants = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
@@ -110,8 +110,9 @@ namespace ExpressionTreeVisualizer {
     }
 
     [Serializable]
+    [DebuggerDisplay("{FullPath}")]
     public class ExpressionNodeData : INotifyPropertyChanged {
-        public  List<KeyValuePair<string, ExpressionNodeData>> Children { get; set; }
+        public List<ExpressionNodeData> Children { get; set; }
         public string NodeType { get; set; } // ideally this should be an intersection type of multiple enums
         public string ReflectionTypeName { get; set; }
         public (int start, int length) Span { get; set; }
@@ -121,7 +122,13 @@ namespace ExpressionTreeVisualizer {
         public string Closure { get; set; }
         public EndNodeTypes? EndNodeType { get; set; }
         public bool IsDeclaration { get; set; }
-        public string Path { get; set; } = "";
+        public string PathFromParent { get; set; } = "";
+        public string FullPath { get; set; } = "";
+        public (string @namespace, string typename, string propertyname)? ParentProperty { get; set; }
+        public (string @namespace, string enumTypename, string membername)? NodeTypeParts { get; set; }
+
+        private List<(string @namespace, string typename)> _baseTypes;
+        public List<(string @namespace, string typename)> BaseTypes => _baseTypes;
 
         public EndNodeData EndNodeData => new EndNodeData {
             Closure = Closure,
@@ -135,12 +142,20 @@ namespace ExpressionTreeVisualizer {
 
         private static HashSet<Type> propertyTypes = NodeTypes.SelectMany(x => new[] { x, typeof(IEnumerable<>).MakeGenericType(x) }).ToHashSet();
 
-        internal ExpressionNodeData(object o, string path, VisualizerData visualizerData, bool isParameterDeclaration = false) {
-            Path = path;
+        internal ExpressionNodeData(object o, (string aggregatePath, string pathFromParent) path, VisualizerData visualizerData, bool isParameterDeclaration = false, PropertyInfo pi = null) {
+            var (aggregatePath, pathFromParent) = path;
+            PathFromParent = pathFromParent;
+            if (aggregatePath.IsNullOrWhitespace() || pathFromParent.IsNullOrWhitespace()) {
+                FullPath = aggregatePath + pathFromParent;
+            } else {
+                FullPath = $"{aggregatePath}.{pathFromParent}";
+            }
+
             var language = visualizerData.Options.Language;
             switch (o) {
                 case Expression expr:
                     NodeType = expr.NodeType.ToString();
+                    NodeTypeParts = (typeof(ExpressionType).Namespace, nameof(ExpressionType), NodeType);
                     ReflectionTypeName = expr.Type.FriendlyName(language);
                     IsDeclaration = isParameterDeclaration;
 
@@ -186,6 +201,7 @@ namespace ExpressionTreeVisualizer {
                     break;
                 case MemberBinding mbind:
                     NodeType = mbind.BindingType.ToString();
+                    NodeTypeParts = (typeof(MemberBindingType).Namespace, nameof(MemberBindingType), NodeType);
                     Name = mbind.Member.Name;
                     break;
                 case CallSiteBinder callSiteBinder:
@@ -197,17 +213,15 @@ namespace ExpressionTreeVisualizer {
                     break;
             }
 
-            if (visualizerData.PathSpans.TryGetValue(Path, out var span)) {
+            if (visualizerData.PathSpans.TryGetValue(FullPath, out var span)) {
                 Span = span;
             }
-
-            // TODO specify order for properties; sometimes alphabetical order is not preferred; e.g. Parameters then Body for LambdaExpression
 
             // populate Children
             var type = o.GetType();
             var preferredOrder = preferredPropertyOrders.FirstOrDefault(x => x.Item1.IsAssignableFrom(type)).Item2;
             Children = type.GetProperties()
-                .Where(prp => 
+                .Where(prp =>
                     !(prp.DeclaringType.Name == "BlockExpression" && prp.Name == "Result") &&
                     propertyTypes.Any(x => x.IsAssignableFrom(prp.PropertyType))
                 )
@@ -218,14 +232,24 @@ namespace ExpressionTreeVisualizer {
                 .ThenBy(prp => prp.Name)
                 .SelectMany(prp => {
                     if (prp.PropertyType.InheritsFromOrImplements<IEnumerable>()) {
-                        return (prp.GetValue(o) as IEnumerable).Cast<object>().Select((x, index) => ($"{prp.Name}[{index}]", x));
+                        return (prp.GetValue(o) as IEnumerable).Cast<object>().Select((x, index) => ($"{prp.Name}[{index}]", x, prp));
                     } else {
-                        return new[] { (prp.Name, prp.GetValue(o)) };
+                        return new[] { (prp.Name, prp.GetValue(o), prp) };
                     }
                 })
                 .Where(x => x.Item2 != null)
-                .Select(x => KVP(x.Item1, new ExpressionNodeData(x.Item2, (Path.IsNullOrWhitespace() ? "" : $"{Path}.") + x.Item1, visualizerData)))
+                .Select(x => new ExpressionNodeData(x.Item2, (FullPath ?? "", x.Item1), visualizerData, false, x.Item3))
                 .ToList();
+
+            // populate URLs
+            if (pi != null) {
+                ParentProperty = (pi.DeclaringType.Namespace, pi.DeclaringType.Name, pi.Name);
+            }
+
+            if (!baseTypes.TryGetValue(o.GetType(), out _baseTypes)) {
+                _baseTypes = o.GetType().BaseTypes(true, true).Where(x => x != typeof(object) && x.IsPublic).Select(x => (x.Namespace, x.Name)).Distinct().ToList();
+                baseTypes[o.GetType()] = _baseTypes;
+            }
         }
 
         private static List<(Type, string[])> preferredPropertyOrders = new List<(Type, string[])> {
@@ -245,6 +269,8 @@ namespace ExpressionTreeVisualizer {
             (typeof(DynamicExpression), new [] {"Binder", "Arguments"})
         };
 
+        private static Dictionary<Type, List<(string @namespace, string typename)>> baseTypes = new Dictionary<Type, List<(string @namespace, string typename)>>();
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private bool _isSelected;
@@ -255,7 +281,7 @@ namespace ExpressionTreeVisualizer {
 
         public void ClearSelection() {
             IsSelected = false;
-            Children.ForEach(x => x.Value.ClearSelection());
+            Children.ForEach(x => x.ClearSelection());
         }
     }
 

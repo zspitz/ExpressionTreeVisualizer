@@ -70,7 +70,7 @@ namespace ExpressionTreeVisualizer {
 
             List<ExpressionNodeData> selected = new List<ExpressionNodeData>();
             if (sender == tree) {
-                tree.SelectedItems<KeyValuePair<string, ExpressionNodeData>>().Values().AddRangeTo(selected);
+                tree.SelectedItems<ExpressionNodeData>().AddRangeTo(selected);
             } else if (sender == source) {
                 var singleNode = visualizerData.FindNodeBySpan(source.SelectionStart, source.SelectionLength);
                 if (singleNode != null) { selected.Add(singleNode); }
@@ -88,7 +88,7 @@ namespace ExpressionTreeVisualizer {
                 ExpressionNodeData toHighlight;
                 if (sender == tree) {
                     // use the last selected from the tree
-                    toHighlight = tree.LastSelectedItem<KeyValuePair<string, ExpressionNodeData>?>()?.Value;
+                    toHighlight = tree.LastSelectedItem<ExpressionNodeData>();
                 } else {
                     toHighlight = selected.FirstOrDefault();
                 }
@@ -129,12 +129,59 @@ namespace ExpressionTreeVisualizer {
             DataContext = ObjectProvider.TransferObject(Options);
         }
 
-        private void ContextMenu_Loaded(object sender, RoutedEventArgs e) {
-            var menu = sender as ContextMenu;
-            
+        private void HelpContextMenu_Loaded(object sender, RoutedEventArgs e) {
+            var menu = (MenuItem)sender;
+            var node = (ExpressionNodeData)menu.DataContext;
+            MenuItem mi;
+
+            if (menu.Items.Any()) { return; }
+
+            if (node.ParentProperty.HasValue) {
+                var (@namespace, typename, propertyname) = node.ParentProperty.Value;
+                mi = new MenuItem() {
+                    Header = $"Property: {typename}.{propertyname}"
+                };
+                mi.Click += (s1, e1) => {
+                    var url = $"{BaseUrl}{new[] { @namespace, typename, propertyname }.Joined(".")}";
+                    Process.Start(url);
+                };
+                menu.Items.Add(mi);
+            }
+
+            if (node.ParentProperty.HasValue && node.NodeTypeParts.HasValue) {
+                menu.Items.Add(new Separator());
+            }
+
+            if (node.NodeTypeParts.HasValue) {
+                var (@namespace, typename, membername) = node.NodeTypeParts.Value;
+                mi = new MenuItem() {
+                    Header = $"Node type: {typename}.{membername}"
+                };
+                mi.Click += (s1, e1) => {
+                    var url = $"{BaseUrl}{new[] { @namespace, typename }.Joined(".")}#{new[] { @namespace.Replace(".","_"), typename, membername }.Joined("_")}";
+                    Process.Start(url);
+                };
+                menu.Items.Add(mi);
+            }
+
+            if ((node.ParentProperty.HasValue || node.NodeTypeParts.HasValue) && node.BaseTypes.Any()) {
+                menu.Items.Add(new Separator());
+            }
+
+            if (node.BaseTypes != null) {
+                node.BaseTypes.ForEachT((@namespace, typename) => {
+                    mi = new MenuItem() {
+                        Header = $"Base type: {typename}"
+                    };
+                    mi.Click += (s1, e1) => {
+                        var url = $"{BaseUrl}{@namespace}.{typename.Replace("~", "-")}";
+                        Process.Start(url);
+                    };
+                    menu.Items.Add(mi);
+                });
+            }
         }
-        private void Test_Click(object sender, RoutedEventArgs e) {
-            new Window().Show();
-        }
+
+        private const string BaseUrl = "https://docs.microsoft.com/dotnet/api/";
     }
 }

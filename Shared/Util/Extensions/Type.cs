@@ -204,5 +204,28 @@ namespace ExpressionToString.Util {
             bool IsIEnum(Type t) => t == typeof(System.Collections.IEnumerable);
             bool ImplIEnumT(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
         }
+
+        public static IEnumerable<Type> BaseTypes(this Type t, bool genericDefinitions = false, bool andSelf = false) {
+            if (andSelf) {
+                yield return t;
+            }
+            if (t.IsGenericType && genericDefinitions) {
+                yield return t.GetGenericTypeDefinition();
+            }
+
+            foreach (var i in t.GetInterfaces()) {
+                yield return reduceToGeneric(i);
+            }
+            if (t.BaseType != null) {
+                foreach (var baseType in t.BaseType.BaseTypes(genericDefinitions, true)) {
+                    yield return reduceToGeneric(baseType);
+                }
+            }
+
+            Type reduceToGeneric(Type sourceType) {
+                if (sourceType.IsGenericType && genericDefinitions) { return sourceType.GetGenericTypeDefinition(); }
+                return sourceType;
+            }
+        }
     }
 }
