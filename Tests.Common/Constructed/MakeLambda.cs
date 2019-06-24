@@ -178,5 +178,73 @@ End Function",
     )
 )"
         );
+
+        [Fact]
+        [Trait("Category", Lambdas)]
+        public void LambdaMultilineBlockNonvoidReturn() => RunTest(
+            Lambda(
+                Block(
+                    Constant(true),
+                    Constant(true)
+                )
+            ),
+            @"() => {
+    true;
+    return true;
+}",
+            @"Function()
+    True
+    Return True
+End Function",
+            @"Lambda(
+    Block(
+        Constant(true),
+        Constant(true)
+    )
+)"
+        );
+
+        [Fact]
+        [Trait("Category", Lambdas)]
+        public void LambdaMultilineNestedBlockNonvoidReturn() => RunTest(
+            Lambda(
+                Block(
+                    Constant(true),
+                    Block(
+                        new[] { s1, s2 },
+                        Constant(true),
+                        Constant(true)
+                    )
+                )
+            ),
+            @"() => {
+    true;
+    {
+        string s1;
+        string s2;
+        true;
+        return true;
+    }
+}",
+            @"Function()
+    True
+    Block
+        Dim s1 As String
+        Dim s2 As String
+        True
+        Return True
+    End Block
+End Function",
+            @"Lambda(
+    Block(
+        Constant(true),
+        Block(new[] { s1, s2 },
+            Constant(true),
+            Constant(true)
+        )
+    )
+)"
+        );
+
     }
 }

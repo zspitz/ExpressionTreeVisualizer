@@ -9,13 +9,16 @@ namespace ExpressionToString {
     internal class VBExpressionMetadata {
         internal bool IsInMutiline { get; private set; } = false;
         internal ExpressionType? ExpressionType { get; private set; } = null;
-        internal static VBExpressionMetadata CreateMetadata(bool isInMultiline = false, ExpressionType? expressionType = null) => new VBExpressionMetadata {
+        internal bool ReturnBkock { get; private set; } = false;
+        internal static VBExpressionMetadata CreateMetadata(bool isInMultiline = false, ExpressionType? expressionType = null, bool returnBlock = false) => new VBExpressionMetadata {
             IsInMutiline = isInMultiline,
-            ExpressionType = expressionType
+            ExpressionType = expressionType,
+            ReturnBkock = returnBlock
         };
-        internal void Deconstruct(out bool isInMultiline, out ExpressionType? expressionType) {
+        internal void Deconstruct(out bool isInMultiline, out ExpressionType? expressionType, out bool returnBlock) {
             isInMultiline = IsInMutiline;
             expressionType = ExpressionType;
+            returnBlock = ReturnBkock;
         }
     }
 }

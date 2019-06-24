@@ -270,8 +270,16 @@ namespace ExpressionToString {
 
             Indent();
             WriteEOL();
-            if (expr.Body.Type != typeof(void)) { Write("Return "); }
-            WriteNode("Body", expr.Body, CreateMetadata(true, Lambda));
+
+            bool returnBlock = false;
+            if (expr.Body.Type != typeof(void)) {
+                if (expr.Body is BlockExpression bexpr && bexpr.HasMultipleLines()) {
+                    returnBlock = true;
+                } else {
+                    Write("Return ");
+                }
+            }
+            WriteNode("Body", expr.Body, CreateMetadata(true, Lambda, returnBlock));
             WriteEOL(true);
             Write($"End {lambdaKeyword}");
         }
@@ -649,7 +657,7 @@ namespace ExpressionToString {
             WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
 
         protected override void WriteBlock(BlockExpression expr, object metadata) {
-            var (isInMultiline, parentType) = (VBExpressionMetadata)metadata ?? CreateMetadata(false, null);
+            var (isInMultiline, parentType, returnBlock) = (VBExpressionMetadata)metadata ?? CreateMetadata(false, null, false);
             var useBlockConstruct = !isInMultiline ||
                 (expr.Variables.Any() && parentType == Block);
             if (useBlockConstruct) {
@@ -665,7 +673,16 @@ namespace ExpressionToString {
             expr.Expressions.ForEach((subexpr, index) => {
                 if (index > 0 || expr.Variables.Count > 0) { WriteEOL(); }
                 if (subexpr is LabelExpression) { TrimEnd(); }
-                WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(true, Block));
+
+                var outgoingMetadata = CreateMetadata(true, Block);
+                if (returnBlock && index == expr.Expressions.Count - 1) {
+                    if (subexpr is BlockExpression bexpr && bexpr.HasMultipleLines()) {
+                        outgoingMetadata = CreateMetadata(true, Block, true);
+                    } else {
+                        Write("Return ");
+                    }
+                }
+                WriteNode($"Expressions[{index}]", subexpr, outgoingMetadata);
             });
             if (useBlockConstruct) {
                 WriteEOL(true);

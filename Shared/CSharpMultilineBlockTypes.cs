@@ -8,6 +8,7 @@ namespace ExpressionToString {
     public enum CSharpMultilineBlockTypes {
         Inline,
         Test,
-        Block
+        Block,
+        Return
     }
 }

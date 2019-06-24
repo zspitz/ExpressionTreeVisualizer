@@ -213,8 +213,16 @@ namespace ExpressionToString {
             Write("{");
             Indent();
             WriteEOL();
-            if (expr.Body.Type != typeof(void)) { Write("return "); }
-            WriteNode("Body", expr.Body, CreateMetadata(CSharpMultilineBlockTypes.Block));
+
+            CSharpMultilineBlockTypes blockType = CSharpMultilineBlockTypes.Block;
+            if (expr.Body.Type != typeof(void)) {
+                if (expr.Body is BlockExpression bexpr && bexpr.HasMultipleLines()) {
+                    blockType = CSharpMultilineBlockTypes.Return;
+                } else {
+                    Write("return ");
+                }
+            }
+            WriteNode("Body", expr.Body, CreateMetadata(blockType));
             WriteStatementEnd(expr.Body);
             WriteEOL(true);
             Write("}");
@@ -535,7 +543,7 @@ namespace ExpressionToString {
         protected override void WriteBlock(BlockExpression expr, object metadata) {
             var (blockType, parentIsBlock) = (CSharpBlockMetadata)metadata ?? CreateMetadata(Inline, false);
             bool introduceNewBlock;
-            if (blockType == CSharpMultilineBlockTypes.Block) {
+            if (blockType.In(CSharpMultilineBlockTypes.Block, CSharpMultilineBlockTypes.Return)) {
                 introduceNewBlock = expr.Variables.Any() && parentIsBlock;
                 if (introduceNewBlock) {
                     Write("{");
@@ -550,7 +558,16 @@ namespace ExpressionToString {
                 expr.Expressions.ForEach((subexpr, index) => {
                     if (index > 0) { WriteEOL(); }
                     if (subexpr is LabelExpression) { TrimEnd(); }
-                    WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(blockType, true));
+                    if (blockType == CSharpMultilineBlockTypes.Return &&  index == expr.Expressions.Count-1) {
+                       if (subexpr is BlockExpression bexpr && bexpr.HasMultipleLines()) {
+                            WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(CSharpMultilineBlockTypes.Return, true));
+                        } else {
+                            Write("return ");
+                            WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(CSharpMultilineBlockTypes.Block, true));
+                        }
+                    } else {
+                        WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(CSharpMultilineBlockTypes.Block, true));
+                    }
                     WriteStatementEnd(subexpr);
                 });
                 if (introduceNewBlock) {
@@ -712,7 +729,7 @@ namespace ExpressionToString {
                 case GotoExpressionKind.Goto:
                     gotoKeyword = "goto";
                     break;
-                case Return:
+                case GotoExpressionKind.Return:
                     gotoKeyword = "return";
                     break;
                 default:
