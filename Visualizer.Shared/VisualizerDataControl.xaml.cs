@@ -132,56 +132,67 @@ namespace ExpressionTreeVisualizer {
         private void HelpContextMenu_Loaded(object sender, RoutedEventArgs e) {
             var menu = (MenuItem)sender;
             var node = (ExpressionNodeData)menu.DataContext;
-            MenuItem mi;
 
             if (menu.Items.Any()) { return; }
 
+            var listData = new List<(string header, string url)>();
+
             if (node.ParentProperty.HasValue) {
                 var (@namespace, typename, propertyname) = node.ParentProperty.Value;
-                mi = new MenuItem() {
-                    Header = $"Property: {typename}.{propertyname}"
-                };
-                mi.Click += (s1, e1) => {
-                    var url = $"{BaseUrl}{new[] { @namespace, typename, propertyname }.Joined(".")}";
-                    Process.Start(url);
-                };
-                menu.Items.Add(mi);
+                listData.Add(
+                    $"Property: {typename}.{propertyname}",
+                    $"{BaseUrl}{new[] { @namespace, typename, propertyname }.Joined(".")}"
+                );
             }
 
             if (node.ParentProperty.HasValue && node.NodeTypeParts.HasValue) {
-                menu.Items.Add(new Separator());
+                listData.Add("---", "");
             }
 
             if (node.NodeTypeParts.HasValue) {
                 var (@namespace, typename, membername) = node.NodeTypeParts.Value;
-                mi = new MenuItem() {
-                    Header = $"Node type: {typename}.{membername}"
-                };
-                mi.Click += (s1, e1) => {
-                    var url = $"{BaseUrl}{new[] { @namespace, typename }.Joined(".")}#{new[] { @namespace.Replace(".","_"), typename, membername }.Joined("_")}";
-                    Process.Start(url);
-                };
-                menu.Items.Add(mi);
+                listData.Add(
+                    $"Node type: {typename}.{membername}",
+                    $"{BaseUrl}{new[] { @namespace, typename }.Joined(".")}#{new[] { @namespace.Replace(".", "_"), typename, membername }.Joined("_")}"
+                );
             }
 
             if ((node.ParentProperty.HasValue || node.NodeTypeParts.HasValue) && node.BaseTypes.Any()) {
-                menu.Items.Add(new Separator());
+                listData.Add("---", "");
             }
 
             if (node.BaseTypes != null) {
-                node.BaseTypes.ForEachT((@namespace, typename) => {
-                    mi = new MenuItem() {
-                        Header = $"Base type: {typename}"
-                    };
-                    mi.Click += (s1, e1) => {
-                        var url = $"{BaseUrl}{@namespace}.{typename.Replace("~", "-")}";
-                        Process.Start(url);
-                    };
-                    menu.Items.Add(mi);
-                });
+                node.BaseTypes.SelectT((@namespace, typename) => (
+                    $"Base type: {typename}",
+                    $"{BaseUrl}{@namespace}.{typename.Replace("~", "-")}"
+                )).AddRangeTo(listData);
             }
+
+            listData.ForEachT((header, url) => {
+                if (header == "---") {
+                    menu.Items.Add(new Separator());
+                    return;
+                }
+
+                var mi = new MenuItem() {
+                    Header = header
+                };
+                mi.Click += (s1, e1) => Process.Start(url);
+                menu.Items.Add(mi);
+            });
         }
 
         private const string BaseUrl = "https://docs.microsoft.com/dotnet/api/";
+
+        private void CopyWatchExpression_Click(object sender, RoutedEventArgs e) {
+            if (txbRootExpression.Text.IsNullOrWhitespace()) {
+                var dlg = new ExpressionRootPrompt();
+                dlg.ShowDialog();
+                txbRootExpression.Text = dlg.Expression;
+            }
+
+            var node = (ExpressionNodeData)((MenuItem)sender).DataContext;
+            Clipboard.SetText(string.Format(node.WatchExpressionFormatString, txbRootExpression.Text));
+        }
     }
 }

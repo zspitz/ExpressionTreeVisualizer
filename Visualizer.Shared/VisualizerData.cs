@@ -129,6 +129,7 @@ namespace ExpressionTreeVisualizer {
 
         private List<(string @namespace, string typename)> _baseTypes;
         public List<(string @namespace, string typename)> BaseTypes => _baseTypes;
+        public string WatchExpressionFormatString { get; set; }
 
         public EndNodeData EndNodeData => new EndNodeData {
             Closure = Closure,
@@ -142,7 +143,7 @@ namespace ExpressionTreeVisualizer {
 
         private static HashSet<Type> propertyTypes = NodeTypes.SelectMany(x => new[] { x, typeof(IEnumerable<>).MakeGenericType(x) }).ToHashSet();
 
-        internal ExpressionNodeData(object o, (string aggregatePath, string pathFromParent) path, VisualizerData visualizerData, bool isParameterDeclaration = false, PropertyInfo pi = null) {
+        internal ExpressionNodeData(object o, (string aggregatePath, string pathFromParent) path, VisualizerData visualizerData, bool isParameterDeclaration = false, PropertyInfo pi = null, string parentWatchExpression = "") {
             var (aggregatePath, pathFromParent) = path;
             PathFromParent = pathFromParent;
             if (aggregatePath.IsNullOrWhitespace() || pathFromParent.IsNullOrWhitespace()) {
@@ -217,6 +218,18 @@ namespace ExpressionTreeVisualizer {
                 Span = span;
             }
 
+            if (parentWatchExpression.IsNullOrWhitespace()) {
+                WatchExpressionFormatString = "{0}";
+            } else if (pi != null) {
+                var watchPathFromParent = PathFromParent;
+                if (visualizerData.Options.Language==CSharp) {
+                    WatchExpressionFormatString = $"(({pi.DeclaringType.FullName}){parentWatchExpression}).{watchPathFromParent}";
+                } else {  //VisualBasic
+                    watchPathFromParent = watchPathFromParent.Replace("[", "(").Replace("]", ")");
+                    WatchExpressionFormatString = $"CType({parentWatchExpression}, {pi.DeclaringType.FullName}).{watchPathFromParent}";
+                }
+            }
+
             // populate Children
             var type = o.GetType();
             var preferredOrder = preferredPropertyOrders.FirstOrDefault(x => x.Item1.IsAssignableFrom(type)).Item2;
@@ -238,13 +251,13 @@ namespace ExpressionTreeVisualizer {
                     }
                 })
                 .Where(x => x.Item2 != null)
-                .Select(x => new ExpressionNodeData(x.Item2, (FullPath ?? "", x.Item1), visualizerData, false, x.Item3))
+                .Select(x => new ExpressionNodeData(x.Item2, (FullPath ?? "", x.Item1), visualizerData, false, x.Item3, WatchExpressionFormatString))
                 .ToList();
 
             // populate URLs
             if (pi != null) {
                 ParentProperty = (pi.DeclaringType.Namespace, pi.DeclaringType.Name, pi.Name);
-            }
+            } 
 
             if (!baseTypes.TryGetValue(o.GetType(), out _baseTypes)) {
                 _baseTypes = o.GetType().BaseTypes(true, true).Where(x => x != typeof(object) && x.IsPublic).Select(x => (x.Namespace, x.Name)).Distinct().ToList();

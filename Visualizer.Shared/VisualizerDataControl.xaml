@@ -22,6 +22,7 @@
                 </TextBlock.ToolTip>
                 <TextBlock.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="Copy watch expression" Click="CopyWatchExpression_Click" />
                         <MenuItem Header="Help" Loaded="HelpContextMenu_Loaded" />
                     </ContextMenu>                    
                 </TextBlock.ContextMenu>
@@ -110,6 +111,10 @@
         <TextBox Name="source" Margin="0,0,0,12" MinWidth="500"  BorderBrush="Gray" BorderThickness="1" FontFamily="Consolas" FontSize="14" IsInactiveSelectionHighlightEnabled="True" IsReadOnly="True" IsReadOnlyCaretVisible="True" SelectionBrush="Blue" Text="{Binding Source}" TextWrapping="Wrap" />
     </DockPanel>
     <DockPanel Margin="12">
+        <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+            <TextBlock Text="Expression:" Margin="0,0,12,0" VerticalAlignment="Center" />
+            <TextBox Name="txbRootExpression" VerticalContentAlignment="Center" />
+        </DockPanel>
         <StackPanel Margin="0,0,0,5" VerticalAlignment="Bottom" DockPanel.Dock="Top" Orientation="Horizontal">
             <TextBlock VerticalAlignment="Bottom" Text="Tree: " />
             <TextBlock FontSize="15" Foreground="Blue" Text="&#128712;">

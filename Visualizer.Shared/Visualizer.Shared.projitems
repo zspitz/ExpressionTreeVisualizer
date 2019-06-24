@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Converters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionRootPrompt.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\CallSiteBinder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\DependencyObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MultiSelector.cs" />
@@ -34,6 +35,10 @@
     <Content Include="$(MSBuildThisFileDirectory)WpfAutoGrid\license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)ExpressionRootPrompt.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)VisualizerDataControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -42,5 +47,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="C:\Users\Spitz\source\repos\zspitz\ExpressionToString\Visualizer.Shared\ExpressionRootPrompt.xaml.cs">
+      <DependentUpon>ExpressionRootPrompt.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
