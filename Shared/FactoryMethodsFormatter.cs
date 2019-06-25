@@ -6,7 +6,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using static ExpressionToString.Globals;
 using static ExpressionToString.Util.Functions;
-using static System.Linq.Expressions.ExpressionType;
 using static ExpressionToString.FormatterNames;
 using static System.Linq.Expressions.Expression;
 using System.Collections;
@@ -145,101 +144,13 @@ namespace ExpressionToString {
             WriteMethodCall(callExpr.Method.Name, pairs.ToList());
         }
 
-        static Dictionary<ExpressionType, string> binaryUnaryMethods = new Dictionary<ExpressionType, string>() {
-            { ExpressionType.Add, "Add" },
-            { ExpressionType.AddAssign, "AddAssign" },
-            { ExpressionType.AddAssignChecked, "AddAssignChecked" },
-            { ExpressionType.AddChecked, "AddChecked" },
-            { ExpressionType.And, "And" },
-            { ExpressionType.AndAlso, "AndAlso" },
-            { ExpressionType.AndAssign, "AndAssign" },
-            { ExpressionType.ArrayIndex, "ArrayIndex" },
-            { ExpressionType.ArrayLength, "ArrayLength" },
-            { ExpressionType.Assign, "Assign" },
-            { ExpressionType.Block, "Block" },
-            { ExpressionType.Call, "Call" },
-            { ExpressionType.Coalesce, "Coalesce" },
-            { Conditional, "Conditional" },
-            { ExpressionType.Constant, "Constant" },
-            { ExpressionType.Convert, "Convert" },
-            { ExpressionType.ConvertChecked, "ConvertChecked" },
-            { ExpressionType.DebugInfo, "DebugInfo" },
-            { ExpressionType.Decrement, "Decrement" },
-            { ExpressionType.Default, "Default" },
-            { ExpressionType.Divide, "Divide" },
-            { ExpressionType.DivideAssign, "DivideAssign" },
-            { ExpressionType.Dynamic, "Dynamic" },
-            { ExpressionType.Equal, "Equal" },
-            { ExpressionType.ExclusiveOr, "ExclusiveOr" },
-            { ExpressionType.ExclusiveOrAssign, "ExclusiveOrAssign" },
-            { Extension, "Extension" },
-            { ExpressionType.Goto, "Goto" },
-            { ExpressionType.GreaterThan, "GreaterThan" },
-            { ExpressionType.GreaterThanOrEqual, "GreaterThanOrEqual" },
-            { ExpressionType.Increment, "Increment" },
-            { Index, "Index" },
-            { ExpressionType.Invoke, "Invoke" },
-            { ExpressionType.IsFalse, "IsFalse" },
-            { ExpressionType.IsTrue, "IsTrue" },
-            { ExpressionType.Label, "Label" },
-            { ExpressionType.Lambda, "Lambda" },
-            { ExpressionType.LeftShift, "LeftShift" },
-            { ExpressionType.LeftShiftAssign, "LeftShiftAssign" },
-            { ExpressionType.LessThan, "LessThan" },
-            { ExpressionType.LessThanOrEqual, "LessThanOrEqual" },
-            { ExpressionType.ListInit, "ListInit" },
-            { ExpressionType.Loop, "Loop" },
-            { MemberAccess, "MemberAccess" },
-            { ExpressionType.MemberInit, "MemberInit" },
-            { ExpressionType.Modulo, "Modulo" },
-            { ExpressionType.ModuloAssign, "ModuloAssign" },
-            { ExpressionType.Multiply, "Multiply" },
-            { ExpressionType.MultiplyAssign, "MultiplyAssign" },
-            { ExpressionType.MultiplyAssignChecked, "MultiplyAssignChecked" },
-            { ExpressionType.MultiplyChecked, "MultiplyChecked" },
-            { ExpressionType.Negate, "Negate" },
-            { ExpressionType.NegateChecked, "NegateChecked" },
-            { ExpressionType.New, "New" },
-            { ExpressionType.NewArrayBounds, "NewArrayBounds" },
-            { ExpressionType.NewArrayInit, "NewArrayInit" },
-            { ExpressionType.Not, "Not" },
-            { ExpressionType.NotEqual, "NotEqual" },
-            { ExpressionType.OnesComplement, "OnesComplement" },
-            { ExpressionType.Or, "Or" },
-            { ExpressionType.OrAssign, "OrAssign" },
-            { ExpressionType.OrElse, "OrElse" },
-            { ExpressionType.Parameter, "Parameter" },
-            { ExpressionType.PostDecrementAssign, "PostDecrementAssign" },
-            { ExpressionType.PostIncrementAssign, "PostIncrementAssign" },
-            { ExpressionType.Power, "Power" },
-            { ExpressionType.PowerAssign, "PowerAssign" },
-            { ExpressionType.PreDecrementAssign, "PreDecrementAssign" },
-            { ExpressionType.PreIncrementAssign, "PreIncrementAssign" },
-            { ExpressionType.Quote, "Quote" },
-            { ExpressionType.RightShift, "RightShift" },
-            { ExpressionType.RightShiftAssign, "RightShiftAssign" },
-            { ExpressionType.RuntimeVariables, "RuntimeVariables" },
-            { ExpressionType.Subtract, "Subtract" },
-            { ExpressionType.SubtractAssign, "SubtractAssign" },
-            { ExpressionType.SubtractAssignChecked, "SubtractAssignChecked" },
-            { ExpressionType.SubtractChecked, "SubtractChecked" },
-            { ExpressionType.Switch, "Switch" },
-            { ExpressionType.Throw, "Throw" },
-            { Try, "Try" },
-            { ExpressionType.TypeAs, "TypeAs" },
-            { ExpressionType.TypeEqual, "TypeEqual" },
-            { ExpressionType.TypeIs, "TypeIs" },
-            { ExpressionType.UnaryPlus, "UnaryPlus" },
-            { ExpressionType.Unbox, "Unbox" },
-        };
-
         protected override void WriteBinary(BinaryExpression expr) {
-            if (!binaryUnaryMethods.TryGetValue(expr.NodeType, out var name)) { throw new InvalidOperationException($"Method not found for '{expr.NodeType}' node type"); }
+            if (!BinaryUnaryMethods.TryGetValue(expr.NodeType, out var name)) { throw new InvalidOperationException($"Method not found for '{expr.NodeType}' node type"); }
             WriteMethodCall(name, new[] { ("Left", expr.Left), ("Right", expr.Right) });
         }
 
         protected override void WriteUnary(UnaryExpression expr) {
-            if (!binaryUnaryMethods.TryGetValue(expr.NodeType, out var name)) { throw new InvalidOperationException($"Method not found for '{expr.NodeType}' node type"); }
+            if (!BinaryUnaryMethods.TryGetValue(expr.NodeType, out var name)) { throw new InvalidOperationException($"Method not found for '{expr.NodeType}' node type"); }
             switch (expr.NodeType) {
                 case ExpressionType.Convert:
                 case ExpressionType.ConvertChecked:

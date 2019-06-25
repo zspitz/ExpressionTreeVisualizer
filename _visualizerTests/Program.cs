@@ -56,8 +56,8 @@ namespace _visualizerTests {
             //var expr = foo.GetExpression();
 
             //var i = 5;
-            Expression<Func<int>> expr1 = () => 5;
-            Expression<Func<Expression<Func<int>>>> expr = () => expr1;
+            //Expression<Func<int>> expr1 = () => 5;
+            //Expression<Func<Expression<Func<int>>>> expr = () => expr1;
 
             //Expression<Func<string>> expr = Lambda<Func<string>>(
             //    MakeMemberAccess(
@@ -86,50 +86,50 @@ namespace _visualizerTests {
             //IQueryable<Person> personSource = null;
             //Expression<Func<Person, bool>> expr = person => person.LastName.StartsWith("A");
 
-            //var hour = Variable(typeof(int), "hour");
-            //var msg = Variable(typeof(string), "msg");
-            //var block = Block(
-            //    // specify the variables available within the block
-            //    new[] { hour, msg },
-            //    // hour =
-            //    Assign(hour,
-            //        // DateTime.Now.Hour
-            //        MakeMemberAccess(
-            //            MakeMemberAccess(
-            //                null,
-            //                typeof(DateTime).GetMember("Now").Single()
-            //            ),
-            //            typeof(DateTime).GetMember("Hour").Single()
-            //        )
-            //    ),
-            //    // if ( ... ) { ... } else { ... }
-            //    IfThenElse(
-            //        // ... && ...
-            //        AndAlso(
-            //            // hour >= 6
-            //            GreaterThanOrEqual(
-            //                hour,
-            //                Constant(6)
-            //            ),
-            //            // hour <= 18
-            //            LessThanOrEqual(
-            //                hour,
-            //                Constant(18)
-            //            )
-            //        ),
-            //        // msg = "Good day"
-            //        Assign(msg, Constant("Good day")),
-            //        // msg = Good night"
-            //        Assign(msg, Constant("Good night"))
-            //    ),
-            //    // Console.WriteLine(msg);
-            //    Call(
-            //        typeof(Console).GetMethod("WriteLine", new[] { typeof(object) }),
-            //        msg
-            //    ),
-            //    hour
-            //);
-            //Expression<Action> expr = Lambda<Action>(block);
+            var hour = Variable(typeof(int), "hour");
+            var msg = Variable(typeof(string), "msg");
+            var block = Block(
+                // specify the variables available within the block
+                new[] { hour, msg },
+                // hour =
+                Assign(hour,
+                    // DateTime.Now.Hour
+                    MakeMemberAccess(
+                        MakeMemberAccess(
+                            null,
+                            typeof(DateTime).GetMember("Now").Single()
+                        ),
+                        typeof(DateTime).GetMember("Hour").Single()
+                    )
+                ),
+                // if ( ... ) { ... } else { ... }
+                IfThenElse(
+                    // ... && ...
+                    AndAlso(
+                        // hour >= 6
+                        GreaterThanOrEqual(
+                            hour,
+                            Constant(6)
+                        ),
+                        // hour <= 18
+                        LessThanOrEqual(
+                            hour,
+                            Constant(18)
+                        )
+                    ),
+                    // msg = "Good day"
+                    Assign(msg, Constant("Good day")),
+                    // msg = Good night"
+                    Assign(msg, Constant("Good night"))
+                ),
+                // Console.WriteLine(msg);
+                Call(
+                    typeof(Console).GetMethod("WriteLine", new[] { typeof(object) }),
+                    msg
+                ),
+                hour
+            );
+            Expression<Action> expr = Lambda<Action>(block);
 
             //var constant = Constant(new List<int>());
             //Expression expr = Or(

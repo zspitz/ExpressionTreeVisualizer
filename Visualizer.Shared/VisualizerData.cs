@@ -288,8 +288,16 @@ namespace ExpressionTreeVisualizer {
                 baseTypes[o.GetType()] = _baseTypes;
             }
 
-            var publicType = o.GetType().BaseTypes(false, true).FirstOrDefault(x => !x.IsInterface && x.IsPublic);
-            factoryMethods.TryGetValue(publicType, out _factoryMethodNames);
+            string factoryMethodName = null;
+            if (o is BinaryExpression || o is UnaryExpression) {
+                BinaryUnaryMethods.TryGetValue(((Expression)o).NodeType, out factoryMethodName);
+            }
+            if (factoryMethodName.IsNullOrWhitespace()) {
+                var publicType = o.GetType().BaseTypes(false, true).FirstOrDefault(x => !x.IsInterface && x.IsPublic);
+                factoryMethods.TryGetValue(publicType, out _factoryMethodNames);
+            } else {
+                _factoryMethodNames = new[] { factoryMethodName };
+            }
         }
 
         private static List<(Type, string[])> preferredPropertyOrders = new List<(Type, string[])> {
