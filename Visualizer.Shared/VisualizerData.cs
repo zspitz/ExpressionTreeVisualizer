@@ -145,6 +145,9 @@ namespace ExpressionTreeVisualizer {
         public string WatchExpressionFormatString { get; set; }
         public bool EnableValueInNewWindow { get; set; }
 
+        private string[] _factoryMethodNames;
+        public string[] FactoryMethodNames => _factoryMethodNames;
+
         public EndNodeData EndNodeData => new EndNodeData {
             Closure = Closure,
             Name = Name,
@@ -285,7 +288,8 @@ namespace ExpressionTreeVisualizer {
                 baseTypes[o.GetType()] = _baseTypes;
             }
 
-
+            var publicType = o.GetType().BaseTypes(false, true).FirstOrDefault(x => !x.IsInterface && x.IsPublic);
+            factoryMethods.TryGetValue(publicType, out _factoryMethodNames);
         }
 
         private static List<(Type, string[])> preferredPropertyOrders = new List<(Type, string[])> {
@@ -306,6 +310,12 @@ namespace ExpressionTreeVisualizer {
         };
 
         private static Dictionary<Type, List<(string @namespace, string typename)>> baseTypes = new Dictionary<Type, List<(string @namespace, string typename)>>();
+
+        private static Dictionary<Type, string[]> factoryMethods = typeof(Expression).GetMethods()
+            .Where(x => x.IsStatic)
+            .GroupBy(x => x.ReturnType, x => x.Name)
+            .ToDictionary(x => x.Key, x => x.Distinct().Ordered().ToArray());
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

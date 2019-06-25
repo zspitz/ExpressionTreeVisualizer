@@ -145,9 +145,7 @@ namespace ExpressionTreeVisualizer {
                 );
             }
 
-            if (node.ParentProperty.HasValue && node.NodeTypeParts.HasValue) {
-                listData.Add("---", "");
-            }
+            addSeparator();
 
             if (node.NodeTypeParts.HasValue) {
                 var (@namespace, typename, membername) = node.NodeTypeParts.Value;
@@ -157,15 +155,26 @@ namespace ExpressionTreeVisualizer {
                 );
             }
 
-            if ((node.ParentProperty.HasValue || node.NodeTypeParts.HasValue) && node.BaseTypes.Any()) {
-                listData.Add("---", "");
-            }
+            addSeparator();
 
             if (node.BaseTypes != null) {
                 node.BaseTypes.SelectT((@namespace, typename) => (
                     $"Base type: {typename}",
                     $"{BaseUrl}{@namespace}.{typename.Replace("~", "-")}"
                 )).AddRangeTo(listData);
+            }
+
+            addSeparator();
+
+            if (node.FactoryMethodNames != null) {
+                node.FactoryMethodNames.Select(methodName => (
+                    $"Factory method: {methodName}",
+                    $"{BaseUrl}system.linq.expressions.expression.{methodName}"
+                )).AddRangeTo(listData);
+            }
+
+            if (listData.Any() && listData.Last().header == "---") {
+                listData.RemoveLast();
             }
 
             listData.ForEachT((header, url) => {
@@ -180,6 +189,12 @@ namespace ExpressionTreeVisualizer {
                 mi.Click += (s1, e1) => Process.Start(url);
                 menu.Items.Add(mi);
             });
+
+            void addSeparator() {
+                if (listData.Any() && listData.Last().header != "---") {
+                    listData.Add("---", "");
+                }
+            }
         }
 
         private const string BaseUrl = "https://docs.microsoft.com/dotnet/api/";
