@@ -60,5 +60,14 @@ namespace ExpressionToString.Tests {
             var ex = Assert.Throws<FormatException>(() => ParseFormatString("{0:}}"));
             Assert.Equal("Unexpected end of text", ex.Message);
         }
+
+        [Fact]
+        public void QuotationMarksInFormat() => RunTest(
+            @"""{0}""",
+            new List<(string, int?, int?, string)> {
+                ("\"", 0, null, null),
+                ("\"", null, null, null)
+            }
+        );
     }
 }

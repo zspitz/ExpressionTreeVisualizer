@@ -80,7 +80,7 @@ namespace ExpressionTreeVisualizer {
 
         public VisualizerData(object o, VisualizerDataOptions options = null) {
             Options = options ?? new VisualizerDataOptions();
-            if (!options.Path.IsNullOrWhitespace()) {
+            if (!Options.Path.IsNullOrWhitespace()) {
                 o = (ResolvePath(o, options.Path) as Expression).ExtractValue();
             }
             Source = WriterBase.Create(o, Options.Formatter, Options.Language, out var pathSpans).ToString();
