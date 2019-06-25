@@ -33,8 +33,18 @@ namespace ExpressionTreeVisualizer {
             set => this.NotifyChanged(ref _language, value, args => PropertyChanged?.Invoke(this, args));
         }
 
+        public string Path { get; set; }
+
         [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public VisualizerDataOptions(VisualizerDataOptions options = null) {
+            if (options != null) {
+                _formatter = options.Formatter;
+                _language = options.Language;
+                Path = options.Path;
+            }
+        }
     }
 
     [Serializable]
@@ -70,6 +80,9 @@ namespace ExpressionTreeVisualizer {
 
         public VisualizerData(object o, VisualizerDataOptions options = null) {
             Options = options ?? new VisualizerDataOptions();
+            if (!options.Path.IsNullOrWhitespace()) {
+                o = (ResolvePath(o, options.Path) as Expression).ExtractValue();
+            }
             Source = WriterBase.Create(o, Options.Formatter, Options.Language, out var pathSpans).ToString();
             PathSpans = pathSpans;
             CollectedEndNodes = new List<ExpressionNodeData>();
@@ -130,6 +143,7 @@ namespace ExpressionTreeVisualizer {
         private List<(string @namespace, string typename)> _baseTypes;
         public List<(string @namespace, string typename)> BaseTypes => _baseTypes;
         public string WatchExpressionFormatString { get; set; }
+        public bool EnableValueInNewWindow { get; set; }
 
         public EndNodeData EndNodeData => new EndNodeData {
             Closure = Closure,
@@ -180,17 +194,19 @@ namespace ExpressionTreeVisualizer {
                             break;
                     }
 
+                    object value = null;
+
                     // fill StringValue and EndNodeType properties, for expressions
                     switch (expr) {
                         case ConstantExpression cexpr when !cexpr.Type.IsClosureClass():
-                            StringValue = StringValue(cexpr.Value, language);
+                            value = cexpr.Value;
                             EndNodeType = Constant;
                             break;
                         case ParameterExpression pexpr1:
                             EndNodeType = Parameter;
                             break;
                         case Expression e1 when expr.IsClosedVariable():
-                            StringValue = StringValue(expr.ExtractValue(), language);
+                            value = expr.ExtractValue();
                             EndNodeType = ClosedVar;
                             break;
                         case DefaultExpression defexpr:
@@ -198,6 +214,11 @@ namespace ExpressionTreeVisualizer {
                             break;
                     }
                     if (EndNodeType != null) { visualizerData.CollectedEndNodes.Add(this); }
+
+                    if (value != null) {
+                        StringValue = StringValue(value, language);
+                        EnableValueInNewWindow = value.GetType().InheritsFromOrImplementsAny(NodeTypes);
+                    }
 
                     break;
                 case MemberBinding mbind:
@@ -222,7 +243,7 @@ namespace ExpressionTreeVisualizer {
                 WatchExpressionFormatString = "{0}";
             } else if (pi != null) {
                 var watchPathFromParent = PathFromParent;
-                if (visualizerData.Options.Language==CSharp) {
+                if (visualizerData.Options.Language == CSharp) {
                     WatchExpressionFormatString = $"(({pi.DeclaringType.FullName}){parentWatchExpression}).{watchPathFromParent}";
                 } else {  //VisualBasic
                     watchPathFromParent = watchPathFromParent.Replace("[", "(").Replace("]", ")");
@@ -257,12 +278,14 @@ namespace ExpressionTreeVisualizer {
             // populate URLs
             if (pi != null) {
                 ParentProperty = (pi.DeclaringType.Namespace, pi.DeclaringType.Name, pi.Name);
-            } 
+            }
 
             if (!baseTypes.TryGetValue(o.GetType(), out _baseTypes)) {
                 _baseTypes = o.GetType().BaseTypes(true, true).Where(x => x != typeof(object) && x.IsPublic).Select(x => (x.Namespace, x.Name)).Distinct().ToList();
                 baseTypes[o.GetType()] = _baseTypes;
             }
+
+
         }
 
         private static List<(Type, string[])> preferredPropertyOrders = new List<(Type, string[])> {
@@ -313,6 +336,3 @@ namespace ExpressionTreeVisualizer {
         Default
     }
 }
-
-
-// TODO write method to load span into this ExpressionNodeData

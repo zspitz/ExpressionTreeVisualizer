@@ -194,5 +194,15 @@ namespace ExpressionTreeVisualizer {
             var node = (ExpressionNodeData)((MenuItem)sender).DataContext;
             Clipboard.SetText(string.Format(node.WatchExpressionFormatString, txbRootExpression.Text));
         }
+
+        private void OpenNewWindow_Click(object sender, RoutedEventArgs e) {
+            var options = new VisualizerDataOptions(_options);
+            options.Path = ((ExpressionNodeData)((MenuItem)sender).DataContext).FullPath;
+            var window = new VisualizerWindow();
+            var control = window.Content as VisualizerDataControl;
+            control.ObjectProvider = ObjectProvider;
+            control.Options = options;
+            window.ShowDialog();
+        }
     }
 }

@@ -19,8 +19,6 @@ namespace ExpressionToString {
         public CSharpCodeWriter(object o) : base(o, FormatterNames.CSharp) { }
         public CSharpCodeWriter(object o, out Dictionary<string, (int start, int length)> pathSpans) : base(o, FormatterNames.CSharp, out pathSpans) { }
 
-        // TODO handle order of operations -- https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/
-
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
             [Add] = "+",
             [AddChecked] = "+",

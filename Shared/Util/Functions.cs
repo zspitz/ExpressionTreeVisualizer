@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using static ExpressionToString.FormatterNames;
 
 namespace ExpressionToString.Util {
@@ -88,7 +89,6 @@ namespace ExpressionToString.Util {
                     ret = $"{{ {values} }}";
                 }
             } else if (type.IsTupleType()) {
-                // TODO render System.Tuple using Tuple.Create("abcd",5) ? #Tuple?
                 ret = "(" + TupleValues(o).Select(x => RenderLiteral(x, language)).Joined(", ") + ")";
             } else if (type.IsNumeric()) {
                 ret = o.ToString();
@@ -280,6 +280,17 @@ namespace ExpressionToString.Util {
                 default:
                     return CSharp;
             }
+        }
+
+        static Regex re = new Regex(@"(?:^|\.)(\w+)(?:\[(\d+)\])?");
+        public static object ResolvePath(object o, string path) {
+            foreach (var (propertyName, index) in re.Matches(path).Cast<Match>()) {
+                o = o.GetType().GetProperty(propertyName).GetValue(o);
+                if (!index.IsNullOrWhitespace()) {
+                    o = o.GetType().GetIndexers(true).Single(x => x.GetIndexParameters().Single().ParameterType == typeof(int)).GetValue(o, new object[] { int.Parse(index) });
+                }
+            }
+            return o;
         }
     }
 }
