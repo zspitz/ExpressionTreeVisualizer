@@ -82,21 +82,23 @@ The UI consists of:
 
 ![Screenshot](screenshot-01.png)
 
-Live switching between formatters
+You can switch formatters without reloading the visualizer:
 
 ![Language switch](formatter-switch.gif)
 
-Selection syncing when selecting from the tree:
+Selection syncing:
 
-![Selection sync from tree](sync-from-tree.gif)
+* when selecting from the tree:
 
-from source code:
+  ![Selection sync from tree](sync-from-tree.gif)
 
-![Selection sync from source code](sync-from-code.gif)
+* from source code:
 
-and from end nodes:
+  ![Selection sync from source code](sync-from-code.gif)
 
-![Selection sync from end nodes](sync-from-endnodes.gif)
+* and from end nodes:
+
+  ![Selection sync from end nodes](sync-from-endnodes.gif)
   
 ## Credits
 
