@@ -214,6 +214,7 @@ namespace ExpressionTreeVisualizer {
                             break;
                         case DefaultExpression defexpr:
                             EndNodeType = Default;
+                            value = defexpr.ExtractValue();
                             break;
                     }
                     if (EndNodeType != null) { visualizerData.CollectedEndNodes.Add(this); }
