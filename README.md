@@ -82,21 +82,21 @@ The UI consists of:
 
 ![Screenshot](screenshot-01.png)
 
-* Live switching between formatters
+Live switching between formatters
 
-    ![Language switch](formatter-switch.gif)
+![Language switch](formatter-switch.gif)
 
-* Selection syncing when selecting from the tree:
+Selection syncing when selecting from the tree:
 
-  ![Selection sync from tree](sync-from-tree.gif)
+![Selection sync from tree](sync-from-tree.gif)
 
-  from source code:
+from source code:
 
-  ![Selection sync from source code](sync-from-code.gif)
+![Selection sync from source code](sync-from-code.gif)
 
-  and from end nodes:
+and from end nodes:
 
-  ![Selection sync from end nodes](sync-from-endnodes.gif)
+![Selection sync from end nodes](sync-from-endnodes.gif)
   
 ## Credits
 
