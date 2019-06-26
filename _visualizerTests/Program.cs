@@ -87,50 +87,50 @@ namespace _visualizerTests {
             //IQueryable<Person> personSource = null;
             //Expression<Func<Person, bool>> expr = person => person.LastName.StartsWith("A");
 
-            //var hour = Variable(typeof(int), "hour");
-            //var msg = Variable(typeof(string), "msg");
-            //var block = Block(
-            //    // specify the variables available within the block
-            //    new[] { hour, msg },
-            //    // hour =
-            //    Assign(hour,
-            //        // DateTime.Now.Hour
-            //        MakeMemberAccess(
-            //            MakeMemberAccess(
-            //                null,
-            //                typeof(DateTime).GetMember("Now").Single()
-            //            ),
-            //            typeof(DateTime).GetMember("Hour").Single()
-            //        )
-            //    ),
-            //    // if ( ... ) { ... } else { ... }
-            //    IfThenElse(
-            //        // ... && ...
-            //        AndAlso(
-            //            // hour >= 6
-            //            GreaterThanOrEqual(
-            //                hour,
-            //                Constant(6)
-            //            ),
-            //            // hour <= 18
-            //            LessThanOrEqual(
-            //                hour,
-            //                Constant(18)
-            //            )
-            //        ),
-            //        // msg = "Good day"
-            //        Assign(msg, Constant("Good day")),
-            //        // msg = Good night"
-            //        Assign(msg, Constant("Good night"))
-            //    ),
-            //    // Console.WriteLine(msg);
-            //    Call(
-            //        typeof(Console).GetMethod("WriteLine", new[] { typeof(object) }),
-            //        msg
-            //    ),
-            //    hour
-            //);
-            //Expression<Action> expr = Lambda<Action>(block);
+            var hour = Variable(typeof(int), "hour");
+            var msg = Variable(typeof(string), "msg");
+            var block = Block(
+                // specify the variables available within the block
+                new[] { hour, msg },
+                // hour =
+                Assign(hour,
+                    // DateTime.Now.Hour
+                    MakeMemberAccess(
+                        MakeMemberAccess(
+                            null,
+                            typeof(DateTime).GetMember("Now").Single()
+                        ),
+                        typeof(DateTime).GetMember("Hour").Single()
+                    )
+                ),
+                // if ( ... ) { ... } else { ... }
+                IfThenElse(
+                    // ... && ...
+                    AndAlso(
+                        // hour >= 6
+                        GreaterThanOrEqual(
+                            hour,
+                            Constant(6)
+                        ),
+                        // hour <= 18
+                        LessThanOrEqual(
+                            hour,
+                            Constant(18)
+                        )
+                    ),
+                    // msg = "Good day"
+                    Assign(msg, Constant("Good day")),
+                    // msg = Good night"
+                    Assign(msg, Constant("Good night"))
+                ),
+                // Console.WriteLine(msg);
+                Call(
+                    typeof(Console).GetMethod("WriteLine", new[] { typeof(object) }),
+                    msg
+                ),
+                hour
+            );
+            Expression<Action> expr = Lambda<Action>(block);
 
             //var constant = Constant(new List<int>());
             //Expression expr = Or(
@@ -157,7 +157,7 @@ namespace _visualizerTests {
 
 
             //Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
-            //Console.WriteLine(expr.ToString("C#"));
+            //Console.WriteLine(expr.ToString("Visual Basic"));
             //Console.ReadKey(true);
 
             //Expression<Func<Person, bool>> expr = p => p.LastName.StartsWith("A");
@@ -210,39 +210,48 @@ namespace _visualizerTests {
             //        Call(writeline, Constant("Have a nice night!"))
             //    )
             //);
-            bool flag = true;
-            Expression<Func<bool>> compilerGenerated = () => flag;
 
-            var msg = Variable(typeof(string), "msg");
-            var returnValue = Variable(typeof(int), "returnValue");
-            var writeLine = GetMethod(() => Console.WriteLine(flag));
+            //bool flag = true;
+            //Expression<Func<bool>> compilerGenerated = () => flag;
 
-            var trueValue = Parameter(typeof(int), "trueValue");
-            var otherValue = Parameter(typeof(int), "otherValue");
+            //var msg = Variable(typeof(string), "msg");
+            //var returnValue = Variable(typeof(int), "returnValue");
+            //var writeLine = GetMethod(() => Console.WriteLine(flag));
 
-            var expr = Lambda(
-                Block(
-                    new[] { msg, returnValue },
-                    Switch(
-                        compilerGenerated.Body,
-                        Block(
-                            Assign(msg, Constant("flag != true")),
-                            Call(writeLine, Default(typeof(bool))),
-                            Assign(returnValue, otherValue)
-                        ),
-                        SwitchCase(
-                            Block(
-                                Assign(msg, Constant("flag == true")),
-                                Call(writeLine, Constant(true)),
-                                Assign(returnValue, trueValue)
-                            ),
-                            Constant(true)
-                        )
-                    ),
-                    returnValue
-                ),
-                trueValue, otherValue
-            );
+            //var trueValue = Parameter(typeof(int), "trueValue");
+            //var otherValue = Parameter(typeof(int), "otherValue");
+
+            //var expr = Lambda(
+            //    Block(
+            //        new[] { msg, returnValue },
+            //        Switch(
+            //            compilerGenerated.Body,
+            //            Block(
+            //                Assign(msg, Constant("flag != true")),
+            //                Call(writeLine, Default(typeof(bool))),
+            //                Assign(returnValue, otherValue)
+            //            ),
+            //            SwitchCase(
+            //                Block(
+            //                    Assign(msg, Constant("flag == true")),
+            //                    Call(writeLine, Constant(true)),
+            //                    Assign(returnValue, trueValue)
+            //                ),
+            //                Constant(true)
+            //            )
+            //        ),
+            //        returnValue
+            //    ),
+            //    trueValue, otherValue
+            //);
+
+            //Expression<Func<string, int, DateTime, string>> expr = (s, i, dte) => $"{s} -- {i} -- {dte}";
+
+            //int firstVariable = 5;
+            //int secondVariable = 10;
+            //Expression<Func<int>> expr = () => firstVariable + secondVariable;
+
+
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();

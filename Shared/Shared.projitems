@@ -38,7 +38,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\T.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Type.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Functions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Util\Globals.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Globals.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Methods.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VBCodeWriter.cs" />
   </ItemGroup>

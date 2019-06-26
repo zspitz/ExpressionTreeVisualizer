@@ -43,8 +43,17 @@ namespace ExpressionTreeVisualizer {
         public override object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) {
             var formatter = values[0] as string;
             var language = values[1] as string;
-            if (formatter == language) { return formatter; }
-            return $"Formatter: {formatter}, Language: {language}";
+            var path = values[2] as string;
+            var parts = new List<(string name, string value)> {
+                {"Formatter", formatter }
+            };
+            if (formatter != language) {
+                parts.Add("Language", language);
+            }
+            if (!path.IsNullOrWhitespace()) {
+                parts.Add("Path", path);
+            }
+            return parts.SelectT((name, val) => $"{name}: {val}").Joined(", ");
         }
     }
 }

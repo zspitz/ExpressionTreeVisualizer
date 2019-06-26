@@ -282,7 +282,7 @@ namespace ExpressionToString.Util {
             }
         }
 
-        static Regex re = new Regex(@"(?:^|\.)(\w+)(?:\[(\d+)\])?");
+        static readonly Regex re = new Regex(@"(?:^|\.)(\w+)(?:\[(\d+)\])?");
         public static object ResolvePath(object o, string path) {
             foreach (var (propertyName, index) in re.Matches(path).Cast<Match>()) {
                 o = o.GetType().GetProperty(propertyName).GetValue(o);
