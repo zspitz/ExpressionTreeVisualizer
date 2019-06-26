@@ -74,19 +74,13 @@ Features:
 
 ## Visual Studio debugger visualizer for expression trees
 
+The UI consists of:
+
+1. a graphical treeview of the expression tree structure,
+2. source code representation of the tree, and
+3. end nodes -- nodes in the tree which are not composed of other expressions: parameters, closure variables, constants and default values
+
 ![Screenshot](screenshot-01.png)
-
-The UI consists of three parts:
-
-1. Tree view of the various parts of an expression tree
-2. Source code view, using the above `ExpressionToString` library
-3. End nodes -- nodes in the expression tree which are not composed of other expressions
-
-   * Parameters
-   * Closed-over variables
-   * Constant expressions
-
-Features:
 
 * Live switching between formatters
 
