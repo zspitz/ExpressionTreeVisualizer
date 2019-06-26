@@ -130,6 +130,7 @@ case 6:
         break;
     default:
         default(void);
+        break;
 }", @"Select Case i
     Case 4
         Console.WriteLine(True)
@@ -182,6 +183,7 @@ End Select",
     default:
         true;
         true;
+        break;
 }", @"Select Case i
     Case 4
         Console.WriteLine(True)
@@ -242,6 +244,7 @@ End Select",
     default:
         true;
         true;
+        break;
 }", @"Select Case Block
         i
         j
