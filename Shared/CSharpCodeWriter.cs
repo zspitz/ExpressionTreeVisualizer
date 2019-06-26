@@ -647,6 +647,8 @@ namespace ExpressionToString {
                 WriteEOL();
                 WriteNode("DefaultBody", expr.DefaultBody, CreateMetadata(CSharpMultilineBlockTypes.Block));
                 WriteStatementEnd(expr.DefaultBody);
+                WriteEOL();
+                Write("break;");
                 Dedent();
             }
             WriteEOL(true);
