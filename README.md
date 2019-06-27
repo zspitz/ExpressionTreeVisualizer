@@ -8,7 +8,7 @@ This project provides the following:
   
 ### Feedback
 
-* Star the project and/or upvote the posts on [reddit](https://www.reddit.com/r/dotnet/comments/buxdqq/expressiontreetostring_13_get_the_factory_methods/) or [Hacker News](https://news.ycombinator.com/item?id=20055067)
+* Star the project and/or upvote the posts on [reddit](https://www.reddit.com/r/dotnet/comments/c5wiyv/expressiontreetostring_14_visualizer_node_context/) or [Hacker News](https://news.ycombinator.com/item?id=20055067)
 * File an [issue](https://github.com/zspitz/ExpressionToString/issues)
 
 ## String representations of expression trees
