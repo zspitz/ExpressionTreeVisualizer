@@ -138,7 +138,7 @@ namespace ExpressionTreeVisualizer {
         public string PathFromParent { get; set; } = "";
         public string FullPath { get; set; } = "";
         public (string @namespace, string typename, string propertyname)? ParentProperty { get; set; }
-        public (string @namespace, string enumTypename, string membername)? NodeTypeParts { get; set; }
+        public List<(string @namespace, string enumTypename, string membername)> NodeTypesParts { get; set; }
 
         private List<(string @namespace, string typename)> _baseTypes;
         public List<(string @namespace, string typename)> BaseTypes => _baseTypes;
@@ -173,7 +173,14 @@ namespace ExpressionTreeVisualizer {
             switch (o) {
                 case Expression expr:
                     NodeType = expr.NodeType.ToString();
-                    NodeTypeParts = (typeof(ExpressionType).Namespace, nameof(ExpressionType), NodeType);
+                    NodeTypesParts = new List<(string @namespace, string enumTypename, string membername)> {
+                        (typeof(ExpressionType).Namespace, nameof(ExpressionType), NodeType)
+                    };
+                    if (expr is GotoExpression gexpr) {
+                        NodeTypesParts.Add(
+                            typeof(GotoExpressionKind).Namespace, nameof(GotoExpressionKind), gexpr.Kind.ToString()
+                        );
+                    }
                     ReflectionTypeName = expr.Type.FriendlyName(language);
                     IsDeclaration = isParameterDeclaration;
 
@@ -227,7 +234,9 @@ namespace ExpressionTreeVisualizer {
                     break;
                 case MemberBinding mbind:
                     NodeType = mbind.BindingType.ToString();
-                    NodeTypeParts = (typeof(MemberBindingType).Namespace, nameof(MemberBindingType), NodeType);
+                    NodeTypesParts = new List<(string @namespace, string enumTypename, string membername)> {
+                        (typeof(MemberBindingType).Namespace, nameof(MemberBindingType), NodeType)
+                    };    
                     Name = mbind.Member.Name;
                     break;
                 case CallSiteBinder callSiteBinder:

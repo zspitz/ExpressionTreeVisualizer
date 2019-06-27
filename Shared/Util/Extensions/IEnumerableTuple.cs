@@ -17,5 +17,7 @@ namespace ExpressionToString.Util {
         public static IEnumerable<T2> Item2s<T1, T2>(this IEnumerable<(T1, T2)> src) => src.Select(x => x.Item2);
         public static IEnumerable<TResult> SelectT<T1, T2, TResult>(this IEnumerable<ValueTuple<T1, T2>> src, Func<T1, T2, TResult> selector) =>
             src.Select(x => selector(x.Item1, x.Item2));
+        public static IEnumerable<TResult> SelectT<T1, T2, T3, TResult>(this IEnumerable<ValueTuple<T1, T2, T3>> src, Func<T1, T2, T3, TResult> selector) =>
+            src.Select(x => selector(x.Item1, x.Item2, x.Item3));
     }
 }

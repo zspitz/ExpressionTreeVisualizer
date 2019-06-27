@@ -147,12 +147,13 @@ namespace ExpressionTreeVisualizer {
 
             addSeparator();
 
-            if (node.NodeTypeParts.HasValue) {
-                var (@namespace, typename, membername) = node.NodeTypeParts.Value;
-                listData.Add(
-                    $"Node type: {typename}.{membername}",
-                    $"{BaseUrl}{new[] { @namespace, typename }.Joined(".")}#{new[] { @namespace.Replace(".", "_"), typename, membername }.Joined("_")}"
-                );
+            if (node.NodeTypesParts != null) {
+                foreach (var (@namespace, typename, membername) in node.NodeTypesParts) {
+                    listData.Add(
+                        $"Node type: {typename}.{membername}",
+                        $"{BaseUrl}{new[] { @namespace, typename }.Joined(".")}#{new[] { @namespace.Replace(".", "_"), typename, membername }.Joined("_")}"
+                    );
+                }
             }
 
             addSeparator();
