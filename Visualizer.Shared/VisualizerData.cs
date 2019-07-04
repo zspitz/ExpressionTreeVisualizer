@@ -10,10 +10,10 @@ using static ExpressionTreeVisualizer.EndNodeTypes;
 using static ExpressionToString.FormatterNames;
 using System.Collections;
 using System.Runtime.CompilerServices;
-using ExpressionTreeVisualizer.Util;
 using static ExpressionToString.Globals;
 using System.Reflection;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ExpressionTreeVisualizer {
     [Serializable]
@@ -284,8 +284,8 @@ namespace ExpressionTreeVisualizer {
                         return new[] { (prp.Name, prp.GetValue(o), prp) };
                     }
                 })
-                .Where(x => x.Item2 != null)
-                .Select(x => new ExpressionNodeData(x.Item2, (FullPath ?? "", x.Item1), visualizerData, false, x.Item3, WatchExpressionFormatString))
+                .Where(x => x.x != null)
+                .SelectT((relativePath, o1, prp) => new ExpressionNodeData(o1, (FullPath ?? "", relativePath), visualizerData, false, prp, WatchExpressionFormatString))
                 .ToList();
 
             // populate URLs
@@ -350,11 +350,29 @@ namespace ExpressionTreeVisualizer {
     }
 
     [Serializable]
+    [SuppressMessage("", "IDE0032", Justification = "https://github.com/dotnet/core/issues/2981")]
     public struct EndNodeData {
-        public string Closure { get; set; }
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public string Value { get; set; }
+        private string _closure;
+        private string _name;
+        private string _type;
+        private string _value;
+
+        public string Closure {
+            get => _closure;
+            set => _closure = value;
+        }
+        public string Name {
+            get => _name;
+            set => _name = value;
+        }
+        public string Type {
+            get => _type;
+            set => _type = value;
+        }
+        public string Value {
+            get => _value;
+            set => _value = value;
+        }
     }
 
     public enum EndNodeTypes {
