@@ -87,50 +87,50 @@ namespace _visualizerTests {
             //IQueryable<Person> personSource = null;
             //Expression<Func<Person, bool>> expr = person => person.LastName.StartsWith("A");
 
-            var hour = Variable(typeof(int), "hour");
-            var msg = Variable(typeof(string), "msg");
-            var block = Block(
-                // specify the variables available within the block
-                new[] { hour, msg },
-                // hour =
-                Assign(hour,
-                    // DateTime.Now.Hour
-                    MakeMemberAccess(
-                        MakeMemberAccess(
-                            null,
-                            typeof(DateTime).GetMember("Now").Single()
-                        ),
-                        typeof(DateTime).GetMember("Hour").Single()
-                    )
-                ),
-                // if ( ... ) { ... } else { ... }
-                IfThenElse(
-                    // ... && ...
-                    AndAlso(
-                        // hour >= 6
-                        GreaterThanOrEqual(
-                            hour,
-                            Constant(6)
-                        ),
-                        // hour <= 18
-                        LessThanOrEqual(
-                            hour,
-                            Constant(18)
-                        )
-                    ),
-                    // msg = "Good day"
-                    Assign(msg, Constant("Good day")),
-                    // msg = Good night"
-                    Assign(msg, Constant("Good night"))
-                ),
-                // Console.WriteLine(msg);
-                Call(
-                    typeof(Console).GetMethod("WriteLine", new[] { typeof(object) }),
-                    msg
-                ),
-                hour
-            );
-            Expression<Action> expr = Lambda<Action>(block);
+            //var hour = Variable(typeof(int), "hour");
+            //var msg = Variable(typeof(string), "msg");
+            //var block = Block(
+            //    // specify the variables available within the block
+            //    new[] { hour, msg },
+            //    // hour =
+            //    Assign(hour,
+            //        // DateTime.Now.Hour
+            //        MakeMemberAccess(
+            //            MakeMemberAccess(
+            //                null,
+            //                typeof(DateTime).GetMember("Now").Single()
+            //            ),
+            //            typeof(DateTime).GetMember("Hour").Single()
+            //        )
+            //    ),
+            //    // if ( ... ) { ... } else { ... }
+            //    IfThenElse(
+            //        // ... && ...
+            //        AndAlso(
+            //            // hour >= 6
+            //            GreaterThanOrEqual(
+            //                hour,
+            //                Constant(6)
+            //            ),
+            //            // hour <= 18
+            //            LessThanOrEqual(
+            //                hour,
+            //                Constant(18)
+            //            )
+            //        ),
+            //        // msg = "Good day"
+            //        Assign(msg, Constant("Good day")),
+            //        // msg = Good night"
+            //        Assign(msg, Constant("Good night"))
+            //    ),
+            //    // Console.WriteLine(msg);
+            //    Call(
+            //        typeof(Console).GetMethod("WriteLine", new[] { typeof(object) }),
+            //        msg
+            //    ),
+            //    hour
+            //);
+            //Expression<Action> expr = Lambda<Action>(block);
 
             //var constant = Constant(new List<int>());
             //Expression expr = Or(
@@ -251,12 +251,38 @@ namespace _visualizerTests {
             //int secondVariable = 10;
             //Expression<Func<int>> expr = () => firstVariable + secondVariable;
 
-
+            var x = Parameter(typeof(int), "x");
+            var y = Parameter(typeof(int), "y");
+            var expr = Multiply(
+                Add(x, y),
+                Constant(5)
+            );
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
 
             //Console.ReadKey(true);
+
+            var stream = System.IO.File.Create(System.IO.Path.GetTempFileName());
+            var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+            var data = new VisualizerData(expr);
+            var t = typeof(VisualizerData);
+            foreach (var prp in t.GetProperties()) {
+                try {
+                    formatter.Serialize(stream, prp.GetValue(data));
+                } catch (Exception) {
+                    Console.WriteLine($"Serialization failed on property {prp.Name}");
+                }
+            }
+
+            foreach (var fld in t.GetFields()) {
+                try {
+                    formatter.Serialize(stream, fld.GetValue(data));
+                } catch (Exception) {
+                    Console.WriteLine($"Serialization failed on field {fld.Name}");
+                }
+            }
         }
 
         static Expression<Func<int, int>> expr1 = ((Func<Expression<Func<int, int>>>)(() => {
