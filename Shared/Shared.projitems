@@ -12,7 +12,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)CSharpBlockMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CSharpMultilineBlockTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FactoryMethodsFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ObjectNotationFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\BlockExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\CallSiteBinder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\IListT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Match.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MethodInfo.cs" />
