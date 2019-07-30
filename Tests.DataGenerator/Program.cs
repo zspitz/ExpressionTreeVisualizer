@@ -34,6 +34,12 @@ namespace Tests.DataGenerator {
                 ""
             });
 
+            //var toHide = NodeTypeExpressionTypeMapper.maps
+            //    .Where(x => !x.Item1.IsGenericType)
+            //    .GroupBy(x => x.Item1, (key, grp) =>(key, grp.Count()))
+            //    .Where(x => x.Item2 == 1)
+            //    .ToList();
+
             File.WriteAllLines("generated test data.txt", Runner.lines);
         }
     }

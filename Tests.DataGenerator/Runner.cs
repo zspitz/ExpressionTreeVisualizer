@@ -11,41 +11,42 @@ using static ExpressionToString.FormatterNames;
 namespace Tests.DataGenerator {
     public static class Runner {
         public static int total = 0;
-        private static int counter = 0;
+        private static string formatter = ObjectNotation;
+        private static string language = VisualBasic;
         public static readonly List<string> lines = new List<string>();
+        //public static NodeTypeExpressionTypeMapper visitor = new NodeTypeExpressionTypeMapper();
         public static void WriteData(object o, string testData) {
             string toWrite;
             switch (o) {
                 case Expression expr:
-                    toWrite = expr.ToString(FactoryMethods);
+                    toWrite = expr.ToString(formatter, language);
                     break;
                 case MemberBinding mbind:
-                    toWrite = mbind.ToString(FactoryMethods);
+                    toWrite = mbind.ToString(formatter, language);
                     break;
                 case ElementInit init:
-                    toWrite = init.ToString(FactoryMethods);
+                    toWrite = init.ToString(formatter, language);
                     break;
                 case SwitchCase switchCase:
-                    toWrite = switchCase.ToString(FactoryMethods);
+                    toWrite = switchCase.ToString(formatter, language);
                     break;
                 case CatchBlock catchBlock:
-                    toWrite = catchBlock.ToString(FactoryMethods);
+                    toWrite = catchBlock.ToString(formatter, language);
                     break;
                 case LabelTarget labelTarget:
-                    toWrite = labelTarget.ToString(FactoryMethods);
+                    toWrite = labelTarget.ToString(formatter, language);
                     break;
                 default:
                     throw new NotImplementedException();
             }
 
-            if (testData.IsNullOrWhitespace()) {
-                counter += 1;
-                lines.AddRange(new[] {
-                    "\"" + toWrite.Replace("\"", "\"\"") + "\"",
-                    $"{TestMethodName()}",
-                    ""
-                });
-            }
+            lines.AddRange(new[] {
+                "\"" + toWrite.Replace("\"", "\"\"") + "\"",
+                $"{TestMethodName()}",
+                ""
+            });
+
+            //visitor.VisitExt(o);
 
             string TestMethodName() {
                 var mi = new StackTrace().GetFrames().Select(x => x.GetMethod()).FirstOrDefault(x => x.DeclaringType.BaseType == typeof(TestsBase));
