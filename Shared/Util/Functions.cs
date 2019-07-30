@@ -106,9 +106,14 @@ namespace ExpressionToString.Util {
         /// <summary>Returns a string representation of the value, which may or may not be a valid literal in the language</summary>
         public static string StringValue(object o, string language) {
             var (isLiteral, repr) = TryRenderLiteral(o, language);
-            if (!isLiteral && o.GetType().GetMethods().Where(x => x.Name == "ToString" && x.GetParameters().None() && x.DeclaringType != typeof(object)).Any()) {
-                return o.ToString();
-            }
+            var hasDeclaredToString = o.GetType().GetMethods().Any(x => {
+                if (x.Name != "ToString") { return false; }
+                if (x.GetParameters().Any()) { return false; }
+                if (x.DeclaringType == typeof(object)) { return false; }
+                if (x.DeclaringType.InheritsFromOrImplements<EnumerableQuery>()) { return false; } // EnumerableQuery implements its own ToString which we don't want to use
+                return true;
+            });
+            if (hasDeclaredToString) { return o.ToString(); }
             return repr;
         }
 

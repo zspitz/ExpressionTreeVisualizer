@@ -14,13 +14,15 @@ namespace ExpressionToString {
         internal static WriterBase Create(object o, string formatterName, string language) =>
             formatterName == CSharp ? new CSharpCodeWriter(o) :
             formatterName == VisualBasic ? new VBCodeWriter(o) :
-            formatterName == FactoryMethods ? (WriterBase)new FactoryMethodsFormatter(o, ResolveLanguage(language)) :
+            formatterName == FactoryMethods ? new FactoryMethodsFormatter(o, ResolveLanguage(language)) :
+            formatterName == ObjectNotation ? (WriterBase)new ObjectNotationFormatter(o, ResolveLanguage(language)) :
             throw new NotImplementedException("Unknown formatter");
 
         public static WriterBase Create(object o, string formatterName, string language, out Dictionary<string, (int start, int length)> pathSpans) =>
             formatterName == CSharp ? new CSharpCodeWriter(o, out pathSpans) :
             formatterName == VisualBasic ? new VBCodeWriter(o, out pathSpans) :
-            formatterName == FactoryMethods ? (WriterBase)new FactoryMethodsFormatter(o, ResolveLanguage(language), out pathSpans) :
+            formatterName == FactoryMethods ? new FactoryMethodsFormatter(o, ResolveLanguage(language), out pathSpans) :
+            formatterName == ObjectNotation ? (WriterBase)new ObjectNotationFormatter(o, ResolveLanguage(language), out pathSpans) :
             throw new NotImplementedException("Unknown language");
 
         private readonly StringBuilder sb = new StringBuilder();
@@ -117,7 +119,7 @@ namespace ExpressionToString {
         protected void WriteNode((string pathSegment, object o) x) => WriteNode(x.pathSegment, x.o);
         protected void WriteNode(string pathSegment, object o, object blockMetadata) => WriteNode(pathSegment, o, false, blockMetadata);
 
-        private readonly HashSet<ExpressionType> binaryExpressionTypes = new[] {
+        private static readonly HashSet<ExpressionType> binaryExpressionTypes = new[] {
             Add, AddChecked, Divide, Modulo, Multiply, MultiplyChecked, Power, Subtract, SubtractChecked,   // mathematical operators
             And, Or, ExclusiveOr,   // bitwise / logical operations
             LeftShift, RightShift,     // shift operators
@@ -132,7 +134,7 @@ namespace ExpressionToString {
             LeftShiftAssign,RightShiftAssign
         }.ToHashSet();
 
-        private readonly HashSet<ExpressionType> unaryExpressionTypes = new[] {
+        private static readonly HashSet<ExpressionType> unaryExpressionTypes = new[] {
             ArrayLength, ExpressionType.Convert, ConvertChecked, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus, IsTrue, IsFalse,
             PreIncrementAssign, PreDecrementAssign, PostIncrementAssign, PostDecrementAssign,
             Increment, Decrement,

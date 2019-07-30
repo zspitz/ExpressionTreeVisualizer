@@ -11,6 +11,7 @@ namespace ExpressionToString {
         public const string CSharp = "C#";
         public const string VisualBasic = "Visual Basic";
         public const string FactoryMethods = "Factory methods";
+        public const string ObjectNotation = "Object notation";
     }
 
     public static class Globals {
