@@ -185,19 +185,26 @@ namespace ExpressionTreeVisualizer {
                     IsDeclaration = isParameterDeclaration;
 
                     // fill the Name and Closure properties, for expressions
+                    string staticTypename = "";
                     switch (expr) {
                         case ParameterExpression pexpr:
                             Name = pexpr.Name;
                             break;
                         case MemberExpression mexpr:
-                            Name = mexpr.Member.Name;
+                            if (mexpr.Expression == null) {
+                                staticTypename = mexpr.Member.DeclaringType.FriendlyName(language) + ".";
+                            }
+                            Name = staticTypename + mexpr.Member.Name;
                             var expressionType = mexpr.Expression?.Type;
                             if (expressionType.IsClosureClass()) {
                                 Closure = expressionType.FriendlyName(language);
                             }
                             break;
                         case MethodCallExpression callexpr:
-                            Name = callexpr.Method.Name;
+                            if (callexpr.Object == null) {
+                                staticTypename = callexpr.Method.DeclaringType.FriendlyName(language) + ".";
+                            }
+                            Name = staticTypename + callexpr.Method.Name;
                             break;
                         case LambdaExpression lambdaExpression:
                             Name = lambdaExpression.Name;
