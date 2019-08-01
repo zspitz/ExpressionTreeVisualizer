@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 
 namespace Tests.DataGenerator {
     class CompilerGeneratedTestData : CompilerGeneratedBase {
-        protected override void RunTest(object o, string csharp, string vb, string factoryMethods) => Runner.WriteData(o, factoryMethods);
+        [Obsolete] protected override void RunTest(object o, string csharp, string vb, string factoryMethods) => Runner.WriteData(o, factoryMethods);
+        protected override void RunTest(object o, string objectName) { }
     }
+
     class ConstructedTestData : ConstructedBase {
-        protected override void RunTest(object o, string csharp, string vb, string factoryMethods) => Runner.WriteData(o, factoryMethods);
+        [Obsolete] protected override void RunTest(object o, string csharp, string vb, string factoryMethods) => Runner.WriteData(o, factoryMethods);
+        protected override void RunTest(object o, string objectName) { }
     }
     class VBCompilerGeneratedTestData : VBCompilerGeneratedBase {
-        protected override void RunTest(object o, string csharp, string vb, string factoryMethods) => Runner.WriteData(o, factoryMethods);
+        [Obsolete] protected override void RunTest(object o, string csharp, string vb, string factoryMethods) => Runner.WriteData(o, factoryMethods);
+        protected override void RunTest(object o, string objectName) { }
     }
 }

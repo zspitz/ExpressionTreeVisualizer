@@ -12,6 +12,8 @@ namespace ExpressionToString {
         public const string VisualBasic = "Visual Basic";
         public const string FactoryMethods = "Factory methods";
         public const string ObjectNotation = "Object notation";
+        public const string DebugView = "DebugView";
+        public const string ToStringName = "ToString";
     }
 
     public static class Globals {

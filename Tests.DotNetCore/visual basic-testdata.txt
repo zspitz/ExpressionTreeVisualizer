@@ -1,0 +1,73 @@
+﻿---- CSCompiler.Add
+Function() x + y
+---- CSCompiler.AndAlso
+Function() b1 AndAlso b2
+---- CSCompiler.AndBitwise
+Function() i And j
+---- CSCompiler.AndLogical
+Function() b1 And b2
+---- CSCompiler.AnonymousType
+Function() New With {
+    .Bar = "abcd",
+    .Baz = "efgh"
+}
+---- CSCompiler.AnonymousTypeFromVariables
+Function() New With {
+    Bar,
+    Baz
+}
+---- CSCompiler.ArrayIndex
+Function() arr(0)
+---- CSCompiler.ArrayLength
+Function() arr.Length
+---- CSCompiler.ArrayMultipleIndex
+Function() arr(5, 6)
+---- CSCompiler.ArrayOfMultidimensionalArray
+Function() New String(4)(,) {}
+---- CSCompiler.ArraySingleIndex
+Function() arr(5)
+---- CSCompiler.BitwiseNot
+Function() Not i
+---- CSCompiler.ClosedVariable
+Function() s
+---- CSCompiler.Coalesce
+Function() If(s1, s2)
+---- CSCompiler.CollectionTypeWithInitializer
+Function() New List(Of String) From {
+    "abcd",
+    "efgh"
+}
+---- CSCompiler.CollectionTypeWithMultipleElementsInitializers
+Function() New Wrapper From {
+    {
+        "ab",
+        "cd"
+    },
+    {
+        "ef",
+        "gh"
+    }
+}
+---- CSCompiler.CollectionTypeWithSingleOrMultipleElementsInitializers
+Function() New Wrapper From {
+    {
+        "ab",
+        "cd"
+    },
+    "ef"
+}
+---- CSCompiler.Conditional
+Function(i As Integer) If(i > 10, i, i + 10)
+---- CSCompiler.Convert
+Function() CObj(lst)
+---- CSCompiler.DefaultRefType
+Function() Nothing
+---- CSCompiler.DefaultValueType
+Function() 0
+---- CSCompiler.Divide
+Function() x / y
+---- CSCompiler.Equal
+Function() i = j
+---- CSCompiler.EscapedString
+Function() "
+------

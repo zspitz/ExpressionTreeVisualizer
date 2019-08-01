@@ -1,14 +1,15 @@
 ﻿using Xunit;
 using static ExpressionToString.Tests.Categories;
+using ExpressionToString.Tests.Objects;
 
 namespace ExpressionToString.Tests {
     public partial class CompilerGeneratedBase {
         [Fact]
         [Trait("Category", Member)]
         public void InstanceMember() {
-            var s = "";
+            //var s = "";
             RunTest(
-                () => s.Length,
+                CSCompiler.InstanceMember,
                 "() => s.Length",
                 "Function() s.Length", 
                 @"Lambda(
@@ -22,9 +23,9 @@ namespace ExpressionToString.Tests {
         [Fact]
         [Trait("Category", Member)]
         public void ClosedVariable() {
-            var s = "";
+            //var s = "";
             RunTest(
-                () => s,
+                CSCompiler.ClosedVariable,
                 "() => s",
                 "Function() s", 
                 "Lambda(s)"
@@ -34,7 +35,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         [Trait("Category", Member)]
         public void StaticMember() => RunTest(
-            () => string.Empty,
+            CSCompiler.StaticMember,
             "() => string.Empty",
             "Function() String.Empty", 
             @"Lambda(

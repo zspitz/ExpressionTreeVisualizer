@@ -12,10 +12,18 @@ namespace Tests.DataGenerator {
     public static class Runner {
         public static int total = 0;
         private static string formatter = ObjectNotation;
-        private static string language = VisualBasic;
+        private static string language = CSharp;
         public static readonly List<string> lines = new List<string>();
         //public static NodeTypeExpressionTypeMapper visitor = new NodeTypeExpressionTypeMapper();
-        public static void WriteData(object o, string testData) {
+
+        private static Dictionary<string, string> typenameMapping = new[] {
+                ("CompilerGeneratedBase", "CSCompiler"),
+                ("ConstructedBase","FactoryMethods"),
+                ("VBCompilerGeneratedBase","VBCompiler")
+            }.ToDictionary();
+        [Obsolete] public static void WriteData(object o, string testData) {
+            lines.Add($"---- {TestMethodName()}");
+
             string toWrite;
             switch (o) {
                 case Expression expr:
@@ -39,18 +47,15 @@ namespace Tests.DataGenerator {
                 default:
                     throw new NotImplementedException();
             }
+            lines.Add(toWrite);
 
-            lines.AddRange(new[] {
-                "\"" + toWrite.Replace("\"", "\"\"") + "\"",
-                $"{TestMethodName()}",
-                ""
-            });
+            //lines.Add(testData);
 
             //visitor.VisitExt(o);
 
             string TestMethodName() {
                 var mi = new StackTrace().GetFrames().Select(x => x.GetMethod()).FirstOrDefault(x => x.DeclaringType.BaseType == typeof(TestsBase));
-                return $"{mi.ReflectedType.Name}.{mi.Name}";
+                return $"{typenameMapping[mi.ReflectedType.Name]}.{mi.Name}";
             }
         }
     }

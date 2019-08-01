@@ -5,16 +5,7 @@ namespace ExpressionToString.Tests {
     public partial class CompilerGeneratedBase {
         [Fact]
         [Trait("Category", Binary)]
-        public void Add() {
-            double x = 0, y = 0;
-            RunTest(
-                () => x + y,
-                "() => x + y",
-                "Function() x + y",
-                @"Lambda(
-    Add(x, y)
-)");
-        }
+        public void Add() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]

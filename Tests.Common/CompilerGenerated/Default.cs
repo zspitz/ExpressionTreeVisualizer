@@ -1,12 +1,13 @@
 ﻿using Xunit;
 using static ExpressionToString.Tests.Categories;
+using ExpressionToString.Tests.Objects;
 
 namespace ExpressionToString.Tests {
     public partial class CompilerGeneratedBase {
         [Fact]
         [Trait("Category", Defaults)]
         public void DefaultRefType() => RunTest(
-            () => default(string),
+            CSCompiler.DefaultRefType,
             "() => null",
             "Function() Nothing", 
             @"Lambda(
@@ -19,7 +20,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         [Trait("Category", Defaults)]
         public void DefaultValueType() => RunTest(
-            () => default(int),
+            CSCompiler.DefaultValueType,
             "() => 0",
             "Function() 0", 
             @"Lambda(

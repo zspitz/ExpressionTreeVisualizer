@@ -297,5 +297,7 @@ namespace ExpressionToString.Util {
             }
             return o;
         }
+
+        public static string NewLines(int count = 2) => Enumerable.Repeat(Environment.NewLine, count).Joined("");
     }
 }

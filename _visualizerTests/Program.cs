@@ -85,7 +85,7 @@ namespace _visualizerTests {
             //Expression<Func<int, double, double[]>> expr = (n, exp) => new[] { Math.Pow(n, exp) };
 
             //IQueryable<Person> personSource = null;
-            //Expression<Func<Person, bool>> expr = person => person.LastName.StartsWith("A");
+            Expression<Func<Person, bool>> expr = person => person.LastName.StartsWith("A");
 
             //var hour = Variable(typeof(int), "hour");
             //var msg = Variable(typeof(string), "msg");
@@ -251,12 +251,15 @@ namespace _visualizerTests {
             //int secondVariable = 10;
             //Expression<Func<int>> expr = () => firstVariable + secondVariable;
 
-            var x = Parameter(typeof(int), "x");
-            var y = Parameter(typeof(int), "y");
-            var expr = Multiply(
-                Add(x, y),
-                Constant(5)
-            );
+            //var x = Parameter(typeof(int), "x");
+            //var y = Parameter(typeof(int), "y");
+            //var expr = Multiply(
+            //    Add(x, y),
+            //    Constant(5)
+            //);
+
+
+
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();

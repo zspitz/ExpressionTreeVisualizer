@@ -1,11 +1,16 @@
-﻿namespace ExpressionToString.Tests {
+﻿using System;
+
+namespace ExpressionToString.Tests {
     public class CompilerGenerated : CompilerGeneratedBase {
-        protected override void RunTest(object o, string csharp, string vb, string factoryMethods) => Runner.RunTest(o, csharp, vb, factoryMethods);
+        [Obsolete] protected override void RunTest(object o, string csharp, string vb, string factoryMethods) => Runner.RunTest(o, csharp, vb, factoryMethods);
+        protected override void RunTest(object o, string objectName) => Runner.RunTest(o, objectName);
     }
     public class Constructed : ConstructedBase {
-        protected override void RunTest(object o, string csharp, string vb, string factoryMethods) => Runner.RunTest(o, csharp, vb, factoryMethods);
+        [Obsolete] protected override void RunTest(object o, string csharp, string vb, string factoryMethods) => Runner.RunTest(o, csharp, vb, factoryMethods);
+        protected override void RunTest(object o, string objectName) => Runner.RunTest(o, objectName);
     }
     public class VBCompilerGenerated : VBCompilerGeneratedBase {
-        protected override void RunTest(object o, string csharp, string vb, string factoryMethods) => Runner.RunTest(o, csharp, vb, factoryMethods);
+        [Obsolete] protected override void RunTest(object o, string csharp, string vb, string factoryMethods) => Runner.RunTest(o, csharp, vb, factoryMethods);
+        protected override void RunTest(object o, string objectName) => Runner.RunTest(o, objectName);
     }
 } 

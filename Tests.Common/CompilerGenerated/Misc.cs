@@ -1,13 +1,14 @@
 using System;
 using Xunit;
 using static ExpressionToString.Tests.Categories;
+using ExpressionToString.Tests.Objects;
 
 namespace ExpressionToString.Tests {
     public partial class CompilerGeneratedBase {
         [Fact]
         [Trait("Category", Conditionals)]
         public void Conditional() => RunTest(
-            (int i) => i > 10 ? i : i + 10,
+            CSCompiler.Conditional,
             "(int i) => i > 10 ? i : i + 10",
             "Function(i As Integer) If(i > 10, i, i + 10)", 
             @"Lambda(
@@ -29,9 +30,9 @@ namespace ExpressionToString.Tests {
 
         [Fact]
         public void TypeCheck() {
-            object o = "";
+            //object o = "";
             RunTest(
-                () => o is string,
+                CSCompiler.TypeCheck,
                 "() => o is string",
                 "Function() TypeOf o Is String", 
                 @"Lambda(
@@ -45,9 +46,9 @@ namespace ExpressionToString.Tests {
         [Fact]
         [Trait("Category", Invocation)]
         public void InvocationNoArguments() {
-            Func<int> del = () => DateTime.Now.Day;
+            //Func<int> del = () => DateTime.Now.Day;
             RunTest(
-                () => del(),
+                CSCompiler.InvocationNoArguments,
                 "() => del()",
                 "Function() del()", 
                 @"Lambda(
@@ -59,9 +60,9 @@ namespace ExpressionToString.Tests {
         [Fact]
         [Trait("Category", Invocation)]
         public void InvocationOneArgument() {
-            Func<int, int> del = (int i) => DateTime.Now.Day;
+            //Func<int, int> del = (int i) => DateTime.Now.Day;
             RunTest(
-                () => del(5),
+                CSCompiler.InvocationOneArgument,
                 "() => del(5)",
                 "Function() del(5)",
                 @"Lambda(
