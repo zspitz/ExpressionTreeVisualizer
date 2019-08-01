@@ -17,7 +17,8 @@ namespace Tests.DotNetCore {
             Assert.Equal(expected, actual);
         }
 
-        public static TheoryData<object, string, string> TestData() {
+       public static TheoryData<object, string, string> TestData;
+        static LiteralRendering() {
             var testData = new List<(object, (string neutral, string csharp, string vb))>() {
                 { null, ("␀", "null", "Nothing") },
                 {5, ("5","5","5") },
@@ -49,14 +50,13 @@ namespace Tests.DotNetCore {
                 return (o, ($"#{o.GetType().Name}", csharp, vb));
             }).AddRangeTo(testData);
 
-            var ret = new TheoryData<object, string, string>();
+            TestData = new TheoryData<object, string, string>();
             foreach (var (o, expected) in testData) {
                 var (neutral, csharp, vb) = expected;
-                ret.Add(o, "", neutral);
-                ret.Add(o, CSharp, csharp);
-                ret.Add(o, VisualBasic, vb);
+                TestData.Add(o, "", neutral);
+                TestData.Add(o, CSharp, csharp);
+                TestData.Add(o, VisualBasic, vb);
             }
-            return ret;
         }
     }
 }
