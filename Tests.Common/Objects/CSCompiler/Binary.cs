@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ExpressionToString.Tests.Functions;
+﻿using System.Linq.Expressions;
 using static ExpressionToString.Tests.Categories;
-using System.Linq.Expressions;
-using ExpressionToString.Tests.Objects;
+using static ExpressionToString.Tests.Functions;
 
 namespace ExpressionToString.Tests.Objects {
     partial class CSCompiler {
