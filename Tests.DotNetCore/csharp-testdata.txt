@@ -1109,5 +1109,4 @@ if (true) {
 () => lst[3]
 ---- VBCompiler.VBDeclaredTypeIndexer
 () => x[5]
-
 ------

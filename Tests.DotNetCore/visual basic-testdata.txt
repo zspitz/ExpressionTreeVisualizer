@@ -68,6 +68,994 @@ Function() 0
 Function() x / y
 ---- CSCompiler.Equal
 Function() i = j
----- CSCompiler.EscapedString
-Function() "
+---- CSCompiler.ExclusiveOrBitwise
+Function() i Xor j
+---- CSCompiler.ExclusiveOrLogical
+Function() b1 Xor b2
+---- CSCompiler.ExtensionMethod0Arguments
+Function() lst.Count
+---- CSCompiler.ExtensionMethod1Argument
+Function() lst.Take(1)
+---- CSCompiler.ExtensionMethod2Arguments
+Function() lst.OrderBy(Function(x As String) x, StringComparer.OrdinalIgnoreCase)
+---- CSCompiler.False
+Function() False
+---- CSCompiler.GreaterThan
+Function() i > j
+---- CSCompiler.GreaterThanOrEqual
+Function() i >= j
+---- CSCompiler.InstanceMember
+Function() s.Length
+---- CSCompiler.InstanceMethod0Arguments
+Function() s.ToString
+---- CSCompiler.InstanceMethod1Argument
+Function() s.CompareTo("")
+---- CSCompiler.InstanceMethod2Arguments
+Function() s.IndexOf("a"C, 2)
+---- CSCompiler.Integer
+Function() 5
+---- CSCompiler.InterpolatedString
+Function() $"{CObj(New Date(2001, 1, 1))}"
+---- CSCompiler.InvocationNoArguments
+Function() del()
+---- CSCompiler.InvocationOneArgument
+Function() del(5)
+---- CSCompiler.JaggedWithBounds
+Function() New String(4)() {}
+---- CSCompiler.JaggedWithElementsExplicitType
+Function() New Object()() { ({ "ab", "cd" }), ({ "ef", "gh" }) }
+---- CSCompiler.JaggedWithElementsImplicitType
+Function() { ({ "ab", "cd" }), ({ "ef", "gh" }) }
+---- CSCompiler.LeftShift
+Function() i << j
+---- CSCompiler.LessThan
+Function() i < j
+---- CSCompiler.LessThanOrEqual
+Function() i <= j
+---- CSCompiler.ListBinding
+Function() New Node With {
+    .Children = From {
+        New Node,
+        New Node
+    }
+}
+---- CSCompiler.LogicalNot
+Function() Not b
+---- CSCompiler.MathPow
+Function(x As Double, y As Double) x ^ y
+---- CSCompiler.MemberMemberBinding
+Function() New Node With {
+    .Data = With {
+        .Name = "abcd"
+    }
+}
+---- CSCompiler.Modulo
+Function() x Mod y
+---- CSCompiler.MultidimensionalArrayOfArray
+Function() New String(2, 1)() {}
+---- CSCompiler.MultidimensionWithBounds
+Function() New String(1, 2) {}
+---- CSCompiler.Multiply
+Function() x * y
+---- CSCompiler.NamedType
+Function() New Random
+---- CSCompiler.NamedTypeConstructorParameters
+Function() New Foo("ijkl")
+---- CSCompiler.NamedTypeConstructorParametersWithInitializers
+Function() New Foo("ijkl") With {
+    .Bar = "abcd",
+    .Baz = "efgh"
+}
+---- CSCompiler.NamedTypeWithInitializer
+Function() New Foo With {
+    .Bar = "abcd"
+}
+---- CSCompiler.NamedTypeWithInitializers
+Function() New Foo With {
+    .Bar = "abcd",
+    .Baz = "efgh"
+}
+---- CSCompiler.Negate
+Function() -i
+---- CSCompiler.NonInteger
+Function() 7.32
+---- CSCompiler.NoParametersNonVoidReturn
+Function() "abcd"
+---- CSCompiler.NoParametersVoidReturn
+Sub() Console.WriteLine
+---- CSCompiler.NotEqual
+Function() i <> j
+---- CSCompiler.Nothing
+Function() Nothing
+---- CSCompiler.OneParameterNonVoidReturn
+Function(s As String) s
+---- CSCompiler.OneParameterVoidReturn
+Sub(s As String) Console.WriteLine(s)
+---- CSCompiler.OrBitwise
+Function() i Or j
+---- CSCompiler.OrElse
+Function() b1 OrElse b2
+---- CSCompiler.OrLogical
+Function() b1 Or b2
+---- CSCompiler.RightShift
+Function() i >> j
+---- CSCompiler.SingleDimensionInit
+Function() { "" }
+---- CSCompiler.SingleDimensionInitExplicitType
+Function() New Object() { "" }
+---- CSCompiler.SingleDimensionWithBounds
+Function() New String(4) {}
+---- CSCompiler.StaticMember
+Function() String.Empty
+---- CSCompiler.StaticMethod0Arguments
+Sub() Dummy.DummyMethod
+---- CSCompiler.StaticMethod1Argument
+Function() String.Intern("")
+---- CSCompiler.StaticMethod2Arguments
+Function() String.Join(",", { "a", "b" })
+---- CSCompiler.String
+Function() "abcd"
+---- CSCompiler.StringConcat
+Function(s1 As String, s2 As String) s1 + s2
+---- CSCompiler.Subtract
+Function() x - y
+---- CSCompiler.True
+Function() True
+---- CSCompiler.TwoParametersNonVoidReturn
+Function(s1 As String, s2 As String) s1 + s2
+---- CSCompiler.TwoParametersVoidReturn
+Sub(s1 As String, s2 As String) Console.WriteLine(s1 + s2)
+---- CSCompiler.Type
+Function() GetType(String)
+---- CSCompiler.TypeAs
+Function() TryCast(o, String)
+---- CSCompiler.TypeCheck
+Function() TypeOf o Is String
+---- CSCompiler.TypeIndexer
+Function() lst(3)
+---- FactoryMethods.Array
+{ "abcd", 5, #Random }
+---- FactoryMethods.ArrayOfMultidimensionalArray
+New String(4)(,) {}
+---- FactoryMethods.BlockMultipleVariable
+Block
+    Dim i As Integer
+    Dim s1 As String
+    True
+    True
+End Block
+---- FactoryMethods.BlockNoVariables
+Block
+    True
+    True
+End Block
+---- FactoryMethods.BlockSingleVariable
+Block
+    Dim i As Integer
+    True
+    True
+End Block
+---- FactoryMethods.CollectionTypeWithInitializer
+New List(Of String) From {
+    "abcd",
+    "efgh"
+}
+---- FactoryMethods.CollectionTypeWithMultiElementInitializers
+New Wrapper From {
+    {
+        "ab",
+        "cd"
+    },
+    {
+        "ef",
+        "gh"
+    }
+}
+---- FactoryMethods.CollectionTypeWithSingleOrMultiElementInitializers
+New Wrapper From {
+    {
+        "ab",
+        "cd"
+    },
+    "ef"
+}
+---- FactoryMethods.ConstructAdd
+x + y
+---- FactoryMethods.ConstructAddAssign
+i += j
+---- FactoryMethods.ConstructAddAssignChecked
+i += j
+---- FactoryMethods.ConstructAddChecked
+x + y
+---- FactoryMethods.ConstructAndAlso
+b1 AndAlso b2
+---- FactoryMethods.ConstructAndAssign
+b1 = b1 And b2
+---- FactoryMethods.ConstructAndBitwise
+i And j
+---- FactoryMethods.ConstructAndLogical
+b1 And b2
+---- FactoryMethods.ConstructArrayIndex
+arr(i)
+---- FactoryMethods.ConstructArrayLength
+arr.Length
+---- FactoryMethods.ConstructAssign
+x = 5.2
+---- FactoryMethods.ConstructBitwiseNot
+Not i
+---- FactoryMethods.ConstructCatchMultiStatement
+Catch ex As Exception
+    Console.WriteLine(True)
+    Console.WriteLine(True)
+---- FactoryMethods.ConstructCatchMultiStatementWithFilter
+Catch ex As Exception When True
+    Console.WriteLine(True)
+    Console.WriteLine(True)
+---- FactoryMethods.ConstructCatchMultiStatementWithType
+Catch _ As InvalidCastException
+    Console.WriteLine(True)
+    Console.WriteLine(True)
+---- FactoryMethods.ConstructCatchSingleStatement
+Catch ex As Exception
+    Console.WriteLine(True)
+---- FactoryMethods.ConstructCatchSingleStatementWithFilter
+Catch ex As Exception When True
+    Console.WriteLine(True)
+---- FactoryMethods.ConstructCatchSingleStatementWithType
+Catch _ As InvalidCastException
+    Console.WriteLine(True)
+---- FactoryMethods.ConstructCatchWithMultiStatementFilter
+Catch ex As Exception When Block
+    True
+    True
+End Block
+    Console.WriteLine(True)
+---- FactoryMethods.ConstructCoalesce
+If(s1, s2)
+---- FactoryMethods.ConstructConvert
+CObj(arr)
+---- FactoryMethods.ConstructConvertChecked
+CSng(5)
+---- FactoryMethods.ConstructConvertCheckedForReferenceType
+CObj(arr)
+---- FactoryMethods.ConstructDecrement
+i -= 1
+---- FactoryMethods.ConstructDivide
+x / y
+---- FactoryMethods.ConstructDivideAssign
+i /= j
+---- FactoryMethods.ConstructEmptyLabelTarget
+
+---- FactoryMethods.ConstructEqual
+x = y
+---- FactoryMethods.ConstructExclusiveOrAssign
+b1 = b1 Xor b2
+---- FactoryMethods.ConstructExclusiveOrBitwise
+i Xor j
+---- FactoryMethods.ConstructExclusiveOrLogical
+b1 Xor b2
+---- FactoryMethods.ConstructGetIndex
+obj("key")
+---- FactoryMethods.ConstructGetIndexMultipleKeys
+obj("key", 1)
+---- FactoryMethods.ConstructGetMember
+obj.Data
+---- FactoryMethods.ConstructGreaterThan
+x > y
+---- FactoryMethods.ConstructGreaterThanOrEqual
+x >= y
+---- FactoryMethods.ConstructIncrement
+i += 1
+---- FactoryMethods.ConstructInvocationNoArguments
+obj
+---- FactoryMethods.ConstructInvocationWithArguments
+obj("arg1", 15)
+---- FactoryMethods.ConstructIsFalse
+Not b1
+---- FactoryMethods.ConstructIsTrue
+b1
+---- FactoryMethods.ConstructLabel
+Block
+    Dim i As Integer
+    Block
+        Dim j As Integer
+        True
+target:
+        True
+    End Block
+End Block
+---- FactoryMethods.ConstructLabel1
+Block
+    Dim i As Integer
+    Block
+        Dim j As Integer
+target:
+        True
+    End Block
+End Block
+---- FactoryMethods.ConstructLabelTarget
+target
+---- FactoryMethods.ConstructLeftShift
+i << j
+---- FactoryMethods.ConstructLeftShiftAssign
+i <<= j
+---- FactoryMethods.ConstructLessThan
+x < y
+---- FactoryMethods.ConstructLessThanOrEqual
+x <= y
+---- FactoryMethods.ConstructLogicalNot
+Not b1
+---- FactoryMethods.ConstructMemberInvocationNoArguments
+obj.Method
+---- FactoryMethods.ConstructMemberInvocationWithArguments
+obj.Method("arg1", 15)
+---- FactoryMethods.ConstructModulo
+x Mod y
+---- FactoryMethods.ConstructModuloAssign
+i = i Mod j
+---- FactoryMethods.ConstructMultiply
+x * y
+---- FactoryMethods.ConstructMultiplyAssign
+i *= j
+---- FactoryMethods.ConstructMultiplyAssignChecked
+i *= j
+---- FactoryMethods.ConstructMultiplyChecked
+x * y
+---- FactoryMethods.ConstructNegate
+-i
+---- FactoryMethods.ConstructNotEqual
+x <> y
+---- FactoryMethods.ConstructOrAssign
+b1 = b1 Or b2
+---- FactoryMethods.ConstructOrBitwise
+i Or j
+---- FactoryMethods.ConstructOrElse
+b1 OrElse b2
+---- FactoryMethods.ConstructOrLogical
+b1 Or b2
+---- FactoryMethods.ConstructPostDecrementAssign
+(i -= 1 : i + 1)
+---- FactoryMethods.ConstructPostIncrementAssign
+(i += 1 : i - 1)
+---- FactoryMethods.ConstructPower
+x ^ y
+---- FactoryMethods.ConstructPowerAssign
+x ^= y
+---- FactoryMethods.ConstructPreDecrementAssign
+(i -= 1 : i)
+---- FactoryMethods.ConstructPreIncrementAssign
+(i += 1 : i)
+---- FactoryMethods.ConstructReferenceEqual
+lstString Is lstString
+---- FactoryMethods.ConstructReferenceNotEqual
+lstString IsNot lstString
+---- FactoryMethods.ConstructRethrow
+Throw
+---- FactoryMethods.ConstructRightShift
+i >> j
+---- FactoryMethods.ConstructRightShiftAssign
+i >>= j
+---- FactoryMethods.ConstructRuntimeVariables
+' Variables -- x As Double, s1 As String
+---- FactoryMethods.ConstructSetIndex
+obj("key") = 42
+---- FactoryMethods.ConstructSetIndexMultipleKeys
+obj("key", 1) = 42
+---- FactoryMethods.ConstructSetMember
+obj.Data = 42
+---- FactoryMethods.ConstructSimpleCatch
+Catch
+    Console.WriteLine(True)
+---- FactoryMethods.ConstructSubtract
+x - y
+---- FactoryMethods.ConstructSubtractAssign
+i -= j
+---- FactoryMethods.ConstructSubtractAssignChecked
+i -= j
+---- FactoryMethods.ConstructSubtractChecked
+x - y
+---- FactoryMethods.ConstructThrow
+Throw #Random
+---- FactoryMethods.ConstructTryCatch
+Try
+    True
+Catch
+    True
+End Try
+---- FactoryMethods.ConstructTryCatchFinally
+Try
+    True
+Catch ex As Exception
+    True
+Finally
+    Console.WriteLine(True)
+End Try
+---- FactoryMethods.ConstructTryFault
+Try
+    Console.WriteLine(True)
+Fault
+    Console.WriteLine(True)
+End Try
+---- FactoryMethods.ConstructTryFinally
+Try
+    Console.WriteLine(True)
+Finally
+    Console.WriteLine(True)
+End Try
+---- FactoryMethods.ConstructTypeAs
+TryCast(arr, Object)
+---- FactoryMethods.DateTime
+#1/1/1981 12:00:00 AM#
+---- FactoryMethods.DifferentTypeForNodeAndValue
+#List(Of String)
+---- FactoryMethods.EmptyLoop
+Do
+    True
+Loop
+---- FactoryMethods.EmptyLoop1
+Do
+    True
+    True
+Loop
+---- FactoryMethods.ExtensionMethod0Arguments
+lstString.Count
+---- FactoryMethods.ExtensionMethod1Argument
+lstString.Take(1)
+---- FactoryMethods.ExtensionMethod2Arguments
+lstString.OrderBy(Function(x As String) x, StringComparer.OrdinalIgnoreCase)
+---- FactoryMethods.InstanceIndexer
+lstString(0)
+---- FactoryMethods.InstanceMember
+"".Length
+---- FactoryMethods.InstanceMethod0Arguments
+s.ToString
+---- FactoryMethods.InstanceMethod1Argument
+s.CompareTo("")
+---- FactoryMethods.InstanceMethod2Arguments
+s.IndexOf("a"C, 2)
+---- FactoryMethods.JaggedWithBounds
+New String(4)() {}
+---- FactoryMethods.JaggedWithElementsExplicitType
+New Object()() { ({ "ab", "cd" }), ({ "ef", "gh" }) }
+---- FactoryMethods.JaggedWithElementsImplicitType
+{ ({ "ab", "cd" }), ({ "ef", "gh" }) }
+---- FactoryMethods.LambdaMultilineBlockNonvoidReturn
+Function()
+    True
+    Return True
+End Function
+---- FactoryMethods.LambdaMultilineNestedBlockNonvoidReturn
+Function()
+    True
+    Block
+        Dim s1 As String
+        Dim s2 As String
+        True
+        Return True
+    End Block
+End Function
+---- FactoryMethods.MakeArrayAccess
+arr(0)
+---- FactoryMethods.MakeArrayIndex
+arr(0)
+---- FactoryMethods.MakeArrayMultipleIndex
+arr2d(0, 1)
+---- FactoryMethods.MakeBreak
+Exit target
+---- FactoryMethods.MakeBreakWithValue
+Exit target 5
+---- FactoryMethods.MakeByRefParameter
+Function(ByRef s4 As String) True
+---- FactoryMethods.MakeClearDebugInfo
+' Clear debug info from source.txt
+---- FactoryMethods.MakeConditional
+If(i > 10, i, i + 10)
+---- FactoryMethods.MakeContinue
+Continue target
+---- FactoryMethods.MakeDebugInfo
+' Debug to source.txt -- L1C2 : L3C4
+---- FactoryMethods.MakeDefaultRefType
+CType(Nothing, String)
+---- FactoryMethods.MakeDefaultValueType
+CType(Nothing, Integer)
+---- FactoryMethods.MakeElementInit
+"abcd"
+---- FactoryMethods.MakeElementInit2Arguments
+{
+    "abcd",
+    "efgh"
+}
+---- FactoryMethods.MakeGotoWithoutValue
+Goto target
+---- FactoryMethods.MakeGotoWithValue
+Goto target 5
+---- FactoryMethods.MakeInvocation
+(Function() 5)()
+---- FactoryMethods.MakeListBinding
+.Children = From {
+    New Node,
+    New Node
+}
+---- FactoryMethods.MakeMemberBind
+.Foo = "abcd"
+---- FactoryMethods.MakeMemberMemberBind
+.Data = With {
+    .Name = "abcd"
+}
+---- FactoryMethods.MakeQuoted
+Block
+    Dim x As Double
+    ' --- Quoted - begin
+        Sub() Console.WriteLine(True)
+    ' --- Quoted - end
+End Block
+---- FactoryMethods.MakeQuoted1
+Function()
+' --- Quoted - begin
+    Sub() Console.WriteLine(True)
+' --- Quoted - end
+---- FactoryMethods.MakeReturn
+Return target
+---- FactoryMethods.MakeReturnWithValue
+Return target 5
+---- FactoryMethods.MakeTypeCheck
+TypeOf "" Is String
+---- FactoryMethods.MakeTypeEqual
+"".GetType = GetType(IEnumerable)
+---- FactoryMethods.MultidimensionalArrayOfArray
+New String(2, 1)() {}
+---- FactoryMethods.MultidimensionWithBounds
+New String(1, 2) {}
+---- FactoryMethods.MultilineIfFalse
+If True Then
+    Console.WriteLine(True)
+Else
+    Console.WriteLine(False)
+    Console.WriteLine(False)
+End If
+---- FactoryMethods.MultilineIfTrue
+If True Then
+    Console.WriteLine(True)
+    Console.WriteLine(True)
+End If
+---- FactoryMethods.MultilineLambda
+Sub()
+    If True Then Console.WriteLine(True)
+End Sub
+---- FactoryMethods.MultilineTestPart
+If(Block
+    True
+    True
+End Block, "true".Length, "false".Length)
+---- FactoryMethods.MultilineTestPart1
+If
+    True
+    True
+Then Console.WriteLine(True)
+---- FactoryMethods.MultiValueSwitchCase
+Case 5, 6
+    Console.WriteLine(True)
+    Console.WriteLine(True)
+---- FactoryMethods.MultiValueSwitchCase1
+Case 5, 6
+    Console.WriteLine(True)
+---- FactoryMethods.NamedLambda
+Function(s1 As String, s2 As String) s1 + s2
+---- FactoryMethods.NamedType
+New Random
+---- FactoryMethods.NamedTypeConstructorParameters
+New Foo("ijkl")
+---- FactoryMethods.NamedTypeConstructorParametersWithInitializers
+New Foo("ijkl") With {
+    .Bar = "abcd",
+    .Baz = "efgh"
+}
+---- FactoryMethods.NamedTypeWithInitializer
+New Foo With {
+    .Bar = "abcd"
+}
+---- FactoryMethods.NamedTypeWithInitializers
+New Foo With {
+    .Bar = "abcd",
+    .Baz = "efgh"
+}
+---- FactoryMethods.NestedBlockInBlockSyntax
+If True Then
+    True
+    True
+    True
+    True
+End If
+---- FactoryMethods.NestedBlockInBlockSyntaxWithVariable
+If True Then
+    True
+    Block
+        Dim s1 As String
+        True
+        True
+    End Block
+    True
+End If
+---- FactoryMethods.NestedBlockInTest
+If
+    True
+    True
+    True
+    True
+Then True
+---- FactoryMethods.NestedBlockInTestWithVariables
+If
+    True
+    Block
+        Dim s1 As String
+        True
+        True
+    End Block
+    True
+Then True
+---- FactoryMethods.NestedElse
+If True Then
+    Console.WriteLine(True)
+Else If True Then
+    Console.WriteLine(True)
+End If
+---- FactoryMethods.NestedIfThen
+If True Then
+    If True Then Console.WriteLine(True)
+End If
+---- FactoryMethods.NestedInlineBlock
+Block
+    True
+    True
+    True
+    True
+End Block
+---- FactoryMethods.NestedInlineBlockWithVariable
+Block
+    True
+    Block
+        Dim s1 As String
+        True
+        True
+    End Block
+    True
+End Block
+---- FactoryMethods.NestedLambda
+Function()
+    Return Function(s1 As String, s2 As String) s1 + s2
+End Function
+---- FactoryMethods.NonVoidConditionalWithElse
+If(True, "true".Length, "false".Length)
+---- FactoryMethods.NonVoidConditionalWithoutElse
+If(True, "true".Length, CType(Nothing, Integer))
+---- FactoryMethods.NoParametersNonVoidReturn
+Function() "abcd"
+---- FactoryMethods.NoParametersVoidReturn
+Sub() Console.WriteLine
+---- FactoryMethods.OldTuple
+("abcd", 5)
+---- FactoryMethods.OneParameterNonVoidReturn
+Function(s As String) s
+---- FactoryMethods.OneParameterVoidReturn
+Sub(s As String) Console.WriteLine(s)
+---- FactoryMethods.PropertyIndexer
+lstString(0)
+---- FactoryMethods.Random
+#Random
+---- FactoryMethods.RuntimeVariablesWithinBlock
+Block
+    Dim s2 As String
+    True
+    ' Variables -- x As Double, s1 As String
+End Block
+---- FactoryMethods.SingleDimensionInit
+{ "" }
+---- FactoryMethods.SingleDimensionInitExplicitType
+New Object() { "" }
+---- FactoryMethods.SingleDimensionWithBounds
+New String(4) {}
+---- FactoryMethods.SingleValueSwitchCase
+Case 5
+    Console.WriteLine(True)
+    Console.WriteLine(True)
+---- FactoryMethods.SingleValueSwitchCase1
+Case 5
+    Console.WriteLine(True)
+---- FactoryMethods.StaticMember
+String.Empty
+---- FactoryMethods.StaticMethod0Arguments
+Dummy.DummyMethod
+---- FactoryMethods.StaticMethod1Argument
+String.Intern("")
+---- FactoryMethods.StaticMethod2Arguments
+String.Join(",", { "a", "b" })
+---- FactoryMethods.StringConcat
+s1 + s2
+---- FactoryMethods.SwitchOnExpressionWithDefaultMultiStatement
+Select Case i
+    Case 4
+        Console.WriteLine(True)
+    Case 5
+        Console.WriteLine(False)
+    Case Else
+        True
+        True
+End Select
+---- FactoryMethods.SwitchOnExpressionWithDefaultSingleStatement
+Select Case i
+    Case 4
+        Console.WriteLine(True)
+    Case 5
+        Console.WriteLine(False)
+    Case Else
+        CType(Nothing, Void)
+End Select
+---- FactoryMethods.SwitchOnExpressionWithoutDefault
+Select Case i
+    Case 4
+        Console.WriteLine(True)
+    Case 5
+        Console.WriteLine(False)
+End Select
+---- FactoryMethods.SwitchOnMultipleStatementsWithDefault
+Select Case Block
+        i
+        j
+    End Block
+    Case 4
+        Console.WriteLine(True)
+    Case 5
+        Console.WriteLine(False)
+    Case Else
+        True
+        True
+End Select
+---- FactoryMethods.SwitchOnMultipleStatementsWithoutDefault
+Select Case Block
+        i
+        j
+    End Block
+    Case 4
+        Console.WriteLine(True)
+    Case 5
+        Console.WriteLine(False)
+End Select
+---- FactoryMethods.TimeSpan
+#5.04:03:02#
+---- FactoryMethods.TwoParametersNonVoidReturn
+Function(s1 As String, s2 As String) s1 + s2
+---- FactoryMethods.TwoParametersVoidReturn
+Sub(s1 As String, s2 As String) Console.WriteLine(s1 + s2)
+---- FactoryMethods.Type
+GetType(String)
+---- FactoryMethods.ValueTuple
+("abcd", 5)
+---- FactoryMethods.VoidConditional1WithElse
+If True Then Console.WriteLine(True) Else Console.WriteLine(False)
+---- FactoryMethods.VoidConditional1WithoutElse
+If True Then Console.WriteLine(True)
+---- FactoryMethods.VoidConditionalWithElse
+If True Then Console.WriteLine(True) Else Console.WriteLine(False)
+---- FactoryMethods.VoidConditionalWithoutElse
+If True Then Console.WriteLine(True)
+---- VBCompiler.Add
+Function() x + y
+---- VBCompiler.AndAlso
+Function() b1 AndAlso b2
+---- VBCompiler.AndBitwise
+Function() i And j
+---- VBCompiler.AndLogical
+Function() b1 And b2
+---- VBCompiler.AnonymousType
+Function() New With {
+    .Bar = "abcd",
+    .Baz = "efgh"
+}
+---- VBCompiler.AnonymousTypeFromVariables
+Function() New With {
+    Bar,
+    Baz
+}
+---- VBCompiler.ArrayIndex
+Function() arr(0)
+---- VBCompiler.ArrayLength
+Function() arr.Length
+---- VBCompiler.ArrayMultipleIndex
+Function() arr(5, 6)
+---- VBCompiler.ArrayOfMultidimensionalArray
+Function() New String(4)(,) {}
+---- VBCompiler.ArraySingleIndex
+Function() arr(5)
+---- VBCompiler.BitwiseNot
+Function() Not i
+---- VBCompiler.ClosedVariable
+Function() s
+---- VBCompiler.Coalesce
+Function() If(s1, s2)
+---- VBCompiler.CObject
+Function() CObj(lst)
+---- VBCompiler.CollectionTypeWithInitializer
+Function() New List(Of String) From {
+    "abcd",
+    "efgh"
+}
+---- VBCompiler.CollectionTypeWithMultipleElementsInitializers
+Function() New Wrapper From {
+    {
+        "ab",
+        "cd"
+    },
+    {
+        "ef",
+        "gh"
+    }
+}
+---- VBCompiler.CollectionTypeWithSingleOrMultipleElementsInitializers
+Function() New Wrapper From {
+    {
+        "ab",
+        "cd"
+    },
+    "ef"
+}
+---- VBCompiler.Conditional
+Function(i As Integer) If(i > 10, i, i + 10)
+---- VBCompiler.ConstantNothingToObject
+Function() Nothing
+---- VBCompiler.ConstantNothingToReferenceType
+Function() Nothing
+---- VBCompiler.ConstantNothingToValueType
+Function() 0
+---- VBCompiler.Convert
+Function() CType(o, Random)
+---- VBCompiler.DateTime
+Function() #1/1/1981 12:00:00 AM#
+---- VBCompiler.Divide
+Function() x / y
+---- VBCompiler.Equal
+Function() i = j
+---- VBCompiler.EscapedString
+Function() """"
+---- VBCompiler.ExclusiveOrBitwise
+Function() i Xor j
+---- VBCompiler.ExclusiveOrLogical
+Function() b1 Xor b2
+---- VBCompiler.ExtensionMethod0Arguments
+Function() lst.Distinct
+---- VBCompiler.ExtensionMethod1Argument
+Function() lst.Take(1)
+---- VBCompiler.ExtensionMethod2Arguments
+Function() lst.OrderBy(Function(x As String) x, comparer)
+---- VBCompiler.False
+Function() False
+---- VBCompiler.GreaterThan
+Function() i > j
+---- VBCompiler.GreaterThanOrEqual
+Function() i >= j
+---- VBCompiler.InstanceMember
+Function() s.Length
+---- VBCompiler.InstanceMethod0Arguments
+Function() s.ToString
+---- VBCompiler.InstanceMethod1Argument
+Function() s.CompareTo("")
+---- VBCompiler.InstanceMethod2Arguments
+Function() CType(s, IEnumerable(Of Char)).Contains("a"C, CType(StringComparer.InvariantCultureIgnoreCase, IEqualityComparer(Of Char)))
+---- VBCompiler.Integer
+Function() 5
+---- VBCompiler.InterpolatedString
+Function() $"{CObj(#1/1/2001 12:00:00 AM#)}"
+---- VBCompiler.InvocationNoArguments
+Function() del()
+---- VBCompiler.InvocationOneArgument
+Function() del(5)
+---- VBCompiler.JaggedWithBounds
+Function() New String(4)() {}
+---- VBCompiler.JaggedWithElementsExplicitType
+Function() { CType({ "ab", "cd" }, Object()), CType({ "ef", "gh" }, Object()) }
+---- VBCompiler.JaggedWithElementsImplicitType
+Function() { ({ "ab", "cd" }), ({ "ef", "gh" }) }
+---- VBCompiler.JaggedWithElementsImplicitTypeInnerNonLiteral
+Function() { arr1, arr2 }
+---- VBCompiler.LeftShift
+Function() i << j And 31
+---- VBCompiler.LessThan
+Function() i < j
+---- VBCompiler.LessThanOrEqual
+Function() i <= j
+---- VBCompiler.LogicalNot
+Function() Not b
+---- VBCompiler.Modulo
+Function() x Mod y
+---- VBCompiler.MultidimensionalArrayOfArray
+Function() New String(2, 1)() {}
+---- VBCompiler.MultidimensionWithBounds
+Function() New String(1, 2) {}
+---- VBCompiler.Multiply
+Function() x * y
+---- VBCompiler.NamedType
+Function() New Random
+---- VBCompiler.NamedTypeConstructorParameters
+Function() New Foo("ijkl")
+---- VBCompiler.NamedTypeConstructorParametersWithInitializers
+Function() New Foo("ijkl") With {
+    .Bar = "abcd",
+    .Baz = "efgh"
+}
+---- VBCompiler.NamedTypeWithInitializer
+Function() New Foo With {
+    .Bar = "abcd"
+}
+---- VBCompiler.NamedTypeWithInitializers
+Function() New Foo With {
+    .Bar = "abcd",
+    .Baz = "efgh"
+}
+---- VBCompiler.Negate
+Function() -i
+---- VBCompiler.NonInteger
+Function() 7.32
+---- VBCompiler.NoParametersNonVoidReturn
+Function() "abcd"
+---- VBCompiler.NoParametersVoidReturn
+Sub() Console.WriteLine
+---- VBCompiler.NotEqual
+Function() i <> j
+---- VBCompiler.Nothing
+Function() Nothing
+---- VBCompiler.NothingString
+Function() Nothing
+---- VBCompiler.OneParameterNonVoidReturn
+Function(s As String) s
+---- VBCompiler.OneParameterVoidReturn
+Sub(s As String) Console.WriteLine(s)
+---- VBCompiler.OrBitwise
+Function() i Or j
+---- VBCompiler.OrElse
+Function() b1 OrElse b2
+---- VBCompiler.OrLogical
+Function() b1 Or b2
+---- VBCompiler.Power
+Function() x ^ y
+---- VBCompiler.RightShift
+Function() i >> j And 31
+---- VBCompiler.SingleDimensionInit
+Function() { "" }
+---- VBCompiler.SingleDimensionInitExplicitType
+Function() { CObj("") }
+---- VBCompiler.SingleDimensionWithBounds
+Function() New String(4) {}
+---- VBCompiler.StaticMember
+Function() String.Empty
+---- VBCompiler.StaticMethod0Arguments
+Sub() Dummy.DummyMethod
+---- VBCompiler.StaticMethod1Argument
+Function() String.Intern("")
+---- VBCompiler.StaticMethod2Arguments
+Function() String.Join(",", arr)
+---- VBCompiler.String
+Function() "abcd"
+---- VBCompiler.StringConcat
+Function(s1 As String, s2 As String) s1 + s2
+---- VBCompiler.StringConcatOperator
+Function(s1 As String, s2 As String) s1 + s2
+---- VBCompiler.StringConcatOperatorParamArray
+Function(s1 As String, s2 As String) s1 + s2 + s1 + s2 + s1 + s2
+---- VBCompiler.Subtract
+Function() x - y
+---- VBCompiler.TimeSpan
+#5.04:03:02.0010000#
+---- VBCompiler.True
+Function() True
+---- VBCompiler.TwoParametersNonVoidReturn
+Function(s1 As String, s2 As String) s1 + s2
+---- VBCompiler.TwoParametersVoidReturn
+Sub(s1 As String, s2 As String) Console.WriteLine(s1 + s2)
+---- VBCompiler.TypeAs
+Function() TryCast(o, String)
+---- VBCompiler.TypeCheck
+Function() TypeOf "" Is String
+---- VBCompiler.TypeIndexer
+Function() lst(3)
+---- VBCompiler.VBDeclaredTypeIndexer
+Function() x(5)
 ------

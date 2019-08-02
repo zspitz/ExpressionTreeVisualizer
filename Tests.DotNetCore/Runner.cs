@@ -77,37 +77,38 @@ namespace ExpressionToString.Tests {
             Assert.True(paths.IsSupersetOf(vbPaths));
         }
 
-        private static readonly string[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation };
+        public static readonly string[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation };
 
-        // TODO write this as a collection fixture (https://xunit.net/docs/shared-context)
-        public static Lazy<Dictionary<(string formatter, string objectName), string>> allExpected = new Lazy<Dictionary<(string formatter, string objectName), string>>(() => {
-            var ret = new Dictionary<(string formatter, string objectName), string>();
+        //// TODO write this as a collection fixture (https://xunit.net/docs/shared-context)
+        //public static Lazy<Dictionary<(string formatter, string objectName), string>> allExpected = new Lazy<Dictionary<(string formatter, string objectName), string>>(() => {
+        //    var ret = new Dictionary<(string formatter, string objectName), string>();
 
-            foreach (var formatter in Formatters.Except(new[] { DebugView, ToStringName })) {
-                var filename = formatter == CSharp ? "CSharp" : formatter;
-                var expectedDataPath = GetFullFilename($"{filename.ToLower()}-testdata.txt");
-                string testName = "";
-                string expected = "";
-                // TODO this might be made more efficient, instead of building up multiple strings
-                foreach (var line in File.ReadLines(expectedDataPath)) {
-                    if (line.StartsWith("----")) {
-                        if (testName != "") {
-                            if (formatter == FactoryMethods) {
-                                expected = FactoryMethodsFormatter.CSharpUsing + NewLines(2) + expected;
-                            }
-                            ret.Add((formatter, testName), expected.Trim());
-                        }
-                        testName = line.Substring(5); // ---- testMethod
-                    } else {
-                        expected += line + NewLine;
-                    }
-                }
-            }
+        //    foreach (var formatter in Formatters.Except(new[] { DebugView, ToStringName })) {
+        //        var filename = formatter == CSharp ? "CSharp" : formatter;
+        //        var expectedDataPath = GetFullFilename($"{filename.ToLower()}-testdata.txt");
+        //        string testName = "";
+        //        string expected = "";
+        //        // TODO this might be made more efficient, instead of building up multiple strings
+        //        foreach (var line in File.ReadLines(expectedDataPath)) {
+        //            if (line.StartsWith("----")) {
+        //                if (testName != "") {
+        //                    if (formatter == FactoryMethods) {
+        //                        expected = FactoryMethodsFormatter.CSharpUsing + NewLines(2) + expected;
+        //                    }
+        //                    ret.Add((formatter, testName), expected.Trim());
+        //                }
+        //                testName = line.Substring(5); // ---- testMethod
+        //                expected = "";
+        //            } else {
+        //                expected += line + NewLine;
+        //            }
+        //        }
+        //    }
 
-            return ret;
-        });
+        //    return ret;
+        //});
 
-        public static void RunTest(object o, string objectName) {
+        public static void RunTest(object o, string objectName, ExpectedDataFixture allExpected) {
             var actual = Formatters.Select(formatter => {
                 string singleResult;
                 Dictionary<string, (int start, int length)> pathSpans;
@@ -150,7 +151,7 @@ namespace ExpressionToString.Tests {
             Assert.All(expectedPaths, path => Assert.NotNull(resolver.Resolve(o, path)));
 
             foreach (var formatter in Formatters) {
-                var expected = allExpected.Value[(formatter, objectName)];
+                var expected = allExpected[(formatter, objectName)];
                 var actualSingle = actual[formatter].singleResult;
 
                 // check that the actual matches the expected

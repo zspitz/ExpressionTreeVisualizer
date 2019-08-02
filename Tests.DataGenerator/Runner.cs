@@ -11,8 +11,8 @@ using static ExpressionToString.FormatterNames;
 namespace Tests.DataGenerator {
     public static class Runner {
         public static int total = 0;
-        private static string formatter = ObjectNotation;
-        private static string language = CSharp;
+        private static string formatter = VisualBasic;
+        private static string language = VisualBasic;
         public static readonly List<string> lines = new List<string>();
         //public static NodeTypeExpressionTypeMapper visitor = new NodeTypeExpressionTypeMapper();
 

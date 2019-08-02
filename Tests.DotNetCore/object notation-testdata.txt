@@ -8,18 +8,18 @@ new Expression<Func<double>> {
         Left = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass35_0),
-                Value = #<>c__DisplayClass35_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass35_0).GetField("x")
+            Member = typeof(<closure>).GetField("x")
         },
         Right = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass35_0),
-                Value = #<>c__DisplayClass35_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass35_0).GetField("y")
+            Member = typeof(<closure>).GetField("y")
         }
     },
     ReturnType = typeof(double)
@@ -34,18 +34,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass11_0),
-                Value = #<>c__DisplayClass11_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass11_0).GetField("b1")
+            Member = typeof(<closure>).GetField("b1")
         },
         Right = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass11_0),
-                Value = #<>c__DisplayClass11_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass11_0).GetField("b2")
+            Member = typeof(<closure>).GetField("b2")
         }
     },
     ReturnType = typeof(bool)
@@ -60,18 +60,18 @@ new Expression<Func<int>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass5_0),
-                Value = #<>c__DisplayClass5_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass5_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass5_0),
-                Value = #<>c__DisplayClass5_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass5_0).GetField("j")
+            Member = typeof(<closure>).GetField("j")
         }
     },
     ReturnType = typeof(int)
@@ -86,18 +86,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass8_0),
-                Value = #<>c__DisplayClass8_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass8_0).GetField("b1")
+            Member = typeof(<closure>).GetField("b1")
         },
         Right = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass8_0),
-                Value = #<>c__DisplayClass8_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass8_0).GetField("b2")
+            Member = typeof(<closure>).GetField("b2")
         }
     },
     ReturnType = typeof(bool)
@@ -135,18 +135,18 @@ new Expression<Func<{ string Bar, string Baz }>> {
             new MemberExpression {
                 Type = typeof(string),
                 Expression = new ConstantExpression {
-                    Type = typeof(<>c__DisplayClass68_0),
-                    Value = #<>c__DisplayClass68_0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(<>c__DisplayClass68_0).GetField("Bar")
+                Member = typeof(<closure>).GetField("Bar")
             },
             new MemberExpression {
                 Type = typeof(string),
                 Expression = new ConstantExpression {
-                    Type = typeof(<>c__DisplayClass68_0),
-                    Value = #<>c__DisplayClass68_0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(<>c__DisplayClass68_0).GetField("Baz")
+                Member = typeof(<closure>).GetField("Baz")
             }
         },
         Constructor = typeof({ string Bar, string Baz }).GetConstructor(),
@@ -164,10 +164,10 @@ new Expression<Func<string>> {
         Left = new MemberExpression {
             Type = typeof(string[]),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass22_0),
-                Value = #<>c__DisplayClass22_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass22_0).GetField("arr")
+            Member = typeof(<closure>).GetField("arr")
         },
         Right = new ConstantExpression {
             Type = typeof(int),
@@ -186,10 +186,10 @@ new Expression<Func<int>> {
         Operand = new MemberExpression {
             Type = typeof(string[]),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass83_0),
-                Value = #<>c__DisplayClass83_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass83_0).GetField("arr")
+            Member = typeof(<closure>).GetField("arr")
         }
     },
     ReturnType = typeof(int)
@@ -203,10 +203,10 @@ new Expression<Func<string>> {
         Object = new MemberExpression {
             Type = typeof(string[,]),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass35_29),
-                Value = #<>c__DisplayClass35_29
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass35_29).GetField("arr")
+            Member = typeof(<closure>).GetField("arr")
         },
         Arguments = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
@@ -249,10 +249,10 @@ new Expression<Func<string>> {
         Left = new MemberExpression {
             Type = typeof(string[]),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass35_28),
-                Value = #<>c__DisplayClass35_28
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass35_28).GetField("arr")
+            Member = typeof(<closure>).GetField("arr")
         },
         Right = new ConstantExpression {
             Type = typeof(int),
@@ -271,10 +271,10 @@ new Expression<Func<int>> {
         Operand = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass86_0),
-                Value = #<>c__DisplayClass86_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass86_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         }
     },
     ReturnType = typeof(int)
@@ -286,10 +286,10 @@ new Expression<Func<string>> {
     Body = new MemberExpression {
         Type = typeof(string),
         Expression = new ConstantExpression {
-            Type = typeof(<>c__DisplayClass35_27),
-            Value = #<>c__DisplayClass35_27
+            Type = typeof(<closure>),
+            Value = #<closure>
         },
-        Member = typeof(<>c__DisplayClass35_27).GetField("s")
+        Member = typeof(<closure>).GetField("s")
     },
     ReturnType = typeof(string)
 }
@@ -303,18 +303,18 @@ new Expression<Func<string>> {
         Left = new MemberExpression {
             Type = typeof(string),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass19_0),
-                Value = #<>c__DisplayClass19_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass19_0).GetField("s1")
+            Member = typeof(<closure>).GetField("s1")
         },
         Right = new MemberExpression {
             Type = typeof(string),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass19_0),
-                Value = #<>c__DisplayClass19_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass19_0).GetField("s2")
+            Member = typeof(<closure>).GetField("s2")
         }
     },
     ReturnType = typeof(string)
@@ -496,10 +496,10 @@ new Expression<Func<object>> {
         Operand = new MemberExpression {
             Type = typeof(List<string>),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass84_0),
-                Value = #<>c__DisplayClass84_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass84_0).GetField("lst")
+            Member = typeof(<closure>).GetField("lst")
         }
     },
     ReturnType = typeof(object)
@@ -533,18 +533,18 @@ new Expression<Func<double>> {
         Left = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass1_0),
-                Value = #<>c__DisplayClass1_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass1_0).GetField("x")
+            Member = typeof(<closure>).GetField("x")
         },
         Right = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass1_0),
-                Value = #<>c__DisplayClass1_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass1_0).GetField("y")
+            Member = typeof(<closure>).GetField("y")
         }
     },
     ReturnType = typeof(double)
@@ -559,18 +559,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass13_0),
-                Value = #<>c__DisplayClass13_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass13_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass13_0),
-                Value = #<>c__DisplayClass13_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass13_0).GetField("j")
+            Member = typeof(<closure>).GetField("j")
         }
     },
     ReturnType = typeof(bool)
@@ -595,18 +595,18 @@ new Expression<Func<int>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass7_0),
-                Value = #<>c__DisplayClass7_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass7_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass7_0),
-                Value = #<>c__DisplayClass7_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass7_0).GetField("j")
+            Member = typeof(<closure>).GetField("j")
         }
     },
     ReturnType = typeof(int)
@@ -621,18 +621,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass10_0),
-                Value = #<>c__DisplayClass10_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass10_0).GetField("b1")
+            Member = typeof(<closure>).GetField("b1")
         },
         Right = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass10_0),
-                Value = #<>c__DisplayClass10_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass10_0).GetField("b2")
+            Member = typeof(<closure>).GetField("b2")
         }
     },
     ReturnType = typeof(bool)
@@ -647,10 +647,10 @@ new Expression<Func<int>> {
             new MemberExpression {
                 Type = typeof(List<string>),
                 Expression = new ConstantExpression {
-                    Type = typeof(<>c__DisplayClass49_0),
-                    Value = #<>c__DisplayClass49_0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(<>c__DisplayClass49_0).GetField("lst")
+                Member = typeof(<closure>).GetField("lst")
             }
         },
         ArgumentCount = 1,
@@ -668,10 +668,10 @@ new Expression<Func<IEnumerable<string>>> {
             new MemberExpression {
                 Type = typeof(List<string>),
                 Expression = new ConstantExpression {
-                    Type = typeof(<>c__DisplayClass52_0),
-                    Value = #<>c__DisplayClass52_0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(<>c__DisplayClass52_0).GetField("lst")
+                Member = typeof(<closure>).GetField("lst")
             },
             new ConstantExpression {
                 Type = typeof(int),
@@ -693,10 +693,10 @@ new Expression<Func<IOrderedEnumerable<string>>> {
             new MemberExpression {
                 Type = typeof(List<string>),
                 Expression = new ConstantExpression {
-                    Type = typeof(<>c__DisplayClass55_0),
-                    Value = #<>c__DisplayClass55_0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(<>c__DisplayClass55_0).GetField("lst")
+                Member = typeof(<closure>).GetField("lst")
             },
             new Expression<Func<string, string>> {
                 NodeType = ExpressionType.Lambda,
@@ -745,18 +745,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass16_0),
-                Value = #<>c__DisplayClass16_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass16_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass16_0),
-                Value = #<>c__DisplayClass16_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass16_0).GetField("j")
+            Member = typeof(<closure>).GetField("j")
         }
     },
     ReturnType = typeof(bool)
@@ -771,18 +771,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass15_0),
-                Value = #<>c__DisplayClass15_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass15_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass15_0),
-                Value = #<>c__DisplayClass15_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass15_0).GetField("j")
+            Member = typeof(<closure>).GetField("j")
         }
     },
     ReturnType = typeof(bool)
@@ -796,10 +796,10 @@ new Expression<Func<int>> {
         Expression = new MemberExpression {
             Type = typeof(string),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass35_26),
-                Value = #<>c__DisplayClass35_26
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass35_26).GetField("s")
+            Member = typeof(<closure>).GetField("s")
         },
         Member = typeof(string).GetProperty("Length")
     },
@@ -814,10 +814,10 @@ new Expression<Func<string>> {
         Object = new MemberExpression {
             Type = typeof(string),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass47_0),
-                Value = #<>c__DisplayClass47_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass47_0).GetField("s")
+            Member = typeof(<closure>).GetField("s")
         },
         ArgumentCount = 0,
         Method = typeof(object).GetMethod("ToString")
@@ -833,10 +833,10 @@ new Expression<Func<int>> {
         Object = new MemberExpression {
             Type = typeof(string),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass50_0),
-                Value = #<>c__DisplayClass50_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass50_0).GetField("s")
+            Member = typeof(<closure>).GetField("s")
         },
         Arguments = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
@@ -857,10 +857,10 @@ new Expression<Func<int>> {
         Object = new MemberExpression {
             Type = typeof(string),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass53_0),
-                Value = #<>c__DisplayClass53_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass53_0).GetField("s")
+            Member = typeof(<closure>).GetField("s")
         },
         Arguments = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
@@ -936,10 +936,10 @@ new Expression<Func<int>> {
         Expression = new MemberExpression {
             Type = typeof(Func<int>),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass35_24),
-                Value = #<>c__DisplayClass35_24
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass35_24).GetField("del")
+            Member = typeof(<closure>).GetField("del")
         },
         ArgumentCount = 0
     },
@@ -960,10 +960,10 @@ new Expression<Func<int>> {
         Expression = new MemberExpression {
             Type = typeof(Func<int, int>),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass35_25),
-                Value = #<>c__DisplayClass35_25
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass35_25).GetField("del")
+            Member = typeof(<closure>).GetField("del")
         },
         ArgumentCount = 1
     },
@@ -1075,18 +1075,18 @@ new Expression<Func<int>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass20_0),
-                Value = #<>c__DisplayClass20_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass20_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass20_0),
-                Value = #<>c__DisplayClass20_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass20_0).GetField("j")
+            Member = typeof(<closure>).GetField("j")
         }
     },
     ReturnType = typeof(int)
@@ -1101,18 +1101,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass17_0),
-                Value = #<>c__DisplayClass17_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass17_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass17_0),
-                Value = #<>c__DisplayClass17_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass17_0).GetField("j")
+            Member = typeof(<closure>).GetField("j")
         }
     },
     ReturnType = typeof(bool)
@@ -1127,18 +1127,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass18_0),
-                Value = #<>c__DisplayClass18_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass18_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass18_0),
-                Value = #<>c__DisplayClass18_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass18_0).GetField("j")
+            Member = typeof(<closure>).GetField("j")
         }
     },
     ReturnType = typeof(bool)
@@ -1197,10 +1197,10 @@ new Expression<Func<bool>> {
         Operand = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass87_0),
-                Value = #<>c__DisplayClass87_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass87_0).GetField("b")
+            Member = typeof(<closure>).GetField("b")
         }
     },
     ReturnType = typeof(bool)
@@ -1280,18 +1280,18 @@ new Expression<Func<double>> {
         Left = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass2_0),
-                Value = #<>c__DisplayClass2_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass2_0).GetField("x")
+            Member = typeof(<closure>).GetField("x")
         },
         Right = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass2_0),
-                Value = #<>c__DisplayClass2_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass2_0).GetField("y")
+            Member = typeof(<closure>).GetField("y")
         }
     },
     ReturnType = typeof(double)
@@ -1346,18 +1346,18 @@ new Expression<Func<double>> {
         Left = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass3_0),
-                Value = #<>c__DisplayClass3_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass3_0).GetField("x")
+            Member = typeof(<closure>).GetField("x")
         },
         Right = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass3_0),
-                Value = #<>c__DisplayClass3_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass3_0).GetField("y")
+            Member = typeof(<closure>).GetField("y")
         }
     },
     ReturnType = typeof(double)
@@ -1494,10 +1494,10 @@ new Expression<Func<int>> {
         Operand = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass85_0),
-                Value = #<>c__DisplayClass85_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass85_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         }
     },
     ReturnType = typeof(int)
@@ -1543,18 +1543,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass14_0),
-                Value = #<>c__DisplayClass14_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass14_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass14_0),
-                Value = #<>c__DisplayClass14_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass14_0).GetField("j")
+            Member = typeof(<closure>).GetField("j")
         }
     },
     ReturnType = typeof(bool)
@@ -1621,18 +1621,18 @@ new Expression<Func<int>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass6_0),
-                Value = #<>c__DisplayClass6_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass6_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass6_0),
-                Value = #<>c__DisplayClass6_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass6_0).GetField("j")
+            Member = typeof(<closure>).GetField("j")
         }
     },
     ReturnType = typeof(int)
@@ -1647,18 +1647,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass12_0),
-                Value = #<>c__DisplayClass12_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass12_0).GetField("b1")
+            Member = typeof(<closure>).GetField("b1")
         },
         Right = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass12_0),
-                Value = #<>c__DisplayClass12_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass12_0).GetField("b2")
+            Member = typeof(<closure>).GetField("b2")
         }
     },
     ReturnType = typeof(bool)
@@ -1673,18 +1673,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass9_0),
-                Value = #<>c__DisplayClass9_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass9_0).GetField("b1")
+            Member = typeof(<closure>).GetField("b1")
         },
         Right = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass9_0),
-                Value = #<>c__DisplayClass9_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass9_0).GetField("b2")
+            Member = typeof(<closure>).GetField("b2")
         }
     },
     ReturnType = typeof(bool)
@@ -1699,18 +1699,18 @@ new Expression<Func<int>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass21_0),
-                Value = #<>c__DisplayClass21_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass21_0).GetField("i")
+            Member = typeof(<closure>).GetField("i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass21_0),
-                Value = #<>c__DisplayClass21_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass21_0).GetField("j")
+            Member = typeof(<closure>).GetField("j")
         }
     },
     ReturnType = typeof(int)
@@ -1884,18 +1884,18 @@ new Expression<Func<double>> {
         Left = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass4_0),
-                Value = #<>c__DisplayClass4_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass4_0).GetField("x")
+            Member = typeof(<closure>).GetField("x")
         },
         Right = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass4_0),
-                Value = #<>c__DisplayClass4_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass4_0).GetField("y")
+            Member = typeof(<closure>).GetField("y")
         }
     },
     ReturnType = typeof(double)
@@ -2003,10 +2003,10 @@ new Expression<Func<string>> {
         Operand = new MemberExpression {
             Type = typeof(object),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass88_0),
-                Value = #<>c__DisplayClass88_0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass88_0).GetField("o")
+            Member = typeof(<closure>).GetField("o")
         }
     },
     ReturnType = typeof(string)
@@ -2021,10 +2021,10 @@ new Expression<Func<bool>> {
         Expression = new MemberExpression {
             Type = typeof(object),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass35_23),
-                Value = #<>c__DisplayClass35_23
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass35_23).GetField("o")
+            Member = typeof(<closure>).GetField("o")
         },
         TypeOperand = typeof(string)
     },
@@ -2039,10 +2039,10 @@ new Expression<Func<string>> {
         Object = new MemberExpression {
             Type = typeof(List<string>),
             Expression = new ConstantExpression {
-                Type = typeof(<>c__DisplayClass35_30),
-                Value = #<>c__DisplayClass35_30
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(<>c__DisplayClass35_30).GetField("lst")
+            Member = typeof(<closure>).GetField("lst")
         },
         Arguments = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
@@ -6032,18 +6032,18 @@ new Expression<Func<double>> {
         Left = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__2-0),
-                Value = #_Closure$__2-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__2-0).GetField("$VB$Local_x")
+            Member = typeof(<closure>).GetField("$VB$Local_x")
         },
         Right = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__2-0),
-                Value = #_Closure$__2-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__2-0).GetField("$VB$Local_y")
+            Member = typeof(<closure>).GetField("$VB$Local_y")
         }
     },
     ReturnType = typeof(double)
@@ -6058,18 +6058,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__13-0),
-                Value = #_Closure$__13-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__13-0).GetField("$VB$Local_b1")
+            Member = typeof(<closure>).GetField("$VB$Local_b1")
         },
         Right = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__13-0),
-                Value = #_Closure$__13-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__13-0).GetField("$VB$Local_b2")
+            Member = typeof(<closure>).GetField("$VB$Local_b2")
         }
     },
     ReturnType = typeof(bool)
@@ -6084,18 +6084,18 @@ new Expression<Func<int>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__7-0),
-                Value = #_Closure$__7-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__7-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__7-0),
-                Value = #_Closure$__7-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__7-0).GetField("$VB$Local_j")
+            Member = typeof(<closure>).GetField("$VB$Local_j")
         }
     },
     ReturnType = typeof(int)
@@ -6110,18 +6110,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__10-0),
-                Value = #_Closure$__10-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__10-0).GetField("$VB$Local_b1")
+            Member = typeof(<closure>).GetField("$VB$Local_b1")
         },
         Right = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__10-0),
-                Value = #_Closure$__10-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__10-0).GetField("$VB$Local_b2")
+            Member = typeof(<closure>).GetField("$VB$Local_b2")
         }
     },
     ReturnType = typeof(bool)
@@ -6159,18 +6159,18 @@ new Expression<Func<{ string Bar, string Baz }>> {
             new MemberExpression {
                 Type = typeof(string),
                 Expression = new ConstantExpression {
-                    Type = typeof(_Closure$__71-0),
-                    Value = #_Closure$__71-0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(_Closure$__71-0).GetField("$VB$Local_Bar")
+                Member = typeof(<closure>).GetField("$VB$Local_Bar")
             },
             new MemberExpression {
                 Type = typeof(string),
                 Expression = new ConstantExpression {
-                    Type = typeof(_Closure$__71-0),
-                    Value = #_Closure$__71-0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(_Closure$__71-0).GetField("$VB$Local_Baz")
+                Member = typeof(<closure>).GetField("$VB$Local_Baz")
             }
         },
         Constructor = typeof({ string Bar, string Baz }).GetConstructor(),
@@ -6188,10 +6188,10 @@ new Expression<Func<string>> {
         Left = new MemberExpression {
             Type = typeof(string[]),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__25-0),
-                Value = #_Closure$__25-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__25-0).GetField("$VB$Local_arr")
+            Member = typeof(<closure>).GetField("$VB$Local_arr")
         },
         Right = new ConstantExpression {
             Type = typeof(int),
@@ -6210,10 +6210,10 @@ new Expression<Func<int>> {
         Operand = new MemberExpression {
             Type = typeof(string[]),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__85-0),
-                Value = #_Closure$__85-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__85-0).GetField("$VB$Local_arr")
+            Member = typeof(<closure>).GetField("$VB$Local_arr")
         }
     },
     ReturnType = typeof(int)
@@ -6227,10 +6227,10 @@ new Expression<Func<string>> {
         Object = new MemberExpression {
             Type = typeof(string[,]),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__29-0),
-                Value = #_Closure$__29-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__29-0).GetField("$VB$Local_arr")
+            Member = typeof(<closure>).GetField("$VB$Local_arr")
         },
         Arguments = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
@@ -6273,10 +6273,10 @@ new Expression<Func<string>> {
         Left = new MemberExpression {
             Type = typeof(string[]),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__28-0),
-                Value = #_Closure$__28-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__28-0).GetField("$VB$Local_arr")
+            Member = typeof(<closure>).GetField("$VB$Local_arr")
         },
         Right = new ConstantExpression {
             Type = typeof(int),
@@ -6295,10 +6295,10 @@ new Expression<Func<int>> {
         Operand = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__89-0),
-                Value = #_Closure$__89-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__89-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         }
     },
     ReturnType = typeof(int)
@@ -6310,10 +6310,10 @@ new Expression<Func<string>> {
     Body = new MemberExpression {
         Type = typeof(string),
         Expression = new ConstantExpression {
-            Type = typeof(_Closure$__50-0),
-            Value = #_Closure$__50-0
+            Type = typeof(<closure>),
+            Value = #<closure>
         },
-        Member = typeof(_Closure$__50-0).GetField("$VB$Local_s")
+        Member = typeof(<closure>).GetField("$VB$Local_s")
     },
     ReturnType = typeof(string)
 }
@@ -6327,18 +6327,18 @@ new Expression<Func<string>> {
         Left = new MemberExpression {
             Type = typeof(string),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__21-0),
-                Value = #_Closure$__21-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__21-0).GetField("$VB$Local_s1")
+            Member = typeof(<closure>).GetField("$VB$Local_s1")
         },
         Right = new MemberExpression {
             Type = typeof(string),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__21-0),
-                Value = #_Closure$__21-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__21-0).GetField("$VB$Local_s2")
+            Member = typeof(<closure>).GetField("$VB$Local_s2")
         }
     },
     ReturnType = typeof(string)
@@ -6353,10 +6353,10 @@ new Expression<Func<object>> {
         Operand = new MemberExpression {
             Type = typeof(List<string>),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__87-0),
-                Value = #_Closure$__87-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__87-0).GetField("$VB$Local_lst")
+            Member = typeof(<closure>).GetField("$VB$Local_lst")
         }
     },
     ReturnType = typeof(object)
@@ -6566,10 +6566,10 @@ new Expression<Func<Random>> {
         Operand = new MemberExpression {
             Type = typeof(object),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__86-0),
-                Value = #_Closure$__86-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__86-0).GetField("$VB$Local_o")
+            Member = typeof(<closure>).GetField("$VB$Local_o")
         }
     },
     ReturnType = typeof(Random)
@@ -6594,18 +6594,18 @@ new Expression<Func<double>> {
         Left = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__3-0),
-                Value = #_Closure$__3-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__3-0).GetField("$VB$Local_x")
+            Member = typeof(<closure>).GetField("$VB$Local_x")
         },
         Right = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__3-0),
-                Value = #_Closure$__3-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__3-0).GetField("$VB$Local_y")
+            Member = typeof(<closure>).GetField("$VB$Local_y")
         }
     },
     ReturnType = typeof(double)
@@ -6620,18 +6620,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__15-0),
-                Value = #_Closure$__15-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__15-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__15-0),
-                Value = #_Closure$__15-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__15-0).GetField("$VB$Local_j")
+            Member = typeof(<closure>).GetField("$VB$Local_j")
         }
     },
     ReturnType = typeof(bool)
@@ -6656,18 +6656,18 @@ new Expression<Func<int>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__9-0),
-                Value = #_Closure$__9-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__9-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__9-0),
-                Value = #_Closure$__9-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__9-0).GetField("$VB$Local_j")
+            Member = typeof(<closure>).GetField("$VB$Local_j")
         }
     },
     ReturnType = typeof(int)
@@ -6682,18 +6682,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__12-0),
-                Value = #_Closure$__12-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__12-0).GetField("$VB$Local_b1")
+            Member = typeof(<closure>).GetField("$VB$Local_b1")
         },
         Right = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__12-0),
-                Value = #_Closure$__12-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__12-0).GetField("$VB$Local_b2")
+            Member = typeof(<closure>).GetField("$VB$Local_b2")
         }
     },
     ReturnType = typeof(bool)
@@ -6708,10 +6708,10 @@ new Expression<Func<IEnumerable<string>>> {
             new MemberExpression {
                 Type = typeof(IEnumerable<string>),
                 Expression = new ConstantExpression {
-                    Type = typeof(_Closure$__55-0),
-                    Value = #_Closure$__55-0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(_Closure$__55-0).GetField("$VB$Local_lst")
+                Member = typeof(<closure>).GetField("$VB$Local_lst")
             }
         },
         ArgumentCount = 1,
@@ -6729,10 +6729,10 @@ new Expression<Func<IEnumerable<string>>> {
             new MemberExpression {
                 Type = typeof(IEnumerable<string>),
                 Expression = new ConstantExpression {
-                    Type = typeof(_Closure$__58-0),
-                    Value = #_Closure$__58-0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(_Closure$__58-0).GetField("$VB$Local_lst")
+                Member = typeof(<closure>).GetField("$VB$Local_lst")
             },
             new ConstantExpression {
                 Type = typeof(int),
@@ -6754,10 +6754,10 @@ new Expression<Func<IOrderedEnumerable<string>>> {
             new MemberExpression {
                 Type = typeof(IEnumerable<string>),
                 Expression = new ConstantExpression {
-                    Type = typeof(_Closure$__61-0),
-                    Value = #_Closure$__61-0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(_Closure$__61-0).GetField("$VB$Local_lst")
+                Member = typeof(<closure>).GetField("$VB$Local_lst")
             },
             new Expression<Func<string, string>> {
                 NodeType = ExpressionType.Lambda,
@@ -6779,10 +6779,10 @@ new Expression<Func<IOrderedEnumerable<string>>> {
             new MemberExpression {
                 Type = typeof(IComparer<string>),
                 Expression = new ConstantExpression {
-                    Type = typeof(_Closure$__61-0),
-                    Value = #_Closure$__61-0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(_Closure$__61-0).GetField("$VB$Local_comparer")
+                Member = typeof(<closure>).GetField("$VB$Local_comparer")
             }
         },
         ArgumentCount = 3,
@@ -6810,18 +6810,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__18-0),
-                Value = #_Closure$__18-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__18-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__18-0),
-                Value = #_Closure$__18-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__18-0).GetField("$VB$Local_j")
+            Member = typeof(<closure>).GetField("$VB$Local_j")
         }
     },
     ReturnType = typeof(bool)
@@ -6836,18 +6836,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__17-0),
-                Value = #_Closure$__17-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__17-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__17-0),
-                Value = #_Closure$__17-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__17-0).GetField("$VB$Local_j")
+            Member = typeof(<closure>).GetField("$VB$Local_j")
         }
     },
     ReturnType = typeof(bool)
@@ -6861,10 +6861,10 @@ new Expression<Func<int>> {
         Expression = new MemberExpression {
             Type = typeof(string),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__49-0),
-                Value = #_Closure$__49-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__49-0).GetField("$VB$Local_s")
+            Member = typeof(<closure>).GetField("$VB$Local_s")
         },
         Member = typeof(string).GetProperty("Length")
     },
@@ -6879,10 +6879,10 @@ new Expression<Func<string>> {
         Object = new MemberExpression {
             Type = typeof(string),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__53-0),
-                Value = #_Closure$__53-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__53-0).GetField("$VB$Local_s")
+            Member = typeof(<closure>).GetField("$VB$Local_s")
         },
         ArgumentCount = 0,
         Method = typeof(string).GetMethod("ToString")
@@ -6898,10 +6898,10 @@ new Expression<Func<int>> {
         Object = new MemberExpression {
             Type = typeof(string),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__56-0),
-                Value = #_Closure$__56-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__56-0).GetField("$VB$Local_s")
+            Member = typeof(<closure>).GetField("$VB$Local_s")
         },
         Arguments = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
@@ -6926,10 +6926,10 @@ new Expression<Func<bool>> {
                 Operand = new MemberExpression {
                     Type = typeof(string),
                     Expression = new ConstantExpression {
-                        Type = typeof(_Closure$__59-0),
-                        Value = #_Closure$__59-0
+                        Type = typeof(<closure>),
+                        Value = #<closure>
                     },
-                    Member = typeof(_Closure$__59-0).GetField("$VB$Local_s")
+                    Member = typeof(<closure>).GetField("$VB$Local_s")
                 }
             },
             new ConstantExpression {
@@ -6994,10 +6994,10 @@ new Expression<Func<int>> {
         Expression = new MemberExpression {
             Type = typeof({ MethodInfo Method, object Target }),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__97-0),
-                Value = #_Closure$__97-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__97-0).GetField("$VB$Local_del")
+            Member = typeof(<closure>).GetField("$VB$Local_del")
         },
         ArgumentCount = 0
     },
@@ -7018,10 +7018,10 @@ new Expression<Func<int>> {
         Expression = new MemberExpression {
             Type = typeof({ MethodInfo Method, object Target }),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__98-0),
-                Value = #_Closure$__98-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__98-0).GetField("$VB$Local_del")
+            Member = typeof(<closure>).GetField("$VB$Local_del")
         },
         ArgumentCount = 1
     },
@@ -7142,18 +7142,18 @@ new Expression<Func<string[][]>> {
             new MemberExpression {
                 Type = typeof(string[]),
                 Expression = new ConstantExpression {
-                    Type = typeof(_Closure$__80-0),
-                    Value = #_Closure$__80-0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(_Closure$__80-0).GetField("$VB$Local_arr1")
+                Member = typeof(<closure>).GetField("$VB$Local_arr1")
             },
             new MemberExpression {
                 Type = typeof(string[]),
                 Expression = new ConstantExpression {
-                    Type = typeof(_Closure$__80-0),
-                    Value = #_Closure$__80-0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(_Closure$__80-0).GetField("$VB$Local_arr2")
+                Member = typeof(<closure>).GetField("$VB$Local_arr2")
             }
         }
     },
@@ -7169,10 +7169,10 @@ new Expression<Func<int>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__23-0),
-                Value = #_Closure$__23-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__23-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         },
         Right = <potential recursion>
     },
@@ -7188,18 +7188,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__19-0),
-                Value = #_Closure$__19-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__19-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__19-0),
-                Value = #_Closure$__19-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__19-0).GetField("$VB$Local_j")
+            Member = typeof(<closure>).GetField("$VB$Local_j")
         }
     },
     ReturnType = typeof(bool)
@@ -7214,18 +7214,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__20-0),
-                Value = #_Closure$__20-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__20-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__20-0),
-                Value = #_Closure$__20-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__20-0).GetField("$VB$Local_j")
+            Member = typeof(<closure>).GetField("$VB$Local_j")
         }
     },
     ReturnType = typeof(bool)
@@ -7240,10 +7240,10 @@ new Expression<Func<bool>> {
         Operand = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__90-0),
-                Value = #_Closure$__90-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__90-0).GetField("$VB$Local_b")
+            Member = typeof(<closure>).GetField("$VB$Local_b")
         }
     },
     ReturnType = typeof(bool)
@@ -7258,18 +7258,18 @@ new Expression<Func<double>> {
         Left = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__4-0),
-                Value = #_Closure$__4-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__4-0).GetField("$VB$Local_x")
+            Member = typeof(<closure>).GetField("$VB$Local_x")
         },
         Right = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__4-0),
-                Value = #_Closure$__4-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__4-0).GetField("$VB$Local_y")
+            Member = typeof(<closure>).GetField("$VB$Local_y")
         }
     },
     ReturnType = typeof(double)
@@ -7324,18 +7324,18 @@ new Expression<Func<double>> {
         Left = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__5-0),
-                Value = #_Closure$__5-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__5-0).GetField("$VB$Local_x")
+            Member = typeof(<closure>).GetField("$VB$Local_x")
         },
         Right = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__5-0),
-                Value = #_Closure$__5-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__5-0).GetField("$VB$Local_y")
+            Member = typeof(<closure>).GetField("$VB$Local_y")
         }
     },
     ReturnType = typeof(double)
@@ -7472,10 +7472,10 @@ new Expression<Func<int>> {
         Operand = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__88-0),
-                Value = #_Closure$__88-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__88-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         }
     },
     ReturnType = typeof(int)
@@ -7521,18 +7521,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__16-0),
-                Value = #_Closure$__16-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__16-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__16-0),
-                Value = #_Closure$__16-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__16-0).GetField("$VB$Local_j")
+            Member = typeof(<closure>).GetField("$VB$Local_j")
         }
     },
     ReturnType = typeof(bool)
@@ -7608,18 +7608,18 @@ new Expression<Func<int>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__8-0),
-                Value = #_Closure$__8-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__8-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         },
         Right = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__8-0),
-                Value = #_Closure$__8-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__8-0).GetField("$VB$Local_j")
+            Member = typeof(<closure>).GetField("$VB$Local_j")
         }
     },
     ReturnType = typeof(int)
@@ -7634,18 +7634,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__14-0),
-                Value = #_Closure$__14-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__14-0).GetField("$VB$Local_b1")
+            Member = typeof(<closure>).GetField("$VB$Local_b1")
         },
         Right = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__14-0),
-                Value = #_Closure$__14-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__14-0).GetField("$VB$Local_b2")
+            Member = typeof(<closure>).GetField("$VB$Local_b2")
         }
     },
     ReturnType = typeof(bool)
@@ -7660,18 +7660,18 @@ new Expression<Func<bool>> {
         Left = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__11-0),
-                Value = #_Closure$__11-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__11-0).GetField("$VB$Local_b1")
+            Member = typeof(<closure>).GetField("$VB$Local_b1")
         },
         Right = new MemberExpression {
             Type = typeof(bool),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__11-0),
-                Value = #_Closure$__11-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__11-0).GetField("$VB$Local_b2")
+            Member = typeof(<closure>).GetField("$VB$Local_b2")
         }
     },
     ReturnType = typeof(bool)
@@ -7686,18 +7686,18 @@ new Expression<Func<double>> {
         Left = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__26-0),
-                Value = #_Closure$__26-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__26-0).GetField("$VB$Local_x")
+            Member = typeof(<closure>).GetField("$VB$Local_x")
         },
         Right = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__26-0),
-                Value = #_Closure$__26-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__26-0).GetField("$VB$Local_y")
+            Member = typeof(<closure>).GetField("$VB$Local_y")
         },
         Method = typeof(Math).GetMethod("Pow")
     },
@@ -7713,10 +7713,10 @@ new Expression<Func<int>> {
         Left = new MemberExpression {
             Type = typeof(int),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__24-0),
-                Value = #_Closure$__24-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__24-0).GetField("$VB$Local_i")
+            Member = typeof(<closure>).GetField("$VB$Local_i")
         },
         Right = <potential recursion>
     },
@@ -7823,10 +7823,10 @@ new Expression<Func<string>> {
             new MemberExpression {
                 Type = typeof(IEnumerable<char>),
                 Expression = new ConstantExpression {
-                    Type = typeof(_Closure$__60-0),
-                    Value = #_Closure$__60-0
+                    Type = typeof(<closure>),
+                    Value = #<closure>
                 },
-                Member = typeof(_Closure$__60-0).GetField("$VB$Local_arr")
+                Member = typeof(<closure>).GetField("$VB$Local_arr")
             }
         },
         ArgumentCount = 2,
@@ -7985,18 +7985,18 @@ new Expression<Func<double>> {
         Left = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__6-0),
-                Value = #_Closure$__6-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__6-0).GetField("$VB$Local_x")
+            Member = typeof(<closure>).GetField("$VB$Local_x")
         },
         Right = new MemberExpression {
             Type = typeof(double),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__6-0),
-                Value = #_Closure$__6-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__6-0).GetField("$VB$Local_y")
+            Member = typeof(<closure>).GetField("$VB$Local_y")
         }
     },
     ReturnType = typeof(double)
@@ -8103,10 +8103,10 @@ new Expression<Func<string>> {
         Operand = new MemberExpression {
             Type = typeof(object),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__91-0),
-                Value = #_Closure$__91-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__91-0).GetField("$VB$Local_o")
+            Member = typeof(<closure>).GetField("$VB$Local_o")
         }
     },
     ReturnType = typeof(string)
@@ -8134,10 +8134,10 @@ new Expression<Func<string>> {
         Object = new MemberExpression {
             Type = typeof(List<string>),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__30-0),
-                Value = #_Closure$__30-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__30-0).GetField("$VB$Local_lst")
+            Member = typeof(<closure>).GetField("$VB$Local_lst")
         },
         Arguments = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
@@ -8159,10 +8159,10 @@ new Expression<Func<int>> {
         Object = new MemberExpression {
             Type = typeof(DummyWithDefault),
             Expression = new ConstantExpression {
-                Type = typeof(_Closure$__31-0),
-                Value = #_Closure$__31-0
+                Type = typeof(<closure>),
+                Value = #<closure>
             },
-            Member = typeof(_Closure$__31-0).GetField("$VB$Local_x")
+            Member = typeof(<closure>).GetField("$VB$Local_x")
         },
         Arguments = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
