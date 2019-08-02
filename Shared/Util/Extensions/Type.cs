@@ -83,6 +83,10 @@ namespace ExpressionToString.Util {
         public static string FriendlyName(this Type type, string language) {
             if (language.NotIn(CSharp, VisualBasic)) { return type.Name; }
 
+            if (type.IsClosureClass()) {
+                return language == CSharp ? "<closure>" : "<Closure>";
+            }
+
             if (type.IsAnonymous()) {
                 return "{ " + type.GetProperties().Joined(", ", p => {
                     var name = p.Name;
