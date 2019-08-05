@@ -8,101 +8,74 @@ namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
         [Fact]
         [Trait("Category",Unary)]
-        public void ConstructArrayLength() => RunTest(ArrayLength(arr), "arr.Length", "arr.Length", "ArrayLength(arr)");
+        public void ConstructArrayLength() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructConvert() => RunTest(Convert(arr, typeof(object)), "(object)arr", "CObj(arr)", @"Convert(arr,
-    typeof(object)
-)");
+        public void ConstructConvert() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructConvertChecked() => RunTest(
-            ConvertChecked(Constant(5), typeof(float)), 
-            "(float)5", "CSng(5)", @"ConvertChecked(
-    Constant(5),
-    typeof(float)
-)");
+        public void ConstructConvertChecked() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructConvertCheckedForReferenceType() => RunTest(ConvertChecked(arr, typeof(object)), "(object)arr", "CObj(arr)", @"Convert(arr,
-    typeof(object)
-)");
+        public void ConstructConvertCheckedForReferenceType() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructNegate() => RunTest(Negate(i), "-i", "-i", "Negate(i)");
+        public void ConstructNegate() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructBitwiseNot() => RunTest(Not(i), "~i", "Not i", "Not(i)");
+        public void ConstructBitwiseNot() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructLogicalNot() => RunTest(Not(b1), "!b1", "Not b1", @"Not(b1)");
+        public void ConstructLogicalNot() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructTypeAs() => RunTest(TypeAs(arr, typeof(object)), "arr as object", "TryCast(arr, Object)", @"TypeAs(arr,
-    typeof(object)
-)");
+        public void ConstructTypeAs() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructPostDecrementAssign() => RunTest(PostDecrementAssign(i), "i--", "(i -= 1 : i + 1)", "PostDecrementAssign(i)");
+        public void ConstructPostDecrementAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructPostIncrementAssign() => RunTest(PostIncrementAssign(i), "i++", "(i += 1 : i - 1)", "PostIncrementAssign(i)");
+        public void ConstructPostIncrementAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructPreDecrementAssign() => RunTest(PreDecrementAssign(i), "--i", "(i -= 1 : i)", "PreDecrementAssign(i)");
+        public void ConstructPreDecrementAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructPreIncrementAssign() => RunTest(PreIncrementAssign(i), "++i", "(i += 1 : i)", "PreIncrementAssign(i)");
+        public void ConstructPreIncrementAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructIsTrue() => RunTest(
-            IsTrue(b1), 
-            "b1", 
-            "b1", 
-            "IsTrue(b1)"
-        );
+        public void ConstructIsTrue() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructIsFalse() => RunTest(
-            IsFalse(b1), 
-            "!b1", 
-            "Not b1", 
-            "IsFalse(b1)"
-        );
+        public void ConstructIsFalse() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructIncrement() => RunTest(Increment(i), "i += 1", "i += 1", "Increment(i)");
+        public void ConstructIncrement() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructDecrement() => RunTest(Decrement(i), "i -= 1", "i -= 1", "Decrement(i)");
+        public void ConstructDecrement() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructThrow() => RunTest(Throw(
-            Constant(new Random())), 
-            "throw #Random", 
-            "Throw #Random", 
-            @"Throw(
-    Constant(#Random)
-)");
+        public void ConstructThrow() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void ConstructRethrow() => RunTest(Rethrow(), "throw", "Throw", "Throw(null)");
+        public void ConstructRethrow() => PreRunTest();
     }
 }
