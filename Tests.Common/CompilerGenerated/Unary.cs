@@ -6,90 +6,26 @@ namespace ExpressionToString.Tests {
     public partial class CompilerGeneratedBase {
         [Fact]
         [Trait("Category", Unary)]
-        public void ArrayLength() {
-            var arr = new string[] { };
-            RunTest
-                (() => arr.Length, 
-                "() => arr.Length", 
-                "Function() arr.Length", 
-                @"Lambda(
-    ArrayLength(arr)
-)"
-            );
-        }
+        public void ArrayLength() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void Convert() {
-            var lst = new List<string>();
-            RunTest(
-                () => (object)lst, 
-                "() => (object)lst", 
-                "Function() CObj(lst)", 
-                @"Lambda(
-    Convert(lst,
-        typeof(object)
-    )
-)"
-                );
-        }
+        public void Convert() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void Negate() {
-            var i = 1;
-            RunTest(
-                () => -i, 
-                "() => -i", 
-                "Function() -i", 
-                @"Lambda(
-    Negate(i)
-)"
-            );
-        }
+        public void Negate() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void BitwiseNot() {
-            var i = 1;
-            RunTest(
-                () => ~i, 
-                "() => ~i", 
-                "Function() Not i", 
-                @"Lambda(
-    Not(i)
-)"
-                );
-        }
+        public void BitwiseNot() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void LogicalNot() {
-            var b = true;
-            RunTest(
-                () => !b, 
-                "() => !b", 
-                "Function() Not b", 
-                @"Lambda(
-    Not(b)
-)"
-            );
-        }
+        public void LogicalNot() => PreRunTest();
 
         [Fact]
         [Trait("Category", Unary)]
-        public void TypeAs() {
-            object o = null;
-            RunTest(
-                () => o as string, 
-                "() => o as string", 
-                "Function() TryCast(o, String)", 
-                @"Lambda(
-    TypeAs(o,
-        typeof(string)
-    )
-)"
-            );
-        }
+        public void TypeAs() => PreRunTest();
     }
 }
