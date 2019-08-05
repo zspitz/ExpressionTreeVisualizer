@@ -15,6 +15,7 @@
   <ItemGroup>
     <Import Include="ExpressionToString.Tests.Categories" />
     <Import Include="ExpressionToString.Tests.Globals" />
+    <Import Include="System.Linq.Expressions" />
     <Import Include="Xunit" />
   </ItemGroup>
 

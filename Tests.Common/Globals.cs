@@ -72,7 +72,7 @@ namespace ExpressionToString.Tests {
         public const string Gotos = "Gotos";
         public const string Dynamics = "Dynamics";
         public const string Quoted = "Quoted";
-        public const string DebugInfos = "DebguInfos";
+        public const string DebugInfos = "DebugInfos";
         public const string Conditionals = "Conditionals";
         public const string Blocks = "Blocks";
         public const string Constants = "Constants";

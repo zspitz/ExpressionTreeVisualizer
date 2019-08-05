@@ -1,186 +1,182 @@
 ﻿using Xunit;
-using static System.Linq.Expressions.Expression;
-using static ExpressionToString.Tests.Globals;
 using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructAdd() => RunTest(Add(x, y), "x + y", "x + y", "Add(x, y)");
+        public void ConstructAdd() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructAddChecked() => RunTest(AddChecked(x, y), "x + y", "x + y", "AddChecked(x, y)");
+        public void ConstructAddChecked() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructDivide() => RunTest(Divide(x, y), "x / y", "x / y", "Divide(x, y)");
+        public void ConstructDivide() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructModulo() => RunTest(Modulo(x, y), "x % y", "x Mod y", "Modulo(x, y)");
+        public void ConstructModulo() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructMultiply() => RunTest(Multiply(x, y), "x * y", "x * y", @"Multiply(x, y)");
+        public void ConstructMultiply() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructMultiplyChecked() => RunTest(MultiplyChecked(x, y), "x * y", "x * y", "MultiplyChecked(x, y)");
+        public void ConstructMultiplyChecked() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructSubtract() => RunTest(Subtract(x, y), "x - y", "x - y", "Subtract(x, y)");
+        public void ConstructSubtract() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructSubtractChecked() => RunTest(SubtractChecked(x, y), "x - y", "x - y", "SubtractChecked(x, y)");
+        public void ConstructSubtractChecked() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructAndBitwise() => RunTest(And(i, j), "i & j", "i And j", "And(i, j)");
+        public void ConstructAndBitwise() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructOrBitwise() => RunTest(Or(i, j), "i | j", "i Or j", "Or(i, j)");
+        public void ConstructOrBitwise() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructExclusiveOrBitwise() => RunTest(ExclusiveOr(i, j), "i ^ j", "i Xor j", "ExclusiveOr(i, j)");
+        public void ConstructExclusiveOrBitwise() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructAndLogical() => RunTest(And(b1, b2), "b1 & b2", "b1 And b2", "And(b1, b2)");
+        public void ConstructAndLogical() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructOrLogical() => RunTest(Or(b1, b2), "b1 | b2", "b1 Or b2", "Or(b1, b2)");
+        public void ConstructOrLogical() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructExclusiveOrLogical() => RunTest(ExclusiveOr(b1, b2), "b1 ^ b2", "b1 Xor b2", "ExclusiveOr(b1, b2)");
+        public void ConstructExclusiveOrLogical() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructAndAlso() => RunTest(AndAlso(b1, b2), "b1 && b2", "b1 AndAlso b2", "AndAlso(b1, b2)");
+        public void ConstructAndAlso() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructOrElse() => RunTest(OrElse(b1, b2), "b1 || b2", "b1 OrElse b2", "OrElse(b1, b2)");
+        public void ConstructOrElse() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructEqual() => RunTest(Equal(x, y), "x == y", "x = y", "Equal(x, y)");
+        public void ConstructEqual() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructNotEqual() => RunTest(NotEqual(x, y), "x != y", "x <> y", "NotEqual(x, y)");
+        public void ConstructNotEqual() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructReferenceEqual() => RunTest(ReferenceEqual(lstString, lstString), "lstString == lstString", "lstString Is lstString", "Equal(lstString, lstString)");
+        public void ConstructReferenceEqual() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructReferenceNotEqual() => RunTest(ReferenceNotEqual(lstString, lstString), "lstString != lstString", "lstString IsNot lstString", "NotEqual(lstString, lstString)");
+        public void ConstructReferenceNotEqual() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructGreaterThanOrEqual() => RunTest(GreaterThanOrEqual(x, y), "x >= y", "x >= y", "GreaterThanOrEqual(x, y)");
+        public void ConstructGreaterThanOrEqual() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructGreaterThan() => RunTest(GreaterThan(x, y), "x > y", "x > y", "GreaterThan(x, y)");
+        public void ConstructGreaterThan() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructLessThan() => RunTest(LessThan(x, y), "x < y", "x < y", "LessThan(x, y)");
+        public void ConstructLessThan() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructLessThanOrEqual() => RunTest(LessThanOrEqual(x, y), "x <= y", "x <= y", "LessThanOrEqual(x, y)");
+        public void ConstructLessThanOrEqual() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructCoalesce() => RunTest(Coalesce(s1, s2), "s1 ?? s2", "If(s1, s2)", "Coalesce(s1, s2)");
+        public void ConstructCoalesce() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructLeftShift() => RunTest(LeftShift(i, j), "i << j", "i << j", "LeftShift(i, j)");
+        public void ConstructLeftShift() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructRightShift() => RunTest(RightShift(i, j), "i >> j", "i >> j", "RightShift(i, j)");
+        public void ConstructRightShift() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructPower() => RunTest(Power(x, y), "Math.Pow(x, y)", "x ^ y", "Power(x, y)");
+        public void ConstructPower() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructArrayIndex() => RunTest(ArrayIndex(arr, i), "arr[i]", "arr(i)", "ArrayIndex(arr, i)");
+        public void ConstructArrayIndex() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructAssign() => RunTest(Assign(x, Constant(5.2,typeof(double))), "x = 5.2", "x = 5.2", @"Assign(x,
-    Constant(5.2)
-)");
+        public void ConstructAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructAddAssign() => RunTest(AddAssign(i,j), "i += j", "i += j", "AddAssign(i, j)");
+        public void ConstructAddAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructAddAssignChecked() => RunTest(AddAssignChecked(i, j), "i += j", "i += j", "AddAssignChecked(i, j)");
+        public void ConstructAddAssignChecked() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructAndAssign() => RunTest(AndAssign(b1, b2), "b1 &= b2", "b1 = b1 And b2", "AndAssign(b1, b2)");
+        public void ConstructAndAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructDivideAssign() => RunTest(DivideAssign(i,j), "i /= j", "i /= j", "DivideAssign(i, j)");
+        public void ConstructDivideAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructExclusiveOrAssign() => RunTest(ExclusiveOrAssign(b1, b2), "b1 ^= b2", "b1 = b1 Xor b2", "ExclusiveOrAssign(b1, b2)");
+        public void ConstructExclusiveOrAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructLeftShiftAssign() => RunTest(LeftShiftAssign(i, j), "i <<= j", "i <<= j", "LeftShiftAssign(i, j)");
+        public void ConstructLeftShiftAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructModuloAssign() => RunTest(ModuloAssign(i, j), "i %= j", "i = i Mod j", "ModuloAssign(i, j)");
+        public void ConstructModuloAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructMultiplyAssign() => RunTest(MultiplyAssign(i,j), "i *= j", "i *= j", "MultiplyAssign(i, j)");
+        public void ConstructMultiplyAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructMultiplyAssignChecked() => RunTest(MultiplyAssignChecked(i, j), "i *= j", "i *= j", "MultiplyAssignChecked(i, j)");
+        public void ConstructMultiplyAssignChecked() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructOrAssign() => RunTest(OrAssign(b1,b2), "b1 |= b2", "b1 = b1 Or b2", "OrAssign(b1, b2)");
+        public void ConstructOrAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructPowerAssign() => RunTest(PowerAssign(x,y), "x = Math.Pow(x, y)", "x ^= y", "PowerAssign(x, y)");
+        public void ConstructPowerAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructRightShiftAssign() => RunTest(RightShiftAssign(i,j), "i >>= j", "i >>= j", "RightShiftAssign(i, j)");
+        public void ConstructRightShiftAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructSubtractAssign() => RunTest(SubtractAssign(i,j), "i -= j", "i -= j", "SubtractAssign(i, j)");
+        public void ConstructSubtractAssign() => PreRunTest();
 
         [Fact]
         [Trait("Category", Binary)]
-        public void ConstructSubtractAssignChecked() => RunTest(SubtractAssignChecked(i, j), "i -= j", "i -= j", "SubtractAssignChecked(i, j)");
+        public void ConstructSubtractAssignChecked() => PreRunTest();
     }
 }
