@@ -35,7 +35,7 @@ Partial Public Class VBCompilerGeneratedBase
 
     <Fact> <Trait("Category", Method)>
     Sub ExtensionMethod0Arguments()
-        Dim lst As IEnumerable(Of String) = New List(Of String)()
+        Dim lst = New List(Of String)()
         RunTest(
             Function() lst.Distinct,
             "() => lst.Distinct()",
@@ -43,7 +43,9 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(Enumerable).GetMethod(""Distinct""),
-        lst
+        Convert(lst,
+            typeof(IEnumerable<string>)
+        )
     )
 )"
         )
@@ -82,7 +84,7 @@ Partial Public Class VBCompilerGeneratedBase
 
     <Fact> <Trait("Category", Method)>
     Sub ExtensionMethod1Argument()
-        Dim lst As IEnumerable(Of String) = New List(Of String)()
+        Dim lst = New List(Of String)()
         RunTest(
             Function() lst.Take(1),
             "() => lst.Take(1)",
@@ -90,7 +92,9 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(Enumerable).GetMethod(""Take""),
-        lst,
+        Convert(lst,
+            typeof(IEnumerable<string>)
+        ),
         Constant(1)
     )
 )"
@@ -116,6 +120,29 @@ Partial Public Class VBCompilerGeneratedBase
 
     <Fact> <Trait("Category", Method)>
     Sub StaticMethod2Arguments()
+        Dim arr = New Char() {"a"c, "b"c}
+        RunTest(
+            Function() String.Join(","c, arr),
+            "() => string.Join("","", new[] { new string(arr) })",
+            "Function() String.Join("","", { New String(arr) })",
+            "Lambda(
+    Call(
+        typeof(string).GetMethod(""Join""),
+        Constant("",""),
+        NewArrayInit(
+            typeof(string),
+            New(
+                typeof(string).GetConstructor(),
+                arr
+            )
+        )
+    )
+)"
+        )
+    End Sub
+
+    <Fact> <Trait("Category", Method)>
+    Sub StaticMethod2ArgumentsWithoutConversion()
         Dim arr As IEnumerable(Of Char) = New Char() {"a"c, "b"c}
         RunTest(
             Function() String.Join(","c, arr),
@@ -132,8 +159,8 @@ Partial Public Class VBCompilerGeneratedBase
 
     <Fact> <Trait("Category", Method)>
     Sub ExtensionMethod2Arguments()
-        Dim lst As IEnumerable(Of String) = New List(Of String)()
-        Dim comparer As IComparer(Of String) = StringComparer.OrdinalIgnoreCase
+        Dim lst = New List(Of String)()
+        Dim comparer = StringComparer.OrdinalIgnoreCase
         RunTest(
             Function() lst.OrderBy(Function(x) x, comparer),
             "() => lst.OrderBy((string x) => x, comparer)",
@@ -141,14 +168,18 @@ Partial Public Class VBCompilerGeneratedBase
             "Lambda(
     Call(
         typeof(Enumerable).GetMethod(""OrderBy""),
-        lst,
+        Convert(lst,
+            typeof(IEnumerable<string>)
+        ),
         Lambda(x,
             var x = Parameter(
                 typeof(string),
                 ""x""
             )
         ),
-        comparer
+        Convert(comparer,
+            typeof(IComparer<string>)
+        )
     )
 )"
         )
