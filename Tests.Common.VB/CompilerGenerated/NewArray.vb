@@ -17,9 +17,9 @@
     <Fact> <Trait("Category", NewArray)>
     Sub SingleDimensionInitExplicitType()
         RunTest(
-            Function() New Object() {""}, ' the VB.NET compiler adds a conversion for each element to the array type
-            "() => new[] { (object)"""" }",
-            "Function() { CObj("""") }",
+            Function() New Object() {""},
+            "() => new[] { """" }",
+            "Function() { """" }",
             "Lambda(
     NewArrayInit(
         typeof(object),
@@ -119,8 +119,8 @@
                 ({"ab", "cd"}),
                 ({"ef", "gh"})
             },
-            "() => new object[][] { (object[])new[] { ""ab"", ""cd"" }, (object[])new[] { ""ef"", ""gh"" } }",
-            "Function() { CType({ ""ab"", ""cd"" }, Object()), CType({ ""ef"", ""gh"" }, Object()) }",
+            "() => new object[][] { new[] { ""ab"", ""cd"" }, new[] { ""ef"", ""gh"" } }",
+            "Function() { { ""ab"", ""cd"" }, { ""ef"", ""gh"" } }",
             "Lambda(
     NewArrayInit(
         typeof(object[]),

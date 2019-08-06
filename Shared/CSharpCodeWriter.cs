@@ -114,7 +114,9 @@ namespace ExpressionToString {
                 case ExpressionType.Convert:
                 case ConvertChecked:
                 case Unbox:
-                    Write($"({type.FriendlyName(language)})");
+                    if (!type.IsAssignableFrom(operand.Type)) {
+                        Write($"({type.FriendlyName(language)})");
+                    }
                     WriteNode(operandPath, operand);
                     break;
                 case Negate:

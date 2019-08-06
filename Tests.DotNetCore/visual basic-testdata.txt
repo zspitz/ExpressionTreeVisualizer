@@ -59,7 +59,7 @@ Function() New Wrapper From {
 ---- CSCompiler.Conditional
 Function(i As Integer) If(i > 10, i, i + 10)
 ---- CSCompiler.Convert
-Function() CObj(lst)
+Function() lst
 ---- CSCompiler.DefaultRefType
 Function() Nothing
 ---- CSCompiler.DefaultValueType
@@ -95,7 +95,7 @@ Function() s.IndexOf("a"C, 2)
 ---- CSCompiler.Integer
 Function() 5
 ---- CSCompiler.InterpolatedString
-Function() $"{CObj(New Date(2001, 1, 1))}"
+Function() $"{New Date(2001, 1, 1)}"
 ---- CSCompiler.InvocationNoArguments
 Function() del()
 ---- CSCompiler.InvocationOneArgument
@@ -313,11 +313,11 @@ End Block
 ---- FactoryMethods.ConstructCoalesce
 If(s1, s2)
 ---- FactoryMethods.ConstructConvert
-CObj(arr)
+arr
 ---- FactoryMethods.ConstructConvertChecked
 CSng(5)
 ---- FactoryMethods.ConstructConvertCheckedForReferenceType
-CObj(arr)
+arr
 ---- FactoryMethods.ConstructDecrement
 i -= 1
 ---- FactoryMethods.ConstructDivide
@@ -873,7 +873,7 @@ Function() s
 ---- VBCompiler.Coalesce
 Function() If(s1, s2)
 ---- VBCompiler.CObject
-Function() CObj(lst)
+Function() lst
 ---- VBCompiler.CollectionTypeWithInitializer
 Function() New List(Of String) From {
     "abcd",
@@ -939,7 +939,7 @@ Function() s.ToString
 ---- VBCompiler.InstanceMethod1Argument
 Function() s.CompareTo("")
 ---- VBCompiler.InstanceMethod2Arguments
-Function() CType(s, IEnumerable(Of Char)).Contains("a"C, CType(StringComparer.InvariantCultureIgnoreCase, IEqualityComparer(Of Char)))
+Function() s.Contains("a"C, CType(StringComparer.InvariantCultureIgnoreCase, IEqualityComparer(Of Char)))
 ---- VBCompiler.Integer
 Function() 5
 ---- VBCompiler.InterpolatedString

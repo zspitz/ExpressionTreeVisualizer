@@ -32,8 +32,8 @@
         Dim lst = New List(Of String)()
         RunTest(
             Function() CObj(lst),
-            "() => (object)lst",
-            "Function() CObj(lst)",
+            "() => lst",
+            "Function() lst",
             "Lambda(
     Convert(lst,
         typeof(object)

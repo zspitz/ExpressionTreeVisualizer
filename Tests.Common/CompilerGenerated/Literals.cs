@@ -87,8 +87,8 @@ namespace ExpressionToString.Tests {
         [Trait("Category", Literal)]
         public void InterpolatedString() => RunTest(
             () => $"{new DateTime(2001, 1, 1)}",
-            "() => $\"{(object)new DateTime(2001, 1, 1)}\"",
-            "Function() $\"{CObj(New Date(2001, 1, 1))}\"", 
+            "() => $\"{new DateTime(2001, 1, 1)}\"",
+            "Function() $\"{New Date(2001, 1, 1)}\"", 
             @"Lambda(
     Call(
         typeof(string).GetMethod(""Format""),

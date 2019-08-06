@@ -149,7 +149,9 @@ namespace ExpressionToString {
                 case ExpressionType.Convert:
                 case ConvertChecked:
                 case Unbox:
-                    if (conversionFunctions.TryGetValue(type, out var conversionFunction)) {
+                    if (type.IsAssignableFrom(operand.Type)) {
+                        WriteNode(operandPath, operand);
+                    } else if (conversionFunctions.TryGetValue(type, out var conversionFunction)) {
                         Write(conversionFunction);
                         Write("(");
                         WriteNode(operandPath, operand);

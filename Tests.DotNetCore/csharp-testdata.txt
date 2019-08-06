@@ -59,7 +59,7 @@
 ---- CSCompiler.Conditional
 (int i) => i > 10 ? i : i + 10
 ---- CSCompiler.Convert
-() => (object)lst
+() => lst
 ---- CSCompiler.DefaultRefType
 () => null
 ---- CSCompiler.DefaultValueType
@@ -97,7 +97,7 @@
 ---- CSCompiler.Integer
 () => 5
 ---- CSCompiler.InterpolatedString
-() => $"{(object)new DateTime(2001, 1, 1)}"
+() => $"{new DateTime(2001, 1, 1)}"
 ---- CSCompiler.InvocationNoArguments
 () => del()
 ---- CSCompiler.InvocationOneArgument
@@ -322,11 +322,11 @@ catch (Exception ex) when (
 ---- FactoryMethods.ConstructCoalesce
 s1 ?? s2
 ---- FactoryMethods.ConstructConvert
-(object)arr
+arr
 ---- FactoryMethods.ConstructConvertChecked
 (float)5
 ---- FactoryMethods.ConstructConvertCheckedForReferenceType
-(object)arr
+arr
 ---- FactoryMethods.ConstructDecrement
 i -= 1
 ---- FactoryMethods.ConstructDivide
@@ -924,7 +924,7 @@ if (true) {
 ---- VBCompiler.Coalesce
 () => s1 ?? s2
 ---- VBCompiler.CObject
-() => (object)lst
+() => lst
 ---- VBCompiler.CollectionTypeWithInitializer
 () => new List<string>() {
     "abcd",
@@ -990,11 +990,11 @@ if (true) {
 ---- VBCompiler.InstanceMethod1Argument
 () => s.CompareTo("")
 ---- VBCompiler.InstanceMethod2Arguments
-() => (IEnumerable<char>)s.Contains('a', (IEqualityComparer<char>)StringComparer.InvariantCultureIgnoreCase)
+() => s.Contains('a', (IEqualityComparer<char>)StringComparer.InvariantCultureIgnoreCase)
 ---- VBCompiler.Integer
 () => 5
 ---- VBCompiler.InterpolatedString
-() => $"{(object)#DateTime}"
+() => $"{#DateTime}"
 ---- VBCompiler.InvocationNoArguments
 () => del()
 ---- VBCompiler.InvocationOneArgument

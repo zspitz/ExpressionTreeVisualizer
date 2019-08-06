@@ -50,6 +50,12 @@ namespace Tests.DotNetCore {
                 return (o, ($"#{o.GetType().Name}", csharp, vb));
             }).AddRangeTo(testData);
 
+            var dte = new DateTime(1981, 1, 1);
+            testData.Add(dte, ("#DateTime", "#DateTime", $"#{dte.ToString()}#"));
+
+            var ts = new TimeSpan(5, 4, 3, 2, 1);
+            testData.Add(ts, ("#TimeSpan", "#TimeSpan", $"#{ts.ToString()}#"));
+
             TestData = new TheoryData<object, string, string>();
             foreach (var (o, expected) in testData) {
                 var (neutral, csharp, vb) = expected;
