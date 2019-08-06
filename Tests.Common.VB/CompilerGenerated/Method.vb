@@ -101,22 +101,14 @@ Partial Public Class VBCompilerGeneratedBase
     Sub InstanceMethod2Arguments()
         Dim s = ""
         RunTest(
-            Function() s.Contains("a"c, StringComparer.InvariantCultureIgnoreCase),
-            "() => (IEnumerable<char>)s.Contains('a', (IEqualityComparer<char>)StringComparer.InvariantCultureIgnoreCase)",
-            "Function() CType(s, IEnumerable(Of Char)).Contains(""a""C, CType(StringComparer.InvariantCultureIgnoreCase, IEqualityComparer(Of Char)))",
-            "Lambda(
-    Call(
-        typeof(Enumerable).GetMethod(""Contains""),
-        Convert(s,
-            typeof(IEnumerable<char>)
-        ),
+            Function() s.IndexOf("a"c, 2),
+            "() => s.IndexOf('a', 2)",
+                "Function() s.IndexOf(""a""C, 2)",
+                "Lambda(
+    Call(s,
+        typeof(string).GetMethod(""IndexOf""),
         Constant('a'),
-        Convert(
-            MakeMemberAccess(null,
-                typeof(StringComparer).GetProperty(""InvariantCultureIgnoreCase"")
-            ),
-            typeof(IEqualityComparer<char>)
-        )
+        Constant(2)
     )
 )"
         )
