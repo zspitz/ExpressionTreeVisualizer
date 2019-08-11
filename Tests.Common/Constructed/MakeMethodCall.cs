@@ -6,6 +6,7 @@ using static ExpressionToString.Util.Functions;
 using static System.Linq.Expressions.Expression;
 using static ExpressionToString.Tests.Globals;
 using static ExpressionToString.Tests.Categories;
+using ExpressionToString.Tests.Objects;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {

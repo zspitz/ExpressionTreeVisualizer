@@ -6,6 +6,10 @@ using static ExpressionToString.Tests.Categories;
 using System.Linq;
 
 namespace ExpressionToString.Tests.Objects {
+    static class Dummy {
+        internal static void DummyMethod() { }
+    }
+
     partial class CSCompiler {
 
         [Category(Method)]

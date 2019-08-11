@@ -1,5 +1,4 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {

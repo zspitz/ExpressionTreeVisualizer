@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System;
 using System.Reflection;
 using static ExpressionToString.Tests.Categories;
+using ExpressionToString.Tests.Objects;
 
 namespace ExpressionToString.Tests {
     internal class DummyMember {
