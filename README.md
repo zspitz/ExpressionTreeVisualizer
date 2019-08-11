@@ -8,7 +8,7 @@ This project provides the following:
   
 ### Feedback
 
-* Star the project and/or upvote the posts on [reddit](https://www.reddit.com/r/dotnet/comments/c5wiyv/expressiontreetostring_14_visualizer_node_context/) or [Hacker News](https://news.ycombinator.com/item?id=20055067)
+* Star the project
 * File an [issue](https://github.com/zspitz/ExpressionToString/issues)
 
 ## String representations of expression trees
@@ -58,7 +58,7 @@ Features:
     Console.WriteLine(expr.ToString("C#"));
     // prints: () => i + j
     ```
-    
+
 * Type names are rendered using language keywords, instead of just the type name; e.g. `List<string>` or `List(Of Date)` instead of ``List`1``
 
 * Special handling of calls to `String.Concat` and `String.Format`
