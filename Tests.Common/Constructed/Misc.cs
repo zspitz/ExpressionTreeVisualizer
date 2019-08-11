@@ -8,70 +8,16 @@ using static ExpressionToString.Tests.Categories;
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
         [Fact]
-        public void MakeConditional() {
-            var i = Parameter(typeof(int), "i");
-            RunTest(
-                Condition(
-                    GreaterThan(i, Constant(10)),
-                    i,
-                    Add(i, Constant(10))
-                ),
-                "i > 10 ? i : i + 10",
-                "If(i > 10, i, i + 10)", 
-                @"Condition(
-    GreaterThan(i,
-        Constant(10)
-    ),
-    i,
-    Add(i,
-        Constant(10)
-    )
-)"
-            );
-        }
+        [Trait("Category", TypeCheck)]
+        public void MakeTypeCheck() => PreRunTest();
 
         [Fact]
-        public void MakeTypeCheck() => RunTest(
-            TypeIs(
-                Constant(""),
-                typeof(string)
-            ),
-            "\"\" is string",
-            "TypeOf \"\" Is String", 
-            @"TypeIs(
-    Constant(""""),
-    typeof(string)
-)"
-        );
+        [Trait("Category", TypeCheck)]
+        public void MakeTypeEqual() => PreRunTest();
 
         [Fact]
-        public void MakeTypeEqual() => RunTest(
-            TypeEqual(
-                Constant(""),
-                typeof(IEnumerable)
-            ),
-            "\"\".GetType() == typeof(IEnumerable)",
-            "\"\".GetType = GetType(IEnumerable)", 
-            @"TypeEqual(
-    Constant(""""),
-    typeof(IEnumerable)
-)"
-        );
-
-        [Fact]
-        [Trait("Category",Invocation)]
-        public void MakeInvocation() => RunTest(
-            Invoke(
-                Lambda(Constant(5))
-            ),
-            "(() => 5)()",
-            "(Function() 5)()", 
-            @"Invoke(
-    Lambda(
-        Constant(5)
-    )
-)"
-        );
+        [Trait("Category", Invocation)]
+        public void MakeInvocation() => PreRunTest();
 
         [Fact]
         [Trait("Category", Lambdas)]

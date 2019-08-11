@@ -3,6 +3,7 @@ using static ExpressionToString.Tests.Categories;
 using static System.Linq.Expressions.Expression;
 using static ExpressionToString.Tests.Globals;
 using System.Linq;
+using System.Collections;
 
 namespace ExpressionToString.Tests.Objects {
     public static partial class FactoryMethods {
@@ -40,7 +41,7 @@ namespace ExpressionToString.Tests.Objects {
 
         [Category(Member)]
         public static readonly Expression InstanceMember = MakeMemberAccess(
-            Constant(""), 
+            Constant(""),
             typeof(string).GetMember("Length").Single()
         );
 
@@ -62,5 +63,22 @@ namespace ExpressionToString.Tests.Objects {
 
         [Category(Defaults)]
         public static readonly Expression MakeDefaultValueType = Default(typeof(int));
+
+        [Category(TypeCheck)]
+        public static readonly Expression MakeTypeCheck = TypeIs(
+            Constant(""),
+            typeof(string)
+        );
+
+        [Category(TypeCheck)]
+        public static readonly Expression MakeTypeEqual = TypeEqual(
+            Constant(""),
+            typeof(IEnumerable)
+        );
+
+        [Category(Invocation)]
+        public static readonly Expression MakeInvocation = Invoke(
+            Lambda(Constant(5))
+        );
     }
 }

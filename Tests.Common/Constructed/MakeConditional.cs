@@ -1,7 +1,4 @@
-﻿using System.Linq.Expressions;
-using Xunit;
-using static System.Linq.Expressions.Expression;
-using static ExpressionToString.Tests.Globals;
+﻿using Xunit;
 using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
@@ -12,339 +9,54 @@ namespace ExpressionToString.Tests {
 
         [Fact]
         [Trait("Category", Conditionals)]
-        public void VoidConditionalWithElse() => RunTest(
-            Condition(
-                Constant(true),
-                writeLineTrue,
-                writeLineFalse
-            ),
-            @"if (true) {
-    Console.WriteLine(true);
-} else {
-    Console.WriteLine(false);
-}",
-            "If True Then Console.WriteLine(True) Else Console.WriteLine(False)", 
-            @"IfThenElse(
-    Constant(true),
-    Call(
-        typeof(Console).GetMethod(""WriteLine""),
-        Constant(true)
-    ),
-    Call(
-        typeof(Console).GetMethod(""WriteLine""),
-        Constant(false)
-    )
-)"
-        );
+        public void VoidConditionalWithElse() => PreRunTest();
 
         [Fact]
         [Trait("Category", Conditionals)]
-        public void VoidConditional1WithElse() => RunTest(
-            IfThenElse(
-                Constant(true),
-                writeLineTrue,
-                writeLineFalse
-            ),
-            @"if (true) {
-    Console.WriteLine(true);
-} else {
-    Console.WriteLine(false);
-}",
-            @"If True Then Console.WriteLine(True) Else Console.WriteLine(False)", 
-            @"IfThenElse(
-    Constant(true),
-    Call(
-        typeof(Console).GetMethod(""WriteLine""),
-        Constant(true)
-    ),
-    Call(
-        typeof(Console).GetMethod(""WriteLine""),
-        Constant(false)
-    )
-)"
-        );
+        public void VoidConditional1WithElse() => PreRunTest();
 
         [Fact]
         [Trait("Category", Conditionals)]
-        public void VoidConditionalWithoutElse() => RunTest(
-            Condition(
-                Constant(true),
-                writeLineTrue,
-                Empty()
-            ), 
-            @"if (true) {
-    Console.WriteLine(true);
-}", 
-            "If True Then Console.WriteLine(True)", 
-            @"IfThen(
-    Constant(true),
-    Call(
-        typeof(Console).GetMethod(""WriteLine""),
-        Constant(true)
-    )
-)"
-        );
+        public void VoidConditionalWithoutElse() => PreRunTest();
 
         [Fact]
         [Trait("Category", Conditionals)]
-        public void VoidConditional1WithoutElse() => RunTest(
-            IfThen(
-                Constant(true),
-                writeLineTrue
-            ), 
-            @"if (true) {
-    Console.WriteLine(true);
-}", 
-            "If True Then Console.WriteLine(True)", 
-            @"IfThen(
-    Constant(true),
-    Call(
-        typeof(Console).GetMethod(""WriteLine""),
-        Constant(true)
-    )
-)"
-        );
+        public void VoidConditional1WithoutElse() => PreRunTest();
 
         [Fact]
         [Trait("Category", Conditionals)]
-        public void NonVoidConditionalWithElse() => RunTest(
-            Condition(
-                Constant(true),
-                trueLength,
-                falseLength
-            ),
-            "true ? \"true\".Length : \"false\".Length",
-            "If(True, \"true\".Length, \"false\".Length)", 
-            @"Condition(
-    Constant(true),
-    MakeMemberAccess(
-        Constant(""true""),
-        typeof(string).GetProperty(""Length"")
-    ),
-    MakeMemberAccess(
-        Constant(""false""),
-        typeof(string).GetProperty(""Length"")
-    )
-)"
-        );
+        public void NonVoidConditionalWithElse() => PreRunTest();
 
         [Fact]
         [Trait("Category", Conditionals)]
-        public void NonVoidConditionalWithoutElse() => RunTest(
-            Condition(
-                Constant(true),
-                trueLength,
-                Default(typeof(int))
-            ),
-            "true ? \"true\".Length : default(int)",
-            "If(True, \"true\".Length, CType(Nothing, Integer))", 
-            @"Condition(
-    Constant(true),
-    MakeMemberAccess(
-        Constant(""true""),
-        typeof(string).GetProperty(""Length"")
-    ),
-    Default(
-        typeof(int)
-    )
-)"
-        );
+        public void NonVoidConditionalWithoutElse() => PreRunTest();
 
         [Fact]
         [Trait("Category", Conditionals)]
-        public void MultilineTestPart() => RunTest(
-            Condition(
-                Block(Constant(true), Constant(true)),
-                trueLength,
-                falseLength
-            ),
-            @"(
-    true,
-    true
-) ? ""true"".Length : ""false"".Length",
-            @"If(Block
-    True
-    True
-End Block, ""true"".Length, ""false"".Length)", 
-            @"Condition(
-    Block(
-        Constant(true),
-        Constant(true)
-    ),
-    MakeMemberAccess(
-        Constant(""true""),
-        typeof(string).GetProperty(""Length"")
-    ),
-    MakeMemberAccess(
-        Constant(""false""),
-        typeof(string).GetProperty(""Length"")
-    )
-)"
-        );
+        public void MultilineTestPart() => PreRunTest();
 
         [Fact]
         [Trait("Category", Conditionals)]
-        public void MultilineTestPart1() => RunTest(
-            IfThen(
-                Block(Constant(true), Constant(true)),
-                writeLineTrue
-            ),
-            @"if (
-    true,
-    true
-) {
-    Console.WriteLine(true);
-}",
-            @"If
-    True
-    True
-Then Console.WriteLine(True)", 
-            @"IfThen(
-    Block(
-        Constant(true),
-        Constant(true)
-    ),
-    Call(
-        typeof(Console).GetMethod(""WriteLine""),
-        Constant(true)
-    )
-)"
-        );
+        public void MultilineTestPart1() => PreRunTest();
 
         [Fact]
         [Trait("Category", Conditionals)]
-        public void MultilineIfTrue() => RunTest(
-            IfThen(
-                Constant(true),
-                Block(writeLineTrue, writeLineTrue)
-            ),
-            @"if (true) {
-    Console.WriteLine(true);
-    Console.WriteLine(true);
-}",
-            @"If True Then
-    Console.WriteLine(True)
-    Console.WriteLine(True)
-End If", 
-            @"IfThen(
-    Constant(true),
-    Block(
-        Call(
-            typeof(Console).GetMethod(""WriteLine""),
-            Constant(true)
-        ),
-        Call(
-            typeof(Console).GetMethod(""WriteLine""),
-            Constant(true)
-        )
-    )
-)"
-        );
+        public void MultilineIfTrue() => PreRunTest();
 
         [Fact]
         [Trait("Category", Conditionals)]
-        public void MultilineIfFalse() => RunTest(
-            IfThenElse(
-                Constant(true),
-                writeLineTrue,
-                Block(writeLineFalse, writeLineFalse)
-            ),
-            @"if (true) {
-    Console.WriteLine(true);
-} else {
-    Console.WriteLine(false);
-    Console.WriteLine(false);
-}",
-            @"If True Then
-    Console.WriteLine(True)
-Else
-    Console.WriteLine(False)
-    Console.WriteLine(False)
-End If",
-            @"IfThenElse(
-    Constant(true),
-    Call(
-        typeof(Console).GetMethod(""WriteLine""),
-        Constant(true)
-    ),
-    Block(
-        Call(
-            typeof(Console).GetMethod(""WriteLine""),
-            Constant(false)
-        ),
-        Call(
-            typeof(Console).GetMethod(""WriteLine""),
-            Constant(false)
-        )
-    )
-)"
-        );
+        public void MultilineIfFalse() => PreRunTest();
 
         [Fact]
         [Trait("Category", Conditionals)]
-        public void NestedIfThen() => RunTest(
-                IfThen(
-                    Constant(true),
-                    IfThen(
-                        Constant(true),
-                        writeLineTrue
-                    )
-                ),
-                @"if (true) {
-    if (true) {
-        Console.WriteLine(true);
-    }
-}",
-                @"If True Then
-    If True Then Console.WriteLine(True)
-End If", 
-                @"IfThen(
-    Constant(true),
-    IfThen(
-        Constant(true),
-        Call(
-            typeof(Console).GetMethod(""WriteLine""),
-            Constant(true)
-        )
-    )
-)"
-        );
+        public void NestedIfThen() => PreRunTest();
 
         [Fact]
         [Trait("Category", Conditionals)]
-        public void NestedElse() => RunTest(
-            IfThenElse(
-                Constant(true),
-                writeLineTrue,
-                IfThen(
-                    Constant(true),
-                    writeLineTrue
-                )
-            ),
-            @"if (true) {
-    Console.WriteLine(true);
-} else if (true) {
-    Console.WriteLine(true);
-}",
-            @"If True Then
-    Console.WriteLine(True)
-Else If True Then
-    Console.WriteLine(True)
-End If", 
-            @"IfThenElse(
-    Constant(true),
-    Call(
-        typeof(Console).GetMethod(""WriteLine""),
-        Constant(true)
-    ),
-    IfThen(
-        Constant(true),
-        Call(
-            typeof(Console).GetMethod(""WriteLine""),
-            Constant(true)
-        )
-    )
-)"
-        );
+        public void NestedElse() => PreRunTest();
+
+        [Fact]
+        [Trait("Category", Conditionals)]
+        public void MakeConditional() => PreRunTest();
     }
 }

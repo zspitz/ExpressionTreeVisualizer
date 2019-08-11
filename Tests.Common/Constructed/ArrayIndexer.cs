@@ -1,77 +1,26 @@
-﻿using ExpressionToString.Util;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using Xunit;
-using static System.Linq.Expressions.Expression;
-using static ExpressionToString.Tests.Globals;
+﻿using Xunit;
 using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
         [Fact]
         [Trait("Category", Indexer)]
-        public void MakeArrayIndex() => RunTest(
-            ArrayIndex(arr, Constant(0)),
-            "arr[0]",
-            "arr(0)",
-            @"ArrayIndex(arr,
-    Constant(0)
-)"
-        );
+        public void MakeArrayIndex() => PreRunTest();
 
         [Fact]
         [Trait("Category", Indexer)]
-        public void MakeArrayMultipleIndex() => RunTest(
-            ArrayIndex(arr2D, Constant(0), Constant(1)),
-            "arr2d[0, 1]",
-            "arr2d(0, 1)", 
-            @"ArrayIndex(arr2d,
-    Constant(0),
-    Constant(1)
-)"
-        );
+        public void MakeArrayMultipleIndex() => PreRunTest();
 
         [Fact]
         [Trait("Category", Indexer)]
-        public void MakeArrayAccess() => RunTest(
-            ArrayAccess(arr, Constant(0)),
-            "arr[0]",
-            "arr(0)",
-            @"ArrayAccess(arr,
-    Constant(0)
-)"
-        );
+        public void MakeArrayAccess() => PreRunTest();
 
         [Fact]
         [Trait("Category", Indexer)]
-        public void InstanceIndexer() => RunTest(
-            MakeIndex(
-                lstString, listIndexer, new[] { Constant(0) as Expression }
-            ),
-            "lstString[0]",
-            "lstString(0)", 
-            @"MakeIndex(lstString,
-    typeof(List<string>).GetProperty(""Item""),
-    new[] {
-        Constant(0)
-    }
-)"
-        );
+        public void InstanceIndexer() => PreRunTest();
 
         [Fact]
         [Trait("Category", Indexer)]
-        public void PropertyIndexer() => RunTest(
-            Property(lstString, listIndexer, Constant(0)),
-            "lstString[0]",
-            "lstString(0)", 
-            @"MakeIndex(lstString,
-    typeof(List<string>).GetProperty(""Item""),
-    new[] {
-        Constant(0)
-    }
-)"
-        );
+        public void PropertyIndexer() => PreRunTest();
     }
 }
