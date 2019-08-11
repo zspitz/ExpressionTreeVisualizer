@@ -40,6 +40,8 @@ namespace ExpressionToString.Tests {
 
         public static readonly PropertyInfo listIndexer = typeof(List<string>).GetIndexers(true).Single();
 
+        public static readonly SymbolDocumentInfo document = SymbolDocument("source.txt");
+
         static Globals() {
             var writeLine = GetMethod(() => Console.WriteLine(true));
             writeLineTrue = Call(writeLine, Constant(true));

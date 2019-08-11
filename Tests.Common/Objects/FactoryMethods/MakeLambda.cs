@@ -59,5 +59,11 @@ namespace ExpressionToString.Tests.Objects {
                 )
             )
         );
+
+        [Category(Lambdas)]
+        public static readonly Expression MakeByRefParameter = Lambda(
+            Constant(true),
+            Parameter(typeof(string).MakeByRefType(), "s4")
+        );
     }
 }

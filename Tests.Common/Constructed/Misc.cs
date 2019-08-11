@@ -75,100 +75,22 @@ namespace ExpressionToString.Tests {
 
         [Fact]
         [Trait("Category", Lambdas)]
-        public void MakeByRefParameter() => RunTest(
-            Lambda(
-                Constant(true),
-                Parameter(typeof(string).MakeByRefType(), "s4")
-            ),
-            "(ref string s4) => true",
-            "Function(ByRef s4 As String) True", @"Lambda(
-    Constant(true),
-    var s4 = Parameter(
-        typeof(string).MakeByRef(),
-        ""s4""
-    )
-)"
-        );
-
-        [Fact]
-        [Trait("Category",Quoted)]
-        public void MakeQuoted() => RunTest(
-            Block(
-                new[] { x },
-                Quote(
-                    Lambda(writeLineTrue)
-                )
-            ),
-            @"(
-    double x,
-    // --- Quoted - begin
-        () => Console.WriteLine(true)
-    // --- Quoted - end
-)",
-            @"Block
-    Dim x As Double
-    ' --- Quoted - begin
-        Sub() Console.WriteLine(True)
-    ' --- Quoted - end
-End Block",
-            @"Block(new[] { x },
-    Quote(
-        Lambda(
-            Call(
-                typeof(Console).GetMethod(""WriteLine""),
-                Constant(true)
-            )
-        )
-    )
-)"
-        );
+        public void MakeByRefParameter() => PreRunTest();
 
         [Fact]
         [Trait("Category", Quoted)]
-        public void MakeQuoted1() => RunTest(
-            Lambda(
-                Quote(
-                    Lambda(writeLineTrue)
-                )
-            ),
-            @"() =>
-// --- Quoted - begin
-    () => Console.WriteLine(true)
-// --- Quoted - end",
-            @"Function()
-' --- Quoted - begin
-    Sub() Console.WriteLine(True)
-' --- Quoted - end",
-            @"Lambda(
-    Quote(
-        Lambda(
-            Call(
-                typeof(Console).GetMethod(""WriteLine""),
-                Constant(true)
-            )
-        )
-    )
-)"
-        );
+        public void MakeQuoted() => PreRunTest();
 
-        SymbolDocumentInfo document = SymbolDocument("source.txt");
+        [Fact]
+        [Trait("Category", Quoted)]
+        public void MakeQuoted1() => PreRunTest();
 
         [Fact]
         [Trait("Category", DebugInfos)]
-        public void MakeDebugInfo() => RunTest(
-            DebugInfo(document,1,2,3,4),
-            "// Debug to source.txt -- L1C2 : L3C4",
-            "' Debug to source.txt -- L1C2 : L3C4",
-            "DebugInfo(#SymbolDocumentInfo, 1, 2, 3, 4)"
-        );
+        public void MakeDebugInfo() => PreRunTest();
 
         [Fact]
         [Trait("Category", DebugInfos)]
-        public void MakeClearDebugInfo() => RunTest(
-            ClearDebugInfo(document),
-            "// Clear debug info from source.txt",
-            "' Clear debug info from source.txt", 
-            "ClearDebugInfo(#SymbolDocumentInfo)"
-        );
+        public void MakeClearDebugInfo() => PreRunTest();
     }
 }
