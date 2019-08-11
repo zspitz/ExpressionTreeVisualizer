@@ -5,85 +5,32 @@ using static ExpressionToString.Tests.Categories;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
-        private LabelTarget labelTarget = Label("target");
-
         [Fact]
-        [Trait("Category",Gotos)]
-        public void MakeBreak() => RunTest(
-            Break(labelTarget),
-            "break target",
-            "Exit target", 
-            @"Break(
-    Label(""target"")
-)"
-        );
+        [Trait("Category", Gotos)]
+        public void MakeBreak() => PreRunTest();
 
         [Fact]
         [Trait("Category", Gotos)]
-        public void MakeBreakWithValue() => RunTest(
-            Break(labelTarget, Constant(5)),
-            "break target 5",
-            "Exit target 5", @"Break(
-    Label(""target""),
-    Constant(5)
-)"
-        );
+        public void MakeBreakWithValue() => PreRunTest();
 
         [Fact]
         [Trait("Category", Gotos)]
-        public void MakeContinue() => RunTest(
-            Continue(labelTarget),
-            "continue target",
-            "Continue target",
-            @"Continue(
-    Label(""target"")
-)"
-        );
+        public void MakeContinue() => PreRunTest();
 
         [Fact]
         [Trait("Category", Gotos)]
-        public void MakeGotoWithoutValue() => RunTest(
-            Goto(labelTarget),
-            "goto target",
-            "Goto target", 
-            @"Goto(
-    Label(""target"")
-)"
-        );
+        public void MakeGotoWithoutValue() => PreRunTest();
 
         [Fact]
         [Trait("Category", Gotos)]
-        public void MakeGotoWithValue() => RunTest(
-            Goto(labelTarget, Constant(5)),
-            "goto target 5",
-            "Goto target 5", 
-            @"Goto(
-    Label(""target""),
-    Constant(5)
-)"
-        );
+        public void MakeGotoWithValue() => PreRunTest();
 
         [Fact]
         [Trait("Category", Gotos)]
-        public void MakeReturn() => RunTest(
-            Return(labelTarget),
-            "return target",
-            "Return target",
-            @"Return(
-    Label(""target"")
-)"
-        );
+        public void MakeReturn() => PreRunTest();
 
         [Fact]
         [Trait("Category", Gotos)]
-        public void MakeReturnWithValue() => RunTest(
-            Return(labelTarget, Constant(5)),
-            "return target 5",
-            "Return target 5", 
-            @"Return(
-    Label(""target""),
-    Constant(5)
-)"
-        );
+        public void MakeReturnWithValue() => PreRunTest();
     }
 }
