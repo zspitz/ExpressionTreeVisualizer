@@ -68,8 +68,6 @@
 () => x / y
 ---- CSCompiler.Equal
 () => i == j
----- CSCompiler.EscapedString
-() => "\'\"\\\0\a\b\f\n\r\t\v"
 ---- CSCompiler.ExclusiveOrBitwise
 () => i ^ j
 ---- CSCompiler.ExclusiveOrLogical
@@ -972,6 +970,8 @@ if (true) {
 ---- VBCompiler.ExclusiveOrLogical
 () => b1 ^ b2
 ---- VBCompiler.ExtensionMethod0Arguments
+() => ((IEnumerable<string>)lst).Distinct()
+---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
 () => lst.Distinct()
 ---- VBCompiler.ExtensionMethod1Argument
 () => lst.Take(1)
@@ -1082,6 +1082,8 @@ if (true) {
 ---- VBCompiler.StaticMethod1Argument
 () => string.Intern("")
 ---- VBCompiler.StaticMethod2Arguments
+() => string.Join("","", new[] { new string(arr) })
+---- VBCompiler.StaticMethod2ArgumentsWithoutConversion
 () => string.Join(",", arr)
 ---- VBCompiler.String
 () => "abcd"

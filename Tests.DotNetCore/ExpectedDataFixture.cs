@@ -19,7 +19,6 @@ namespace ExpressionToString.Tests {
                 var expectedDataPath = GetFullFilename($"{filename.ToLower()}-testdata.txt");
                 string testName = "";
                 string expected = "";
-                // TODO this might be made more efficient, instead of building up multiple strings
                 foreach (var line in File.ReadLines(expectedDataPath)) {
                     if (line.StartsWith("----")) {
                         if (testName != "") {
@@ -28,7 +27,7 @@ namespace ExpressionToString.Tests {
                             }
                             Add((formatter, testName), expected.Trim());
                         }
-                        testName = line.Substring(5); // ---- testMethod
+                        testName = line.Substring(5); // ---- typename.testMethod
                         expected = "";
                     } else {
                         expected += line + NewLine;

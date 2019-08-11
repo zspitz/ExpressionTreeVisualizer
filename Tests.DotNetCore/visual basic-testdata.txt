@@ -921,6 +921,8 @@ Function() i Xor j
 ---- VBCompiler.ExclusiveOrLogical
 Function() b1 Xor b2
 ---- VBCompiler.ExtensionMethod0Arguments
+Function() CType(lst, IEnumerable(Of String)).Distinct
+---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
 Function() lst.Distinct
 ---- VBCompiler.ExtensionMethod1Argument
 Function() lst.Take(1)
@@ -1031,6 +1033,8 @@ Sub() Dummy.DummyMethod
 ---- VBCompiler.StaticMethod1Argument
 Function() String.Intern("")
 ---- VBCompiler.StaticMethod2Arguments
+Function() String.Join(",", { New String(arr) })
+---- VBCompiler.StaticMethod2ArgumentsWithoutConversion
 Function() String.Join(",", arr)
 ---- VBCompiler.String
 Function() "abcd"

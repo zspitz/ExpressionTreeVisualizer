@@ -32,6 +32,7 @@ namespace Tests.DotNetCore {
                 { new object[] {1}, ("#Object[]", "new[] { 1 }", "{ 1 }")},
                 {Tuple.Create(1,"2"), ("(1, \"2\")", "(1, \"2\")", "(1, \"2\")") },
                 {(1,"2"), ("(1, \"2\")", "(1, \"2\")", "(1, \"2\")") },
+                {"\"", ("#String", "\"\\\"\"", "\"\"\"\"") }
             };
 
             var timerType = typeof(System.Timers.Timer);
@@ -63,6 +64,9 @@ namespace Tests.DotNetCore {
                 TestData.Add(o, CSharp, csharp);
                 TestData.Add(o, VisualBasic, vb);
             }
+
+            // C# escaped-string tests; not relevant for Visual Basic
+            TestData.Add("\'\"\\\0\a\b\f\n\r\t\v", CSharp, "\"\\'\\\"\\\\\\0\\a\\b\\f\\n\\r\\t\\v\"");
         }
     }
 }

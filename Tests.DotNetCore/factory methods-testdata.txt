@@ -2128,6 +2128,15 @@ Lambda(
 Lambda(
     Call(
         typeof(Enumerable).GetMethod("Distinct"),
+        Convert(lst,
+            typeof(IEnumerable<string>)
+        )
+    )
+)
+---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
+Lambda(
+    Call(
+        typeof(Enumerable).GetMethod("Distinct"),
         lst
     )
 )
@@ -2497,6 +2506,20 @@ Lambda(
     )
 )
 ---- VBCompiler.StaticMethod2Arguments
+Lambda(
+    Call(
+        typeof(string).GetMethod("Join"),
+        Constant(","),
+        NewArrayInit(
+            typeof(string),
+            New(
+                typeof(string).GetConstructor(),
+                arr
+            )
+        )
+    )
+)
+---- VBCompiler.StaticMethod2ArgumentsWithoutConversion
 Lambda(
     Call(
         typeof(string).GetMethod("Join"),
