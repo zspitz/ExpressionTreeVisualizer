@@ -78,4 +78,7 @@ namespace ExpressionToString.Tests {
         public const string Constants = "Constants";
     }
 
+    static class Dummy {
+        internal static void DummyMethod() { }
+    }
 }
