@@ -87,6 +87,8 @@ namespace _visualizerTests {
             //IQueryable<Person> personSource = null;
             Expression<Func<Person, bool>> expr = person => person.LastName.StartsWith("A");
 
+            Console.WriteLine(expr.ToString("Object notation", out var pathSpans));
+
             //var hour = Variable(typeof(int), "hour");
             //var msg = Variable(typeof(string), "msg");
             //var block = Block(
@@ -258,8 +260,7 @@ namespace _visualizerTests {
             //    Constant(5)
             //);
 
-
-
+            //Expression<Func<string>> expr = () => string.IsInterned("");
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();

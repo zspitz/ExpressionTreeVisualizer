@@ -100,7 +100,7 @@ namespace ExpressionToString {
                 //use object initializer
                 var preferredOrder = preferredPropertyOrders.FirstOrDefault(x => x.Item1.IsAssignableFrom(o.GetType())).Item2;
                 var properties = type.GetProperties().Where(x => {
-                    if (x.Name.In("CanReduce", "TailCall", "CanReduce", "IsLifted", "IsLiftedToNull")) { return false; }
+                    if (x.Name.In("CanReduce", "TailCall", "CanReduce", "IsLifted", "IsLiftedToNull", "ArgumentCount")) { return false; }
                     if (x.Name == "NodeType" && hideNodeType.Contains(type)) { return false; }
                     return true;
                 }).ToList();
