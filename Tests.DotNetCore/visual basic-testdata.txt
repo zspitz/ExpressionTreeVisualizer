@@ -921,12 +921,16 @@ Function() i Xor j
 ---- VBCompiler.ExclusiveOrLogical
 Function() b1 Xor b2
 ---- VBCompiler.ExtensionMethod0Arguments
-Function() CType(lst, IEnumerable(Of String)).Distinct
+Function() lst.Distinct
 ---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
 Function() lst.Distinct
 ---- VBCompiler.ExtensionMethod1Argument
 Function() lst.Take(1)
+---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
+Function() lst.Take(1)
 ---- VBCompiler.ExtensionMethod2Arguments
+Function() lst.OrderBy(Function(x As String) x, StringComparer.OrdinalIgnoreCase)
+---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
 Function() lst.OrderBy(Function(x As String) x, comparer)
 ---- VBCompiler.False
 Function() False
@@ -941,7 +945,7 @@ Function() s.ToString
 ---- VBCompiler.InstanceMethod1Argument
 Function() s.CompareTo("")
 ---- VBCompiler.InstanceMethod2Arguments
-Function() s.Contains("a"C, CType(StringComparer.InvariantCultureIgnoreCase, IEqualityComparer(Of Char)))
+Function() s.IndexOf("a"C, 2)
 ---- VBCompiler.Integer
 Function() 5
 ---- VBCompiler.InterpolatedString
@@ -953,7 +957,7 @@ Function() del(5)
 ---- VBCompiler.JaggedWithBounds
 Function() New String(4)() {}
 ---- VBCompiler.JaggedWithElementsExplicitType
-Function() { CType({ "ab", "cd" }, Object()), CType({ "ef", "gh" }, Object()) }
+Function() { { "ab", "cd" }, { "ef", "gh" } }
 ---- VBCompiler.JaggedWithElementsImplicitType
 Function() { ({ "ab", "cd" }), ({ "ef", "gh" }) }
 ---- VBCompiler.JaggedWithElementsImplicitTypeInnerNonLiteral
@@ -1023,7 +1027,7 @@ Function() i >> j And 31
 ---- VBCompiler.SingleDimensionInit
 Function() { "" }
 ---- VBCompiler.SingleDimensionInitExplicitType
-Function() { CObj("") }
+Function() { "" }
 ---- VBCompiler.SingleDimensionWithBounds
 Function() New String(4) {}
 ---- VBCompiler.StaticMember

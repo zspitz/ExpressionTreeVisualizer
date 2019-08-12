@@ -50,14 +50,7 @@ Partial Public Class VBCompilerGeneratedBase
 
     <Fact> <Trait("Category", Literal)>
     Sub EscapedString()
-        RunTest(
-            Function() """",
-            "() => ""\""""",
-            "Function() """"""""",
-            "Lambda(
-    Constant(""\"""")
-)"
-        )
+        PreRunTest()
     End Sub
 
     <Fact> <Trait("Category", Literal)>

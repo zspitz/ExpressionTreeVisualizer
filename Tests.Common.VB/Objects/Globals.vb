@@ -32,9 +32,10 @@
     Friend Class NodeData
         Property Name As String
     End Class
-
-    Public Class Globals
-
-    End Class
 End Namespace
+
+Friend Module Dummy
+    Friend Sub DummyMethod()
+    End Sub
+End Module
 

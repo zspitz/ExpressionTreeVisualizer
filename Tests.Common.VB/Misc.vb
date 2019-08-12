@@ -1,107 +1,37 @@
 Partial Public Class VBCompilerGeneratedBase
-    <Fact>
+    <Fact> <Trait("Category", Conditionals)>
     Public Sub Conditional()
-        RunTest(
-            Function(i As Integer) If(i > 10, i, i + 10),
-            "(int i) => i > 10 ? i : i + 10",
-            "Function(i As Integer) If(i > 10, i, i + 10)",
-            "Lambda(
-    Condition(
-        GreaterThan(i,
-            Constant(10)
-        ),
-        i,
-        AddChecked(i,
-            Constant(10)
-        )
-    ),
-    var i = Parameter(
-        typeof(int),
-        ""i""
-    )
-)"
-        )
+        PreRunTest()
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Literal)>
     Public Sub ConstantNothingToObject()
-        RunTest(
-            Function() Nothing,
-            "() => null",
-            "Function() Nothing",
-            "Lambda(
-    Constant(null)
-)"
-        )
+        PreRunTest()
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Literal)>
     Public Sub ConstantNothingToReferenceType()
-        RunTest(Of String)(
-            Function() Nothing,
-            "() => null",
-            "Function() Nothing",
-            "Lambda(
-    Constant(null,
-        typeof(string)
-    )
-)"
-        )
+        PreRunTest()
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Literal)>
     Public Sub ConstantNothingToValueType()
-        RunTest(Of Integer)(
-            Function() Nothing,
-            "() => 0",
-            "Function() 0",
-            "Lambda(
-    Constant(0)
-)"
-        )
+        PreRunTest()
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", TypeChecks)>
     Public Sub TypeCheck()
-        RunTest(
-            Function() TypeOf "" Is String,
-            "() => """" is string",
-            "Function() TypeOf """" Is String",
-            "Lambda(
-    TypeIs(
-        Constant(""""),
-        typeof(string)
-    )
-)"
-        )
+        PreRunTest()
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Invocation)>
     Public Sub InvocationNoArguments()
-        Dim del = Function() Date.Now.Day
-        RunTest(
-            Function() del(),
-            "() => del()",
-            "Function() del()",
-            "Lambda(
-    Invoke(del)
-)"
-        )
+        PreRunTest()
     End Sub
 
-    <Fact>
+    <Fact> <Trait("Category", Invocation)>
     Public Sub InvocationOneArgument()
-        Dim del = Function(i As Integer) Date.Now.Day
-        RunTest(
-            Function() del(5),
-            "() => del(5)",
-            "Function() del(5)",
-            "Lambda(
-    Invoke(del,
-        Constant(5)
-    )
-)"
-        )
+        PreRunTest()
     End Sub
 End Class
 

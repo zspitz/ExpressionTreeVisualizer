@@ -1,42 +1,17 @@
 ﻿Partial Public Class VBCompilerGeneratedBase
     <Fact> <Trait("Category", Member)>
     Sub InstanceMember()
-        Dim s = ""
-        RunTest(
-            Function() s.Length,
-            "() => s.Length",
-            "Function() s.Length",
-            "Lambda(
-    MakeMemberAccess(s,
-        typeof(string).GetProperty(""Length"")
-    )
-)"
-        )
+        PreRunTest()
     End Sub
 
     <Fact> <Trait("Category", Member)>
     Sub ClosedVariable()
-        Dim s = ""
-        RunTest(
-            Function() s,
-            "() => s",
-            "Function() s",
-            "Lambda(s)"
-        )
+        PreRunTest()
     End Sub
 
     <Fact> <Trait("Category", Member)>
     Sub StaticMember()
-        RunTest(
-            Function() String.Empty,
-            "() => string.Empty",
-            "Function() String.Empty",
-            "Lambda(
-    MakeMemberAccess(null,
-        typeof(string).GetField(""Empty"")
-    )
-)"
-        )
+        PreRunTest()
     End Sub
 
     <Fact(Skip:="Test for nested scope")> <Trait("Category", Member)>

@@ -5,10 +5,16 @@ using Xunit;
 using ExpressionToString.Util;
 using System.Reflection;
 using System.IO;
+using static ExpressionToString.Tests.Functions;
 
 namespace Tests.DataGenerator {
     class Program {
         static void Main(string[] args) {
+            RegisterTestObjectContainer(typeof(ExpressionToString.Tests.Objects.VBCompiler));
+            var objects = GetObjects();
+
+            return;
+
             var instances = new TestsBase[] {
                 new CompilerGeneratedTestData(),
                 new ConstructedTestData(),

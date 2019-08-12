@@ -8,11 +8,11 @@ using static ExpressionToString.Tests.Categories;
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {
         [Fact]
-        [Trait("Category", TypeCheck)]
+        [Trait("Category", TypeChecks)]
         public void MakeTypeCheck() => PreRunTest();
 
         [Fact]
-        [Trait("Category", TypeCheck)]
+        [Trait("Category", TypeChecks)]
         public void MakeTypeEqual() => PreRunTest();
 
         [Fact]

@@ -78,6 +78,6 @@ namespace ExpressionToString.Tests {
         public const string Conditionals = "Conditionals";
         public const string Blocks = "Blocks";
         public const string Constants = "Constants";
-        public const string TypeCheck = "Type check";
+        public const string TypeChecks = "Type check";
     }
 }

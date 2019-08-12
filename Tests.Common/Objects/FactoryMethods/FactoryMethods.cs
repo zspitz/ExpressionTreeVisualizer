@@ -64,13 +64,13 @@ namespace ExpressionToString.Tests.Objects {
         [Category(Defaults)]
         public static readonly Expression MakeDefaultValueType = Default(typeof(int));
 
-        [Category(TypeCheck)]
+        [Category(TypeChecks)]
         public static readonly Expression MakeTypeCheck = TypeIs(
             Constant(""),
             typeof(string)
         );
 
-        [Category(TypeCheck)]
+        [Category(TypeChecks)]
         public static readonly Expression MakeTypeEqual = TypeEqual(
             Constant(""),
             typeof(IEnumerable)

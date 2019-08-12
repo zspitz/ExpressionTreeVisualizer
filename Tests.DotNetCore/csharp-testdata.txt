@@ -970,12 +970,16 @@ if (true) {
 ---- VBCompiler.ExclusiveOrLogical
 () => b1 ^ b2
 ---- VBCompiler.ExtensionMethod0Arguments
-() => ((IEnumerable<string>)lst).Distinct()
+() => lst.Distinct()
 ---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
 () => lst.Distinct()
 ---- VBCompiler.ExtensionMethod1Argument
 () => lst.Take(1)
+---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
+() => lst.Take(1)
 ---- VBCompiler.ExtensionMethod2Arguments
+() => lst.OrderBy((string x) => x, StringComparer.OrdinalIgnoreCase)
+---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
 () => lst.OrderBy((string x) => x, comparer)
 ---- VBCompiler.False
 () => false
@@ -990,7 +994,7 @@ if (true) {
 ---- VBCompiler.InstanceMethod1Argument
 () => s.CompareTo("")
 ---- VBCompiler.InstanceMethod2Arguments
-() => s.Contains('a', (IEqualityComparer<char>)StringComparer.InvariantCultureIgnoreCase)
+() => s.IndexOf('a', 2)
 ---- VBCompiler.Integer
 () => 5
 ---- VBCompiler.InterpolatedString
@@ -1002,7 +1006,7 @@ if (true) {
 ---- VBCompiler.JaggedWithBounds
 () => new string[5][]
 ---- VBCompiler.JaggedWithElementsExplicitType
-() => new object[][] { (object[])new[] { "ab", "cd" }, (object[])new[] { "ef", "gh" } }
+() => new object[][] { new[] { "ab", "cd" }, new[] { "ef", "gh" } }
 ---- VBCompiler.JaggedWithElementsImplicitType
 () => new string[][] { new[] { "ab", "cd" }, new[] { "ef", "gh" } }
 ---- VBCompiler.JaggedWithElementsImplicitTypeInnerNonLiteral
@@ -1072,7 +1076,7 @@ if (true) {
 ---- VBCompiler.SingleDimensionInit
 () => new[] { "" }
 ---- VBCompiler.SingleDimensionInitExplicitType
-() => new[] { (object)"" }
+() => new[] { "" }
 ---- VBCompiler.SingleDimensionWithBounds
 () => new string[5]
 ---- VBCompiler.StaticMember
@@ -1082,7 +1086,7 @@ if (true) {
 ---- VBCompiler.StaticMethod1Argument
 () => string.Intern("")
 ---- VBCompiler.StaticMethod2Arguments
-() => string.Join("","", new[] { new string(arr) })
+() => string.Join(",", new[] { new string(arr) })
 ---- VBCompiler.StaticMethod2ArgumentsWithoutConversion
 () => string.Join(",", arr)
 ---- VBCompiler.String

@@ -2144,11 +2144,42 @@ Lambda(
 Lambda(
     Call(
         typeof(Enumerable).GetMethod("Take"),
+        Convert(lst,
+            typeof(IEnumerable<string>)
+        ),
+        Constant(1)
+    )
+)
+---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
+Lambda(
+    Call(
+        typeof(Enumerable).GetMethod("Take"),
         lst,
         Constant(1)
     )
 )
 ---- VBCompiler.ExtensionMethod2Arguments
+Lambda(
+    Call(
+        typeof(Enumerable).GetMethod("OrderBy"),
+        Convert(lst,
+            typeof(IEnumerable<string>)
+        ),
+        Lambda(x,
+            var x = Parameter(
+                typeof(string),
+                "x"
+            )
+        ),
+        Convert(
+            MakeMemberAccess(null,
+                typeof(StringComparer).GetProperty("OrdinalIgnoreCase")
+            ),
+            typeof(IComparer<string>)
+        )
+    )
+)
+---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
 Lambda(
     Call(
         typeof(Enumerable).GetMethod("OrderBy"),
@@ -2195,18 +2226,10 @@ Lambda(
 )
 ---- VBCompiler.InstanceMethod2Arguments
 Lambda(
-    Call(
-        typeof(Enumerable).GetMethod("Contains"),
-        Convert(s,
-            typeof(IEnumerable<char>)
-        ),
+    Call(s,
+        typeof(string).GetMethod("IndexOf"),
         Constant('a'),
-        Convert(
-            MakeMemberAccess(null,
-                typeof(StringComparer).GetProperty("InvariantCultureIgnoreCase")
-            ),
-            typeof(IEqualityComparer<char>)
-        )
+        Constant(2)
     )
 )
 ---- VBCompiler.Integer

@@ -26,5 +26,17 @@ Namespace Objects
 
         <Category(Literal)>
         Public TimeSpan As Expression = Constant(New TimeSpan(5, 4, 3, 2, 1))
+
+        <Category(Literal)>
+        Public EscapedString As Expression = Expr(Function() """")
+
+        <Category(Literal)>
+        Public ConstantNothingToObject As Expression = Expr(Function() Nothing)
+
+        <Category(Literal)>
+        Public ConstantNothingToReferenceType As Expression = Expr(Of String)(Function() Nothing)
+
+        <Category(Literal)>
+        Public ConstantNothingToValueType As Expression = Expr(Of Integer)(Function() Nothing)
     End Module
 End Namespace

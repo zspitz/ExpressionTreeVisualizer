@@ -1,5 +1,4 @@
 ﻿Imports ExpressionToString.Tests.Functions
-Imports ExpressionToString.Tests.Categories
 
 Namespace Objects
     Partial Public Module VBCompiler
