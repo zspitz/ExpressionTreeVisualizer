@@ -352,7 +352,6 @@ namespace ExpressionToString {
         protected abstract void WriteSwitchCase(SwitchCase switchCase);
         protected abstract void WriteCatchBlock(CatchBlock catchBlock);
         protected abstract void WriteLabelTarget(LabelTarget labelTarget);
-        //protected abstract void WriteIArgumentProvider(IArgumentProvider iArgumentProvider); 
 
         // binders
         protected abstract void WriteBinaryOperationBinder(BinaryOperationBinder binaryOperationBinder, IList<Expression> args);

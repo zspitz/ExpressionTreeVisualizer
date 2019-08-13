@@ -6,9 +6,7 @@ using static ExpressionToString.FormatterNames;
 using Pather.CSharp;
 using ExpressionToString.Util;
 using System;
-using System.IO;
 using static ExpressionToString.Tests.Functions;
-using static ExpressionToString.Util.Functions;
 using static System.Environment;
 
 namespace ExpressionToString.Tests {
@@ -110,7 +108,7 @@ namespace ExpressionToString.Tests {
                 }
 
                 var selector =
-                    formatter == FactoryMethods ? x => x :
+                    formatter == ObjectNotation ? x => x :
                     (Func<string,string>)(x => x.Replace("_0", ""));
 
                 var paths = pathSpans.Keys.Select(selector).ToHashSet();
@@ -118,7 +116,7 @@ namespace ExpressionToString.Tests {
                 return (formatter, (singleResult, paths));
             }).ToDictionary();
 
-            var expectedPaths = actual[FactoryMethods].paths;
+            var expectedPaths = actual[ObjectNotation].paths;
 
             // check that all the expected paths can resolve against the original object
             var resolver = new Resolver();
@@ -132,9 +130,8 @@ namespace ExpressionToString.Tests {
                 Assert.Equal(expected, actualSingle);
 
                 if (formatter != FactoryMethods) { // we're using the paths of the FactoryMethodsFormatter as reference paths
-                    var referencePaths = actual[FactoryMethods].paths;
                     var actualPaths = actual[formatter].paths;
-                    Assert.True(referencePaths.IsSupersetOf(actualPaths));
+                    Assert.True(expectedPaths.IsSupersetOf(actualPaths));
                 }
             }
         }

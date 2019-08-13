@@ -61,108 +61,94 @@ namespace ExpressionToString {
             typeof(TryExpression)
         };
 
-        private void WriteObjectCreation(object o, int depth=0) {
-            if (!o.GetType().InheritsFromOrImplementsAny(PropertyTypes) && !o.GetType().InheritsFromOrImplementsAny(NodeTypes)) {
-                Write(RenderLiteral(o, language));
+        private void WriteObjectCreation(object o) {
+            var type = writeNew(o);
+            var preferredOrder = preferredPropertyOrders.FirstOrDefault(x => x.Item1.IsAssignableFrom(o.GetType())).Item2;
+            var properties = type.GetProperties().Where(x => {
+                if (x.Name.In("CanReduce", "TailCall", "CanReduce", "IsLifted", "IsLiftedToNull", "ArgumentCount")) { return false; }
+                if (x.Name == "NodeType" && hideNodeType.Contains(type)) { return false; }
+                return true;
+            }).ToList();
+
+            if (properties.None()) {
+                if (language == CSharp) { Write("()"); }
                 return;
             }
 
+            if (language == VisualBasic) { Write(" With"); }
+            Write(" {");
+            Indent();
+            WriteEOL();
+
+            properties.OrderBy(x => {
+                if (x.Name.In("NodeType", "Type")) { return -2; }
+                if (preferredOrder == null) { return -1; }
+                var indexOf = Array.IndexOf(preferredOrder, x.Name);
+                if (indexOf == -1) { return 1000; }
+                return indexOf;
+            })
+            .ThenBy(x => x.Name)
+            .Select(x => {
+                object value;
+                try {
+                    value = x.GetValue(o);
+                } catch (Exception ex) {
+                    value = ex.Message;
+                }
+                return (x, value);
+            })
+            .WhereT((_, value) => {
+                if (value == null) { return false; }
+                if (value is IEnumerable seq && seq.None()) { return false; }
+                return true;
+            })
+            .ForEachT((x, value, index) => {
+                if (index > 0) {
+                    Write(",");
+                    WriteEOL();
+                }
+                if (language == VisualBasic) { Write("."); }
+                Write(x.Name);
+                Write(" = ");
+
+                if (x.PropertyType.InheritsFromOrImplementsAny(PropertyTypes)) {
+                    WriteCollection(value as IEnumerable, x.Name);
+                } else if (x.PropertyType.InheritsFromOrImplementsAny(NodeTypes)) {
+                    WriteNode(x.Name, value);
+                } else {
+                    Write(RenderLiteral(value, language));
+                }
+            });
+
+            WriteEOL(true);
+            Write("}");
+        }
+
+        private void WriteCollection(IEnumerable seq, string pathSegment) {
+            writeNew(seq);
+            var items = seq.Cast<object>().ToList();
+            if (items.None() ) {
+                if (language==CSharp) { Write("()"); }
+                return;
+            }
+            if (language == VisualBasic) { Write(" From"); }
+            Write(" {");
+            Indent();
+            WriteEOL();
+            WriteNodes(pathSegment, items, true);
+            WriteEOL(true);
+            Write("}");
+        }
+
+        private Type writeNew(object o) {
             Write(
                 language == CSharp ? "new " :
                 language == VisualBasic ? "New " :
                 ""
             );
-
-            var type = o.GetType().BaseTypes(false, true).First(x => x.IsPublic && !x.IsInterface);
-            var typename = type.FriendlyName(language);
-            Write(typename);
-
-            if (o is IEnumerable enumerable) {
-                // use collection initializer
-                bool hasItems = false;
-                enumerable.Cast<object>().ForEach((x, index) => {
-                    if (index == 0) {
-                        hasItems = true;
-                        if (language == VisualBasic) { Write(" From"); }
-                        Write(" {");
-                        Indent();
-                    } else if (index > 0) {
-                        Write(",");
-                    }
-                    WriteEOL();
-                    WriteObjectCreation(x, depth+1);
-                });
-                if (hasItems) {
-                    WriteEOL(true);
-                    Write("}");
-                }
-            } else {
-                //use object initializer
-                var preferredOrder = preferredPropertyOrders.FirstOrDefault(x => x.Item1.IsAssignableFrom(o.GetType())).Item2;
-                var properties = type.GetProperties().Where(x => {
-                    if (x.Name.In("CanReduce", "TailCall", "CanReduce", "IsLifted", "IsLiftedToNull", "ArgumentCount")) { return false; }
-                    if (x.Name == "NodeType" && hideNodeType.Contains(type)) { return false; }
-                    return true;
-                }).ToList();
-                if (properties.None()) {
-                    if (language == CSharp) { Write("()"); }
-                    return;
-                }
-
-                if (language == VisualBasic) { Write(" With"); }
-                Write(" {");
-                Indent();
-                WriteEOL();
-
-                var values = properties
-                .Where(x => x.Name.NotIn("TailCall","CanReduce", "IsLifted", "IsLiftedToNull"))
-                .OrderBy(x => {
-                    if (x.Name.In("NodeType", "Type")) { return -2; }
-                    if (preferredOrder == null) { return -1; }
-                    var indexOf = Array.IndexOf(preferredOrder, x.Name);
-                    if (indexOf == -1) { return 1000; }
-                    return indexOf;
-                }).ThenBy(x => x.Name)
-                .Select(x => {
-                    object value;
-                    try {
-                        value = x.GetValue(o);
-                    } catch (Exception ex) {
-                        value = ex.Message;
-                    }
-                    return (x, value);
-                })
-                .WhereT((instance, value) => {
-                    if (value == null) { return false; }
-                    if (!(value is IEnumerable enumerable1)) { return true; }
-                    if (enumerable1.None()) { return false; }
-                    return true;
-                })
-                .ForEachT((x, value, index) => {
-                    if (index > 0) {
-                        Write(",");
-                        WriteEOL();
-                    }
-                    if (language == VisualBasic) { Write("."); }
-                    Write(x.Name);
-                    Write(" = ");
-
-                    var (success, literal) = TryRenderLiteral(value, language);
-                    if (success) {
-                        Write(literal);
-                        return;
-                    }
-                    if (value.GetType() == o.GetType()) {
-                        Write("<potential recursion>");
-                        return;
-                    }
-
-                    WriteObjectCreation(value, depth+1);
-                });
-
-                WriteEOL(true);
-                Write("}");
-            }
+            var t = o.GetType().BaseTypes(false, true).First(x => x.IsPublic && !x.IsInterface);
+            Write(t.FriendlyName(language));
+            return t;
         }
 
         protected override void WriteBinary(BinaryExpression expr) => WriteObjectCreation(expr);
@@ -194,18 +180,22 @@ namespace ExpressionToString {
         protected override void WriteSwitchCase(SwitchCase switchCase) => WriteObjectCreation(switchCase);
         protected override void WriteCatchBlock(CatchBlock catchBlock) => WriteObjectCreation(catchBlock);
         protected override void WriteLabelTarget(LabelTarget labelTarget) => WriteObjectCreation(labelTarget);
-        protected override void WriteBinaryOperationBinder(BinaryOperationBinder binaryOperationBinder, IList<Expression> args) => WriteObjectCreation(binaryOperationBinder);
-        protected override void WriteConvertBinder(ConvertBinder convertBinder, IList<Expression> args) => WriteObjectCreation(convertBinder);
-        protected override void WriteCreateInstanceBinder(CreateInstanceBinder createInstanceBinder, IList<Expression> args) => WriteObjectCreation(createInstanceBinder);
-        protected override void WriteDeleteIndexBinder(DeleteIndexBinder deleteIndexBinder, IList<Expression> args) => WriteObjectCreation(deleteIndexBinder);
-        protected override void WriteDeleteMemberBinder(DeleteMemberBinder deleteMemberBinder, IList<Expression> args) => WriteObjectCreation(deleteMemberBinder);
-        protected override void WriteGetIndexBinder(GetIndexBinder getIndexBinder, IList<Expression> args) => WriteObjectCreation(getIndexBinder);
-        protected override void WriteGetMemberBinder(GetMemberBinder getMemberBinder, IList<Expression> args) => WriteObjectCreation(getMemberBinder);
-        protected override void WriteInvokeBinder(InvokeBinder invokeBinder, IList<Expression> args) => WriteObjectCreation(invokeBinder);
-        protected override void WriteInvokeMemberBinder(InvokeMemberBinder invokeMemberBinder, IList<Expression> args) => WriteObjectCreation(invokeMemberBinder);
-        protected override void WriteSetIndexBinder(SetIndexBinder setIndexBinder, IList<Expression> args) => WriteObjectCreation(setIndexBinder);
-        protected override void WriteSetMemberBinder(SetMemberBinder setMemberBinder, IList<Expression> args) => WriteObjectCreation(setMemberBinder);
-        protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) => WriteObjectCreation(unaryOperationBinder);
+
+        protected override void WriteDynamic(DynamicExpression expr) => WriteObjectCreation(expr);
+
+        protected override void WriteBinaryOperationBinder(BinaryOperationBinder binaryOperationBinder, IList<Expression> args) => throw new NotImplementedException();
+        protected override void WriteConvertBinder(ConvertBinder convertBinder, IList<Expression> args) => throw new NotImplementedException();
+        protected override void WriteCreateInstanceBinder(CreateInstanceBinder createInstanceBinder, IList<Expression> args) => throw new NotImplementedException();
+        protected override void WriteDeleteIndexBinder(DeleteIndexBinder deleteIndexBinder, IList<Expression> args) => throw new NotImplementedException();
+        protected override void WriteDeleteMemberBinder(DeleteMemberBinder deleteMemberBinder, IList<Expression> args) => throw new NotImplementedException();
+        protected override void WriteGetIndexBinder(GetIndexBinder getIndexBinder, IList<Expression> args) => throw new NotImplementedException();
+        protected override void WriteGetMemberBinder(GetMemberBinder getMemberBinder, IList<Expression> args) => throw new NotImplementedException();
+        protected override void WriteInvokeBinder(InvokeBinder invokeBinder, IList<Expression> args) => throw new NotImplementedException();
+        protected override void WriteInvokeMemberBinder(InvokeMemberBinder invokeMemberBinder, IList<Expression> args) => throw new NotImplementedException();
+        protected override void WriteSetIndexBinder(SetIndexBinder setIndexBinder, IList<Expression> args) => throw new NotImplementedException();
+        protected override void WriteSetMemberBinder(SetMemberBinder setMemberBinder, IList<Expression> args) => throw new NotImplementedException();
+        protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) => throw new NotImplementedException();
+
         protected override void WriteParameterDeclarationImpl(ParameterExpression prm) => WriteObjectCreation(prm);
     }
 }

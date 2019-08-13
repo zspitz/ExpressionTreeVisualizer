@@ -49,7 +49,7 @@ namespace ExpressionTreeVisualizer {
                 optionsButton.Click += (s1, e1) => optionsPopup.IsOpen = true;
             };
 
-            cmbFormatters.ItemsSource = new[] { CSharp, VisualBasic, FactoryMethods };
+            cmbFormatters.ItemsSource = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation };
             cmbLanguages.ItemsSource = new[] { CSharp, VisualBasic };
         }
 

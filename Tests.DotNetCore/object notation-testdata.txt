@@ -2739,11 +2739,56 @@ new BinaryExpression {
     }
 }
 ---- FactoryMethods.ConstructGetIndex
-#CSharpGetIndexBinder
+new DynamicExpression {
+    Type = typeof(object),
+    Binder = #CSharpGetIndexBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        new ParameterExpression {
+            Type = typeof(object),
+            IsByRef = false,
+            Name = "obj"
+        },
+        new ConstantExpression {
+            Type = typeof(string),
+            Value = "key"
+        }
+    },
+    DelegateType = typeof(Func<CallSite, object, string, object>)
+}
 ---- FactoryMethods.ConstructGetIndexMultipleKeys
-#CSharpGetIndexBinder
+new DynamicExpression {
+    Type = typeof(object),
+    Binder = #CSharpGetIndexBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        new ParameterExpression {
+            Type = typeof(object),
+            IsByRef = false,
+            Name = "obj"
+        },
+        new ConstantExpression {
+            Type = typeof(string),
+            Value = "key"
+        },
+        new ConstantExpression {
+            Type = typeof(int),
+            Value = 1
+        }
+    },
+    DelegateType = typeof(Func<CallSite, object, string, int, object>)
+}
 ---- FactoryMethods.ConstructGetMember
-#CSharpGetMemberBinder
+new DynamicExpression {
+    Type = typeof(object),
+    Binder = #CSharpGetMemberBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        new ParameterExpression {
+            Type = typeof(object),
+            IsByRef = false,
+            Name = "obj"
+        }
+    },
+    DelegateType = typeof(Func<CallSite, object, object>)
+}
 ---- FactoryMethods.ConstructGreaterThan
 new BinaryExpression {
     NodeType = ExpressionType.GreaterThan,
@@ -2785,9 +2830,39 @@ new UnaryExpression {
     }
 }
 ---- FactoryMethods.ConstructInvocationNoArguments
-#CSharpInvokeBinder
+new DynamicExpression {
+    Type = typeof(object),
+    Binder = #CSharpInvokeBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        new ParameterExpression {
+            Type = typeof(object),
+            IsByRef = false,
+            Name = "obj"
+        }
+    },
+    DelegateType = typeof(Func<CallSite, object, object>)
+}
 ---- FactoryMethods.ConstructInvocationWithArguments
-#CSharpInvokeBinder
+new DynamicExpression {
+    Type = typeof(object),
+    Binder = #CSharpInvokeBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        new ParameterExpression {
+            Type = typeof(object),
+            IsByRef = false,
+            Name = "obj"
+        },
+        new ConstantExpression {
+            Type = typeof(string),
+            Value = "arg1"
+        },
+        new ConstantExpression {
+            Type = typeof(int),
+            Value = 15
+        }
+    },
+    DelegateType = typeof(Func<CallSite, object, string, int, object>)
+}
 ---- FactoryMethods.ConstructIsFalse
 new UnaryExpression {
     NodeType = ExpressionType.IsFalse,
@@ -3026,9 +3101,39 @@ new UnaryExpression {
     }
 }
 ---- FactoryMethods.ConstructMemberInvocationNoArguments
-#CSharpInvokeMemberBinder
+new DynamicExpression {
+    Type = typeof(object),
+    Binder = #CSharpInvokeMemberBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        new ParameterExpression {
+            Type = typeof(object),
+            IsByRef = false,
+            Name = "obj"
+        }
+    },
+    DelegateType = typeof(Func<CallSite, object, object>)
+}
 ---- FactoryMethods.ConstructMemberInvocationWithArguments
-#CSharpInvokeMemberBinder
+new DynamicExpression {
+    Type = typeof(object),
+    Binder = #CSharpInvokeMemberBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        new ParameterExpression {
+            Type = typeof(object),
+            IsByRef = false,
+            Name = "obj"
+        },
+        new ConstantExpression {
+            Type = typeof(string),
+            Value = "arg1"
+        },
+        new ConstantExpression {
+            Type = typeof(int),
+            Value = 15
+        }
+    },
+    DelegateType = typeof(Func<CallSite, object, string, int, object>)
+}
 ---- FactoryMethods.ConstructModulo
 new BinaryExpression {
     NodeType = ExpressionType.Modulo,
@@ -3358,11 +3463,68 @@ new RuntimeVariablesExpression {
     }
 }
 ---- FactoryMethods.ConstructSetIndex
-#CSharpSetIndexBinder
+new DynamicExpression {
+    Type = typeof(object),
+    Binder = #CSharpSetIndexBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        new ParameterExpression {
+            Type = typeof(object),
+            IsByRef = false,
+            Name = "obj"
+        },
+        new ConstantExpression {
+            Type = typeof(int),
+            Value = 42
+        },
+        new ConstantExpression {
+            Type = typeof(string),
+            Value = "key"
+        }
+    },
+    DelegateType = typeof(Func<CallSite, object, int, string, object>)
+}
 ---- FactoryMethods.ConstructSetIndexMultipleKeys
-#CSharpSetIndexBinder
+new DynamicExpression {
+    Type = typeof(object),
+    Binder = #CSharpSetIndexBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        new ParameterExpression {
+            Type = typeof(object),
+            IsByRef = false,
+            Name = "obj"
+        },
+        new ConstantExpression {
+            Type = typeof(int),
+            Value = 42
+        },
+        new ConstantExpression {
+            Type = typeof(string),
+            Value = "key"
+        },
+        new ConstantExpression {
+            Type = typeof(int),
+            Value = 1
+        }
+    },
+    DelegateType = typeof(Func<CallSite, object, int, string, int, object>)
+}
 ---- FactoryMethods.ConstructSetMember
-#CSharpSetMemberBinder
+new DynamicExpression {
+    Type = typeof(object),
+    Binder = #CSharpSetMemberBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        new ParameterExpression {
+            Type = typeof(object),
+            IsByRef = false,
+            Name = "obj"
+        },
+        new ConstantExpression {
+            Type = typeof(int),
+            Value = 42
+        }
+    },
+    DelegateType = typeof(Func<CallSite, object, int, object>)
+}
 ---- FactoryMethods.ConstructSimpleCatch
 new CatchBlock {
     Body = new MethodCallExpression {
@@ -4944,7 +5106,26 @@ new ConditionalExpression {
         Type = typeof(bool),
         Value = true
     },
-    IfTrue = <potential recursion>,
+    IfTrue = new ConditionalExpression {
+        Type = typeof(void),
+        Test = new ConstantExpression {
+            Type = typeof(bool),
+            Value = true
+        },
+        IfTrue = new MethodCallExpression {
+            Type = typeof(void),
+            Arguments = new ReadOnlyCollection<Expression> {
+                new ConstantExpression {
+                    Type = typeof(bool),
+                    Value = true
+                }
+            },
+            Method = typeof(Console).GetMethod("WriteLine")
+        },
+        IfFalse = new DefaultExpression {
+            Type = typeof(void)
+        }
+    },
     IfFalse = new DefaultExpression {
         Type = typeof(void)
     }
@@ -7109,7 +7290,22 @@ new Expression<Func<int>> {
             },
             Member = typeof(<closure>).GetField("$VB$Local_i")
         },
-        Right = <potential recursion>
+        Right = new BinaryExpression {
+            NodeType = ExpressionType.And,
+            Type = typeof(int),
+            Left = new MemberExpression {
+                Type = typeof(int),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_j")
+            },
+            Right = new ConstantExpression {
+                Type = typeof(int),
+                Value = 31
+            }
+        }
     },
     ReturnType = typeof(int)
 }
@@ -7646,7 +7842,22 @@ new Expression<Func<int>> {
             },
             Member = typeof(<closure>).GetField("$VB$Local_i")
         },
-        Right = <potential recursion>
+        Right = new BinaryExpression {
+            NodeType = ExpressionType.And,
+            Type = typeof(int),
+            Left = new MemberExpression {
+                Type = typeof(int),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_j")
+            },
+            Right = new ConstantExpression {
+                Type = typeof(int),
+                Value = 31
+            }
+        }
     },
     ReturnType = typeof(int)
 }

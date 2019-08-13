@@ -110,7 +110,7 @@
                 </StackPanel>
             </Button>
         </Grid>
-        <TextBox Name="source" Margin="0,0,0,12" MinWidth="500"  BorderBrush="Gray" BorderThickness="1" FontFamily="Consolas" FontSize="14" IsInactiveSelectionHighlightEnabled="True" IsReadOnly="True" IsReadOnlyCaretVisible="True" SelectionBrush="Blue" Text="{Binding Source}" TextWrapping="Wrap" />
+        <TextBox Name="source" Margin="0,0,0,12" MinWidth="600"  BorderBrush="Gray" BorderThickness="1" FontFamily="Consolas" FontSize="14" IsInactiveSelectionHighlightEnabled="True" IsReadOnly="True" IsReadOnlyCaretVisible="True" SelectionBrush="Blue" Text="{Binding Source}" TextWrapping="Wrap" />
     </DockPanel>
     <DockPanel Margin="12">
         <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
