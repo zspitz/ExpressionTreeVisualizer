@@ -112,6 +112,11 @@ namespace ExpressionToString {
                 Write(" = ");
 
                 if (x.PropertyType.InheritsFromOrImplementsAny(PropertyTypes)) {
+
+                    // https://github.com/zspitz/ExpressionToString/issues/91
+                    //var parameterDeclaration = o is LambdaExpression && x.Name == "Parameters";
+                    //WriteCollection(value as IEnumerable, x.Name, parameterDeclaration);
+
                     WriteCollection(value as IEnumerable, x.Name);
                 } else if (x.PropertyType.InheritsFromOrImplementsAny(NodeTypes)) {
                     WriteNode(x.Name, value);
@@ -135,6 +140,10 @@ namespace ExpressionToString {
             Write(" {");
             Indent();
             WriteEOL();
+
+            // https://github.com/zspitz/ExpressionToString/issues/91
+            //WriteNodes(pathSegment, items, true, ",", parameterDeclaration)
+            ;
             WriteNodes(pathSegment, items, true);
             WriteEOL(true);
             Write("}");
@@ -154,7 +163,11 @@ namespace ExpressionToString {
         protected override void WriteBinary(BinaryExpression expr) => WriteObjectCreation(expr);
         protected override void WriteUnary(UnaryExpression expr) => WriteObjectCreation(expr);
         protected override void WriteLambda(LambdaExpression expr) => WriteObjectCreation(expr);
+
+        // https://github.com/zspitz/ExpressionToString/issues/91
+        //protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
         protected override void WriteParameter(ParameterExpression expr) => WriteObjectCreation(expr);
+
         protected override void WriteConstant(ConstantExpression expr) => WriteObjectCreation(expr);
         protected override void WriteMemberAccess(MemberExpression expr) => WriteObjectCreation(expr);
         protected override void WriteNew(NewExpression expr) => WriteObjectCreation(expr);
@@ -196,6 +209,16 @@ namespace ExpressionToString {
         protected override void WriteSetMemberBinder(SetMemberBinder setMemberBinder, IList<Expression> args) => throw new NotImplementedException();
         protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) => throw new NotImplementedException();
 
-        protected override void WriteParameterDeclarationImpl(ParameterExpression prm) => WriteObjectCreation(prm);
+        // We can't use this yet
+        // https://github.com/zspitz/ExpressionToString/issues/91
+        protected override void WriteParameterDeclarationImpl(ParameterExpression prm) {
+            if (language == CSharp) {
+                Write($"var ");
+            } else if (language == VisualBasic) {
+                Write($"Dim ");
+            }
+            Write($"{prm.Name} = ");
+            WriteObjectCreation(prm);
+        }
     }
 }
