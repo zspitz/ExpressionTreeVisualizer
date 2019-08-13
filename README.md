@@ -32,6 +32,19 @@ Console.WriteLine(expr.ToString("Factory methods"));
     )
 */
 
+Console.WriteLine(expr.ToString("Object notation"));
+// prints:
+/*
+    new Expression<Func<bool>> {
+        NodeType = ExpressionType.Lambda,
+        Type = typeof(Func<bool>),
+        Body = new ConstantExpression {
+            Type = typeof(bool),
+            Value = true
+        },
+        ReturnType = typeof(bool)
+    }
+*/
 ```
 
 Features:
@@ -40,6 +53,7 @@ Features:
 
   * Pseudo-code in C# or VB.NET
   * Factory method calls which generate this expression
+  * Object notation, using object initializer and collection initializer syntax to describe objects
 
 * Extension methods are rendered as instance methods
 

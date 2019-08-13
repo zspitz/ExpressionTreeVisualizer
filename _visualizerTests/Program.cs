@@ -85,9 +85,9 @@ namespace _visualizerTests {
             //Expression<Func<int, double, double[]>> expr = (n, exp) => new[] { Math.Pow(n, exp) };
 
             //IQueryable<Person> personSource = null;
-            Expression<Func<Person, bool>> expr = person => person.LastName.StartsWith("A");
+            //Expression<Func<Person, bool>> expr = person => person.LastName.StartsWith("A");
 
-            Console.WriteLine(expr.ToString("Object notation", out var pathSpans));
+            //Console.WriteLine(expr.ToString("Object notation", out var pathSpans));
 
             //var hour = Variable(typeof(int), "hour");
             //var msg = Variable(typeof(string), "msg");
@@ -149,7 +149,7 @@ namespace _visualizerTests {
             //Expression<Func<int, float, float>> multiplier = (i, f) => i * f;
 
             //IEnumerable<string> matchingNames = new List<string>() { "Smith", "Doe" };
-            //Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
+            Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
 
 
             //expr = p => matchingNames.Contains(p.LastName) && p.DOB.DayOfWeek == DayOfWeek.Tuesday;

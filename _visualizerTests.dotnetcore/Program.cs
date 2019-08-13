@@ -8,31 +8,32 @@ using static System.Linq.Expressions.Expression;
 using ExpressionToString.Util;
 using System.Reflection;
 using System.Collections;
+using System.Linq.Expressions;
+using ExpressionToString;
 
 namespace _visualizerTests.dotnetcore {
     class Program {
         static void Main(string[] args) {
-            var x = Parameter(typeof(int), "x");
-            var y = Parameter(typeof(int), "y");
-            var expr = Multiply(
-                Add(x, y),
-                Constant(5)
-            );
-
+            //var x = Parameter(typeof(int), "x");
+            //var y = Parameter(typeof(int), "y");
+            //var expr = Multiply(
+            //    Add(x, y),
+            //    Constant(5)
+            //);
             //var data = new VisualizerData(expr);
             //Console.WriteLine(CanSerialize(data));
 
-            var endnodeData = new EndNodeData {
-                Closure = null,
-                Name = null,
-                Type = "int",
-                Value = "5"
-            };
+            //var endnodeData = new EndNodeData {
+            //    Closure = null,
+            //    Name = null,
+            //    Type = "int",
+            //    Value = "5"
+            //};
             //Console.WriteLine(CanSerialize(endnodeData));
 
-            var stream = File.Create(Path.GetTempFileName());
-            var formatter = new BinaryFormatter();
-            formatter.Serialize(stream, endnodeData);
+            //var stream = File.Create(Path.GetTempFileName());
+            //var formatter = new BinaryFormatter();
+            //formatter.Serialize(stream, endnodeData);
 
             //var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             //visualizerHost.ShowVisualizer();
