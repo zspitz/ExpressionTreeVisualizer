@@ -49,8 +49,7 @@ Partial Public Class VBCompilerGeneratedBase
 
     <Fact> <Trait("Category", Literal)>
     Sub InterpolatedString()
-        Dim dte = #2001-1-1#
-        Dim expr = Functions.Expr(Function() $"{dte}")
-        Assert.Equal("Function() $""{#" + dte.ToString + "#}""", expr.ToString("Visual Basic"))
+        Dim expr = Functions.Expr(Function() $"{#2001-1-1#}")
+        Assert.Equal("Function() $""{#" + #2001-1-1#.ToString + "#}""", expr.ToString("Visual Basic"))
     End Sub
 End Class

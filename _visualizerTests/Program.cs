@@ -11,6 +11,7 @@ using static Microsoft.CSharp.RuntimeBinder.Binder;
 using Microsoft.CSharp.RuntimeBinder;
 using ExpressionToString;
 using static ExpressionToString.Util.Functions;
+using static System.Reflection.BindingFlags;
 
 namespace _visualizerTests {
     class Program {
@@ -149,7 +150,7 @@ namespace _visualizerTests {
             //Expression<Func<int, float, float>> multiplier = (i, f) => i * f;
 
             //IEnumerable<string> matchingNames = new List<string>() { "Smith", "Doe" };
-            Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
+            //Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
 
 
             //expr = p => matchingNames.Contains(p.LastName) && p.DOB.DayOfWeek == DayOfWeek.Tuesday;
@@ -261,6 +262,10 @@ namespace _visualizerTests {
             //);
 
             //Expression<Func<string>> expr = () => string.IsInterned("");
+
+            var personSource = new List<Person>().AsQueryable();
+            var qry = personSource.Where(x => x.LastName.StartsWith("D"));
+            var expr = qry.GetType().GetProperty("Expression", NonPublic | Instance).GetValue(qry);
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();

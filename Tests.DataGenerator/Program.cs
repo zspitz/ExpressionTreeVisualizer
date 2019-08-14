@@ -6,47 +6,51 @@ using ExpressionToString.Util;
 using System.Reflection;
 using System.IO;
 using static ExpressionToString.Tests.Functions;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using static ExpressionToString.FormatterNames;
+using ExpressionToString;
 
 namespace Tests.DataGenerator {
     class Program {
         static void Main(string[] args) {
             RegisterTestObjectContainer(typeof(ExpressionToString.Tests.Objects.VBCompiler));
+
+            var formatter = TextualTree;
+            var language = CSharp;
             var objects = GetObjects();
 
-            return;
+            var lines = new List<string>();
+            GetObjects().ForEachT((o, objectName, category) => {
+                lines.Add($"---- {objectName}");
 
-            var instances = new TestsBase[] {
-                new CompilerGeneratedTestData(),
-                new ConstructedTestData(),
-                new VBCompilerGeneratedTestData()
-            };
-            var methods = instances
-                .SelectMany(x =>
-                    x.GetType()
-                    .GetMethods()
-                    .Where(m => m.HasAttribute<FactAttribute>() && m.GetCustomAttribute<FactAttribute>().Skip.IsNullOrWhitespace())
-                    .Select(m => (instance: x, method: m))
-                )
-                .OrderBy(x => x.method.ReflectedType.Name)
-                .ThenBy(x => x.method.Name)
-                .ToList();
-            Runner.total = methods.Count;
-            foreach (var (instance, method) in methods) {
-                method.Invoke(instance, new object[] { });
-            }
-
-            Runner.lines.InsertRange(0, new [] {
-                $"Count {Runner.lines.Count / 3}",
-                ""
+                string toWrite;
+                switch (o) {
+                    case Expression expr:
+                        toWrite = expr.ToString(formatter, language);
+                        break;
+                    case MemberBinding mbind:
+                        toWrite = mbind.ToString(formatter, language);
+                        break;
+                    case ElementInit init:
+                        toWrite = init.ToString(formatter, language);
+                        break;
+                    case SwitchCase switchCase:
+                        toWrite = switchCase.ToString(formatter, language);
+                        break;
+                    case CatchBlock catchBlock:
+                        toWrite = catchBlock.ToString(formatter, language);
+                        break;
+                    case LabelTarget labelTarget:
+                        toWrite = labelTarget.ToString(formatter, language);
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+                lines.Add(toWrite);
             });
 
-            //var toHide = NodeTypeExpressionTypeMapper.maps
-            //    .Where(x => !x.Item1.IsGenericType)
-            //    .GroupBy(x => x.Item1, (key, grp) =>(key, grp.Count()))
-            //    .Where(x => x.Item2 == 1)
-            //    .ToList();
-
-            File.WriteAllLines("generated test data.txt", Runner.lines);
+            File.WriteAllLines("generated test data.txt", lines);
         }
     }
 }

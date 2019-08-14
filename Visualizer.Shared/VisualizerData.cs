@@ -185,30 +185,12 @@ namespace ExpressionTreeVisualizer {
                     IsDeclaration = isParameterDeclaration;
 
                     // fill the Name and Closure properties, for expressions
-                    string staticTypename = "";
-                    switch (expr) {
-                        case ParameterExpression pexpr:
-                            Name = pexpr.Name;
-                            break;
-                        case MemberExpression mexpr:
-                            if (mexpr.Expression == null) {
-                                staticTypename = mexpr.Member.DeclaringType.FriendlyName(language) + ".";
-                            }
-                            Name = staticTypename + mexpr.Member.Name;
-                            var expressionType = mexpr.Expression?.Type;
-                            if (expressionType.IsClosureClass()) {
-                                Closure = expressionType.FriendlyName(language);
-                            }
-                            break;
-                        case MethodCallExpression callexpr:
-                            if (callexpr.Object == null) {
-                                staticTypename = callexpr.Method.DeclaringType.FriendlyName(language) + ".";
-                            }
-                            Name = staticTypename + callexpr.Method.Name;
-                            break;
-                        case LambdaExpression lambdaExpression:
-                            Name = lambdaExpression.Name;
-                            break;
+                    Name = expr.Name(language);
+
+                    if (expr is MemberExpression mexpr && 
+                        mexpr.Expression?.Type is Type expressionType &&
+                        expressionType.IsClosureClass()) {
+                            Closure = expressionType.Name;
                     }
 
                     object value = null;
@@ -227,8 +209,8 @@ namespace ExpressionTreeVisualizer {
                             EndNodeType = ClosedVar;
                             break;
                         case DefaultExpression defexpr:
-                            EndNodeType = Default;
                             value = defexpr.ExtractValue();
+                            EndNodeType = Default;
                             break;
                     }
                     if (EndNodeType != null) { visualizerData.CollectedEndNodes.Add(this); }
@@ -247,7 +229,6 @@ namespace ExpressionTreeVisualizer {
                     Name = mbind.Member.Name;
                     break;
                 case CallSiteBinder callSiteBinder:
-                    ReflectionTypeName = callSiteBinder.GetType().Name;
                     NodeType = callSiteBinder.BinderType();
                     break;
                 default:
@@ -273,7 +254,7 @@ namespace ExpressionTreeVisualizer {
 
             // populate Children
             var type = o.GetType();
-            var preferredOrder = preferredPropertyOrders.FirstOrDefault(x => x.Item1.IsAssignableFrom(type)).Item2;
+            var preferredOrder = PreferredPropertyOrders.FirstOrDefault(x => x.Item1.IsAssignableFrom(type)).Item2;
             Children = type.GetProperties()
                 .Where(prp =>
                     !(prp.DeclaringType.Name == "BlockExpression" && prp.Name == "Result") &&
@@ -316,23 +297,6 @@ namespace ExpressionTreeVisualizer {
                 _factoryMethodNames = new[] { factoryMethodName };
             }
         }
-
-        private static List<(Type, string[])> preferredPropertyOrders = new List<(Type, string[])> {
-            (typeof(LambdaExpression), new [] {"Parameters", "Body" } ),
-            (typeof(BinaryExpression), new [] {"Left", "Right", "Conversion"}),
-            (typeof(BlockExpression), new [] { "Variables", "Expressions"}),
-            (typeof(CatchBlock), new [] { "Variable", "Filter", "Body"}),
-            (typeof(ConditionalExpression), new [] { "Test", "IfTrue", "IfFalse"}),
-            (typeof(IndexExpression), new [] { "Object", "Arguments" }),
-            (typeof(InvocationExpression), new [] {"Arguments", "Expression"}),
-            (typeof(ListInitExpression), new [] {"NewExpression", "Initializers"}),
-            (typeof(MemberInitExpression), new [] {"NewExpression", "Bindings"}),
-            (typeof(MethodCallExpression), new [] {"Object", "Arguments"}),
-            (typeof(SwitchCase), new [] {"TestValues", "Body"}),
-            (typeof(SwitchExpression), new [] {"SwitchValue", "Cases", "DefaultBody"}),
-            (typeof(TryExpression), new [] {"Body", "Handlers", "Finally", "Fault"}),
-            (typeof(DynamicExpression), new [] {"Binder", "Arguments"})
-        };
 
         private static Dictionary<Type, List<(string @namespace, string typename)>> baseTypes = new Dictionary<Type, List<(string @namespace, string typename)>>();
 
