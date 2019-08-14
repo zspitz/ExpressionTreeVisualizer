@@ -13,7 +13,7 @@ namespace ExpressionToString {
         public const string FactoryMethods = "Factory methods";
         public const string ObjectNotation = "Object notation";
         public const string DebugView = "DebugView";
-        public const string ToStringName = "ToString";
+        public const string TextualTree = "Textual tree";
     }
 
     public static class Globals {
@@ -40,7 +40,7 @@ namespace ExpressionToString {
             stringFormats = methods["Format"].ToHashSet();
         }
 
-        public static List<Type> NodeTypes = new List<Type>() {
+        public readonly static List<Type> NodeTypes = new List<Type>() {
             typeof(Expression),
             typeof(MemberBinding),
             typeof(ElementInit),
@@ -49,9 +49,9 @@ namespace ExpressionToString {
             typeof(LabelTarget)
         };
 
-        public static List<Type> PropertyTypes = NodeTypes.Select(x => typeof(IEnumerable<>).MakeGenericType(x)).ToList();
+        public readonly static List<Type> PropertyTypes = NodeTypes.Select(x => typeof(IEnumerable<>).MakeGenericType(x)).ToList();
 
-        public static Dictionary<ExpressionType, string> BinaryUnaryMethods = new Dictionary<ExpressionType, string>() {
+        public readonly static Dictionary<ExpressionType, string> BinaryUnaryMethods = new Dictionary<ExpressionType, string>() {
             { Add, "Add" },
             { AddAssign, "AddAssign" },
             { AddAssignChecked, "AddAssignChecked" },
@@ -139,5 +139,21 @@ namespace ExpressionToString {
             { Unbox, "Unbox" },
         };
 
+        public readonly static List<(Type type, string[] propertyNames)> PreferredPropertyOrders = new List<(Type, string[])> {
+            (typeof(LambdaExpression), new [] {"Parameters", "Body" } ),
+            (typeof(BinaryExpression), new [] {"Left", "Right", "Conversion"}),
+            (typeof(BlockExpression), new [] { "Variables", "Expressions"}),
+            (typeof(CatchBlock), new [] { "Variable", "Filter", "Body"}),
+            (typeof(ConditionalExpression), new [] { "Test", "IfTrue", "IfFalse"}),
+            (typeof(IndexExpression), new [] { "Object", "Arguments" }),
+            (typeof(InvocationExpression), new [] {"Arguments", "Expression"}),
+            (typeof(ListInitExpression), new [] {"NewExpression", "Initializers"}),
+            (typeof(MemberInitExpression), new [] {"NewExpression", "Bindings"}),
+            (typeof(MethodCallExpression), new [] {"Object", "Arguments"}),
+            (typeof(SwitchCase), new [] {"TestValues", "Body"}),
+            (typeof(SwitchExpression), new [] {"SwitchValue", "Cases", "DefaultBody"}),
+            (typeof(TryExpression), new [] {"Body", "Handlers", "Finally", "Fault"}),
+            (typeof(DynamicExpression), new [] {"Binder", "Arguments"})
+        };
     }
 }

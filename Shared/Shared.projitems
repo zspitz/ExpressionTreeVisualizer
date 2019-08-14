@@ -13,12 +13,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)CSharpMultilineBlockTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FactoryMethodsFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObjectNotationFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextualTreeFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\BlockExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\CallSiteBinder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\IListT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Match.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MethodInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\ParameterInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\ValueTuple.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VBExpressionMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WriterBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CSharpCodeWriter.cs" />

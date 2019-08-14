@@ -15,14 +15,16 @@ namespace ExpressionToString {
             formatterName == CSharp ? new CSharpCodeWriter(o) :
             formatterName == VisualBasic ? new VBCodeWriter(o) :
             formatterName == FactoryMethods ? new FactoryMethodsFormatter(o, ResolveLanguage(language)) :
-            formatterName == ObjectNotation ? (WriterBase)new ObjectNotationFormatter(o, ResolveLanguage(language)) :
+            formatterName == ObjectNotation ? new ObjectNotationFormatter(o, ResolveLanguage(language)) :
+            formatterName == TextualTree ? (WriterBase)new TextualTreeFormatter(o, ResolveLanguage(language)) :
             throw new NotImplementedException("Unknown formatter");
 
         public static WriterBase Create(object o, string formatterName, string language, out Dictionary<string, (int start, int length)> pathSpans) =>
             formatterName == CSharp ? new CSharpCodeWriter(o, out pathSpans) :
             formatterName == VisualBasic ? new VBCodeWriter(o, out pathSpans) :
             formatterName == FactoryMethods ? new FactoryMethodsFormatter(o, ResolveLanguage(language), out pathSpans) :
-            formatterName == ObjectNotation ? (WriterBase)new ObjectNotationFormatter(o, ResolveLanguage(language), out pathSpans) :
+            formatterName == ObjectNotation ? new ObjectNotationFormatter(o, ResolveLanguage(language), out pathSpans) :
+            formatterName == TextualTree ? (WriterBase)new TextualTreeFormatter(o, ResolveLanguage(language), out pathSpans) :
             throw new NotImplementedException("Unknown language");
 
         private readonly StringBuilder sb = new StringBuilder();
@@ -60,7 +62,7 @@ namespace ExpressionToString {
 
         protected virtual void PreWrite() { }
 
-        private List<string> pathSegments = new List<string>();
+        private readonly List<string> pathSegments = new List<string>();
 
         /// <summary>Write a string-rendering of an expression or other type used in expression trees</summary>
         /// <param name="o">Object to be rendered</param>

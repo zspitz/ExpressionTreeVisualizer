@@ -33,5 +33,31 @@ namespace ExpressionToString.Util {
 
         public static bool IsClosedVariable(this Expression expr) =>
             expr is MemberExpression mexpr && (mexpr.Expression?.Type.IsClosureClass() ?? false);
+
+        public static string Name(this Expression expr, string language = "C#") {
+            string ret = "";
+            string staticTypename = "";
+            switch (expr) {
+                case ParameterExpression pexpr:
+                    ret = pexpr.Name;
+                    break;
+                case MemberExpression mexpr:
+                    if (mexpr.Expression == null) {
+                        staticTypename = mexpr.Member.DeclaringType.FriendlyName(language) + ".";
+                    }
+                    ret = staticTypename + mexpr.Member.Name;
+                    break;
+                case MethodCallExpression callExpr:
+                    if (callExpr.Object == null) {
+                        staticTypename = callExpr.Method.DeclaringType.FriendlyName(language);
+                    }
+                    ret = staticTypename + callExpr.Method.Name;
+                    break;
+                case LambdaExpression lambdaExpr:
+                    ret = lambdaExpr.Name;
+                    break;
+            }
+            return ret;
+        }
     }
 }

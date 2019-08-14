@@ -14,29 +14,12 @@ using System.Reflection;
 
 namespace ExpressionToString {
     public class ObjectNotationFormatter : WriterBase {
-        public ObjectNotationFormatter(object o, string language) : base(o, ResolveLanguage(language)) { }
+        public ObjectNotationFormatter(object o, string language) : base(o, language) { }
 
-        public ObjectNotationFormatter(object o, string language, out Dictionary<string, (int start, int length)> pathSpans) : base(o, ResolveLanguage(language), out pathSpans) { }
+        public ObjectNotationFormatter(object o, string language, out Dictionary<string, (int start, int length)> pathSpans) : base(o, language, out pathSpans) { }
 
         // TODO represent parameters using variables, except for first usage where variable is defined
         // TODO if a given type always has the same node type, don't include
-
-        private static List<(Type, string[])> preferredPropertyOrders = new List<(Type, string[])> {
-            (typeof(LambdaExpression), new [] {"Parameters", "Body" } ),
-            (typeof(BinaryExpression), new [] {"Left", "Right", "Conversion"}),
-            (typeof(BlockExpression), new [] { "Variables", "Expressions"}),
-            (typeof(CatchBlock), new [] { "Variable", "Filter", "Body"}),
-            (typeof(ConditionalExpression), new [] { "Test", "IfTrue", "IfFalse"}),
-            (typeof(IndexExpression), new [] { "Object", "Arguments" }),
-            (typeof(InvocationExpression), new [] {"Arguments", "Expression"}),
-            (typeof(ListInitExpression), new [] {"NewExpression", "Initializers"}),
-            (typeof(MemberInitExpression), new [] {"NewExpression", "Bindings"}),
-            (typeof(MethodCallExpression), new [] {"Object", "Arguments"}),
-            (typeof(SwitchCase), new [] {"TestValues", "Body"}),
-            (typeof(SwitchExpression), new [] {"SwitchValue", "Cases", "DefaultBody"}),
-            (typeof(TryExpression), new [] {"Body", "Handlers", "Finally", "Fault"}),
-            (typeof(DynamicExpression), new [] {"Binder", "Arguments"})
-        };
 
         private static HashSet<Type> hideNodeType = new HashSet<Type>() {
             typeof(BlockExpression),
@@ -63,7 +46,7 @@ namespace ExpressionToString {
 
         private void WriteObjectCreation(object o) {
             var type = writeNew(o);
-            var preferredOrder = preferredPropertyOrders.FirstOrDefault(x => x.Item1.IsAssignableFrom(o.GetType())).Item2;
+            var preferredOrder = PreferredPropertyOrders.FirstOrDefault(x => x.type.IsAssignableFrom(o.GetType())).propertyNames;
             var properties = type.GetProperties().Where(x => {
                 if (x.Name.In("CanReduce", "TailCall", "CanReduce", "IsLifted", "IsLiftedToNull", "ArgumentCount")) { return false; }
                 if (x.Name == "NodeType" && hideNodeType.Contains(type)) { return false; }
