@@ -25,7 +25,7 @@ namespace _visualizerTests {
             //var i = 5;
             //Expression<Func<int, int>> expr = j => (i + j + 17) * (i + j + 17);
 
-            //Expression<Func<bool>> expr = () => true;
+            Expression<Func<bool>> expr = () => true;
 
             //Expression<Func<string, int, string>> expr = (s, i) => $"{s}, {i}";
 
@@ -263,35 +263,37 @@ namespace _visualizerTests {
 
             //Expression<Func<string>> expr = () => string.IsInterned("");
 
-            var personSource = new List<Person>().AsQueryable();
-            var qry = personSource.Where(x => x.LastName.StartsWith("D"));
-            var expr = qry.GetType().GetProperty("Expression", NonPublic | Instance).GetValue(qry);
+            //var personSource = new List<Person>().AsQueryable();
+            //var qry = personSource.Where(x => x.LastName.StartsWith("D"));
+            //var expr = qry.GetType().GetProperty("Expression", NonPublic | Instance).GetValue(qry);
+
+            //Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
 
             //Console.ReadKey(true);
 
-            var stream = System.IO.File.Create(System.IO.Path.GetTempFileName());
-            var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            //var stream = System.IO.File.Create(System.IO.Path.GetTempFileName());
+            //var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
-            var data = new VisualizerData(expr);
-            var t = typeof(VisualizerData);
-            foreach (var prp in t.GetProperties()) {
-                try {
-                    formatter.Serialize(stream, prp.GetValue(data));
-                } catch (Exception) {
-                    Console.WriteLine($"Serialization failed on property {prp.Name}");
-                }
-            }
+            //var data = new VisualizerData(expr);
+            //var t = typeof(VisualizerData);
+            //foreach (var prp in t.GetProperties()) {
+            //    try {
+            //        formatter.Serialize(stream, prp.GetValue(data));
+            //    } catch (Exception) {
+            //        Console.WriteLine($"Serialization failed on property {prp.Name}");
+            //    }
+            //}
 
-            foreach (var fld in t.GetFields()) {
-                try {
-                    formatter.Serialize(stream, fld.GetValue(data));
-                } catch (Exception) {
-                    Console.WriteLine($"Serialization failed on field {fld.Name}");
-                }
-            }
+            //foreach (var fld in t.GetFields()) {
+            //    try {
+            //        formatter.Serialize(stream, fld.GetValue(data));
+            //    } catch (Exception) {
+            //        Console.WriteLine($"Serialization failed on field {fld.Name}");
+            //    }
+            //}
         }
 
         static Expression<Func<int, int>> expr1 = ((Func<Expression<Func<int, int>>>)(() => {

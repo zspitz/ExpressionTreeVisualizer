@@ -45,6 +45,13 @@ Console.WriteLine(expr.ToString("Object notation"));
         ReturnType = typeof(bool)
     }
 */
+
+Console.WriteLine(expr.ToString("Textual tree"));
+// prints:
+/*
+    Lambda (Func<bool>)
+        Body - Constant (bool) = True
+*/
 ```
 
 Features:
@@ -54,6 +61,7 @@ Features:
   * Pseudo-code in C# or VB.NET
   * Factory method calls which generate this expression
   * Object notation, using object initializer and collection initializer syntax to describe objects
+  * Textual tree, focusing on the properties related to the structure of the tree
 
 * Extension methods are rendered as instance methods
 

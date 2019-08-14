@@ -85,7 +85,7 @@ namespace ExpressionToString {
                 childNodes.ForEach((node, index) => {
                     if (index > 0) { WriteEOL(); }
                     Write(node.name);
-                    Write(" -- ");
+                    Write(" - ");
                     WriteNode(node);
                 });
                 Dedent();
