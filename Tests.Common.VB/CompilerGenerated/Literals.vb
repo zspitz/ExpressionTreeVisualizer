@@ -38,14 +38,8 @@ Partial Public Class VBCompilerGeneratedBase
 
     <Fact> <Trait("Category", Literal)>
     Sub DateTime()
-        RunTest(
-            Function() #1981-1-1#,
-            "() => #DateTime",
-            $"Function() #{#1981-1-1#.ToString()}#",
-            "Lambda(
-    Constant(#DateTime)
-)"
-        )
+        Dim expr = Functions.Expr(Function() #1981-1-1#)
+        Assert.Equal($"Function() #{#1981-1-1#.ToString()}#", expr.ToString("Visual Basic"))
     End Sub
 
     <Fact> <Trait("Category", Literal)>
@@ -55,21 +49,8 @@ Partial Public Class VBCompilerGeneratedBase
 
     <Fact> <Trait("Category", Literal)>
     Sub InterpolatedString()
-        Dim toString = #2001-1-1#.ToString
-        RunTest(
-            Function() $"{#2001-1-1#}",
-            "() => $""{#DateTime}""",
-            "Function() $""{#" + toString + "#}""",
-            "Lambda(
-    Call(
-        typeof(string).GetMethod(""Format""),
-        Constant(""{0}""),
-        Convert(
-            Constant(#DateTime),
-            typeof(object)
-        )
-    )
-)"
-        )
+        Dim dte = #2001-1-1#
+        Dim expr = Functions.Expr(Function() $"{dte}")
+        Assert.Equal("Function() $""{#" + dte.ToString + "#}""", expr.ToString("Visual Basic"))
     End Sub
 End Class
