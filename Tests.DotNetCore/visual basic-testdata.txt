@@ -591,9 +591,11 @@ Block
 End Block
 ---- FactoryMethods.MakeQuoted1
 Function()
-' --- Quoted - begin
-    Sub() Console.WriteLine(True)
-' --- Quoted - end
+    Return
+    ' --- Quoted - begin
+        Sub() Console.WriteLine(True)
+    ' --- Quoted - end
+End Function
 ---- FactoryMethods.MakeReturn
 Return target
 ---- FactoryMethods.MakeReturnWithValue

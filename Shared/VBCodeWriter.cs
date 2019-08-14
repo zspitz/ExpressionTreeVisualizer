@@ -702,6 +702,7 @@ namespace ExpressionToString {
                 case SwitchExpression _:
                 case LambdaExpression _:
                 case TryExpression _:
+                case Expression _ when expr.NodeType == Quote:
                     return false;
                 case RuntimeVariablesExpression _:
                     throw new NotImplementedException();

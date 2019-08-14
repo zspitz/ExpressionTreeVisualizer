@@ -14,7 +14,7 @@ using Xunit;
 namespace ExpressionToString.Tests {
     public class ExpectedDataFixture : Dictionary<(string formatter, string objectName), string> {
         public ExpectedDataFixture() {
-            foreach (var formatter in Runner.Formatters.Except(new[] { DebugView, ToStringName })) {
+            foreach (var formatter in Runner.Formatters.Except(new[] { DebugView, "ToString" })) {
                 var filename = formatter == CSharp ? "CSharp" : formatter;
                 var expectedDataPath = GetFullFilename($"{filename.ToLower()}-testdata.txt");
                 string testName = "";

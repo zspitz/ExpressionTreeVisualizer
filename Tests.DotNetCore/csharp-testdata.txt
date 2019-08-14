@@ -598,10 +598,12 @@ Data = {
     // --- Quoted - end
 )
 ---- FactoryMethods.MakeQuoted1
-() =>
-// --- Quoted - begin
-    () => Console.WriteLine(true)
-// --- Quoted - end
+() => {
+    return
+    // --- Quoted - begin
+        () => Console.WriteLine(true)
+    // --- Quoted - end
+}
 ---- FactoryMethods.MakeReturn
 return target
 ---- FactoryMethods.MakeReturnWithValue
