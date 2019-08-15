@@ -50,6 +50,8 @@ namespace Tests.DataGenerator {
                 lines.Add(toWrite);
             });
 
+            lines.Add("------");
+
             File.WriteAllLines("generated test data.txt", lines);
         }
     }

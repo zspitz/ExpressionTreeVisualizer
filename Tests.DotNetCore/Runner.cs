@@ -14,7 +14,7 @@ namespace ExpressionToString.Tests {
         // TODO How can we make this happen automatically, once the assembly is loaded?
         static Runner() => RegisterTestObjectContainer(typeof(Objects.VBCompiler));
 
-        public static readonly string[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation };
+        public static readonly string[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
 
         public static void RunTest(object o, string objectName, ExpectedDataFixture allExpected) {
             var actual = Formatters.Select(formatter => {
