@@ -1,5 +1,7 @@
 # Expression To String and Expression Tree Visualizer
 
+[![AppVeyor build status](https://img.shields.io/appveyor/ci/zspitz/expressiontostring?style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontostring) [![Tests](https://img.shields.io/appveyor/tests/zspitz/expressiontostring?compact_message&style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontostring) [![NuGet Status](https://img.shields.io/nuget/v/ExpressionTreeToString.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeToString/) [![GitHub Release](https://img.shields.io/github/release/zspitz/expressiontostring.svg?style=flat&max-age=86400)](https://github.com/zspitz/ExpressionToString/releases)
+
 This project provides the following:
 
 * [![NuGet Status](https://img.shields.io/nuget/v/ExpressionTreeToString.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeToString/) Extension methods to [create a C# or VB.NET code-like string representation](https://github.com/zspitz/ExpressionToString#string-representations-of-expression-trees), of expression trees or expression tree parts (.NET Standard library)
