@@ -4,7 +4,7 @@
 
 This project provides the following:
 
-* A .NET Standard library, with extension methods to [create a C# or VB.NET code-like string representation](https://github.com/zspitz/ExpressionToString#string-representations-of-expression-trees), of expression trees or expression tree parts 
+* A .NET Standard library, with extension methods to [create a C# or VB.NET code-like string representation](https://github.com/zspitz/ExpressionToString#string-representations-of-expression-trees), of expression trees or expression tree parts (available as a [NuGet package](https://www.nuget.org/packages/ExpressionTreeToString/))
 * A [debugging visualizer for expression trees / expression tree parts](https://github.com/zspitz/ExpressionToString#visual-studio-debugger-visualizer-for-expression-trees)  
   **Installation:** The visualizer DLL (2019 or 2017, depending on your VS version) and the dependent DLL (`MultiSelectTreeView.DLL`), from the [releases page](https://github.com/zspitz/ExpressionToString/releases), should be placed in the appropriate folder, as described [here](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2017). It may be necessary to unblock the DLLs, and/or to put them in a `netstandard2.0` subfolder.
   
