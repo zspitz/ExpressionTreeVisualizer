@@ -4,6 +4,7 @@ using Xunit;
 using static ExpressionToString.Util.Functions;
 using ExpressionToString.Util;
 using static ExpressionToString.FormatterNames;
+using static ExpressionToString.Tests.Functions;
 
 namespace Tests.DotNetCore {
     [Trait("Type", "Literal rendering")]
@@ -17,9 +18,8 @@ namespace Tests.DotNetCore {
             Assert.Equal(expected, actual);
         }
 
-       public static TheoryData<object, string, string> TestData;
-        static LiteralRendering() {
-            var testData = new List<(object, (string neutral, string csharp, string vb))>() {
+       public static TheoryData<object, string, string> TestData = IIFE(() => {
+           var testData = new List<(object, (string neutral, string csharp, string vb))>() {
                 { null, ("␀", "null", "Nothing") },
                 {5, ("5","5","5") },
                 {17.2, ("17.2","17.2","17.2") },
@@ -35,10 +35,10 @@ namespace Tests.DotNetCore {
                 {"\"", ("#String", "\"\\\"\"", "\"\"\"\"") }
             };
 
-            var timerType = typeof(System.Timers.Timer);
+           var timerType = typeof(System.Timers.Timer);
 
-            // populate with reflection test data
-            new List<(object, (string csharp, string vb))>() {
+           // populate with reflection test data
+           new List<(object, (string csharp, string vb))>() {
                 {typeof(string), ("typeof(string)", "GetType(String)") },
                 {typeof(string).MakeByRefType(), ("typeof(string).MakeByRef()", "GetType(String).MakeByRef()") },
                 {timerType.GetConstructor(new Type[] { }), ("typeof(Timer).GetConstructor()", "GetType(Timer).GetConstructor()") },
@@ -51,22 +51,24 @@ namespace Tests.DotNetCore {
                 return (o, ($"#{o.GetType().Name}", csharp, vb));
             }).AddRangeTo(testData);
 
-            var dte = new DateTime(1981, 1, 1);
-            testData.Add(dte, ("#DateTime", "#DateTime", $"#{dte.ToString()}#"));
+           var dte = new DateTime(1981, 1, 1);
+           testData.Add(dte, ("#DateTime", "#DateTime", $"#{dte.ToString()}#"));
 
-            var ts = new TimeSpan(5, 4, 3, 2, 1);
-            testData.Add(ts, ("#TimeSpan", "#TimeSpan", $"#{ts.ToString()}#"));
+           var ts = new TimeSpan(5, 4, 3, 2, 1);
+           testData.Add(ts, ("#TimeSpan", "#TimeSpan", $"#{ts.ToString()}#"));
 
-            TestData = new TheoryData<object, string, string>();
-            foreach (var (o, expected) in testData) {
-                var (neutral, csharp, vb) = expected;
-                TestData.Add(o, "", neutral);
-                TestData.Add(o, CSharp, csharp);
-                TestData.Add(o, VisualBasic, vb);
-            }
+           var ret = new TheoryData<object, string, string>();
+           foreach (var (o, expected) in testData) {
+               var (neutral, csharp, vb) = expected;
+               ret.Add(o, "", neutral);
+               ret.Add(o, CSharp, csharp);
+               ret.Add(o, VisualBasic, vb);
+           }
 
-            // C# escaped-string tests; not relevant for Visual Basic
-            TestData.Add("\'\"\\\0\a\b\f\n\r\t\v", CSharp, "\"\\'\\\"\\\\\\0\\a\\b\\f\\n\\r\\t\\v\"");
-        }
+           // C# escaped-string tests; not relevant for Visual Basic
+           ret.Add("\'\"\\\0\a\b\f\n\r\t\v", CSharp, "\"\\'\\\"\\\\\\0\\a\\b\\f\\n\\r\\t\\v\"");
+
+           return ret;
+       });
     }
 }

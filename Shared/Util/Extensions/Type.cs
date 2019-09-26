@@ -131,7 +131,6 @@ namespace ExpressionToString.Util {
                 $"{nongenericName}(Of {parts})";
         }
 
-        // from .NET Standard 2.1 and above, test against the ITuple interface (https://docs.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.ituple)
         public static bool IsTupleType(this Type type) {
             if (!type.IsGenericType) { return false; }
             var openType = type.GetGenericTypeDefinition();

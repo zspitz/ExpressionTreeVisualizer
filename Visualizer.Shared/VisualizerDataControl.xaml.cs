@@ -124,7 +124,7 @@ namespace ExpressionTreeVisualizer {
                 LoadDataContext();
             }
         }
-        public void LoadDataContext() {
+        private void LoadDataContext() {
             if (_options == null || ObjectProvider == null) { return; }
             DataContext = ObjectProvider.TransferObject(Options);
         }
