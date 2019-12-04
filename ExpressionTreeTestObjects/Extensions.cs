@@ -15,5 +15,14 @@ namespace ExpressionTreeTestObjects {
             if (memberName == null) { return new PropertyInfo[] { }; }
             return type.GetProperties().Where(x => x.Name == memberName).ToArray();
         }
+
+        internal static void AddRangeTo<T>(this IEnumerable<T> src, ICollection<T> dest) {
+            foreach (var item in src) {
+                dest.Add(item);
+            }
+        }
+
+        internal static bool HasAttribute<TAttribute>(this MemberInfo mi, bool inherit = false) where TAttribute : Attribute =>
+            mi.GetCustomAttributes(typeof(TAttribute), inherit).Any();
     }
 }

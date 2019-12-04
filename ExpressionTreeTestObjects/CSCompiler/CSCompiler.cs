@@ -5,6 +5,7 @@ using static ExpressionTreeTestObjects.Functions;
 using static ExpressionTreeTestObjects.Categories;
 
 namespace ExpressionTreeTestObjects {
+    [ObjectContainer]
      static internal partial class CSCompiler {
         [Category(Defaults)]
         internal static readonly Expression DefaultRefType = Expr(() => default(string));

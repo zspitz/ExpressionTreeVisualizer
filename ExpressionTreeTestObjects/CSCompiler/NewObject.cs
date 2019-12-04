@@ -5,11 +5,11 @@ using static ExpressionTreeTestObjects.Functions;
 using static ExpressionTreeTestObjects.Categories;
 
 namespace ExpressionTreeTestObjects {
-    internal class Foo {
-        internal string Bar { get; set; }
-        internal string Baz { get; set; }
-        internal Foo() { }
-        internal Foo(string baz) { }
+    public class Foo {
+        public string Bar { get; set; }
+        public string Baz { get; set; }
+        public Foo() { }
+        public Foo(string baz) { }
     }
 
     internal class Wrapper : List<string> {
@@ -17,12 +17,12 @@ namespace ExpressionTreeTestObjects {
     }
 
     // class used for MemberMemberBinding and ListBinding
-    internal class Node {
+    public class Node {
         internal NodeData Data { get; set; } = new NodeData();
         internal IList<Node> Children { get; set; } = new List<Node>() { null };
     }
 
-    internal class NodeData {
+    public class NodeData {
         internal string Name { get; set; }
     }
 

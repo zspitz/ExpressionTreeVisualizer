@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections;
 
 namespace ExpressionTreeTestObjects {
+    [ObjectContainer]
     internal static partial class FactoryMethods {
         [Category(Quoted)]
         internal static readonly Expression MakeQuoted = Block(
