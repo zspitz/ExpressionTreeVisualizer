@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Reflection.BindingFlags;
 using ExpressionToString.Util;
 
 namespace ExpressionToString.Tests {
@@ -23,24 +19,8 @@ namespace ExpressionToString.Tests {
             return Path.GetFullPath(Path.Combine(Path.GetDirectoryName(executable), filename));
         }
 
-        private static (object o, string objectName, string category)[] typeSelector(Type t) =>
-            t.GetFields().Select(fld => (
-                fld.GetValue(null),
-                $"{t.Name}.{fld.Name}",
-                fld.GetCustomAttribute<Objects.CategoryAttribute>()?.Category
-            )).ToArray();
-
-        private static Dictionary<Type, (object o, string objectName, string category)[]> _objectsData = new[] {
-            typeof(Objects.CSCompiler),
-            typeof(Objects.FactoryMethods)
-        }.Select(x => (x, typeSelector(x))).ToDictionary();
-
-        public static void RegisterTestObjectContainer(Type t) {
-            if (_objectsData == null) { throw new Exception(); }
-            if (_objectsData.ContainsKey(t)) { return; }
-            _objectsData.Add(t, typeSelector(t));
-        }
-
-        public static (object o, string objectName, string category)[] GetObjects() => _objectsData.Values.SelectMany().ToArray();
+        public static (object o, string objectName, string category)[] GetObjects() => 
+            ExpressionTreeTestObjects.Objects.Get().SelectT((category, source, name, o) => (o, $"{source}.{name}", category))
+            .ToArray();
     }
 }

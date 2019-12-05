@@ -1,4 +1,4 @@
-﻿Partial Friend Module VBCompiler
+﻿Partial Module VBCompiler
 
     <Category(Member)>
     Friend InstanceMember As Expression = IIFE(Function()

@@ -102,6 +102,16 @@
     <Compile Include="Runner.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj">
+      <Project>{f6773f00-a5ff-4d52-8d11-a0d05953b6e9}</Project>
+      <Name>TestObjects.VB</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tests.Common.VB\Tests.Common.VB.vbproj">
       <Project>{b1f1ac9d-0e74-417a-b553-e840078adee0}</Project>
       <Name>Tests.Common.VB</Name>
@@ -110,12 +120,6 @@
       <Project>{784fb95f-f21a-415b-bde9-655272340f07}</Project>
       <Name>Tests.Common</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <Import Project="..\Visualizer.Shared\Visualizer.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,11 +9,15 @@
 
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.abstractions" Version="2.0.3" />
+    <PackageReference Include="xunit.analyzers" Version="0.10.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tests.Common.VB\Tests.Common.VB.vbproj" />
-    <ProjectReference Include="..\Tests.Common\Tests.Common.csproj" />
+    <ProjectReference Include="..\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj" />
+    <ProjectReference Include="..\ExpressionTreeTestObjects\TestObjects.csproj" />
   </ItemGroup>
+
+  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 
 </Project>

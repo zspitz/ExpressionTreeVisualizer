@@ -1,4 +1,4 @@
-﻿Partial Friend Module VBCompiler
+﻿Partial Module VBCompiler
     Private Class DummyWithDefault
         Dim data As Integer
         Default Property Item(index As Integer) As Integer

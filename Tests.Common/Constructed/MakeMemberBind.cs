@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Reflection;
 using static ExpressionToString.Tests.Categories;
-using ExpressionToString.Tests.Objects;
+using ExpressionTreeTestObjects;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {

@@ -1,4 +1,4 @@
-﻿Partial Friend Module VBCompiler
+﻿Partial Module VBCompiler
 
     <Category(NewArray)>
     Friend SingleDimensionInit As Expression = Expr(Function() New String() {""})

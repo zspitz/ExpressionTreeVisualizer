@@ -19,18 +19,28 @@ namespace ExpressionTreeTestObjects {
                 }).Where(x => x.HasAttribute<ObjectContainerAttribute>());
 
             foreach (var t in safeTypes) {
-                var source = t.Name;
-                t.GetFields(Static | NonPublic).Select(fld => (
-                    fld.GetCustomAttribute<CategoryAttribute>()?.Category,
-                    source,
-                    fld.Name,
-                    fld.GetValue(null)
-                )).AddRangeTo(_objects);
+                LoadType(t);
             }
         }
 
         private static List<(string category, string source, string name, object o)> _objects = new List<(string category, string source, string name, object o)>();
+        private static readonly Dictionary<string, object> _byName = new Dictionary<string, object>();
 
         public static (string category, string source, string name, object o)[] Get() => _objects.ToArray();
+        public static object ByName(string s) => _byName[s];
+
+        public static void LoadType(Type t) {
+            var source = t.Name;
+            t.GetFields(Static | NonPublic).Select(fld => (
+                fld.GetCustomAttribute<CategoryAttribute>()?.Category,
+                source,
+                fld.Name,
+                fld.GetValue(null)
+            )).AddRangeTo(_objects);
+
+            foreach (var x in _objects) {
+                _byName[$"{x.source}.{x.name}"] = x.o;
+            }
+        }
     }
 }

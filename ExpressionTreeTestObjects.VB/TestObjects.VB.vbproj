@@ -3,16 +3,17 @@
   <PropertyGroup>
     <RootNamespace>ExpressionTreeTestObjects</RootNamespace>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>ExpressionTreeTestObjects.VB</AssemblyName>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ExpressionTreeTestObjects\ExpressionTreeTestObjects.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <Import Include="ExpressionTreeTestObjects.Categories" />
     <Import Include="ExpressionTreeTestObjects.Functions" />
     <Import Include="System.Linq.Expressions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExpressionTreeTestObjects\TestObjects.csproj" />
   </ItemGroup>
 
 </Project>

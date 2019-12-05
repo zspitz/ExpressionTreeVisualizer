@@ -5,7 +5,7 @@ using Xunit;
 using static ExpressionToString.Util.Functions;
 using static System.Linq.Expressions.Expression;
 using static ExpressionToString.Tests.Categories;
-using ExpressionToString.Tests.Objects;
+using ExpressionTreeTestObjects;
 
 namespace ExpressionToString.Tests {
     public partial class ConstructedBase {

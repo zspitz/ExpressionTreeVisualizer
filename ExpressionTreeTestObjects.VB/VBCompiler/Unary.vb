@@ -1,4 +1,4 @@
-﻿Partial Friend Module VBCompiler
+﻿Partial Module VBCompiler
     <Category(Unary)>
     Friend ArrayLength As Expression = IIFE(Function()
                                                 Dim arr = New String() {}

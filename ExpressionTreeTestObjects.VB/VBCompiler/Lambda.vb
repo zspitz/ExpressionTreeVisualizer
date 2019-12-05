@@ -1,4 +1,4 @@
-﻿Partial Friend Module VBCompiler
+﻿Partial Module VBCompiler
     <Category(Lambdas)>
     Friend NoParametersVoidReturn As Expression = Expr(Sub() Console.WriteLine())
 

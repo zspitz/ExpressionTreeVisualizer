@@ -1,4 +1,4 @@
-﻿Partial Friend Module VBCompiler
+﻿Partial Module VBCompiler
     <Category(NewObject)>
     Friend NamedType As Expression = Expr(Function() New Random())
 

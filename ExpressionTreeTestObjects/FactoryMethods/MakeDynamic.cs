@@ -10,19 +10,19 @@ using static Microsoft.CSharp.RuntimeBinder.Binder;
 
 namespace ExpressionTreeTestObjects {
     partial class FactoryMethods {
-        static readonly CSharpBinderFlags flags = CSharpBinderFlags.None;
-        static readonly Type context = typeof(FactoryMethods);
-        static readonly CSharpArgumentInfo[] argInfos = new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) };
-        static readonly CSharpArgumentInfo[] argInfos2 = new[] {
+        private static readonly CSharpBinderFlags flags = CSharpBinderFlags.None;
+        private static readonly Type context = typeof(FactoryMethods);
+        private static readonly CSharpArgumentInfo[] argInfos = new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) };
+        private static readonly CSharpArgumentInfo[] argInfos2 = new[] {
             CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null),
             CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null)
         };
-        static readonly ParameterExpression obj = Parameter(typeof(object), "obj");
-        static readonly ConstantExpression key = Constant("key");
-        static readonly ConstantExpression key1 = Constant(1);
-        static readonly ConstantExpression value = Constant(42);
-        static readonly ConstantExpression arg1 = Constant("arg1");
-        static readonly ConstantExpression arg2 = Constant(15);
+        private static readonly ParameterExpression obj = Parameter(typeof(object), "obj");
+        private static readonly ConstantExpression key = Constant("key");
+        private static readonly ConstantExpression key1 = Constant(1);
+        private static readonly ConstantExpression value = Constant(42);
+        private static readonly ConstantExpression arg1 = Constant("arg1");
+        private static readonly ConstantExpression arg2 = Constant(15);
 
         // TODO write test objects for the following types in System.Dynamic:
         //      CreateInstanceBinder (can't create from Microsoft.CSharp.RuntimeBinder classes because Microsoft.CSharp.RuntimeBinder.CSharpInvokeBinder inherits directly from DynamicMetaObjectBinder)

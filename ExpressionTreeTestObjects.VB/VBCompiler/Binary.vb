@@ -1,4 +1,4 @@
-﻿Partial Friend Module VBCompiler
+﻿Partial Module VBCompiler
     <Category(Binary)>
     Friend Add As Expression = IIFE(Function()
                                         Dim x As Double = 0, y As Double = 0

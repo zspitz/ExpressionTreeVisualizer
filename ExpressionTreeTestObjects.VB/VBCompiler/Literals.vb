@@ -1,4 +1,4 @@
-﻿Partial Friend Module VBCompiler
+﻿Partial Module VBCompiler
     <Category(Literal)>
     Friend [True] As Expression = Expr(Function() True)
 

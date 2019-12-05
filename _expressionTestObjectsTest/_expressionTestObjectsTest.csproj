@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExpressionTreeTestObjects.VB\ExpressionTreeTestObjects.VB.vbproj" />
-    <ProjectReference Include="..\ExpressionTreeTestObjects\ExpressionTreeTestObjects.csproj" />
+    <ProjectReference Include="..\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj" />
+    <ProjectReference Include="..\ExpressionTreeTestObjects\TestObjects.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,14 +6,9 @@ using static ExpressionToString.FormatterNames;
 using Pather.CSharp;
 using ExpressionToString.Util;
 using System;
-using static ExpressionToString.Tests.Functions;
-using static System.Environment;
 
 namespace ExpressionToString.Tests {
     public static class Runner {
-        // TODO How can we make this happen automatically, once the assembly is loaded?
-        static Runner() => RegisterTestObjectContainer(typeof(Objects.VBCompiler));
-
         public static readonly string[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
 
         public static void RunTest(object o, string objectName, ExpectedDataFixture allExpected) {

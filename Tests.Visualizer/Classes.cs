@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ExpressionToString.Tests.Visualizer {
+﻿namespace ExpressionToString.Tests.Visualizer {
     public class CompilerGenerated : CompilerGeneratedBase {
         protected override void RunTest(object o, string objectName) => Runner.RunTest(o);
     }

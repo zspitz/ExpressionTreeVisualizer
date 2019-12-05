@@ -1,28 +1,20 @@
-﻿using ExpressionToString.Tests;
+﻿using ExpressionToString;
+using ExpressionTreeTestObjects;
 using System;
-using System.Linq;
-using Xunit;
-using ExpressionToString.Util;
-using System.Reflection;
-using System.IO;
-using static ExpressionToString.Tests.Functions;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq.Expressions;
 using static ExpressionToString.FormatterNames;
-using ExpressionToString;
 
 namespace Tests.DataGenerator {
     class Program {
         static void Main(string[] args) {
-            RegisterTestObjectContainer(typeof(ExpressionToString.Tests.Objects.VBCompiler));
-
             var formatter = TextualTree;
             var language = CSharp;
-            var objects = GetObjects();
 
             var lines = new List<string>();
-            GetObjects().ForEachT((o, objectName, category) => {
-                lines.Add($"---- {objectName}");
+            foreach (var (category, source, name, o) in Objects.Get()) {
+                lines.Add($"---- ${source}.{name}");
 
                 string toWrite;
                 switch (o) {
@@ -48,7 +40,7 @@ namespace Tests.DataGenerator {
                         throw new NotImplementedException();
                 }
                 lines.Add(toWrite);
-            });
+            }
 
             lines.Add("------");
 
