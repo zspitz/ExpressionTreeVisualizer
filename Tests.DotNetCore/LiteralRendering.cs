@@ -18,8 +18,8 @@ namespace Tests.DotNetCore {
             Assert.Equal(expected, actual);
         }
 
-       public static TheoryData<object, string, string> TestData = IIFE(() => {
-           var testData = new List<(object, (string neutral, string csharp, string vb))>() {
+       public static TheoryData<object?, string, string> TestData = IIFE(() => {
+           var testData = new List<(object?, (string neutral, string csharp, string vb))>() {
                 { null, ("␀", "null", "Nothing") },
                 {5, ("5","5","5") },
                 {17.2, ("17.2","17.2","17.2") },
@@ -38,12 +38,12 @@ namespace Tests.DotNetCore {
            var timerType = typeof(System.Timers.Timer);
 
            // populate with reflection test data
-           new List<(object, (string csharp, string vb))>() {
+           new List<(object?, (string csharp, string vb))>() {
                 {typeof(string), ("typeof(string)", "GetType(String)") },
                 {typeof(string).MakeByRefType(), ("typeof(string).MakeByRef()", "GetType(String).MakeByRef()") },
-                {timerType.GetConstructor(new Type[] { }), ("typeof(Timer).GetConstructor()", "GetType(Timer).GetConstructor()") },
-                {timerType.GetEvent("Elapsed"), ("typeof(Timer).GetEvent(\"Elapsed\")", "GetType(Timer).GetEvent(\"Elapsed\")")},
-                {typeof(string).GetField("Empty"), ("typeof(string).GetField(\"Empty\")", "GetType(String).GetField(\"Empty\")") },
+                {timerType.GetConstructor(new Type[] { })!, ("typeof(Timer).GetConstructor()", "GetType(Timer).GetConstructor()") },
+                {timerType.GetEvent("Elapsed")!, ("typeof(Timer).GetEvent(\"Elapsed\")", "GetType(Timer).GetEvent(\"Elapsed\")")},
+                {typeof(string).GetField("Empty")!, ("typeof(string).GetField(\"Empty\")", "GetType(String).GetField(\"Empty\")") },
                 { GetMethod(() => Console.WriteLine()), ("typeof(Console).GetMethod(\"WriteLine\")", "GetType(Console).GetMethod(\"WriteLine\")") },
                 {GetMember(() => "".Length), ("typeof(string).GetProperty(\"Length\")", "GetType(String).GetProperty(\"Length\")") }
             }.SelectT((o, x) => {
@@ -57,7 +57,7 @@ namespace Tests.DotNetCore {
            var ts = new TimeSpan(5, 4, 3, 2, 1);
            testData.Add(ts, ("#TimeSpan", "#TimeSpan", $"#{ts.ToString()}#"));
 
-           var ret = new TheoryData<object, string, string>();
+           var ret = new TheoryData<object?, string, string>();
            foreach (var (o, expected) in testData) {
                var (neutral, csharp, vb) = expected;
                ret.Add(o, "", neutral);

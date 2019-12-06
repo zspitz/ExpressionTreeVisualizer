@@ -160,10 +160,6 @@ Lambda(
 Lambda(
     Equal(i, j)
 )
----- CSCompiler.EscapedString
-Lambda(
-    Constant("\'\"\\\0\a\b\f\n\r\t\v")
-)
 ---- CSCompiler.ExclusiveOrBitwise
 Lambda(
     ExclusiveOr(i, j)
@@ -1088,8 +1084,6 @@ TryFinally(
 TypeAs(arr,
     typeof(object)
 )
----- FactoryMethods.DateTime
-Constant(#DateTime)
 ---- FactoryMethods.DifferentTypeForNodeAndValue
 Constant(#List<string>,
     typeof(IEnumerable)
@@ -1861,8 +1855,6 @@ Switch(
         Constant(5)
     )
 )
----- FactoryMethods.TimeSpan
-Constant(#TimeSpan)
 ---- FactoryMethods.TwoParametersNonVoidReturn
 Lambda(
     Add(s1, s2),
@@ -2099,10 +2091,6 @@ Lambda(
     Convert(o,
         typeof(Random)
     )
-)
----- VBCompiler.DateTime
-Lambda(
-    Constant(#DateTime)
 )
 ---- VBCompiler.Divide
 Lambda(
@@ -2605,8 +2593,6 @@ Lambda(
 Lambda(
     Subtract(x, y)
 )
----- VBCompiler.TimeSpan
-Constant(#TimeSpan)
 ---- VBCompiler.True
 Lambda(
     Constant(true)

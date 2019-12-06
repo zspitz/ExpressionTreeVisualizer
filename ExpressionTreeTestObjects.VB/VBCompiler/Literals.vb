@@ -21,10 +21,6 @@
     Friend [String] As Expression = Expr(Function() "abcd")
 
     <Category(Literal)>
-    <Obsolete("This isn't a compiler-generated expression")>
-    Friend TimeSpan As Expression = Expression.Constant(New TimeSpan(5, 4, 3, 2, 1))
-
-    <Category(Literal)>
     Friend EscapedString As Expression = Expr(Function() """")
 
     <Category(Literal)>
@@ -35,4 +31,7 @@
 
     <Category(Literal)>
     Friend ConstantNothingToValueType As Expression = Expr(Of Integer)(Function() Nothing)
+
+    <Category(Literal)>
+    Friend InterpolatedString As Expression = Expr(Function() $"{#1981-1-1#}")
 End Module

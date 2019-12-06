@@ -563,16 +563,6 @@ new Expression<Func<bool>> {
     },
     ReturnType = typeof(bool)
 }
----- CSCompiler.EscapedString
-new Expression<Func<string>> {
-    NodeType = ExpressionType.Lambda,
-    Type = typeof(Func<string>),
-    Body = new ConstantExpression {
-        Type = typeof(string),
-        Value = "\'\"\\\0\a\b\f\n\r\t\v"
-    },
-    ReturnType = typeof(string)
-}
 ---- CSCompiler.ExclusiveOrBitwise
 new Expression<Func<int>> {
     NodeType = ExpressionType.Lambda,
@@ -3715,11 +3705,6 @@ new UnaryExpression {
         Name = "arr"
     }
 }
----- FactoryMethods.DateTime
-new ConstantExpression {
-    Type = typeof(DateTime),
-    Value = #DateTime
-}
 ---- FactoryMethods.DifferentTypeForNodeAndValue
 new ConstantExpression {
     Type = typeof(IEnumerable)
@@ -5881,11 +5866,6 @@ new SwitchExpression {
         }
     }
 }
----- FactoryMethods.TimeSpan
-new ConstantExpression {
-    Type = typeof(TimeSpan),
-    Value = #TimeSpan
-}
 ---- FactoryMethods.TwoParametersNonVoidReturn
 new Expression<Func<string, string, string>> {
     NodeType = ExpressionType.Lambda,
@@ -6606,16 +6586,6 @@ new Expression<Func<Random>> {
     },
     ReturnType = typeof(Random)
 }
----- VBCompiler.DateTime
-new Expression<Func<DateTime>> {
-    NodeType = ExpressionType.Lambda,
-    Type = typeof(Func<DateTime>),
-    Body = new ConstantExpression {
-        Type = typeof(DateTime),
-        Value = #DateTime
-    },
-    ReturnType = typeof(DateTime)
-}
 ---- VBCompiler.Divide
 new Expression<Func<double>> {
     NodeType = ExpressionType.Lambda,
@@ -7110,7 +7080,7 @@ new Expression<Func<int>> {
     Body = new InvocationExpression {
         Type = typeof(int),
         Expression = new MemberExpression {
-            Type = typeof({ MethodInfo Method, object Target }),
+            Type = typeof(VB$AnonymousDelegate<int>),
             Expression = new ConstantExpression {
                 Type = typeof(<closure>),
                 Value = #<closure>
@@ -7133,7 +7103,7 @@ new Expression<Func<int>> {
             }
         },
         Expression = new MemberExpression {
-            Type = typeof({ MethodInfo Method, object Target }),
+            Type = typeof(VB$AnonymousDelegate<int, int>),
             Expression = new ConstantExpression {
                 Type = typeof(<closure>),
                 Value = #<closure>
@@ -8169,11 +8139,6 @@ new Expression<Func<double>> {
         }
     },
     ReturnType = typeof(double)
-}
----- VBCompiler.TimeSpan
-new ConstantExpression {
-    Type = typeof(TimeSpan),
-    Value = #TimeSpan
 }
 ---- VBCompiler.True
 new Expression<Func<bool>> {

@@ -484,8 +484,6 @@ Finally
 End Try
 ---- FactoryMethods.ConstructTypeAs
 TryCast(arr, Object)
----- FactoryMethods.DateTime
-#1/1/1981 12:00:00 AM#
 ---- FactoryMethods.DifferentTypeForNodeAndValue
 #List(Of String)
 ---- FactoryMethods.EmptyLoop
@@ -822,8 +820,6 @@ Select Case Block
     Case 5
         Console.WriteLine(False)
 End Select
----- FactoryMethods.TimeSpan
-#5.04:03:02#
 ---- FactoryMethods.TwoParametersNonVoidReturn
 Function(s1 As String, s2 As String) s1 + s2
 ---- FactoryMethods.TwoParametersVoidReturn
@@ -910,8 +906,6 @@ Function() Nothing
 Function() 0
 ---- VBCompiler.Convert
 Function() CType(o, Random)
----- VBCompiler.DateTime
-Function() #1/1/1981 12:00:00 AM#
 ---- VBCompiler.Divide
 Function() x / y
 ---- VBCompiler.Equal
@@ -951,7 +945,7 @@ Function() s.IndexOf("a"C, 2)
 ---- VBCompiler.Integer
 Function() 5
 ---- VBCompiler.InterpolatedString
-Function() $"{CObj(#1/1/2001 12:00:00 AM#)}"
+Function() $"{#01/01/1981 0:00:00#}"
 ---- VBCompiler.InvocationNoArguments
 Function() del()
 ---- VBCompiler.InvocationOneArgument
@@ -1052,8 +1046,6 @@ Function(s1 As String, s2 As String) s1 + s2
 Function(s1 As String, s2 As String) s1 + s2 + s1 + s2 + s1 + s2
 ---- VBCompiler.Subtract
 Function() x - y
----- VBCompiler.TimeSpan
-#5.04:03:02.0010000#
 ---- VBCompiler.True
 Function() True
 ---- VBCompiler.TwoParametersNonVoidReturn

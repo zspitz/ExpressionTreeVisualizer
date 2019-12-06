@@ -40,7 +40,10 @@ namespace ExpressionToString.Util {
             type != null && type.HasAttribute<CompilerGeneratedAttribute>() && type.Name.ContainsAny("DisplayClass", "Closure$");
 
         public static bool IsAnonymous(this Type type) =>
-            type.HasAttribute<CompilerGeneratedAttribute>() && type.Name.Contains("Anonymous") && type.Name.ContainsAny("<>", "VB$");
+            type.HasAttribute<CompilerGeneratedAttribute>() && type.Name.Contains("Anonymous") && type.Name.ContainsAny("<>", "VB$") && !type.InheritsFromOrImplements<Delegate>();
+
+        public static bool IsVBAnonymousDelegate(this Type type) =>
+            type.HasAttribute<CompilerGeneratedAttribute>() && type.Name.Contains("VB$AnonymousDelegate");
 
         private static readonly Dictionary<Type, string> CSKeywordTypes = new Dictionary<Type, string> {
             {typeof(bool), "bool"},
@@ -110,6 +113,11 @@ namespace ExpressionToString.Util {
             }
 
             if (!type.IsGenericType) {
+                // Not sure if such a thing is possible
+                if (type.IsVBAnonymousDelegate()) {
+                    return "VB$AnonymousDelegate";
+                }
+
                 var dict = language == CSharp ?
                     CSKeywordTypes :
                     VBKeywordTypes; // language == VisualBasic
@@ -125,7 +133,10 @@ namespace ExpressionToString.Util {
 
             var parts = type.GetGenericArguments().Joined(", ", t => t.FriendlyName(language));
             var backtickIndex = type.Name.IndexOf('`');
-            var nongenericName = type.Name.Substring(0, backtickIndex);
+            var nongenericName = 
+                type.IsVBAnonymousDelegate() ? 
+                    "VB$AnonymousDelegate" :
+                    type.Name.Substring(0, backtickIndex);
             return language == CSharp ?
                 $"{nongenericName}<{parts}>" :
                 $"{nongenericName}(Of {parts})";

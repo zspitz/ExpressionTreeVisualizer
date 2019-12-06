@@ -1731,6 +1731,12 @@ Lambda (Func<string>)
             · Expression - Constant (<closure>)
         · Arguments[0] - Constant (int) = 5
         · Arguments[1] - Constant (int) = 6
+---- VBCompiler.InterpolatedString
+Lambda (Func<string>)
+    · Body - Call (string) stringFormat
+        · Arguments[0] - Constant (string) = "{0}"
+        · Arguments[1] - Convert (object)
+            · Operand - Constant (DateTime) = 01/01/1981 0:00:00
 ---- VBCompiler.TypeIndexer
 Lambda (Func<string>)
     · Body - Call (string) get_Item
@@ -1794,8 +1800,6 @@ Lambda (Func<double>)
 ---- VBCompiler.String
 Lambda (Func<string>)
     · Body - Constant (string) = "abcd"
----- VBCompiler.TimeSpan
-Constant (TimeSpan) = 5.04:03:02.0010000
 ---- VBCompiler.EscapedString
 Lambda (Func<string>)
     · Body - Constant (string) = "\""
@@ -2110,12 +2114,12 @@ Lambda (Func<bool>)
 ---- VBCompiler.InvocationNoArguments
 Lambda (Func<int>)
     · Body - Invoke (int)
-        · Expression - MemberAccess ({ MethodInfo Method, object Target }) $VB$Local_del = #{ MethodInfo Method, object Target }
+        · Expression - MemberAccess (VB$AnonymousDelegate<int>) $VB$Local_del = #VB$AnonymousDelegate<int>
             · Expression - Constant (<closure>)
 ---- VBCompiler.InvocationOneArgument
 Lambda (Func<int>)
     · Body - Invoke (int)
         · Arguments[0] - Constant (int) = 5
-        · Expression - MemberAccess ({ MethodInfo Method, object Target }) $VB$Local_del = #{ MethodInfo Method, object Target }
+        · Expression - MemberAccess (VB$AnonymousDelegate<int, int>) $VB$Local_del = #VB$AnonymousDelegate<int, int>
             · Expression - Constant (<closure>)
 ------

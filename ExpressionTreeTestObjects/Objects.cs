@@ -31,12 +31,15 @@ namespace ExpressionTreeTestObjects {
 
         public static void LoadType(Type t) {
             var source = t.Name;
-            t.GetFields(Static | NonPublic).Select(fld => (
-                fld.GetCustomAttribute<CategoryAttribute>()?.Category,
-                source,
-                fld.Name,
-                fld.GetValue(null)
-            )).AddRangeTo(_objects);
+            t.GetFields(Static | NonPublic)
+                .Where(x => x.IsAssembly)
+                .Select(fld => (
+                    fld.GetCustomAttribute<CategoryAttribute>()?.Category,
+                    source,
+                    fld.Name,
+                    fld.GetValue(null)
+                ))
+                .AddRangeTo(_objects);
 
             foreach (var x in _objects) {
                 _byName[$"{x.source}.{x.name}"] = x.o;

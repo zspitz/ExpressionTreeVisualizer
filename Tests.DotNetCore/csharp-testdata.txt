@@ -492,8 +492,6 @@ try {
 }
 ---- FactoryMethods.ConstructTypeAs
 arr as object
----- FactoryMethods.DateTime
-#DateTime
 ---- FactoryMethods.DifferentTypeForNodeAndValue
 #List<string>
 ---- FactoryMethods.EmptyLoop
@@ -859,8 +857,6 @@ switch (
         Console.WriteLine(false);
         break;
 }
----- FactoryMethods.TimeSpan
-#TimeSpan
 ---- FactoryMethods.TwoParametersNonVoidReturn
 (string s1, string s2) => s1 + s2
 ---- FactoryMethods.TwoParametersVoidReturn
@@ -959,8 +955,6 @@ if (true) {
 () => 0
 ---- VBCompiler.Convert
 () => (Random)o
----- VBCompiler.DateTime
-() => #DateTime
 ---- VBCompiler.Divide
 () => x / y
 ---- VBCompiler.Equal
@@ -1101,8 +1095,6 @@ if (true) {
 (string s1, string s2) => s1 + s2 + s1 + s2 + s1 + s2
 ---- VBCompiler.Subtract
 () => x - y
----- VBCompiler.TimeSpan
-#TimeSpan
 ---- VBCompiler.True
 () => true
 ---- VBCompiler.TwoParametersNonVoidReturn

@@ -5,16 +5,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
 using static ExpressionToString.FormatterNames;
+using ExpressionTreeTestObjects.VB;
 
 namespace Tests.DataGenerator {
     class Program {
         static void Main(string[] args) {
+            Loader.Load();
+
             var formatter = TextualTree;
             var language = CSharp;
 
             var lines = new List<string>();
             foreach (var (category, source, name, o) in Objects.Get()) {
-                lines.Add($"---- ${source}.{name}");
+                lines.Add($"---- {source}.{name}");
 
                 string toWrite;
                 switch (o) {
