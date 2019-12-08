@@ -10,6 +10,8 @@
     <Nullable>enable</Nullable>
 
     <Configurations>Debug;Release;ReleaseCI;ReleaseCI2017</Configurations>
+
+    <RootNamespace>ExpressionTreeToString.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,24 +27,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tests.Common.VB\Tests.Common.VB.vbproj" />
-    <ProjectReference Include="..\Tests.Common\Tests.Common.csproj" />
+    <ProjectReference Include="..\ExpressionToString\ExpressionToString.csproj" />
+    <ProjectReference Include="..\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj" />
+    <ProjectReference Include="..\ExpressionTreeTestObjects\TestObjects.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="object notation-testdata.txt">
+    <None Update="expectedResults\object notation-testdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="factory methods-testdata.txt">
+    <None Update="expectedResults\factory methods-testdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="textual tree-testdata.txt">
+    <None Update="expectedResults\textual tree-testdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="visual basic-testdata.txt">
+    <None Update="expectedResults\visual basic-testdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="csharp-testdata.txt">
+    <None Update="expectedResults\csharp-testdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

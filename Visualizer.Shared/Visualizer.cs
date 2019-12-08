@@ -2,7 +2,6 @@
 using System;
 using System.Diagnostics;
 using System.Windows;
-using static ExpressionToString.FormatterNames;
 
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer), 
@@ -50,7 +49,7 @@ namespace ExpressionTreeVisualizer {
             var window = new VisualizerWindow();
             var control = window.Content as VisualizerDataControl;
             control.ObjectProvider = objectProvider;
-            control.Options = new VisualizerDataOptions() { Formatter = CSharp }; // TODO options could come from a VS extension
+            control.Options = new VisualizerDataOptions() { Formatter = "C#" };
 
             window.ShowDialog();
         }

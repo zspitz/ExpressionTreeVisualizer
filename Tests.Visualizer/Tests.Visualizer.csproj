@@ -97,9 +97,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Runner.cs" />
+    <Compile Include="TestContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -112,16 +112,15 @@
       <Project>{f6773f00-a5ff-4d52-8d11-a0d05953b6e9}</Project>
       <Name>TestObjects.VB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Tests.Common.VB\Tests.Common.VB.vbproj">
-      <Project>{b1f1ac9d-0e74-417a-b553-e840078adee0}</Project>
-      <Name>Tests.Common.VB</Name>
+    <ProjectReference Include="..\ExpressionTreeTestObjects\TestObjects.csproj">
+      <Project>{3e9fc5a5-2d3e-4521-81be-d6b3e048199b}</Project>
+      <Name>TestObjects</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Tests.Common\Tests.Common.csproj">
-      <Project>{784fb95f-f21a-415b-bde9-655272340f07}</Project>
-      <Name>Tests.Common</Name>
+    <ProjectReference Include="..\ExpressionTreeVisualizer.2019\Visualizer.2019.csproj">
+      <Project>{48e663f4-bfb4-4e6a-8b78-12fe50126a3c}</Project>
+      <Name>Visualizer.2019</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Visualizer.Shared\Visualizer.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

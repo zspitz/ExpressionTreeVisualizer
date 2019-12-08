@@ -4,9 +4,9 @@ using Xunit;
 using static ExpressionToString.Util.Functions;
 using ExpressionToString.Util;
 using static ExpressionToString.FormatterNames;
-using static ExpressionToString.Tests.Functions;
+using static ExpressionTreeTestObjects.Functions;
 
-namespace Tests.DotNetCore {
+namespace ExpressionToString.Tests {
     [Trait("Type", "Literal rendering")]
     public class LiteralRendering {
         [Theory]
