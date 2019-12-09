@@ -1,4 +1,6 @@
-﻿using ExpressionToString.Util;
+﻿#nullable enable
+
+using ExpressionToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -28,7 +30,7 @@ namespace ExpressionToString {
             throw new NotImplementedException("Unknown language");
 
         private readonly StringBuilder sb = new StringBuilder();
-        private readonly Dictionary<string, (int start, int length)> pathSpans;
+        private readonly Dictionary<string, (int start, int length)>? pathSpans;
 
         /// <summary>Determines how to render literals and types</summary>
         protected string language { get; private set; }
@@ -69,7 +71,7 @@ namespace ExpressionToString {
         /// <param name="parameterDeclaration">For ParameterExpression, this is a parameter declaration</param>
         /// <param name="blockType">For BlockExpression, sets the preferred block type</param>
         /// 
-        protected void WriteNode(string pathSegment, object o, bool parameterDeclaration = false, object metadata = null) {
+        protected void WriteNode(string pathSegment, object o, bool parameterDeclaration = false, object? metadata = null) {
             if (!pathSegment.IsNullOrWhitespace()) { pathSegments.Add(pathSegment); }
             var start = sb.Length;
             try {
@@ -147,105 +149,105 @@ namespace ExpressionToString {
             switch (expr.NodeType) {
 
                 case var nodeType when nodeType.In(binaryExpressionTypes):
-                    WriteBinary(expr as BinaryExpression);
+                    WriteBinary((BinaryExpression)expr);
                     break;
 
                 case var nodeType when nodeType.In(unaryExpressionTypes):
-                    WriteUnary(expr as UnaryExpression);
+                    WriteUnary((UnaryExpression)expr);
                     break;
 
                 case Lambda:
-                    WriteLambda(expr as LambdaExpression);
+                    WriteLambda((LambdaExpression)expr);
                     break;
 
                 case Parameter:
-                    WriteParameter(expr as ParameterExpression);
+                    WriteParameter((ParameterExpression)expr);
                     break;
 
                 case Constant:
-                    WriteConstant(expr as ConstantExpression);
+                    WriteConstant((ConstantExpression)expr);
                     break;
 
                 case MemberAccess:
-                    WriteMemberAccess(expr as MemberExpression);
+                    WriteMemberAccess((MemberExpression)expr);
                     break;
 
                 case New:
-                    WriteNew(expr as NewExpression);
+                    WriteNew((NewExpression)expr);
                     break;
 
                 case Call:
-                    WriteCall(expr as MethodCallExpression);
+                    WriteCall((MethodCallExpression)expr);
                     break;
 
                 case MemberInit:
-                    WriteMemberInit(expr as MemberInitExpression);
+                    WriteMemberInit((MemberInitExpression)expr);
                     break;
 
                 case ListInit:
-                    WriteListInit(expr as ListInitExpression);
+                    WriteListInit((ListInitExpression)expr);
                     break;
 
                 case NewArrayInit:
                 case NewArrayBounds:
-                    WriteNewArray(expr as NewArrayExpression);
+                    WriteNewArray((NewArrayExpression)expr);
                     break;
 
                 case Conditional:
-                    WriteConditional(expr as ConditionalExpression, null);
+                    WriteConditional((ConditionalExpression)expr, null);
                     break;
 
                 case Default:
-                    WriteDefault(expr as DefaultExpression);
+                    WriteDefault((DefaultExpression)expr);
                     break;
 
                 case TypeIs:
                 case TypeEqual:
-                    WriteTypeBinary(expr as TypeBinaryExpression);
+                    WriteTypeBinary((TypeBinaryExpression)expr);
                     break;
 
                 case Invoke:
-                    WriteInvocation(expr as InvocationExpression);
+                    WriteInvocation((InvocationExpression)expr);
                     break;
 
                 case Index:
-                    WriteIndex(expr as IndexExpression);
+                    WriteIndex((IndexExpression)expr);
                     break;
 
                 case Block:
-                    WriteBlock(expr as BlockExpression, null);
+                    WriteBlock((BlockExpression)expr, null);
                     break;
 
                 case Switch:
-                    WriteSwitch(expr as SwitchExpression);
+                    WriteSwitch((SwitchExpression)expr);
                     break;
 
                 case Try:
-                    WriteTry(expr as TryExpression);
+                    WriteTry((TryExpression)expr);
                     break;
 
                 case Label:
-                    WriteLabel(expr as LabelExpression);
+                    WriteLabel((LabelExpression)expr);
                     break;
 
                 case Goto:
-                    WriteGoto(expr as GotoExpression);
+                    WriteGoto((GotoExpression)expr);
                     break;
 
                 case Loop:
-                    WriteLoop(expr as LoopExpression);
+                    WriteLoop((LoopExpression)expr);
                     break;
 
                 case RuntimeVariables:
-                    WriteRuntimeVariables(expr as RuntimeVariablesExpression);
+                    WriteRuntimeVariables((RuntimeVariablesExpression)expr);
                     break;
 
                 case DebugInfo:
-                    WriteDebugInfo(expr as DebugInfoExpression);
+                    WriteDebugInfo((DebugInfoExpression)expr);
                     break;
 
                 case Dynamic:
-                    WriteDynamic(expr as DynamicExpression);
+                    WriteDynamic((DynamicExpression)expr);
                     break;
 
                 default:
@@ -304,7 +306,7 @@ namespace ExpressionToString {
                     delimiter.AppendTo(sb);
                     if (writeEOL) { WriteEOL(); }
                 }
-                WriteNode(pathSegment, arg, parameterDeclaration);
+                WriteNode(pathSegment, arg!, parameterDeclaration);
             });
         }
         protected void WriteNodes<T>(IEnumerable<(string pathSegment, T o)> pathsItems, string delimiter = ", ") =>
@@ -332,14 +334,14 @@ namespace ExpressionToString {
         protected abstract void WriteMemberInit(MemberInitExpression expr);
         protected abstract void WriteListInit(ListInitExpression expr);
         protected abstract void WriteNewArray(NewArrayExpression expr);
-        protected abstract void WriteConditional(ConditionalExpression expr, object metadata);
+        protected abstract void WriteConditional(ConditionalExpression expr, object? metadata);
         protected abstract void WriteDefault(DefaultExpression expr);
         protected abstract void WriteTypeBinary(TypeBinaryExpression expr);
         protected abstract void WriteInvocation(InvocationExpression expr);
         protected abstract void WriteIndex(IndexExpression expr);
 
         // .NET 4 expression types
-        protected abstract void WriteBlock(BlockExpression expr, object metadata);
+        protected abstract void WriteBlock(BlockExpression expr, object? metadata);
         protected abstract void WriteSwitch(SwitchExpression expr);
         protected abstract void WriteTry(TryExpression expr);
         protected abstract void WriteLabel(LabelExpression expr);

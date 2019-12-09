@@ -12,12 +12,12 @@ using System.IO;
 using Xunit;
 
 namespace ExpressionToString.Tests {
-    public class ExpectedDataFixture2 {
+    public class ExpectedDataFixture {
         public static readonly string[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
 
         public readonly Dictionary<(string formatter, string objectName), string> expectedStrings = new Dictionary<(string formatter, string objectName), string>();
         public readonly Dictionary<string, HashSet<string>> expectedPaths = new Dictionary<string, HashSet<string>>();
-        public ExpectedDataFixture2() {
+        public ExpectedDataFixture() {
             foreach (var formatter in Formatters.Except(new[] { DebugView, "ToString" })) {
                 var filename = formatter == CSharp ? "CSharp" : formatter;
                 var expectedDataPath = GetFullFilename($"{filename.ToLower()}-testdata.txt");

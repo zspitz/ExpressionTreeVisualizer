@@ -1,4 +1,6 @@
-﻿using ExpressionToString.Util;
+﻿#nullable enable
+
+using ExpressionToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -291,7 +293,7 @@ namespace ExpressionToString {
         protected override void WriteCall(MethodCallExpression expr) {
             if (expr.Method.In(stringConcats)) {
                 var firstArg = expr.Arguments[0];
-                IEnumerable<Expression> argsToWrite = null;
+                IEnumerable<Expression>? argsToWrite = null;
                 string argsPath = "";
                 if (firstArg is NewArrayExpression newArray && firstArg.NodeType == NewArrayInit) {
                     argsToWrite = newArray.Expressions;
@@ -313,7 +315,9 @@ namespace ExpressionToString {
                 isIndexer = expr.Method.IsIndexerMethod();
             }
             if (isIndexer) {
-                WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
+                // if the instance is nul; it usually means it's a static member access
+                // but there is no such thing as a static indexer
+                WriteIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments);
                 return;
             }
 
@@ -333,20 +337,20 @@ namespace ExpressionToString {
                 return;
             }
 
-            var instance = (path: "Object", o: expr.Object);
+            var (path, o) = ("Object", expr.Object);
             var arguments = expr.Arguments.Select((x, index) => ($"Arguments[{index}]", x));
 
             if (expr.Object == null && expr.Method.HasAttribute<ExtensionAttribute>()) {
-                instance = (path: "Arguments[0]", expr.Arguments[0]);
+                (path, o) = ("Arguments[0]", expr.Arguments[0]);
                 arguments = expr.Arguments.Skip(1).Select((x, index) => ($"Arguments[{index + 1}]", x));
             }
 
-            if (instance.o == null) {
+            if (o == null) {
                 // static non-extension method -- write the type name
                 Write(expr.Method.ReflectedType.FriendlyName(language));
             } else {
                 // instance method, or extension method
-                WriteNode(instance);
+                WriteNode(path, o);
             }
             Write($".{expr.Method.Name}(");
             WriteNodes(arguments);
@@ -363,7 +367,7 @@ namespace ExpressionToString {
 
             Write("{");
 
-            IEnumerable<object> items = null;
+            IEnumerable<object>? items = null;
             string itemsPath = "";
             switch (binding) {
                 case MemberListBinding listBinding when listBinding.Initializers.Count > 0:
@@ -444,7 +448,7 @@ namespace ExpressionToString {
                 case NewArrayBounds:
                     (string left, string right) = ("[", "]");
                     var nestedArrayTypes = expr.Type.NestedArrayTypes().ToList();
-                    Write($"new {nestedArrayTypes.Last().root.FriendlyName(language)}");
+                    Write($"new {nestedArrayTypes.Last().root!.FriendlyName(language)}");
                     nestedArrayTypes.ForEachT((current, _, index) => {
                         Write(left);
                         if (index == 0) {
@@ -478,7 +482,7 @@ namespace ExpressionToString {
             return true;
         }
 
-        protected override void WriteConditional(ConditionalExpression expr, object metadata) {
+        protected override void WriteConditional(ConditionalExpression expr, object? metadata) {
             if (expr.Type != typeof(void)) {
                 WriteNode("Test", expr.Test);
                 Write(" ? ");
@@ -541,8 +545,8 @@ namespace ExpressionToString {
         protected override void WriteIndex(IndexExpression expr) =>
             WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
 
-        protected override void WriteBlock(BlockExpression expr, object metadata) {
-            var (blockType, parentIsBlock) = (CSharpBlockMetadata)metadata ?? CreateMetadata(Inline, false);
+        protected override void WriteBlock(BlockExpression expr, object? metadata) {
+            var (blockType, parentIsBlock) = metadata as CSharpBlockMetadata ?? CreateMetadata(Inline, false);
             bool introduceNewBlock;
             if (blockType.In(CSharpMultilineBlockTypes.Block, CSharpMultilineBlockTypes.Return)) {
                 introduceNewBlock = expr.Variables.Any() && parentIsBlock;
@@ -559,8 +563,8 @@ namespace ExpressionToString {
                 expr.Expressions.ForEach((subexpr, index) => {
                     if (index > 0) { WriteEOL(); }
                     if (subexpr is LabelExpression) { TrimEnd(); }
-                    if (blockType == CSharpMultilineBlockTypes.Return &&  index == expr.Expressions.Count-1) {
-                       if (subexpr is BlockExpression bexpr && bexpr.HasMultipleLines()) {
+                    if (blockType == CSharpMultilineBlockTypes.Return && index == expr.Expressions.Count - 1) {
+                        if (subexpr is BlockExpression bexpr && bexpr.HasMultipleLines()) {
                             WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(CSharpMultilineBlockTypes.Return, true));
                         } else {
                             Write("return ");
@@ -578,8 +582,8 @@ namespace ExpressionToString {
                 return;
             }
 
-            introduceNewBlock = 
-                (expr.Expressions.Count > 1 && !parentIsBlock) || 
+            introduceNewBlock =
+                (expr.Expressions.Count > 1 && !parentIsBlock) ||
                 expr.Variables.Any();
             if (introduceNewBlock) {
                 if (blockType == Inline || parentIsBlock) { Write("("); }

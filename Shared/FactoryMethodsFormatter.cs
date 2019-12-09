@@ -1,4 +1,6 @@
-﻿using ExpressionToString.Util;
+﻿#nullable enable
+
+using ExpressionToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -11,6 +13,7 @@ using static System.Linq.Expressions.Expression;
 using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using static System.Linq.Enumerable;
 
 namespace ExpressionToString {
     public class FactoryMethodsFormatter : WriterBase {
@@ -47,7 +50,7 @@ namespace ExpressionToString {
 
             args.Cast<object>().ForEach((x, index) => {
                 var isTuple = TryTupleValues(x, out var values) && values.Length == 2;
-                (string path, object arg) = isTuple ? ((string)values[0], values[1]) : ("", x);
+                (string path, object? arg) = isTuple ? ((string)values[0], values[1]) : ("", x);
                 var parameterDeclaration = name == "Lambda" && path.StartsWith("Parameters");
 
                 bool writeNewline = false;
@@ -55,10 +58,10 @@ namespace ExpressionToString {
                 if (wrapPreviousInNewline) {
                     writeNewline = true;
                     wrapPreviousInNewline = false;
-                } else if (arg != null) {
+                } else if (arg is { }) {
                     if (
                         (
-                            argType.InheritsFromOrImplementsAny(NodeTypes) ||
+                            argType?.InheritsFromOrImplementsAny(NodeTypes) ?? false ||
                             arg is MemberInfo || 
                             arg is CallSiteBinder
                         ) && !(
@@ -85,16 +88,16 @@ namespace ExpressionToString {
                     Write(" ");
                 }
 
-                if (argType.InheritsFromOrImplementsAny(NodeTypes)) {
-                    WriteNode(path, arg, parameterDeclaration);
-                } else if (argType.InheritsFromOrImplementsAny(PropertyTypes)) {
+                if (argType?.InheritsFromOrImplementsAny(NodeTypes) ?? false) {
+                    WriteNode(path, arg!, parameterDeclaration);
+                } else if (argType?.InheritsFromOrImplementsAny(PropertyTypes) ?? false) {
                     if (language == CSharp) {
                         Write("new[] {");
                     } else { // language == VisualBasic
                         Write("{");
                     }
 
-                    var argList = (arg as IEnumerable).ToObjectList();
+                    var argList = arg is IEnumerable enumerable ? enumerable.ToObjectList() : Empty<object>().ToList();
                     if (argList.Any()) {
                         if (parameterDeclaration || argList.Any(y => !(y is ParameterExpression))) {
                             Indent();
@@ -238,7 +241,7 @@ namespace ExpressionToString {
             }
         }
 
-        protected override void WriteConditional(ConditionalExpression expr, object metadata) {
+        protected override void WriteConditional(ConditionalExpression expr, object? metadata) {
             if (expr.Type != typeof(void)) {
                 WriteMethodCall(() => Condition(expr.Test, expr.IfTrue, expr.IfFalse));
             } else if (expr.IfFalse.IsEmpty()) {
@@ -280,7 +283,7 @@ namespace ExpressionToString {
             WriteMethodCall(() => ArrayAccess(expr.Object, expr.Arguments.ToArray()));
         }
 
-        protected override void WriteBlock(BlockExpression expr, object metadata) {
+        protected override void WriteBlock(BlockExpression expr, object? metadata) {
             if (expr.Type != expr.Expressions.Last().Type) {
                 if (expr.Variables.Any()) {
                     WriteMethodCall(() => Block(expr.Type, expr.Variables, expr.Expressions.ToArray()));

@@ -10,11 +10,11 @@ using Xunit;
 using static ExpressionToString.FormatterNames;
 
 namespace ExpressionToString.Tests {
-    public class TestContainer : IClassFixture<ExpectedDataFixture2> {
+    public class TestContainer : IClassFixture<ExpectedDataFixture> {
         public static readonly string[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
 
-        private ExpectedDataFixture2 fixture;
-        public TestContainer(ExpectedDataFixture2 fixture) => this.fixture = fixture;
+        private ExpectedDataFixture fixture;
+        public TestContainer(ExpectedDataFixture fixture) => this.fixture = fixture;
 
         private (string toString, HashSet<string> paths) GetToString(string formatter, object o) {
             string ret;

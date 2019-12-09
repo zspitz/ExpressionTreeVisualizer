@@ -1,5 +1,8 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -8,17 +11,19 @@ using static ExpressionToString.FormatterNames;
 
 namespace ExpressionToString.Util {
     public static class Functions {
-        public static (bool isLiteral, string repr) TryRenderLiteral(object o, string language) {
-            var type = o?.GetType().UnderlyingIfNullable();
+        public static (bool isLiteral, string repr) TryRenderLiteral(object? o, string language) {
             bool rendered = true;
-            string ret = null;
-
-            if (o == null) {
-                ret = 
-                    language == CSharp ? "null" : 
+            string? ret = null;
+            if (o is null) {
+                ret =
+                    language == CSharp ? "null" :
                     language == VisualBasic ? "Nothing" :
                     "␀";
-            } else if (o is bool b) {
+                return (rendered, ret);
+            }
+
+            var type = o.GetType().UnderlyingIfNullable();
+            if (o is bool b) {
                 if (language == CSharp) {
                     ret = b ? "true" : "false";
                 } else { // Visual Basic and Boolean.ToString are the same
@@ -27,7 +32,7 @@ namespace ExpressionToString.Util {
             } else if (o is char c) {
                 if (language == CSharp) {
                     ret = $"'{c}'";
-                } else if (language==VisualBasic) {
+                } else if (language == VisualBasic) {
                     ret = $"\"{c}\"C";
                 }
             } else if ((o is DateTime || o is TimeSpan) && language == VisualBasic) {
@@ -63,26 +68,18 @@ namespace ExpressionToString.Util {
                     if (mi is ConstructorInfo) {
                         ret += ".GetConstructor()";
                     } else {
-                        string methodName = null;
-                        switch (mi) {
-                            case EventInfo _:
-                                methodName = "GetEvent";
-                                break;
-                            case FieldInfo _:
-                                methodName = "GetField";
-                                break;
-                            case MethodInfo _:
-                                methodName = "GetMethod";
-                                break;
-                            case PropertyInfo _:
-                                methodName = "GetProperty";
-                                break;
-                        }
+                        var methodName = mi switch {
+                            EventInfo _ => "GetEvent",
+                            FieldInfo _ => "GetField",
+                            MethodInfo _ => "GetMethod",
+                            PropertyInfo _ => "GetProperty",
+                            _ => throw new NotImplementedException(),
+                        };
                         ret += $".{methodName}(\"{mi.Name}\")";
                     }
                 }
             } else if (type.IsArray && !type.GetElementType().IsArray && type.GetArrayRank() == 1 && language.In(CSharp, VisualBasic)) {
-                var values = (o as dynamic[]).Joined(", ", x => RenderLiteral(x, language));
+                var values = ((dynamic[])o).Joined(", ", x => RenderLiteral(x, language));
                 if (language == CSharp) {
                     ret = $"new[] {{ {values} }}";
                 } else {
@@ -93,15 +90,15 @@ namespace ExpressionToString.Util {
             } else if (type.IsNumeric()) {
                 ret = o.ToString();
             }
-            
-            if (ret == null) {
+
+            if (ret is null) {
                 rendered = false;
                 ret = $"#{type.FriendlyName(language)}";
             }
             return (rendered, ret);
         }
 
-        public static string RenderLiteral(object o, string language) => TryRenderLiteral(o, language).repr;
+        public static string RenderLiteral(object? o, string language) => TryRenderLiteral(o, language).repr;
 
         /// <summary>Returns a string representation of the value, which may or may not be a valid literal in the language</summary>
         public static string StringValue(object o, string language) {
@@ -120,7 +117,7 @@ namespace ExpressionToString.Util {
         }
 
         public static MethodInfo GetMethod(Expression<Action> expr, params Type[] typeargs) {
-            var ret = (expr.Body as MethodCallExpression).Method;
+            var ret = ((MethodCallExpression)expr.Body).Method;
             // TODO handle partially open generic methods
             if (typeargs.Any() && ret.IsGenericMethod) {
                 ret = ret.GetGenericMethodDefinition().MakeGenericMethod(typeargs);
@@ -128,8 +125,7 @@ namespace ExpressionToString.Util {
             return ret;
         }
 
-        public static MemberInfo GetMember<T>(Expression<Func<T>> expr) =>
-            (expr.Body as MemberExpression).Member;
+        public static MemberInfo GetMember<T>(Expression<Func<T>> expr) => ((MemberExpression)expr.Body).Member;
 
         // TODO handle more than 8 values
         public static object[] TupleValues(object tuple) {
@@ -139,14 +135,14 @@ namespace ExpressionToString.Util {
             return tuple.GetType().GetProperties().Select(x => x.GetValue(tuple)).ToArray();
         }
 
-        public static bool TryTupleValues(object tuple, out object[] values) {
+        public static bool TryTupleValues(object tuple, [NotNullWhen(true)] out object[]? values) {
             var isTupleType = tuple.GetType().IsTupleType();
             values = isTupleType ? TupleValues(tuple) : null;
             return isTupleType;
         }
 
         // based on https://github.com/dotnet/corefx/blob/7cf002ec36109943c048ec8da8ef80621190b4be/src/Common/src/CoreLib/System/Text/StringBuilder.cs#L1514
-        public static (string literal, int? index, int? alignment, string itemFormat)[] ParseFormatString(string format) {
+        public static (string literal, int? index, int? alignment, string? itemFormat)[] ParseFormatString(string format) {
             if (format == null) { throw new ArgumentNullException("format"); }
 
             const int indexLimit = 1000000;
@@ -156,7 +152,7 @@ namespace ExpressionToString.Util {
             char ch = '\x0';
             int lastPos = format.Length - 1;
 
-            var parts = new List<(string literal, int? index, int? alignment, string itemFormat)>();
+            var parts = new List<(string literal, int? index, int? alignment, string? itemFormat)>();
 
             while (pos <= lastPos) {
 
@@ -186,7 +182,7 @@ namespace ExpressionToString.Util {
 
                 if (pos == lastPos) {
                     if (literal != "") {
-                        parts.Add((literal, (int?)null, (int?)null, (string)null));
+                        parts.Add((literal, (int?)null, (int?)null, (string?)null));
                     }
                     break;
                 }
@@ -202,7 +198,7 @@ namespace ExpressionToString.Util {
                 }
 
                 // Parse item format; optional
-                string itemFormat = null;
+                string? itemFormat = null;
                 if (ch == ':') {
                     itemFormat = "";
                     while (true) {

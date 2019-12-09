@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Reflection;
@@ -109,7 +111,7 @@ namespace ExpressionToString.Util {
                 string arraySpecifiers = nestedArrayTypes.Joined("",
                     (current, _, index) => left + Repeat("", current.GetArrayRank()).Joined() + right
                 );
-                return nestedArrayTypes.Last().root.FriendlyName(language) + arraySpecifiers;
+                return nestedArrayTypes.Last().root!.FriendlyName(language) + arraySpecifiers;
             }
 
             if (!type.IsGenericType) {
@@ -167,7 +169,7 @@ namespace ExpressionToString.Util {
                 && type.GetGenericArguments()[7].IsTupleType());
         }
 
-        public static IEnumerable<(Type current, Type root)> NestedArrayTypes(this Type type) {
+        public static IEnumerable<(Type current, Type? root)> NestedArrayTypes(this Type type) {
             var currentType = type;
             while (currentType.IsArray) {
                 var nextType = currentType.GetElementType();
@@ -192,7 +194,7 @@ namespace ExpressionToString.Util {
 
         // https://stackoverflow.com/a/55244482
         /// <summary>Returns T for T[] and types that implement IEnumerable&lt;T&gt;</summary>
-        public static Type ItemType(this Type type) {
+        public static Type? ItemType(this Type type) {
             if (type.IsArray) {
                 return type.GetElementType();
             }

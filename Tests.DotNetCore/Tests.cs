@@ -6,7 +6,7 @@ namespace ExpressionToString.Tests {
         [Fact]
         public void EscapedString() {
             var expr = Expr(() => "\'\"\\\0\a\b\f\n\r\t\v");
-            Assert.Equal(@"() => ""\\'\\""\\\\\0\\a\\b\\f\\n\\r\\t\\v""", expr.ToString("C#"));
+            Assert.Equal(@"() => ""\'\""\\\0\a\b\f\n\r\t\v""", expr.ToString("C#"));
         }
     }
 }

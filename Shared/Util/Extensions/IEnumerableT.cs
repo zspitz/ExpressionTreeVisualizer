@@ -1,10 +1,13 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace ExpressionToString.Util {
     public static class IEnumerableTExtensions {
-        public static bool None<T>(this IEnumerable<T> src, Func<T, bool> predicate = null) {
+        public static bool None<T>(this IEnumerable<T> src, Func<T, bool>? predicate = null) {
             if (predicate != null) { return !src.Any(predicate); }
             return !src.Any();
         }
@@ -26,7 +29,7 @@ namespace ExpressionToString.Util {
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey, TValue)> src) => src.ToDictionary(t => t.Item1, t => t.Item2);
 
-        public static string Joined<T>(this IEnumerable<T> source, string delimiter = ",", Func<T, string> selector = null) {
+        public static string Joined<T>(this IEnumerable<T> source, string delimiter = ",", Func<T, string>? selector = null) {
             if (source == null) { return ""; }
             if (selector == null) { return string.Join(delimiter, source); }
             return string.Join(delimiter, source.Select(selector));
@@ -47,19 +50,20 @@ namespace ExpressionToString.Util {
         /// Returns an element If the sequence has exactly one element; otherwise returns the default of T
         /// (unlike the standard SingleOrDefault, which will throw an exception on multiple elements).
         /// </summary>
+        [return: MaybeNull]
         public static T SingleOrDefaultExt<T>(this IEnumerable<T> src) {
-            if (src == null) { return default; }
-            T ret = default;
+            if (src == null) { return default!; }
+            T ret = default!;
             var counter = 0;
             foreach (var item in src.Take(2)) {
-                if (counter == 1) { return default; }
+                if (counter == 1) { return default!; }
                 ret = item;
                 counter += 1;
             }
             return ret;
         }
 
-        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> src, IEqualityComparer<T> comparer = null) => new HashSet<T>(src, comparer);
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> src, IEqualityComparer<T>? comparer = null) => new HashSet<T>(src, comparer);
 
         public static IEnumerable<T> SelectMany<T>(this IEnumerable<IEnumerable<T>> src) => src.SelectMany(x => x);
     }

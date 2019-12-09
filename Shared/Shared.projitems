@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CSharpBlockMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CSharpMultilineBlockTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FactoryMethodsFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NullableAttributes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObjectNotationFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextualTreeFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\BlockExpression.cs" />

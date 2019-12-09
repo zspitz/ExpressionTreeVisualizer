@@ -1,13 +1,16 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using static ExpressionToString.FormatterNames;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ExpressionToString.Util {
     public static class StringExtensions {
-        public static bool IsNullOrWhitespace(this string s) => string.IsNullOrWhiteSpace(s);
+        public static bool IsNullOrWhitespace([NotNullWhen(false)]this string? s) => string.IsNullOrWhiteSpace(s);
         public static bool ContainsAny(this string s, params string[] testStrings) => testStrings.Any(x => s.Contains(x));
         public static void AppendTo(this string s, StringBuilder sb) => sb.Append(s);
 
@@ -64,7 +67,7 @@ namespace ExpressionToString.Util {
             sb.AppendLine(toAppend);
         }
 
-        public static string ToCamelCase(this string s) {
+        public static string? ToCamelCase(this string s) {
             if (s == null || s.Length == 0) { return s; }
             return char.ToLowerInvariant(s[0]) + s.Substring(1);
         }
