@@ -26,6 +26,7 @@ namespace _visualizerTests {
             //Expression<Func<int, int>> expr = j => (i + j + 17) * (i + j + 17);
 
             Expression<Func<bool>> expr = () => true;
+            Console.WriteLine(expr.ToString("C#"));
 
             //Expression<Func<string, int, string>> expr = (s, i) => $"{s}, {i}";
 

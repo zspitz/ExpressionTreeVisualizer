@@ -16,10 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ExpressionToString\ExpressionToString.csproj" />
     <ProjectReference Include="..\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj" />
     <ProjectReference Include="..\ExpressionTreeTestObjects\TestObjects.csproj" />
   </ItemGroup>
-
-  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 
 </Project>

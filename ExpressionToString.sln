@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_visualizerTests", "_visual
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "_visualizerTests.VB", "_visualizerTests.VB\_visualizerTests.VB.vbproj", "{16EF3252-7F7C-4E3F-A3B0-275ACACFBA3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visualizer.2019", "ExpressionTreeVisualizer.2019\Visualizer.2019.csproj", "{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Visualizer.2019", "ExpressionTreeVisualizer.2019\Visualizer.2019.csproj", "{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visualizer.2017", "ExpressionTreeVisualizer.2017\Visualizer.2017.csproj", "{6D29192E-7344-431B-A84A-8BCCFAC9D83C}"
 EndProject
@@ -32,8 +32,6 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Visualizer.Shared\Visualizer.Shared.projitems*{16ca0653-e03a-47df-a5bf-292eef9aa5f0}*SharedItemsImports = 13
-		Shared\Shared.projitems*{48e663f4-bfb4-4e6a-8b78-12fe50126a3c}*SharedItemsImports = 4
-		Visualizer.Shared\Visualizer.Shared.projitems*{48e663f4-bfb4-4e6a-8b78-12fe50126a3c}*SharedItemsImports = 4
 		Shared\Shared.projitems*{64f97e9a-910e-44b2-bc72-60be676bcbb7}*SharedItemsImports = 13
 		Shared\Shared.projitems*{6d29192e-7344-431b-a84a-8bccfac9d83c}*SharedItemsImports = 4
 		Visualizer.Shared\Visualizer.Shared.projitems*{6d29192e-7344-431b-a84a-8bccfac9d83c}*SharedItemsImports = 4
@@ -68,9 +66,10 @@ Global
 		{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}.ReleaseCI|Any CPU.ActiveCfg = ReleaseCI|Any CPU
-		{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}.ReleaseCI|Any CPU.Build.0 = ReleaseCI|Any CPU
-		{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}.ReleaseCI2017|Any CPU.ActiveCfg = ReleaseCI|Any CPU
+		{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}.ReleaseCI|Any CPU.ActiveCfg = Release|Any CPU
+		{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}.ReleaseCI|Any CPU.Build.0 = Release|Any CPU
+		{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}.ReleaseCI2017|Any CPU.ActiveCfg = Release|Any CPU
+		{48E663F4-BFB4-4E6A-8B78-12FE50126A3C}.ReleaseCI2017|Any CPU.Build.0 = Release|Any CPU
 		{6D29192E-7344-431B-A84A-8BCCFAC9D83C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D29192E-7344-431B-A84A-8BCCFAC9D83C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D29192E-7344-431B-A84A-8BCCFAC9D83C}.Release|Any CPU.ActiveCfg = Release|Any CPU

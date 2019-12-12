@@ -54,6 +54,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExpressionToString\ExpressionToString.csproj">
+      <Project>{909307c8-6e39-43b8-a0c9-6ab9fc42d1b1}</Project>
+      <Name>ExpressionToString</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ExpressionTreeVisualizer.2019\Visualizer.2019.csproj">
       <Project>{48e663f4-bfb4-4e6a-8b78-12fe50126a3c}</Project>
       <Name>Visualizer.2019</Name>
