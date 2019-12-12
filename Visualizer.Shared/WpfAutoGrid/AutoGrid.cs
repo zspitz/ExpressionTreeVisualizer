@@ -147,7 +147,7 @@ namespace WpfAutoGrid {
         /// </summary>
         public static void ColumnCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if ((int)e.NewValue < 0) { return; }
-            (d as AutoGrid).buildColumnDefinitions();
+            ((AutoGrid)d).buildColumnDefinitions();
         }
 
         /// <summary>
@@ -155,14 +155,14 @@ namespace WpfAutoGrid {
         /// </summary>
         public static void ColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if ((string)e.NewValue == string.Empty) { return; }
-            (d as AutoGrid).buildColumnDefinitions();
+            ((AutoGrid)d).buildColumnDefinitions();
         }
 
         /// <summary>
         /// Handle the fixed column width changed event
         /// </summary>
         public static void FixedColumnWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            var grid = d as AutoGrid;
+            var grid = ((AutoGrid)d);
 
             // add a default column if missing
             if (grid.ColumnDefinitions.Count == 0)
@@ -177,7 +177,7 @@ namespace WpfAutoGrid {
         /// Handle the fixed row height changed event
         /// </summary>
         public static void FixedRowHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            var grid = d as AutoGrid;
+            var grid = ((AutoGrid)d);
 
             // add a default row if missing
             if (grid.RowDefinitions.Count == 0)
@@ -230,7 +230,7 @@ namespace WpfAutoGrid {
         /// </summary>
         public static void RowCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if ((int)e.NewValue < 0) { return; }
-            (d as AutoGrid).buildRowDefinitions();
+            ((AutoGrid)d).buildRowDefinitions();
         }
 
         /// <summary>
@@ -238,14 +238,14 @@ namespace WpfAutoGrid {
         /// </summary>
         public static void RowsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if ((string)e.NewValue == string.Empty) { return; }
-            (d as AutoGrid).buildRowDefinitions();
+            ((AutoGrid)d).buildRowDefinitions();
         }
 
         /// <summary>
         /// Called when [child horizontal alignment changed].
         /// </summary>
         private static void OnChildHorizontalAlignmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            var grid = d as AutoGrid;
+            var grid = (AutoGrid)d;
             foreach (UIElement child in grid.Children) {
                 if (grid.ChildHorizontalAlignment.HasValue)
                     child.SetValue(HorizontalAlignmentProperty, grid.ChildHorizontalAlignment);
@@ -258,7 +258,7 @@ namespace WpfAutoGrid {
         /// Called when [child layout changed].
         /// </summary>
         private static void OnChildMarginChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            var grid = d as AutoGrid;
+            var grid = (AutoGrid)d;
             foreach (UIElement child in grid.Children) {
                 if (grid.ChildMargin.HasValue)
                     child.SetValue(MarginProperty, grid.ChildMargin);
@@ -271,7 +271,7 @@ namespace WpfAutoGrid {
         /// Called when [child vertical alignment changed].
         /// </summary>
         private static void OnChildVerticalAlignmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            var grid = d as AutoGrid;
+            var grid = (AutoGrid)d;
             foreach (UIElement child in grid.Children) {
                 if (grid.ChildVerticalAlignment.HasValue)
                     child.SetValue(VerticalAlignmentProperty, grid.ChildVerticalAlignment);

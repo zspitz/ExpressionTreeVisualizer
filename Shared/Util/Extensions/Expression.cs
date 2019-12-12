@@ -14,7 +14,7 @@ namespace ExpressionToString.Util {
             return lambda.Compile().DynamicInvoke();
         }
 
-        public static bool TryExtractValue(this Expression expr, out object value) {
+        public static bool TryExtractValue(this Expression expr, out object? value) {
             value = null;
             try {
                 value = expr.ExtractValue();

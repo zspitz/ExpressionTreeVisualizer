@@ -21,7 +21,7 @@ namespace ExpressionToString {
         // TODO represent parameters using variables, except for first usage where variable is defined
         // TODO if a given type always has the same node type, don't include
 
-        private static HashSet<Type> hideNodeType = new HashSet<Type>() {
+        private static readonly HashSet<Type> hideNodeType = new HashSet<Type>() {
             typeof(BlockExpression),
             typeof(ConditionalExpression),
             typeof(ConstantExpression),
@@ -100,7 +100,7 @@ namespace ExpressionToString {
                     //var parameterDeclaration = o is LambdaExpression && x.Name == "Parameters";
                     //WriteCollection(value as IEnumerable, x.Name, parameterDeclaration);
 
-                    WriteCollection(value as IEnumerable, x.Name);
+                    WriteCollection((IEnumerable)value, x.Name);
                 } else if (x.PropertyType.InheritsFromOrImplementsAny(NodeTypes)) {
                     WriteNode(x.Name, value);
                 } else {
@@ -158,12 +158,12 @@ namespace ExpressionToString {
         protected override void WriteMemberInit(MemberInitExpression expr) => WriteObjectCreation(expr);
         protected override void WriteListInit(ListInitExpression expr) => WriteObjectCreation(expr);
         protected override void WriteNewArray(NewArrayExpression expr) => WriteObjectCreation(expr);
-        protected override void WriteConditional(ConditionalExpression expr, object metadata) => WriteObjectCreation(expr);
+        protected override void WriteConditional(ConditionalExpression expr, object? metadata) => WriteObjectCreation(expr);
         protected override void WriteDefault(DefaultExpression expr) => WriteObjectCreation(expr);
         protected override void WriteTypeBinary(TypeBinaryExpression expr) => WriteObjectCreation(expr);
         protected override void WriteInvocation(InvocationExpression expr) => WriteObjectCreation(expr);
         protected override void WriteIndex(IndexExpression expr) => WriteObjectCreation(expr);
-        protected override void WriteBlock(BlockExpression expr, object metadata) => WriteObjectCreation(expr);
+        protected override void WriteBlock(BlockExpression expr, object? metadata) => WriteObjectCreation(expr);
         protected override void WriteSwitch(SwitchExpression expr) => WriteObjectCreation(expr);
         protected override void WriteTry(TryExpression expr) => WriteObjectCreation(expr);
         protected override void WriteLabel(LabelExpression expr) => WriteObjectCreation(expr);

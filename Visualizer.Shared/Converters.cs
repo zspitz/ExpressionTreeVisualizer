@@ -28,13 +28,13 @@ namespace ExpressionTreeVisualizer {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             var sValue = value as string;
             if (sValue.IsNullOrWhitespace()) { return value; }
-            return value.Formatted(parameter as string);
+            return value.Formatted((string)parameter);
         }
     }
 
     public class AnyVisibilityConverter : ReadOnlyConverterBase {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-            if ((value as IEnumerable).Any()) { return Visible; }
+            if (((IEnumerable)value).Any()) { return Visible; }
             return Collapsed;
         }
     }
@@ -44,7 +44,7 @@ namespace ExpressionTreeVisualizer {
             var formatter = values[0] as string;
             var language = values[1] as string;
             var path = values[2] as string;
-            var parts = new List<(string name, string value)> {
+            var parts = new List<(string? name, string? value)> {
                 {"Formatter", formatter }
             };
             if (formatter != language) {

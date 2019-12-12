@@ -33,13 +33,13 @@ namespace ExpressionTreeVisualizer {
             set => this.NotifyChanged(ref _language, value, args => PropertyChanged?.Invoke(this, args));
         }
 
-        public string Path { get; set; }
+        public string? Path { get; set; }
 
         [field: NonSerialized]
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public VisualizerDataOptions(VisualizerDataOptions options = null) {
-            if (options != null) {
+        public VisualizerDataOptions(VisualizerDataOptions? options = null) {
+            if (options is { }) {
                 _formatter = options.Formatter;
                 _language = options.Language;
                 Path = options.Path;
@@ -75,13 +75,10 @@ namespace ExpressionTreeVisualizer {
             return current;
         }
 
-        // for deserialization
-        public VisualizerData() { }
-
-        public VisualizerData(object o, VisualizerDataOptions options = null) {
+        public VisualizerData(object o, VisualizerDataOptions? options = null) {
             Options = options ?? new VisualizerDataOptions();
             if (!Options.Path.IsNullOrWhitespace()) {
-                o = (ResolvePath(o, options.Path) as Expression).ExtractValue();
+                o = ((Expression)ResolvePath(o, Options.Path)).ExtractValue();
             }
             Source = WriterBase.Create(o, Options.Formatter, Options.Language, out var pathSpans).ToString();
             PathSpans = pathSpans;
@@ -95,24 +92,13 @@ namespace ExpressionTreeVisualizer {
             Defaults = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
 
             foreach (var x in CollectedEndNodes) {
-                Dictionary<EndNodeData, List<ExpressionNodeData>> dict;
-                switch (x.EndNodeType) {
-                    case Constant:
-                        dict = Constants;
-                        break;
-                    case Parameter:
-                        dict = Parameters;
-                        break;
-                    case ClosedVar:
-                        dict = ClosedVars;
-                        break;
-                    case Default:
-                        dict = Defaults;
-                        break;
-                    default:
-                        throw new InvalidOperationException();
-                }
-
+                var dict = x.EndNodeType switch {
+                    Constant => Constants,
+                    Parameter => Parameters,
+                    ClosedVar => ClosedVars,
+                    Default => Defaults,
+                    _ => throw new InvalidOperationException(),
+                };
                 if (!dict.TryGetValue(x.EndNodeData, out var lst)) {
                     lst = new List<ExpressionNodeData>();
                     dict[x.EndNodeData] = lst;
@@ -127,25 +113,25 @@ namespace ExpressionTreeVisualizer {
     public class ExpressionNodeData : INotifyPropertyChanged {
         public List<ExpressionNodeData> Children { get; set; }
         public string NodeType { get; set; } // ideally this should be an intersection type of multiple enums
-        public string ReflectionTypeName { get; set; }
+        public string? ReflectionTypeName { get; set; }
         public (int start, int length) Span { get; set; }
         public int SpanEnd => Span.start + Span.length;
-        public string StringValue { get; set; }
-        public string Name { get; set; }
-        public string Closure { get; set; }
+        public string? StringValue { get; set; }
+        public string? Name { get; set; }
+        public string? Closure { get; set; }
         public EndNodeTypes? EndNodeType { get; set; }
         public bool IsDeclaration { get; set; }
         public string PathFromParent { get; set; } = "";
         public string FullPath { get; set; } = "";
         public (string @namespace, string typename, string propertyname)? ParentProperty { get; set; }
-        public List<(string @namespace, string enumTypename, string membername)> NodeTypesParts { get; set; }
+        public List<(string @namespace, string enumTypename, string membername)>? NodeTypesParts { get; set; }
 
-        private List<(string @namespace, string typename)> _baseTypes;
+        private readonly List<(string @namespace, string typename)> _baseTypes;
         public List<(string @namespace, string typename)> BaseTypes => _baseTypes;
-        public string WatchExpressionFormatString { get; set; }
+        public string? WatchExpressionFormatString { get; set; }
         public bool EnableValueInNewWindow { get; set; }
 
-        private string[] _factoryMethodNames;
+        private readonly string[] _factoryMethodNames;
         public string[] FactoryMethodNames => _factoryMethodNames;
 
         public EndNodeData EndNodeData => new EndNodeData {
@@ -155,12 +141,9 @@ namespace ExpressionTreeVisualizer {
             Value = StringValue
         };
 
-        // for deserialization
-        public ExpressionNodeData() { }
+        private static readonly HashSet<Type> propertyTypes = NodeTypes.SelectMany(x => new[] { x, typeof(IEnumerable<>).MakeGenericType(x) }).ToHashSet();
 
-        private static HashSet<Type> propertyTypes = NodeTypes.SelectMany(x => new[] { x, typeof(IEnumerable<>).MakeGenericType(x) }).ToHashSet();
-
-        internal ExpressionNodeData(object o, (string aggregatePath, string pathFromParent) path, VisualizerData visualizerData, bool isParameterDeclaration = false, PropertyInfo pi = null, string parentWatchExpression = "") {
+        internal ExpressionNodeData(object o, (string aggregatePath, string pathFromParent) path, VisualizerData visualizerData, bool isParameterDeclaration = false, PropertyInfo? pi = null, string? parentWatchExpression = null) {
             var (aggregatePath, pathFromParent) = path;
             PathFromParent = pathFromParent;
             if (aggregatePath.IsNullOrWhitespace() || pathFromParent.IsNullOrWhitespace()) {
@@ -193,7 +176,7 @@ namespace ExpressionTreeVisualizer {
                             Closure = expressionType.Name;
                     }
 
-                    object value = null;
+                    object? value = null;
 
                     // fill StringValue and EndNodeType properties, for expressions
                     switch (expr) {
@@ -254,7 +237,7 @@ namespace ExpressionTreeVisualizer {
 
             // populate Children
             var type = o.GetType();
-            var preferredOrder = PreferredPropertyOrders.FirstOrDefault(x => x.Item1.IsAssignableFrom(type)).Item2;
+            var preferredOrder = PreferredPropertyOrders.FirstOrDefault(x => x.type.IsAssignableFrom(type)).Item2;
             Children = type.GetProperties()
                 .Where(prp =>
                     !(prp.DeclaringType.Name == "BlockExpression" && prp.Name == "Result") &&
@@ -286,7 +269,7 @@ namespace ExpressionTreeVisualizer {
                 baseTypes[o.GetType()] = _baseTypes;
             }
 
-            string factoryMethodName = null;
+            string? factoryMethodName = null;
             if (o is BinaryExpression || o is UnaryExpression) {
                 BinaryUnaryMethods.TryGetValue(((Expression)o).NodeType, out factoryMethodName);
             }
@@ -298,15 +281,15 @@ namespace ExpressionTreeVisualizer {
             }
         }
 
-        private static Dictionary<Type, List<(string @namespace, string typename)>> baseTypes = new Dictionary<Type, List<(string @namespace, string typename)>>();
+        private static readonly Dictionary<Type, List<(string @namespace, string typename)>> baseTypes = new Dictionary<Type, List<(string @namespace, string typename)>>();
 
-        private static Dictionary<Type, string[]> factoryMethods = typeof(Expression).GetMethods()
+        private static readonly Dictionary<Type, string[]> factoryMethods = typeof(Expression).GetMethods()
             .Where(x => x.IsStatic)
             .GroupBy(x => x.ReturnType, x => x.Name)
             .ToDictionary(x => x.Key, x => x.Distinct().Ordered().ToArray());
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private bool _isSelected;
         public bool IsSelected {
@@ -323,24 +306,24 @@ namespace ExpressionTreeVisualizer {
     [Serializable]
     [SuppressMessage("", "IDE0032", Justification = "https://github.com/dotnet/core/issues/2981")]
     public struct EndNodeData {
-        private string _closure;
-        private string _name;
-        private string _type;
-        private string _value;
+        private string? _closure;
+        private string? _name;
+        private string? _type;
+        private string? _value;
 
-        public string Closure {
+        public string? Closure {
             get => _closure;
             set => _closure = value;
         }
-        public string Name {
+        public string? Name {
             get => _name;
             set => _name = value;
         }
-        public string Type {
+        public string? Type {
             get => _type;
             set => _type = value;
         }
-        public string Value {
+        public string? Value {
             get => _value;
             set => _value = value;
         }

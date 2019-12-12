@@ -21,7 +21,7 @@ namespace ExpressionToString {
             var nodeType = "";
             var typename = "";
             var name = "";
-            object value = null;
+            object? value = null;
 
             switch (o) {
                 case Expression expr:
@@ -102,12 +102,12 @@ namespace ExpressionToString {
         protected override void WriteMemberInit(MemberInitExpression expr) => WriteTextualNode(expr);
         protected override void WriteListInit(ListInitExpression expr) => WriteTextualNode(expr);
         protected override void WriteNewArray(NewArrayExpression expr) => WriteTextualNode(expr);
-        protected override void WriteConditional(ConditionalExpression expr, object metadata) => WriteTextualNode(expr);
+        protected override void WriteConditional(ConditionalExpression expr, object? metadata) => WriteTextualNode(expr);
         protected override void WriteDefault(DefaultExpression expr) => WriteTextualNode(expr);
         protected override void WriteTypeBinary(TypeBinaryExpression expr) => WriteTextualNode(expr);
         protected override void WriteInvocation(InvocationExpression expr) => WriteTextualNode(expr);
         protected override void WriteIndex(IndexExpression expr) => WriteTextualNode(expr);
-        protected override void WriteBlock(BlockExpression expr, object metadata) => WriteTextualNode(expr);
+        protected override void WriteBlock(BlockExpression expr, object? metadata) => WriteTextualNode(expr);
         protected override void WriteSwitch(SwitchExpression expr) => WriteTextualNode(expr);
         protected override void WriteTry(TryExpression expr) => WriteTextualNode(expr);
         protected override void WriteLabel(LabelExpression expr) => WriteTextualNode(expr);

@@ -3,6 +3,7 @@ using ExpressionTreeVisualizer.Util;
 using Microsoft.VisualStudio.DebuggerVisualizers;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -103,8 +104,8 @@ namespace ExpressionTreeVisualizer {
             inChangeSelection = false;
         }
 
-        private IVisualizerObjectProvider _objectProvider;
-        public IVisualizerObjectProvider ObjectProvider {
+        private IVisualizerObjectProvider? _objectProvider;
+        public IVisualizerObjectProvider? ObjectProvider {
             get => _objectProvider;
             set {
                 if (value == null || value == _objectProvider) { return; }
@@ -113,8 +114,8 @@ namespace ExpressionTreeVisualizer {
             }
         }
 
-        private VisualizerDataOptions _options;
-        public VisualizerDataOptions Options {
+        private VisualizerDataOptions? _options;
+        public VisualizerDataOptions? Options {
             get => _options;
             set {
                 if (value == null || value == _options) { return; }
@@ -215,7 +216,7 @@ namespace ExpressionTreeVisualizer {
             var options = new VisualizerDataOptions(_options);
             options.Path = ((ExpressionNodeData)((MenuItem)sender).DataContext).FullPath;
             var window = new VisualizerWindow();
-            var control = window.Content as VisualizerDataControl;
+            var control = (VisualizerDataControl)window.Content;
             control.ObjectProvider = ObjectProvider;
             control.Options = options;
             window.ShowDialog();

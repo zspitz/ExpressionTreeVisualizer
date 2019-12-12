@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using ExpressionToString.Util;
+﻿using ExpressionToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -334,23 +332,13 @@ namespace ExpressionToString {
         }
 
         protected override void WriteGoto(GotoExpression expr) {
-            string methodName;
-            switch (expr.Kind) {
-                case GotoExpressionKind.Break:
-                    methodName = "Break";
-                    break;
-                case GotoExpressionKind.Continue:
-                    methodName = "Continue";
-                    break;
-                case GotoExpressionKind.Return:
-                    methodName = "Return";
-                    break;
-                case GotoExpressionKind.Goto:
-                    methodName = "Goto";
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+            var methodName = expr.Kind switch {
+                GotoExpressionKind.Break => "Break",
+                GotoExpressionKind.Continue => "Continue",
+                GotoExpressionKind.Return => "Return",
+                GotoExpressionKind.Goto => "Goto",
+                _ => throw new NotImplementedException(),
+            };
             var args = new List<(string, object)> { ("Target", expr.Target) };
             if (expr.Value != null) { args.Add(("Value", expr.Value)); }
             WriteMethodCall(methodName, args);

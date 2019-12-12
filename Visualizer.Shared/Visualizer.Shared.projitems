@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Converters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionRootPrompt.xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NullableAttributes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\DependencyObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MultiSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MultiSelectTreeView.cs" />

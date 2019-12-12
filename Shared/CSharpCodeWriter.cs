@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using ExpressionToString.Util;
+﻿using ExpressionToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -315,7 +313,7 @@ namespace ExpressionToString {
                 isIndexer = expr.Method.IsIndexerMethod();
             }
             if (isIndexer) {
-                // if the instance is nul; it usually means it's a static member access
+                // if the instance is null; it usually means it's a static member access
                 // but there is no such thing as a static indexer
                 WriteIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments);
                 return;
@@ -340,12 +338,12 @@ namespace ExpressionToString {
             var (path, o) = ("Object", expr.Object);
             var arguments = expr.Arguments.Select((x, index) => ($"Arguments[{index}]", x));
 
-            if (expr.Object == null && expr.Method.HasAttribute<ExtensionAttribute>()) {
+            if (expr.Object is null && expr.Method.HasAttribute<ExtensionAttribute>()) {
                 (path, o) = ("Arguments[0]", expr.Arguments[0]);
                 arguments = expr.Arguments.Skip(1).Select((x, index) => ($"Arguments[{index + 1}]", x));
             }
 
-            if (o == null) {
+            if (o is null) {
                 // static non-extension method -- write the type name
                 Write(expr.Method.ReflectedType.FriendlyName(language));
             } else {
@@ -725,23 +723,13 @@ namespace ExpressionToString {
         }
 
         protected override void WriteGoto(GotoExpression expr) {
-            string gotoKeyword;
-            switch (expr.Kind) {
-                case Break:
-                    gotoKeyword = "break";
-                    break;
-                case Continue:
-                    gotoKeyword = "continue";
-                    break;
-                case GotoExpressionKind.Goto:
-                    gotoKeyword = "goto";
-                    break;
-                case GotoExpressionKind.Return:
-                    gotoKeyword = "return";
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+            var gotoKeyword = expr.Kind switch {
+                Break => "break",
+                Continue => "continue",
+                GotoExpressionKind.Goto => "goto",
+                GotoExpressionKind.Return => "return",
+                _ => throw new NotImplementedException(),
+            };
             Write(gotoKeyword);
             if (!(expr.Target?.Name).IsNullOrWhitespace()) {
                 Write(" ");

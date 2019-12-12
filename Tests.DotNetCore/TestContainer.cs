@@ -13,7 +13,7 @@ namespace ExpressionToString.Tests {
     public class TestContainer : IClassFixture<ExpectedDataFixture> {
         public static readonly string[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
 
-        private ExpectedDataFixture fixture;
+        private readonly ExpectedDataFixture fixture;
         public TestContainer(ExpectedDataFixture fixture) => this.fixture = fixture;
 
         private (string toString, HashSet<string> paths) GetToString(string formatter, object o) {

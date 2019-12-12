@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Reflection;
@@ -217,8 +215,8 @@ namespace ExpressionToString.Util {
 
             return null;
 
-            bool IsIEnum(Type t) => t == typeof(System.Collections.IEnumerable);
-            bool ImplIEnumT(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
+            static bool IsIEnum(Type t) => t == typeof(System.Collections.IEnumerable);
+            static bool ImplIEnumT(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
         }
 
         public static IEnumerable<Type> BaseTypes(this Type t, bool genericDefinitions = false, bool andSelf = false) {

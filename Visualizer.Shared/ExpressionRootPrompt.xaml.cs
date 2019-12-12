@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace ExpressionTreeVisualizer {
     public partial class ExpressionRootPrompt {
-        public string Expression { get; private set; }
+        public string? Expression { get; private set; }
 
         public ExpressionRootPrompt() {
             InitializeComponent();
@@ -17,9 +17,7 @@ namespace ExpressionTreeVisualizer {
             link.RequestNavigate += (s, e) => Process.Start(link.NavigateUri.ToString());
         }
 
-        private void Window_ContentRendered(object sender, EventArgs e) {
-            txbExpression.Focus();
-        }
+        private void Window_ContentRendered(object sender, EventArgs e) => txbExpression.Focus();
 
         private void OK_Click(object sender, RoutedEventArgs e) => Close();
     }

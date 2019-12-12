@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -285,6 +283,7 @@ namespace ExpressionToString.Util {
             }
         }
 
+        // TODO consider using Pather for this
         static readonly Regex re = new Regex(@"(?:^|\.)(\w+)(?:\[(\d+)\])?");
         public static object ResolvePath(object o, string path) {
             foreach (var (propertyName, index) in re.Matches(path).Cast<Match>()) {

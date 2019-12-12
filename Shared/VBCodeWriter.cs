@@ -121,7 +121,7 @@ namespace ExpressionToString {
 
         protected override void WriteBinary(BinaryExpression expr) => WriteBinary(expr.NodeType, "Left", expr.Left, "Right", expr.Right, expr.Method != null);
 
-        private static Dictionary<Type, string> conversionFunctions = new Dictionary<Type, string>() {
+        private static readonly Dictionary<Type, string> conversionFunctions = new Dictionary<Type, string>() {
             {typeof(bool), "CBool"},
             {typeof(byte), "CByte"},
             {typeof(char), "CChar"},
@@ -359,7 +359,7 @@ namespace ExpressionToString {
 
             if (expr.Method.In(stringConcats)) {
                 var firstArg = expr.Arguments[0];
-                IEnumerable<Expression> argsToWrite = null;
+                IEnumerable<Expression>? argsToWrite = null;
                 string argsPath = "";
                 if (firstArg is NewArrayExpression newArray && firstArg.NodeType == NewArrayInit) {
                     argsToWrite = newArray.Expressions;
@@ -382,7 +382,8 @@ namespace ExpressionToString {
                 isIndexer = expr.Method.In(indexerMethods);
             }
             if (isIndexer) {
-                WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
+                // no such thing as a static indexer; expr.Object will not be null
+                WriteIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments);
                 return;
             }
 
@@ -417,20 +418,20 @@ namespace ExpressionToString {
                 return;
             }
 
-            var instance = (path: "Object", o: expr.Object);
+            var (path, o) = ("Object", expr.Object);
             var arguments = expr.Arguments.Select((x, index) => ($"Arguments[{index}]", x));
 
             if (expr.Object == null && expr.Method.HasAttribute<ExtensionAttribute>()) {
-                instance = (path: "Arguments[0]", expr.Arguments[0]);
+                (path, o) = ("Arguments[0]", expr.Arguments[0]);
                 arguments = expr.Arguments.Skip(1).Select((x, index) => ($"Arguments[{index + 1}]", x));
             }
 
-            if (instance.o == null) {
+            if (o is null) {
                 // static non-extension method -- write the type name
                 Write(expr.Method.ReflectedType.FriendlyName(language));
             } else {
                 // instance method, or extension method
-                WriteNode(instance);
+                WriteNode(path, o);
             }
             Write($".{expr.Method.Name}");
             if (arguments.Any()) {
@@ -449,7 +450,7 @@ namespace ExpressionToString {
                 return;
             }
 
-            IEnumerable<object> items = null;
+            IEnumerable<object>? items = null;
             string initializerKeyword = "";
             string itemsPath = "";
             switch (binding) {
@@ -467,7 +468,7 @@ namespace ExpressionToString {
 
             Write($"{initializerKeyword}{{");
 
-            if (items != null) {
+            if (items is { }) {
                 Indent();
                 WriteEOL();
                 WriteNodes(itemsPath, items, true);
@@ -535,11 +536,10 @@ namespace ExpressionToString {
                     Write(" }");
                     break;
                 case NewArrayBounds:
-                    (string left, string right) specifierChars = ("(", ")");
                     var nestedArrayTypes = expr.Type.NestedArrayTypes().ToList();
-                    Write($"New {nestedArrayTypes.Last().root.FriendlyName(language)}");
+                    Write($"New {nestedArrayTypes.Last().root!.FriendlyName(language)}");
                     nestedArrayTypes.ForEachT((current, _, arrayTypeIndex) => {
-                        Write(specifierChars.left);
+                        Write("(");
                         if (arrayTypeIndex == 0) {
                             expr.Expressions.ForEach((x, index) => {
                                 if (index > 0) { Write(", "); }
@@ -558,7 +558,7 @@ namespace ExpressionToString {
                         } else {
                             Write(Repeat("", current.GetArrayRank()).Joined());
                         }
-                        Write(specifierChars.right);
+                        Write(")");
                     });
                     Write(" {}");
                     break;
@@ -567,8 +567,8 @@ namespace ExpressionToString {
             }
         }
 
-        protected override void WriteConditional(ConditionalExpression expr, object metadata) {
-            var parentIsConditional = ((VBExpressionMetadata)metadata ?? CreateMetadata(false, null)).ExpressionType == Conditional;
+        protected override void WriteConditional(ConditionalExpression expr, object? metadata) {
+            var parentIsConditional = ((VBExpressionMetadata?)metadata ?? CreateMetadata(false, null)).ExpressionType == Conditional;
 
             if (expr.Type != typeof(void)) {
                 Write("If(");
@@ -658,8 +658,8 @@ namespace ExpressionToString {
         protected override void WriteIndex(IndexExpression expr) =>
             WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
 
-        protected override void WriteBlock(BlockExpression expr, object metadata) {
-            var (isInMultiline, parentType, returnBlock) = (VBExpressionMetadata)metadata ?? CreateMetadata(false, null, false);
+        protected override void WriteBlock(BlockExpression expr, object? metadata) {
+            var (isInMultiline, parentType, returnBlock) = (VBExpressionMetadata?)metadata ?? CreateMetadata(false, null, false);
             var useBlockConstruct = !isInMultiline ||
                 (expr.Variables.Any() && parentType == Block);
             if (useBlockConstruct) {
@@ -787,23 +787,13 @@ namespace ExpressionToString {
         }
 
         protected override void WriteGoto(GotoExpression expr) {
-            string gotoKeyword;
-            switch (expr.Kind) {
-                case Break:
-                    gotoKeyword = "Exit";
-                    break;
-                case Continue:
-                    gotoKeyword = "Continue";
-                    break;
-                case GotoExpressionKind.Goto:
-                    gotoKeyword = "Goto";
-                    break;
-                case Return:
-                    gotoKeyword = "Return";
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+            var gotoKeyword = expr.Kind switch {
+                Break => "Exit",
+                Continue => "Continue",
+                GotoExpressionKind.Goto => "Goto",
+                Return => "Return",
+                _ => throw new NotImplementedException(),
+            };
             Write(gotoKeyword);
             if (!(expr.Target?.Name).IsNullOrWhitespace()) {
                 Write(" ");

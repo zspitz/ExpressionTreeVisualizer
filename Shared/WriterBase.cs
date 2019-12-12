@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using ExpressionToString.Util;
+﻿using ExpressionToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;

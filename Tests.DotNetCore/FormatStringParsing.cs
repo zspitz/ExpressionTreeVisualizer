@@ -23,7 +23,7 @@ namespace ExpressionToString.Tests {
 
         [Fact]
         public void NullFormat() {
-            var ex = Assert.Throws<ArgumentNullException>(() => ParseFormatString(null));
+            var ex = Assert.Throws<ArgumentNullException>(() => ParseFormatString(null!));
             Assert.Equal("format", ex.ParamName);
         }
 

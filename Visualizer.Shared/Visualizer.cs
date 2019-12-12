@@ -47,7 +47,7 @@ namespace ExpressionTreeVisualizer {
             FrameworkCompatibilityPreferences.AreInactiveSelectionHighlightBrushKeysSupported = false;
 
             var window = new VisualizerWindow();
-            var control = window.Content as VisualizerDataControl;
+            var control = (VisualizerDataControl)window.Content;
             control.ObjectProvider = objectProvider;
             control.Options = new VisualizerDataOptions() { Formatter = "C#" };
 

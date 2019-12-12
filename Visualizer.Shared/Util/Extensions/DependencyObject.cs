@@ -19,10 +19,11 @@ namespace ExpressionTreeVisualizer.Util {
         private static IEnumerable<T> FindLogicalChildrenBase<T>(DependencyObject o) where T : DependencyObject {
             if (o == null) { yield break; }
             foreach (var child in LogicalTreeHelper.GetChildren(o)) {
-                var childAsT = child as T;
-                if (childAsT != null) { yield return childAsT; }
-                foreach (var descendant in FindLogicalChildrenBase<T>(childAsT)) {
-                    yield return descendant;
+                if (child is T childAsT) { yield return childAsT; }
+                if (child is DependencyObject d) {
+                    foreach (var descendant in FindLogicalChildrenBase<T>(d)) {
+                        yield return descendant;
+                    }
                 }
             }
         }

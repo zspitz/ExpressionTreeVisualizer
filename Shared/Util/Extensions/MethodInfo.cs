@@ -14,7 +14,7 @@ namespace ExpressionToString.Util {
                     .SelectMany(x => new[] { x.GetMethod, x.SetMethod })
             );
 
-        public static bool IsIndexerMethod(this MethodInfo mi, out PropertyInfo pi) {
+        public static bool IsIndexerMethod(this MethodInfo mi, out PropertyInfo? pi) {
             var indexerMethods = mi.ReflectedType
                 .GetIndexers(true)
                 .SelectMany(x => new[] {
