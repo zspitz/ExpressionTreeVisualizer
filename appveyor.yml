@@ -1,6 +1,6 @@
 version: 1.6.{build}
 image: Visual Studio 2019
-configuration: ReleaseCI
+configuration: Release
 init:
   - git config --global core.autocrlf false
 branches:
