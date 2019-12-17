@@ -17,6 +17,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Visualizer.Shared", "Visual
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Visualizer", "Visualizer\Visualizer.csproj", "{83B4B968-2066-4463-8F62-A4DFA405A2DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_visualizerTestNoRef", "_visualizerTestNoRef\_visualizerTestNoRef.csproj", "{5F11601F-1A4F-4C5B-99D5-5F5EC3F2EB1F}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Visualizer.Shared\Visualizer.Shared.projitems*{16ca0653-e03a-47df-a5bf-292eef9aa5f0}*SharedItemsImports = 13
@@ -45,6 +47,10 @@ Global
 		{83B4B968-2066-4463-8F62-A4DFA405A2DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83B4B968-2066-4463-8F62-A4DFA405A2DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83B4B968-2066-4463-8F62-A4DFA405A2DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F11601F-1A4F-4C5B-99D5-5F5EC3F2EB1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F11601F-1A4F-4C5B-99D5-5F5EC3F2EB1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F11601F-1A4F-4C5B-99D5-5F5EC3F2EB1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F11601F-1A4F-4C5B-99D5-5F5EC3F2EB1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
