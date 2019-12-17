@@ -324,8 +324,8 @@ namespace _visualizerTests {
     }
 
     class Foo {
-        public string Bar { get; set; }
-        public string Baz { get; set; }
+        public string? Bar { get; set; }
+        public string? Baz { get; set; }
         public Foo() { }
         public Foo(string baz) { }
 
@@ -340,8 +340,8 @@ namespace _visualizerTests {
     }
 
     class Person {
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? FirstName { get; set; }
         public DateTime DOB { get; set; }
     }
 }

@@ -116,6 +116,10 @@
       <Project>{525a3022-6c3d-4da3-b11e-73a1cd43e0c0}</Project>
       <Name>TestObjects</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Visualizer\Visualizer.csproj">
+      <Project>{83b4b968-2066-4463-8f62-a4dfa405a2db}</Project>
+      <Name>Visualizer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -112,5 +112,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Visualizer\Visualizer.csproj">
+      <Project>{83b4b968-2066-4463-8f62-a4dfa405a2db}</Project>
+      <Name>Visualizer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
