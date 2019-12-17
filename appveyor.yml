@@ -22,6 +22,9 @@ dotnet_csproj:
 before_build:
 - cmd: nuget restore
 
+build:
+  project: Visualizer\Visualizer.csproj
+
 matrix:
   fast_finish: true
 
