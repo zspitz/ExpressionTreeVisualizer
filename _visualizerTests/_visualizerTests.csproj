@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExpressionTreeToString, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExpressionTreeToString.2.0.4\lib\netstandard2.0\ExpressionTreeToString.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.DebuggerVisualizers.dll</HintPath>
@@ -52,16 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ExpressionToString\ExpressionToString.csproj">
-      <Project>{909307c8-6e39-43b8-a0c9-6ab9fc42d1b1}</Project>
-      <Name>ExpressionToString</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ExpressionTreeVisualizer.2019\Visualizer.2019.csproj">
-      <Project>{48e663f4-bfb4-4e6a-8b78-12fe50126a3c}</Project>
-      <Name>Visualizer.2019</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

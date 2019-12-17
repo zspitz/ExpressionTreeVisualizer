@@ -20,10 +20,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="ExpressionTreeToString" Version="2.0.10" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ExpressionToString\ExpressionToString.csproj" />
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 Imports ExpressionTreeVisualizer
 Imports Microsoft.VisualStudio.DebuggerVisualizers
 Imports System.Linq.Expressions.Expression
-Imports ExpressionToString
+Imports ExpressionTreeToString
 
 Module Module1
 

@@ -1,4 +1,4 @@
-﻿using ExpressionToString.Util;
+﻿using ExpressionTreeToString.Util;
 using ExpressionTreeVisualizer.Util;
 using Microsoft.VisualStudio.DebuggerVisualizers;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using static ExpressionToString.FormatterNames;
+using static ExpressionTreeToString.FormatterNames;
 
 
 namespace ExpressionTreeVisualizer {

@@ -108,17 +108,13 @@
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj">
-      <Project>{f6773f00-a5ff-4d52-8d11-a0d05953b6e9}</Project>
+    <ProjectReference Include="..\..\ExpressionTreeToString\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj">
+      <Project>{51fedc99-e847-4f68-a6db-20b14a8e271d}</Project>
       <Name>TestObjects.VB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ExpressionTreeTestObjects\TestObjects.csproj">
-      <Project>{3e9fc5a5-2d3e-4521-81be-d6b3e048199b}</Project>
+    <ProjectReference Include="..\..\ExpressionTreeToString\ExpressionTreeTestObjects\TestObjects.csproj">
+      <Project>{525a3022-6c3d-4da3-b11e-73a1cd43e0c0}</Project>
       <Name>TestObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ExpressionTreeVisualizer.2019\Visualizer.2019.csproj">
-      <Project>{48e663f4-bfb4-4e6a-8b78-12fe50126a3c}</Project>
-      <Name>Visualizer.2019</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using static System.Linq.Expressions.Expression;
 using static Microsoft.CSharp.RuntimeBinder.Binder;
 using Microsoft.CSharp.RuntimeBinder;
-using ExpressionToString;
-using static ExpressionToString.Util.Functions;
+using ExpressionTreeToString;
+using static ExpressionTreeToString.Util.Functions;
 using static System.Reflection.BindingFlags;
 
 namespace _visualizerTests {
@@ -271,6 +271,9 @@ namespace _visualizerTests {
             //Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
 
             var visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
+            visualizerHost.ShowVisualizer();
+
+            visualizerHost = new VisualizerDevelopmentHost(expr, typeof(Visualizer), typeof(VisualizerDataObjectSource));
             visualizerHost.ShowVisualizer();
 
             //Console.ReadKey(true);

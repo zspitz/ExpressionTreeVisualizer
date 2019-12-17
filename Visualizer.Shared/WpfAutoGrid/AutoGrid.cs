@@ -1,6 +1,6 @@
 ﻿// based on https://github.com/carbonrobot/wpf-autogrid/blob/master/source/WpfAutoGrid/AutoGrid.cs
 
-using ExpressionToString.Util;
+using ExpressionTreeToString.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
