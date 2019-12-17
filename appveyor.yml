@@ -1,4 +1,4 @@
-version: 1.5.{build}
+version: 1.6.{build}
 image: Visual Studio 2019
 configuration: ReleaseCI
 init:
@@ -25,15 +25,15 @@ matrix:
   fast_finish: true
 
 artifacts:
-  - path: ExpressionTreeVisualizer.2019\bin\ReleaseCI\ExpressionTreeVisualizer.2019.dll
+  - path: Visualizer\bin\ReleaseCI\ExpressionTreeVisualizer.dll
     type: File
     name: visualizer
 
-  - path: ExpressionTreeVisualizer.2019\bin\ReleaseCI\*.pdb
+  - path: Visualizer\bin\ReleaseCI\*.pdb
     type: File
     name: visualizer
 
-  - path: ExpressionTreeVisualizer.2019\bin\ReleaseCI\MultiSelectTreeView.dll
+  - path: Visualizer\bin\ReleaseCI\MultiSelectTreeView.dll
     type: File
     name: visualizer
 
