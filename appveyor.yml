@@ -25,15 +25,7 @@ matrix:
   fast_finish: true
 
 artifacts:
-  - path: Visualizer\bin\ReleaseCI\ExpressionTreeVisualizer.dll
-    type: File
-    name: visualizer
-
-  - path: Visualizer\bin\ReleaseCI\*.pdb
-    type: File
-    name: visualizer
-
-  - path: Visualizer\bin\ReleaseCI\MultiSelectTreeView.dll
+  - path: Visualizer\bin\Release\net472\*.dll
     type: File
     name: visualizer
 
