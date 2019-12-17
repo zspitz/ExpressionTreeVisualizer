@@ -23,13 +23,13 @@ before_build:
 - cmd: nuget restore
 
 build:
-  project: Visualizer\Visualizer.csproj
+  project: CI.sln
 
 matrix:
   fast_finish: true
 
 artifacts:
-  - path: Visualizer\bin\Release\net472\*.dll
+  - path: Visualizer\bin\Debug\net472\*.dll
     type: File
     name: visualizer
 

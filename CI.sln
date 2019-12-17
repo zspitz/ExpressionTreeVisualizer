@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29609.76
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Visualizer", "..\Visualizer\Visualizer.csproj", "{AE575935-731A-4B6A-99EF-8223EEFA0326}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Visualizer.Shared", "..\Visualizer.Shared\Visualizer.Shared.shproj", "{16CA0653-E03A-47DF-A5BF-292EEF9AA5F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Visualizer", "..\Tests.Visualizer\Tests.Visualizer.csproj", "{03844C00-8A30-474B-BDBC-99F1D65FBC6E}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\Visualizer.Shared\Visualizer.Shared.projitems*{16ca0653-e03a-47df-a5bf-292eef9aa5f0}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE575935-731A-4B6A-99EF-8223EEFA0326}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE575935-731A-4B6A-99EF-8223EEFA0326}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03844C00-8A30-474B-BDBC-99F1D65FBC6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03844C00-8A30-474B-BDBC-99F1D65FBC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8FEB0977-A0E0-4FA7-B9C2-75772CF79FB5}
+	EndGlobalSection
+EndGlobal
