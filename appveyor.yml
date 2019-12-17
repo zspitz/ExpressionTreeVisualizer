@@ -9,6 +9,7 @@ branches:
 skip_tags:  true
 only_commits:
   files:
+    - Visualizer
     - Visualizer.Shared
 dotnet_csproj:
   patch: true
