@@ -7,16 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ExpressionTreeToString" Version="2.0.10" />
+    <PackageReference Include="ExpressionTreeToString" Version="2.0.15" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <ProjectReference Include="..\..\ExpressionTreeToString\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj" />
-    <ProjectReference Include="..\..\ExpressionTreeToString\ExpressionTreeTestObjects\TestObjects.csproj" />
     <ProjectReference Include="..\Visualizer\Visualizer.csproj" />
+    <PackageReference Include="ExpressionTreeTestObjects" Version="1.0.1" />
   </ItemGroup>
 
 </Project>

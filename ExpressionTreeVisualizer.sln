@@ -3,21 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_visualizerTests", "_visualizerTests\_visualizerTests.csproj", "{8F297AFA-67DE-44C9-B018-38DCBD6F3B4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_visualizerTests", "_visualizerTests\_visualizerTests.csproj", "{8F297AFA-67DE-44C9-B018-38DCBD6F3B4C}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "_visualizerTests.VB", "_visualizerTests.VB\_visualizerTests.VB.vbproj", "{16EF3252-7F7C-4E3F-A3B0-275ACACFBA3A}"
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "_visualizerTests.VB", "_visualizerTests.VB\_visualizerTests.VB.vbproj", "{16EF3252-7F7C-4E3F-A3B0-275ACACFBA3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Visualizer", "Tests.Visualizer\Tests.Visualizer.csproj", "{A6DB4A34-28E2-4012-AF70-9E24DAB9BCD6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestObjects", "..\ExpressionTreeToString\ExpressionTreeTestObjects\TestObjects.csproj", "{525A3022-6C3D-4DA3-B11E-73A1CD43E0C0}"
-EndProject
-Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "TestObjects.VB", "..\ExpressionTreeToString\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj", "{51FEDC99-E847-4F68-A6DB-20B14A8E271D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Visualizer", "Tests.Visualizer\Tests.Visualizer.csproj", "{A6DB4A34-28E2-4012-AF70-9E24DAB9BCD6}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Visualizer.Shared", "Visualizer.Shared\Visualizer.Shared.shproj", "{16CA0653-E03A-47DF-A5BF-292EEF9AA5F0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Visualizer", "Visualizer\Visualizer.csproj", "{83B4B968-2066-4463-8F62-A4DFA405A2DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_visualizerTestNoRef", "_visualizerTestNoRef\_visualizerTestNoRef.csproj", "{5F11601F-1A4F-4C5B-99D5-5F5EC3F2EB1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_visualizerTestNoRef", "_visualizerTestNoRef\_visualizerTestNoRef.csproj", "{5F11601F-1A4F-4C5B-99D5-5F5EC3F2EB1F}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -37,12 +33,6 @@ Global
 		{A6DB4A34-28E2-4012-AF70-9E24DAB9BCD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A6DB4A34-28E2-4012-AF70-9E24DAB9BCD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6DB4A34-28E2-4012-AF70-9E24DAB9BCD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{525A3022-6C3D-4DA3-B11E-73A1CD43E0C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{525A3022-6C3D-4DA3-B11E-73A1CD43E0C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{525A3022-6C3D-4DA3-B11E-73A1CD43E0C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{51FEDC99-E847-4F68-A6DB-20B14A8E271D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{51FEDC99-E847-4F68-A6DB-20B14A8E271D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{51FEDC99-E847-4F68-A6DB-20B14A8E271D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83B4B968-2066-4463-8F62-A4DFA405A2DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{83B4B968-2066-4463-8F62-A4DFA405A2DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83B4B968-2066-4463-8F62-A4DFA405A2DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
