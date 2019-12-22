@@ -1,21 +1,25 @@
 ---
-name: Feature request - String rendering library
-about: Suggest an idea for the string rendering library
+name: Feature request
+about: Suggest an idea for the visualizer
 title: ''
-labels: code-gen, enhancement
+labels: enhancement, visualizer ui
 assignees: ''
 
 ---
 
-**Version info**
+**Version info:**
 
- - .NET Core / .NET Framework version:
- - Version: [either NuGet package version / GitHub release version, or commit]
+- Visual Studio version:
+- Visualizer location: [VS install path, or Documents subfolder]
+- Version: [GitHub release version or project commit]
+
+Note that the visualizer location and version can be found at the bottom of the **Settings** popup (click the gear icon).
 
 **Is your feature request related to a problem? Please describe.**  
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
-If this is related to a specific expression, also provide the `DebugView` of the expression.
+**Screenshots**  
+If applicable, add screenshots to help explain the problem you are trying to solve.
 
 **Describe the solution you'd like**  
 A clear and concise description of what you want to happen.
