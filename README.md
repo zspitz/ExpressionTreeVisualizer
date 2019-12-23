@@ -1,6 +1,6 @@
 # Expression Tree Visualizer
 
-> **NOTE: The visualizer does not currently work with .NET Core or .NET Standard projects. This should be fixed within a day or two.**
+> **NOTE: The visualizer does not currently work with .NET Core or .NET Standard projects, pending the resolution of [this issue](https://developercommunity.visualstudio.com/content/problem/562662/vs2019-custom-debugger-visualizer-for-net-fx-and-c.html#comment-865316).**
 >
 > ExpressionTreeToString, the string representation library, has been moved [to its own repo](https://github.com/zspitz/ExpressionTreeToString). 
 
