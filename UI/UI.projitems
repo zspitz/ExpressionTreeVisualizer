@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>e1d67370-17ac-47fc-89bc-34b20b3bd6e7</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>ExpressionTreeVisualizer</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Converters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionRootPrompt.xaml.cs">
+      <DependentUpon>ExpressionRootPrompt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\DependencyObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MultiSelector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MultiSelectTreeView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\Selector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\TreeView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Functions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Monitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VisualizerData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VisualizerDataControl.xaml.cs">
+      <DependentUpon>VisualizerDataControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)WpfAutoGrid\AutoGrid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WpfAutoGrid\DependencyExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)ExpressionRootPrompt.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)VisualizerDataControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)WpfAutoGrid\license.txt" />
+  </ItemGroup>
+</Project>

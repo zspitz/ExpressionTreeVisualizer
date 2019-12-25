@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ExpressionTreeTestObjects;
-using ExpressionTreeToString.Tests;
+using ExpressionTreeVisualizer.Serialization;
 
-namespace ExpressionTreeToString.Tests.Visualizer {
+namespace ExpressionTreeVisualizer.Tests {
     public class TestContainer {
         [Theory]
         [MemberData(nameof(TestObjects))]

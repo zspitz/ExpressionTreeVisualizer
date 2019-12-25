@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace ExpressionTreeToString.Tests.Visualizer {
+namespace ExpressionTreeVisualizer.Tests {
     internal static class Extensions {
         internal static TheoryData<T1, T2> ToTheoryData<T1, T2>(this IEnumerable<ValueTuple<T1, T2>> src) {
             var ret = new TheoryData<T1, T2>();

@@ -1,113 +1,22 @@
-﻿using ExpressionTreeToString;
-using ExpressionTreeToString.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Linq.Expressions;
-using static ExpressionTreeToString.Util.Functions;
-using static ExpressionTreeVisualizer.EndNodeTypes;
-using static ExpressionTreeToString.FormatterNames;
-using System.Collections;
-using System.Runtime.CompilerServices;
-using static ExpressionTreeToString.Globals;
-using System.Reflection;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static ExpressionTreeToString.Globals;
+using ExpressionTreeVisualizer.Serialization.Util;
+using System.Linq.Expressions;
+using ExpressionTreeToString.Util;
+using System.Reflection;
+using static ExpressionTreeVisualizer.Serialization.EndNodeTypes;
+using static ExpressionTreeToString.Util.Functions;
+using System.Collections;
+using static ExpressionTreeToString.FormatterNames;
+using System.Runtime.CompilerServices;
 
-namespace ExpressionTreeVisualizer {
-    [Serializable]
-    public class VisualizerDataOptions : INotifyPropertyChanged {
-        private string _formatter = CSharp;
-        public string Formatter {
-            get => _formatter;
-            set {
-                Language = ResolveLanguage(value);
-                this.NotifyChanged(ref _formatter, value, args => PropertyChanged?.Invoke(this, args));
-            }
-        }
-
-        private string _language = CSharp;
-        public string Language {
-            get => _language;
-            set => this.NotifyChanged(ref _language, value, args => PropertyChanged?.Invoke(this, args));
-        }
-
-        public string? Path { get; set; }
-
-        [field: NonSerialized]
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public VisualizerDataOptions(VisualizerDataOptions? options = null) {
-            if (options is { }) {
-                _formatter = options.Formatter;
-                _language = options.Language;
-                Path = options.Path;
-            }
-        }
-    }
-
-    [Serializable]
-    public class VisualizerData {
-        public string Source { get; set; }
-        public VisualizerDataOptions Options { get; set; }
-        public ExpressionNodeData NodeData { get; set; }
-
-        [NonSerialized] // the items in this List are grouped and serialized into separate collections
-        public List<ExpressionNodeData> CollectedEndNodes;
-        [NonSerialized]
-        public Dictionary<string, (int start, int length)> PathSpans;
-
-        public Dictionary<EndNodeData, List<ExpressionNodeData>> Constants { get; }
-        public Dictionary<EndNodeData, List<ExpressionNodeData>> Parameters { get; }
-        public Dictionary<EndNodeData, List<ExpressionNodeData>> ClosedVars { get; }
-        public Dictionary<EndNodeData, List<ExpressionNodeData>> Defaults { get; }
-
-        public ExpressionNodeData FindNodeBySpan(int start, int length) {
-            var end = start + length;
-            //if (start < NodeData.Span.start || end > NodeData.SpanEnd) { throw new ArgumentOutOfRangeException(); }
-            var current = NodeData;
-            while (true) {
-                var child = current.Children.SingleOrDefault(x => x.Span.start <= start && x.SpanEnd >= end);
-                if (child == null) { break; }
-                current = child;
-            }
-            return current;
-        }
-
-        public VisualizerData(object o, VisualizerDataOptions? options = null) {
-            Options = options ?? new VisualizerDataOptions();
-            if (!Options.Path.IsNullOrWhitespace()) {
-                o = ((Expression)ResolvePath(o, Options.Path)).ExtractValue();
-            }
-            Source = WriterBase.Create(o, Options.Formatter, Options.Language, out var pathSpans).ToString();
-            PathSpans = pathSpans;
-            CollectedEndNodes = new List<ExpressionNodeData>();
-            NodeData = new ExpressionNodeData(o, ("", ""), this, false);
-
-            // TODO it should be possible to write the following using LINQ
-            Constants = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
-            Parameters = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
-            ClosedVars = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
-            Defaults = new Dictionary<EndNodeData, List<ExpressionNodeData>>();
-
-            foreach (var x in CollectedEndNodes) {
-                var dict = x.EndNodeType switch {
-                    Constant => Constants,
-                    Parameter => Parameters,
-                    ClosedVar => ClosedVars,
-                    Default => Defaults,
-                    _ => throw new InvalidOperationException(),
-                };
-                if (!dict.TryGetValue(x.EndNodeData, out var lst)) {
-                    lst = new List<ExpressionNodeData>();
-                    dict[x.EndNodeData] = lst;
-                }
-                lst.Add(x);
-            }
-        }
-    }
-
+namespace ExpressionTreeVisualizer.Serialization {
     [Serializable]
     [DebuggerDisplay("{FullPath}")]
     public class ExpressionNodeData : INotifyPropertyChanged {
@@ -126,13 +35,13 @@ namespace ExpressionTreeVisualizer {
         public (string @namespace, string typename, string propertyname)? ParentProperty { get; set; }
         public List<(string @namespace, string enumTypename, string membername)>? NodeTypesParts { get; set; }
 
-        private readonly List<(string @namespace, string typename)> _baseTypes;
-        public List<(string @namespace, string typename)> BaseTypes => _baseTypes;
+        private readonly List<(string @namespace, string typename)>? _baseTypes;
+        public List<(string @namespace, string typename)>? BaseTypes => _baseTypes;
         public string? WatchExpressionFormatString { get; set; }
         public bool EnableValueInNewWindow { get; set; }
 
         private readonly string[] _factoryMethodNames;
-        public string[] FactoryMethodNames => _factoryMethodNames;
+        public string[]? FactoryMethodNames => _factoryMethodNames;
 
         public EndNodeData EndNodeData => new EndNodeData {
             Closure = Closure,
@@ -157,11 +66,11 @@ namespace ExpressionTreeVisualizer {
                 case Expression expr:
                     NodeType = expr.NodeType.ToString();
                     NodeTypesParts = new List<(string @namespace, string enumTypename, string membername)> {
-                        (typeof(ExpressionType).Namespace, nameof(ExpressionType), NodeType)
+                        (typeof(ExpressionType).Namespace!, nameof(ExpressionType), NodeType)
                     };
                     if (expr is GotoExpression gexpr) {
                         NodeTypesParts.Add(
-                            typeof(GotoExpressionKind).Namespace, nameof(GotoExpressionKind), gexpr.Kind.ToString()
+                            typeof(GotoExpressionKind).Namespace!, nameof(GotoExpressionKind), gexpr.Kind.ToString()
                         );
                     }
                     ReflectionTypeName = expr.Type.FriendlyName(language);
@@ -170,10 +79,10 @@ namespace ExpressionTreeVisualizer {
                     // fill the Name and Closure properties, for expressions
                     Name = expr.Name(language);
 
-                    if (expr is MemberExpression mexpr && 
+                    if (expr is MemberExpression mexpr &&
                         mexpr.Expression?.Type is Type expressionType &&
                         expressionType.IsClosureClass()) {
-                            Closure = expressionType.Name;
+                        Closure = expressionType.Name;
                     }
 
                     object? value = null;
@@ -207,8 +116,8 @@ namespace ExpressionTreeVisualizer {
                 case MemberBinding mbind:
                     NodeType = mbind.BindingType.ToString();
                     NodeTypesParts = new List<(string @namespace, string enumTypename, string membername)> {
-                        (typeof(MemberBindingType).Namespace, nameof(MemberBindingType), NodeType)
-                    };    
+                        (typeof(MemberBindingType).Namespace!, nameof(MemberBindingType), NodeType)
+                    };
                     Name = mbind.Member.Name;
                     break;
                 case CallSiteBinder callSiteBinder:
@@ -225,7 +134,9 @@ namespace ExpressionTreeVisualizer {
 
             if (parentWatchExpression.IsNullOrWhitespace()) {
                 WatchExpressionFormatString = "{0}";
-            } else if (pi != null) {
+            } else if (pi is { }) {
+                if (pi.DeclaringType is null) { throw new ArgumentNullException("pi.DeclaringType"); }
+                
                 var watchPathFromParent = PathFromParent;
                 if (visualizerData.Options.Language == CSharp) {
                     WatchExpressionFormatString = $"(({pi.DeclaringType.FullName}){parentWatchExpression}).{watchPathFromParent}";
@@ -240,7 +151,7 @@ namespace ExpressionTreeVisualizer {
             var preferredOrder = PreferredPropertyOrders.FirstOrDefault(x => x.type.IsAssignableFrom(type)).Item2;
             Children = type.GetProperties()
                 .Where(prp =>
-                    !(prp.DeclaringType.Name == "BlockExpression" && prp.Name == "Result") &&
+                    !(prp.DeclaringType!.Name == "BlockExpression" && prp.Name == "Result") &&
                     propertyTypes.Any(x => x.IsAssignableFrom(prp.PropertyType))
                 )
                 .OrderBy(prp => {
@@ -252,7 +163,7 @@ namespace ExpressionTreeVisualizer {
                     if (prp.PropertyType.InheritsFromOrImplements<IEnumerable>()) {
                         return (prp.GetValue(o) as IEnumerable).Cast<object>().Select((x, index) => ($"{prp.Name}[{index}]", x, prp));
                     } else {
-                        return new[] { (prp.Name, prp.GetValue(o), prp) };
+                        return new[] { (prp.Name, prp.GetValue(o)!, prp) };
                     }
                 })
                 .Where(x => x.x != null)
@@ -261,11 +172,11 @@ namespace ExpressionTreeVisualizer {
 
             // populate URLs
             if (pi != null) {
-                ParentProperty = (pi.DeclaringType.Namespace, pi.DeclaringType.Name, pi.Name);
+                ParentProperty = (pi.DeclaringType.Namespace!, pi.DeclaringType.Name, pi.Name);
             }
 
             if (!baseTypes.TryGetValue(o.GetType(), out _baseTypes)) {
-                _baseTypes = o.GetType().BaseTypes(true, true).Where(x => x != typeof(object) && x.IsPublic).Select(x => (x.Namespace, x.Name)).Distinct().ToList();
+                _baseTypes = o.GetType().BaseTypes(true, true).Where(x => x != typeof(object) && x.IsPublic).Select(x => (x.Namespace!, x.Name)).Distinct().ToList();
                 baseTypes[o.GetType()] = _baseTypes;
             }
 
@@ -275,7 +186,7 @@ namespace ExpressionTreeVisualizer {
             }
             if (factoryMethodName.IsNullOrWhitespace()) {
                 var publicType = o.GetType().BaseTypes(false, true).FirstOrDefault(x => !x.IsInterface && x.IsPublic);
-                factoryMethods.TryGetValue(publicType, out _factoryMethodNames);
+                factoryMethods.TryGetValue(publicType, out _factoryMethodNames!);
             } else {
                 _factoryMethodNames = new[] { factoryMethodName };
             }
@@ -294,45 +205,12 @@ namespace ExpressionTreeVisualizer {
         private bool _isSelected;
         public bool IsSelected {
             get => _isSelected;
-            set => this.NotifyChanged(ref _isSelected, value, args => PropertyChanged?.Invoke(this, args));
+            set => Extensions.NotifyChanged(this, ref _isSelected, value, args => PropertyChanged?.Invoke(this, args));
         }
 
         public void ClearSelection() {
             IsSelected = false;
             Children.ForEach(x => x.ClearSelection());
         }
-    }
-
-    [Serializable]
-    [SuppressMessage("", "IDE0032", Justification = "https://github.com/dotnet/core/issues/2981")]
-    public struct EndNodeData {
-        private string? _closure;
-        private string? _name;
-        private string? _type;
-        private string? _value;
-
-        public string? Closure {
-            get => _closure;
-            set => _closure = value;
-        }
-        public string? Name {
-            get => _name;
-            set => _name = value;
-        }
-        public string? Type {
-            get => _type;
-            set => _type = value;
-        }
-        public string? Value {
-            get => _value;
-            set => _value = value;
-        }
-    }
-
-    public enum EndNodeTypes {
-        Constant,
-        Parameter,
-        ClosedVar,
-        Default
     }
 }

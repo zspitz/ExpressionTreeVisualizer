@@ -7,17 +7,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_visualizerTests", "_visual
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "_visualizerTests.VB", "_visualizerTests.VB\_visualizerTests.VB.vbproj", "{16EF3252-7F7C-4E3F-A3B0-275ACACFBA3A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Visualizer", "Tests.Visualizer\Tests.Visualizer.csproj", "{A6DB4A34-28E2-4012-AF70-9E24DAB9BCD6}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Visualizer.Shared", "Visualizer.Shared\Visualizer.Shared.shproj", "{16CA0653-E03A-47DF-A5BF-292EEF9AA5F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests.Visualizer\Tests.csproj", "{A6DB4A34-28E2-4012-AF70-9E24DAB9BCD6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Visualizer", "Visualizer\Visualizer.csproj", "{83B4B968-2066-4463-8F62-A4DFA405A2DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_visualizerTestNoRef", "_visualizerTestNoRef\_visualizerTestNoRef.csproj", "{5F11601F-1A4F-4C5B-99D5-5F5EC3F2EB1F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Debuggee", "Debuggee\Debuggee.csproj", "{8D8CCC9D-618B-45A1-B6EE-02F675B4DB70}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Serialization", "Serialization\Serialization.shproj", "{9365B962-F17C-451C-92EB-F4FED9C6C84E}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UI", "UI\UI.shproj", "{E1D67370-17AC-47FC-89BC-34B20B3BD6E7}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Visualizer.Xaml", "Visualizer.Xaml\Visualizer.Xaml.shproj", "{89DE9332-5AA0-4136-A785-ED712FDC39FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Package", "Package\Package.csproj", "{0AA18EF4-75D3-42D8-A084-75F42F4E836A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Visualizer.Shared\Visualizer.Shared.projitems*{16ca0653-e03a-47df-a5bf-292eef9aa5f0}*SharedItemsImports = 13
+		Visualizer.Xaml\Visualizer.Xaml.projitems*{89de9332-5aa0-4136-a785-ed712fdc39fc}*SharedItemsImports = 13
+		Serialization\Serialization.projitems*{9365b962-f17c-451c-92eb-f4fed9c6c84e}*SharedItemsImports = 13
+		UI\UI.projitems*{e1d67370-17ac-47fc-89bc-34b20b3bd6e7}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +51,14 @@ Global
 		{5F11601F-1A4F-4C5B-99D5-5F5EC3F2EB1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F11601F-1A4F-4C5B-99D5-5F5EC3F2EB1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F11601F-1A4F-4C5B-99D5-5F5EC3F2EB1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D8CCC9D-618B-45A1-B6EE-02F675B4DB70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D8CCC9D-618B-45A1-B6EE-02F675B4DB70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D8CCC9D-618B-45A1-B6EE-02F675B4DB70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D8CCC9D-618B-45A1-B6EE-02F675B4DB70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AA18EF4-75D3-42D8-A084-75F42F4E836A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AA18EF4-75D3-42D8-A084-75F42F4E836A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AA18EF4-75D3-42D8-A084-75F42F4E836A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AA18EF4-75D3-42D8-A084-75F42F4E836A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

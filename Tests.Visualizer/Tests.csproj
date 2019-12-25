@@ -4,6 +4,8 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
+    <RootNamespace>ExpressionTreeVisualizer.Tests</RootNamespace>
+    <AssemblyName>ExpressionTreeVisualizer.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,8 +16,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <ProjectReference Include="..\Visualizer\Visualizer.csproj" />
     <PackageReference Include="ExpressionTreeTestObjects" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Package\Package.csproj" />
   </ItemGroup>
 
 </Project>
