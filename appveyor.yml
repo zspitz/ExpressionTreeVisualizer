@@ -27,7 +27,7 @@ dotnet_csproj:
   informational_version: '{version}'
 
 before_build:
-- cmd: nuget restore
+- cmd: dotnet restore
 
 build:
   project: CI.sln
