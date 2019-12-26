@@ -9,8 +9,14 @@ branches:
 skip_tags:  true
 only_commits:
   files:
-    - Visualizer
-    - Visualizer.Shared
+    - Debuggee/
+    - Package/
+    - Serialization/
+    - UI/
+    - Visualizer/
+    - Visualizer.Xaml/
+    - appveyor.yml
+
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -19,6 +25,7 @@ dotnet_csproj:
   assembly_version: '{version}'
   file_version: '{version}'
   informational_version: '{version}'
+
 before_build:
 - cmd: nuget restore
 
@@ -28,8 +35,18 @@ build:
 matrix:
   fast_finish: true
 
+after_build:
+  - 7z a %APPVEYOR_BUILD_FOLDER%\ExpressionTreeVisualizer.2017.zip %APPVEYOR_BUILD_FOLDER%\Visualizer\bin\Debug\net472\*
+  - 7z a %APPVEYOR_BUILD_FOLDER%\ExpressionTreeVisualizer.2019.zip %APPVEYOR_BUILD_FOLDER%\Visualizer\bin\Debug\net472\*
+  - cd %APPVEYOR_BUILD_FOLDER%\Debuggee\bin\Debug
+  - 7z a %APPVEYOR_BUILD_FOLDER%\ExpressionTreeVisualizer.2019.zip -r *.dll
+
 artifacts:
-  - path: Visualizer\bin\Debug\net472\*.dll
+  - path: '%APPVEYOR_BUILD_FOLDER%\ExpressionTreeVisualizer.2019.zip'
+    type: File
+    name: visualizer
+
+  - path: '%APPVEYOR_BUILD_FOLDER%\ExpressionTreeVisualizer.2017.zip'
     type: File
     name: visualizer
 
