@@ -42,11 +42,11 @@ after_build:
   - 7z a %APPVEYOR_BUILD_FOLDER%\ExpressionTreeVisualizer.2019.zip -r *.dll
 
 artifacts:
-  - path: '%APPVEYOR_BUILD_FOLDER%\ExpressionTreeVisualizer.2019.zip'
+  - path: ExpressionTreeVisualizer.2019.zip
     type: File
     name: visualizer
 
-  - path: '%APPVEYOR_BUILD_FOLDER%\ExpressionTreeVisualizer.2017.zip'
+  - path: ExpressionTreeVisualizer.2017.zip
     type: File
     name: visualizer
 
