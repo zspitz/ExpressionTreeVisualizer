@@ -260,3 +260,7 @@ paket-files/
 __pycache__/
 *.pyc
 /generated test data.txt
+
+/ExpressionTreeVisualizer.sln
+_*
+/PostBuild
