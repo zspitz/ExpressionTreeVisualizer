@@ -32,7 +32,10 @@ Selection syncing:
   
 # Installation
 
-The visualizer DLL and the dependent DLL (`ExpressionTreeToString.dll` and `MultiSelectTreeView.DLL`), from the [releases page](https://github.com/zspitz/ExpressionToString/releases), should be placed in the appropriate folder, as described [here](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer). It may be necessary to [unblock the DLLs, and/or to put a copy of them in a subfolder](https://github.com/zspitz/ExpressionToString/wiki/Troubleshooting-visualizer-installation).
+From the ZIP file corresponding to your Visual Studio version (2019 or 2017),
+
+1. Unblock the ZIP file
+2. Extract the files to the visualizers folder, preserving the [required folder structure](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2019#to-install-a-visualizer-for-visual-studio-2019).
 
 # Feedback
 
