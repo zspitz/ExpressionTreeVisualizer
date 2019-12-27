@@ -52,7 +52,7 @@ artifacts:
 
 deploy:
   - provider: GitHub
-    desciprion: ''
+    description: ''
     auth_token:
-      secure: aJaTRXIa+zc+SOGdNPKTH+znUun60Jh5b5pdjzLslhnoKk4vh1eoqO/vnGcDEwig
+      secure: NgxEvJd/ApBpuz6rwCNDfOI5c6nAvBIabLMj1vAtzuV4ozyaVDfjRJKa7WeJK2Ri
     artifact: visualizer
