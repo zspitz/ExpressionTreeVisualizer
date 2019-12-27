@@ -30,6 +30,12 @@ Selection syncing:
 
   ![Selection sync from end nodes](sync-from-endnodes.gif)
   
+# Requirements / Supports
+
+The visualizer been tested with VS 2019 and VS 2017.
+
+It supports .NET Core, ,NET Framework, and any .NET Standard 2.0 implementation. (Note that .NET Framework < 4.7 [may have issues in VS 2017](https://github.com/zspitz/ANTLR4ParseTreeVisualizer/issues/51).)
+  
 # Installation
 
 From the ZIP file corresponding to your Visual Studio version (2019 or 2017),
