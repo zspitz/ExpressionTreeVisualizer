@@ -2,7 +2,7 @@
 
 > ExpressionTreeToString, the string representation library, has been moved [to its own repo](https://github.com/zspitz/ExpressionTreeToString). 
 
-[![AppVeyor build status](https://img.shields.io/appveyor/ci/zspitz/expressiontostring?style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontostring) [![Tests](https://img.shields.io/appveyor/tests/zspitz/expressiontostring?compact_message&style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontostring) [![GitHub Release](https://img.shields.io/github/release/zspitz/expressiontostring.svg?style=flat&max-age=86400)](https://github.com/zspitz/ExpressionToString/releases)
+[![AppVeyor build status](https://img.shields.io/appveyor/ci/zspitz/expressiontreevisualizer?style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreevisualizer) [![Tests](https://img.shields.io/appveyor/tests/zspitz/expressiontreevisualizer?compact_message&style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreevisualizer) [![GitHub Release](https://img.shields.io/github/release/zspitz/expressiontreevisualizer.svg?style=flat&max-age=86400)](https://github.com/zspitz/ExpressionTreeVisualizer/releases)
 
 This project provides a custom debugging visualizer for expression trees that can be used with Visual Studio (on Windows). The UI consists of:
 
@@ -30,9 +30,18 @@ Selection syncing:
 
   ![Selection sync from end nodes](sync-from-endnodes.gif)
   
+# Requirements / Supports
+
+The visualizer been tested with VS 2019 and VS 2017.
+
+It supports .NET Core, ,NET Framework, and any .NET Standard 2.0 implementation. (Note that .NET Framework < 4.7 [may have issues in VS 2017](https://github.com/zspitz/ANTLR4ParseTreeVisualizer/issues/51).)
+  
 # Installation
 
-The visualizer DLL and the dependent DLL (`ExpressionTreeToString.dll` and `MultiSelectTreeView.DLL`), from the [releases page](https://github.com/zspitz/ExpressionToString/releases), should be placed in the appropriate folder, as described [here](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer). It may be necessary to [unblock the DLLs, and/or to put a copy of them in a subfolder](https://github.com/zspitz/ExpressionToString/wiki/Troubleshooting-visualizer-installation).
+From the ZIP file corresponding to your Visual Studio version (2019 or 2017),
+
+1. Unblock the ZIP file
+2. Extract the files to the visualizers folder, preserving the [required folder structure](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2019#to-install-a-visualizer-for-visual-studio-2019).
 
 # Feedback
 
