@@ -27,14 +27,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ExpressionTreeToString" Version="2.0.15" />  
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="ExpressionTreeToString" Version="2.0.15" />
     <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.DebuggerVisualizers.dll</HintPath>
       <Private>false</Private>
     </Reference>
+  </ItemGroup>
+
+  <!--<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">-->
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="6.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Costura.Fody" Version="4.1.0" />
   </ItemGroup>
 
   <Import Project="..\Serialization\Serialization.projitems" Label="Shared" />
