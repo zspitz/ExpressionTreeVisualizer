@@ -43,14 +43,21 @@ From the ZIP file corresponding to your Visual Studio version (2019 or 2017),
 1. Unblock the ZIP file
 2. Extract the files to the visualizers folder, preserving the [required folder structure](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2019#to-install-a-visualizer-for-visual-studio-2019).
 
-# Feedback
+# Contributing / Feedback
 
+* [Support Fody](https://opencollective.com/fody); this project uses [Costura](https://github.com/Fody/Costura/) to merge dependent DLLs into a single final DLL, keeping the Visualizers folder clean.
+* Test the visualizer. (The significance of this kind of contribution cannot be overestimated.)
+* Suggest ideas and enhancements (via [issues](https://github.com/zspitz/ExpressionTreeVisualizer/issues/new/choose))
+* Notify about bugs (via [issues](https://github.com/zspitz/ExpressionTreeVisualizer/issues/new/choose))
+* Provide screenshots demonstrating different features of the visualizer (via [issues](https://github.com/zspitz/ExpressionTreeVisualizer/issues/new/choose)), to be included in the README or wiki pages
 * Star the project
-* File an [issue](https://github.com/zspitz/ExpressionToString/issues)
+* Spread the word
+* Provide feedback to Microsoft about [these limitations to the visualizer API](https://github.com/zspitz/ExpressionToString/wiki/External-issues)
 
 # Credits
 
 * John M. Wright's series on [writing debugger visualizers](https://wrightfully.com/writing-a-readonly-debugger-visualizer)
 * Multiple-selection treeview is provided by [MultiSelectTreeView](https://github.com/ygoe/MultiSelectTreeView)
-* [ReadableExpressions](https://github.com/agileobjects/ReadableExpressions)
+* [ReadableExpressions](https://github.com/agileobjects/ReadableExpressions) for inspiration
 * [Greenshot](https://getgreenshot.org/) and [ScreenToGIF](https://www.screentogif.com/) for the screenshots
+* [Fody](https://github.com/Fody/Home/) and [Costura](https://github.com/Fody/Costura/)
