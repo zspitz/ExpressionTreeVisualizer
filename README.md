@@ -1,18 +1,16 @@
 # Expression Tree Visualizer
 
-> ExpressionTreeToString, the string representation library, has been moved [to its own repo](https://github.com/zspitz/ExpressionTreeToString). 
-
 [![AppVeyor build status](https://img.shields.io/appveyor/ci/zspitz/expressiontreevisualizer?style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreevisualizer) [![Tests](https://img.shields.io/appveyor/tests/zspitz/expressiontreevisualizer?compact_message&style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreevisualizer) [![GitHub Release](https://img.shields.io/github/release/zspitz/expressiontreevisualizer.svg?style=flat&max-age=86400)](https://github.com/zspitz/ExpressionTreeVisualizer/releases)
 
 This project provides a custom debugging visualizer for expression trees that can be used with Visual Studio (on Windows). The UI consists of:
 
 1. a graphical treeview of the expression tree structure,
-2. source code representation of the tree, and
+2. [source code representation of the tree](https://github.com/zspitz/ExpressionTreeToString), and
 3. end nodes -- nodes in the tree which are not composed of other expressions: parameters, closure variables, constants and default values
 
 ![Screenshot](screenshot-01.png)
 
-You can switch formatters without reloading the visualizer:
+You can [switch formatters](https://github.com/zspitz/ExpressionTreeVisualizer/wiki#settings) without reloading the visualizer:
 
 ![Language switch](formatter-switch.gif)
 
