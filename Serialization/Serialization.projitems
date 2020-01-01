@@ -9,12 +9,18 @@
     <Import_RootNamespace>ExpressionTreeVisualizer.Serialization</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Config.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EndNodeData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EndNodeType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionNodeData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ExpressionNodeData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NullableAttributes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\VisualizerData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\VisualizerDataOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VisualizerData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)VisualizerDataOptions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\" />
   </ItemGroup>
 </Project>

@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using static ExpressionTreeToString.FormatterNames;
 using ExpressionTreeVisualizer.Serialization;
-
+using vm = ExpressionTreeVisualizer.Serialization.ViewModels;
 
 namespace ExpressionTreeVisualizer {
     public partial class VisualizerDataControl {
@@ -31,7 +31,7 @@ namespace ExpressionTreeVisualizer {
                     };
                 };
 
-                Options = Options ?? new VisualizerDataOptions();
+                Options = Options ?? new vm.VisualizerDataOptions();
 
                 tree.SelectionChanged += (s1, e1) => changeSelection(s1);
                 source.SelectionChanged += (s1, e1) => changeSelection(s1);
@@ -55,7 +55,7 @@ namespace ExpressionTreeVisualizer {
             cmbLanguages.ItemsSource = new[] { CSharp, VisualBasic };
         }
 
-        private VisualizerData visualizerData => (VisualizerData)DataContext;
+        private vm.VisualizerData visualizerData => (vm.VisualizerData)DataContext;
 
         private bool inChangeSelection;
         private void changeSelection(object sender) {
@@ -70,14 +70,14 @@ namespace ExpressionTreeVisualizer {
             // if sender is textbox, apply to treeview, then apply to datagrids
             // if sender is datagrid, apply to other datagrids, apply to treeview, then to textbox
 
-            List<ExpressionNodeData> selected = new List<ExpressionNodeData>();
+            List<vm.ExpressionNodeData> selected = new List<vm.ExpressionNodeData>();
             if (sender == tree) {
-                tree.SelectedItems<ExpressionNodeData>().AddRangeTo(selected);
+                tree.SelectedItems<vm.ExpressionNodeData>().AddRangeTo(selected);
             } else if (sender == source) {
                 var singleNode = visualizerData.FindNodeBySpan(source.SelectionStart, source.SelectionLength);
                 if (singleNode != null) { selected.Add(singleNode); }
             } else if (sender is DataGrid dg) {
-                dg.SelectedItem<KeyValuePair<EndNodeData, List<ExpressionNodeData>>?>()?.Value.AddRangeTo(selected);
+                dg.SelectedItem<KeyValuePair<EndNodeData, List<vm.ExpressionNodeData>>?>()?.Value.AddRangeTo(selected);
             }
 
             var endNodeData = selected.Select(x => x.EndNodeData).Distinct().SingleOrDefaultExt();
@@ -87,10 +87,10 @@ namespace ExpressionTreeVisualizer {
             }
             if (sender != source) {
                 // Until we implement https://github.com/zspitz/ExpressionToSyntaxNode/issues/25, we can only select one ExpressionNodeData in the source code
-                ExpressionNodeData toHighlight;
+                vm.ExpressionNodeData toHighlight;
                 if (sender == tree) {
                     // use the last selected from the tree
-                    toHighlight = tree.LastSelectedItem<ExpressionNodeData>();
+                    toHighlight = tree.LastSelectedItem<vm.ExpressionNodeData>();
                 } else {
                     toHighlight = selected.FirstOrDefault();
                 }
@@ -115,8 +115,8 @@ namespace ExpressionTreeVisualizer {
             }
         }
 
-        private VisualizerDataOptions? _options;
-        public VisualizerDataOptions? Options {
+        private vm.VisualizerDataOptions? _options;
+        public vm.VisualizerDataOptions? Options {
             get => _options;
             set {
                 if (value == null || value == _options) { return; }
@@ -133,7 +133,7 @@ namespace ExpressionTreeVisualizer {
 
         private void HelpContextMenu_Loaded(object sender, RoutedEventArgs e) {
             var menu = (MenuItem)sender;
-            var node = (ExpressionNodeData)menu.DataContext;
+            var node = (vm.ExpressionNodeData)menu.DataContext;
 
             if (menu.Items.Any()) { return; }
 
@@ -209,13 +209,13 @@ namespace ExpressionTreeVisualizer {
                 txbRootExpression.Text = dlg.Expression;
             }
 
-            var node = (ExpressionNodeData)((MenuItem)sender).DataContext;
+            var node = (vm.ExpressionNodeData)((MenuItem)sender).DataContext;
             Clipboard.SetText(string.Format(node.WatchExpressionFormatString, txbRootExpression.Text));
         }
 
         private void OpenNewWindow_Click(object sender, RoutedEventArgs e) {
-            var options = new VisualizerDataOptions(_options);
-            options.Path = ((ExpressionNodeData)((MenuItem)sender).DataContext).FullPath;
+            var options = new vm.VisualizerDataOptions(_options);
+            options.Path = ((vm.ExpressionNodeData)((MenuItem)sender).DataContext).FullPath;
             var window = new VisualizerWindow();
             var control = (VisualizerDataControl)window.Content;
             control.ObjectProvider = ObjectProvider;

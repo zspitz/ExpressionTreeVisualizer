@@ -2,7 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Windows;
-using ExpressionTreeVisualizer.Serialization;
+using ExpressionTreeVisualizer.Serialization.ViewModels;
 
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer), 

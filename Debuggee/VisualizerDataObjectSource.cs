@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.DebuggerVisualizers;
 using System.IO;
-using ExpressionTreeVisualizer.Serialization;
+using ExpressionTreeVisualizer.Serialization.ViewModels;
 
 namespace ExpressionTreeVisualizer {
     public class VisualizerDataObjectSource : VisualizerObjectSource {

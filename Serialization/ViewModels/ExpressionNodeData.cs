@@ -1,79 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using ExpressionTreeToString.Util;
-using static ExpressionTreeVisualizer.Serialization.EndNodeTypes;
 using static ExpressionTreeToString.Globals;
+using ExpressionTreeVisualizer.Serialization.Util;
+using System.Linq.Expressions;
+using ExpressionTreeToString.Util;
+using System.Reflection;
+using static ExpressionTreeVisualizer.Serialization.EndNodeTypes;
 using static ExpressionTreeToString.Util.Functions;
-using System.Runtime.CompilerServices;
-using static ExpressionTreeToString.FormatterNames;
 using System.Collections;
+using static ExpressionTreeToString.FormatterNames;
+using System.Runtime.CompilerServices;
 
-namespace ExpressionTreeVisualizer.Serialization {
+namespace ExpressionTreeVisualizer.Serialization.ViewModels {
     [Serializable]
-    public class ExpressionNodeData {
-        private static readonly HashSet<Type> propertyTypes = 
-            NodeTypes
-                .SelectMany(x => new[] { x, typeof(IEnumerable<>).MakeGenericType(x) })
-                .ToHashSet();
-
-        private static readonly Dictionary<Type, List<(string @namespace, string typename)>> baseTypes = new Dictionary<Type, List<(string @namespace, string typename)>>();
-
-        private static readonly Dictionary<Type, string[]> factoryMethodNamesByType = 
-            typeof(Expression).GetMethods()
-                .Where(x => x.IsStatic)
-                .GroupBy(x => x.ReturnType, x => x.Name)
-                .ToDictionary(x => x.Key, x => x.Distinct().Ordered().ToArray());
-
-
-        public string PathFromParent { get; set; }
-        public string FullPath { get; set; }
-
+    [DebuggerDisplay("{FullPath}")]
+    [Obsolete("Use ExpressionTreeVisualizer.Serializaion.ExpressionNodeData or ExpressionTreeVisualizer.UI.ExpressionNodeDataViewModel")]
+    public class ExpressionNodeData : INotifyPropertyChanged {
+        public List<ExpressionNodeData> Children { get; set; }
         public string NodeType { get; set; } // ideally this should be an intersection type of multiple enums
-        public List<(string @namespace, string enumTypename, string membername)>? NodeTypesParts { get; set; }
         public string? ReflectionTypeName { get; set; }
-        public bool IsDeclaration { get; set; }
-
+        public (int start, int length) Span { get; set; }
+        public int SpanEnd => Span.start + Span.length;
+        public string? StringValue { get; set; }
         public string? Name { get; set; }
         public string? Closure { get; set; }
         public EndNodeTypes? EndNodeType { get; set; }
-        public string? StringValue { get; set; }
-
-        public bool EnableValueInNewWindow { get; set; }
-
-        public (int start, int length) Span { get; set; }
-        public int SpanEnd => Span.start + Span.length;
-
-        public string? WatchExpressionFormatString { get; set; }
-
-        public List<ExpressionNodeData> Children { get; set; }
-
-
+        public bool IsDeclaration { get; set; }
+        public string PathFromParent { get; set; } = "";
+        public string FullPath { get; set; } = "";
         public (string @namespace, string typename, string propertyname)? ParentProperty { get; set; }
-
+        public List<(string @namespace, string enumTypename, string membername)>? NodeTypesParts { get; set; }
 
         private readonly List<(string @namespace, string typename)>? _baseTypes;
         public List<(string @namespace, string typename)>? BaseTypes => _baseTypes;
+        public string? WatchExpressionFormatString { get; set; }
+        public bool EnableValueInNewWindow { get; set; }
 
         private readonly string[] _factoryMethodNames;
         public string[] FactoryMethodNames => _factoryMethodNames;
 
+        public EndNodeData EndNodeData => new EndNodeData {
+            Closure = Closure,
+            Name = Name,
+            Type = ReflectionTypeName,
+            Value = StringValue
+        };
 
-        internal ExpressionNodeData(object o, (string aggregatePath, string pathFromParent) path, VisualizerData visualizerData, Dictionary<string, (int start, int length)> pathSpans, bool isParameterDeclaration = false, PropertyInfo? pi = null, string? parentWatchExpression = null) :
+        private static readonly HashSet<Type> propertyTypes = NodeTypes.SelectMany(x => new[] { x, typeof(IEnumerable<>).MakeGenericType(x) }).ToHashSet();
+
+        internal ExpressionNodeData(object o, (string aggregatePath, string pathFromParent) path, VisualizerData visualizerData, bool isParameterDeclaration = false, PropertyInfo? pi = null, string? parentWatchExpression = null) :
             this(
-                o, path,
-                visualizerData.Config.Language, 
-                pathSpans, isParameterDeclaration, pi, parentWatchExpression
+                o, path, 
+                visualizerData.Options.Language, visualizerData.CollectedEndNodes, visualizerData.PathSpans,
+                isParameterDeclaration, pi, parentWatchExpression
             ) { }
 
-        private ExpressionNodeData(
-            object o, (string aggregatePath, string pathFromParent) path,
-            string language, 
-            Dictionary<string, (int start, int length)> pathSpans, bool isParameterDeclaration = false, PropertyInfo? pi = null, string? parentWatchExpression = null
+        internal ExpressionNodeData(
+            object o, (string aggregatePath, string pathFromParent) path, 
+            string language, List<ExpressionNodeData> endNodes, Dictionary<string, (int start, int length)> pathSpans,
+            bool isParameterDeclaration = false, PropertyInfo? pi = null, string? parentWatchExpression = null
         ) {
             var (aggregatePath, pathFromParent) = path;
             PathFromParent = pathFromParent;
@@ -126,6 +114,7 @@ namespace ExpressionTreeVisualizer.Serialization {
                             EndNodeType = Default;
                             break;
                     }
+                    if (EndNodeType != null) { endNodes.Add(this); }
 
                     if (value != null) {
                         StringValue = StringValue(value, language);
@@ -156,7 +145,7 @@ namespace ExpressionTreeVisualizer.Serialization {
                 WatchExpressionFormatString = "{0}";
             } else if (pi is { }) {
                 if (pi.DeclaringType is null) { throw new ArgumentNullException("pi.DeclaringType"); }
-
+                
                 var watchPathFromParent = PathFromParent;
                 if (language == CSharp) {
                     WatchExpressionFormatString = $"(({pi.DeclaringType.FullName}){parentWatchExpression}).{watchPathFromParent}";
@@ -188,8 +177,8 @@ namespace ExpressionTreeVisualizer.Serialization {
                 })
                 .Where(x => x.x != null)
                 .SelectT((relativePath, o1, prp) => new ExpressionNodeData(
-                    o1, (FullPath ?? "", relativePath),
-                    language, pathSpans,
+                    o1, (FullPath ?? "", relativePath), 
+                    language, endNodes, pathSpans,
                     false, prp, WatchExpressionFormatString))
                 .ToList();
 
@@ -209,17 +198,31 @@ namespace ExpressionTreeVisualizer.Serialization {
             }
             if (factoryMethodName.IsNullOrWhitespace()) {
                 var publicType = o.GetType().BaseTypes(false, true).FirstOrDefault(x => !x.IsInterface && x.IsPublic);
-                factoryMethodNamesByType.TryGetValue(publicType, out _factoryMethodNames!);
+                factoryMethods.TryGetValue(publicType, out _factoryMethodNames!);
             } else {
                 _factoryMethodNames = new[] { factoryMethodName };
             }
         }
 
-        public EndNodeData EndNodeData => new EndNodeData {
-            Closure = Closure,
-            Name = Name,
-            Type = ReflectionTypeName,
-            Value = StringValue
-        };
+        private static readonly Dictionary<Type, List<(string @namespace, string typename)>> baseTypes = new Dictionary<Type, List<(string @namespace, string typename)>>();
+
+        private static readonly Dictionary<Type, string[]> factoryMethods = typeof(Expression).GetMethods()
+            .Where(x => x.IsStatic)
+            .GroupBy(x => x.ReturnType, x => x.Name)
+            .ToDictionary(x => x.Key, x => x.Distinct().Ordered().ToArray());
+
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private bool _isSelected;
+        public bool IsSelected {
+            get => _isSelected;
+            set => Extensions.NotifyChanged(this, ref _isSelected, value, args => PropertyChanged?.Invoke(this, args));
+        }
+
+        public void ClearSelection() {
+            IsSelected = false;
+            Children.ForEach(x => x.ClearSelection());
+        }
     }
 }

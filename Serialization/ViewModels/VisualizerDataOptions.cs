@@ -4,7 +4,8 @@ using static ExpressionTreeToString.Util.Functions;
 using static ExpressionTreeToString.FormatterNames;
 using ExpressionTreeVisualizer.Serialization.Util;
 
-namespace ExpressionTreeVisualizer.Serialization {
+namespace ExpressionTreeVisualizer.Serialization.ViewModels {
+    [Obsolete("Use ExpressionTreeVisualizer.Serialization.Config or ExpressionTreeVisualizer.UI.ConfigViewModel")]
     [Serializable]
     public class VisualizerDataOptions : INotifyPropertyChanged {
         private string _formatter = CSharp;

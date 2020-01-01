@@ -1,12 +1,7 @@
-﻿using ExpressionTreeVisualizer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Xunit;
 using ExpressionTreeTestObjects;
-using ExpressionTreeVisualizer.Serialization;
+using ExpressionTreeVisualizer.Serialization.ViewModels;
 
 namespace ExpressionTreeVisualizer.Tests {
     public class TestContainer {
