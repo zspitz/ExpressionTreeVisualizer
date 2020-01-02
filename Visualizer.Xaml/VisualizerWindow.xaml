@@ -5,9 +5,9 @@
     </Window.Resources>
     <Window.Title>
         <MultiBinding Converter="{StaticResource TitleConverter}" StringFormat="Expression Tree Visualizer - {0}">
-            <Binding Path="Options.Formatter" ElementName="visualizerDataControl" />
-            <Binding Path="Options.Language" ElementName="visualizerDataControl" />
-            <Binding Path="Options.Path" ElementName="visualizerDataControl" />
+            <Binding Path="Config.Formatter" ElementName="visualizerDataControl" />
+            <Binding Path="Config.Language" ElementName="visualizerDataControl" />
+            <Binding Path="Config.Model.Path" ElementName="visualizerDataControl" />
         </MultiBinding>
     </Window.Title>
     <my:VisualizerDataControl x:Name="visualizerDataControl"/>

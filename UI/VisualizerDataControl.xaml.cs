@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using static ExpressionTreeToString.FormatterNames;
 using ExpressionTreeVisualizer.Serialization;
-using vm = ExpressionTreeVisualizer.Serialization.ViewModels;
+using ExpressionTreeVisualizer.UI;
 
 namespace ExpressionTreeVisualizer {
     public partial class VisualizerDataControl {
@@ -30,8 +30,6 @@ namespace ExpressionTreeVisualizer {
                         }
                     };
                 };
-
-                Options = Options ?? new vm.VisualizerDataOptions();
 
                 tree.SelectionChanged += (s1, e1) => changeSelection(s1);
                 source.SelectionChanged += (s1, e1) => changeSelection(s1);
@@ -55,7 +53,7 @@ namespace ExpressionTreeVisualizer {
             cmbLanguages.ItemsSource = new[] { CSharp, VisualBasic };
         }
 
-        private vm.VisualizerData visualizerData => (vm.VisualizerData)DataContext;
+        private VisualizerDataViewModel visualizerData => (VisualizerDataViewModel)DataContext;
 
         private bool inChangeSelection;
         private void changeSelection(object sender) {
@@ -70,32 +68,32 @@ namespace ExpressionTreeVisualizer {
             // if sender is textbox, apply to treeview, then apply to datagrids
             // if sender is datagrid, apply to other datagrids, apply to treeview, then to textbox
 
-            List<vm.ExpressionNodeData> selected = new List<vm.ExpressionNodeData>();
+            List<ExpressionNodeDataViewModel> selected = new List<ExpressionNodeDataViewModel>();
             if (sender == tree) {
-                tree.SelectedItems<vm.ExpressionNodeData>().AddRangeTo(selected);
+                tree.SelectedItems<ExpressionNodeDataViewModel>().AddRangeTo(selected);
             } else if (sender == source) {
                 var singleNode = visualizerData.FindNodeBySpan(source.SelectionStart, source.SelectionLength);
                 if (singleNode != null) { selected.Add(singleNode); }
             } else if (sender is DataGrid dg) {
-                dg.SelectedItem<KeyValuePair<EndNodeData, List<vm.ExpressionNodeData>>?>()?.Value.AddRangeTo(selected);
+                dg.SelectedItem<EndNodeGroupViewModel>().Nodes.AddRangeTo(selected);
             }
 
-            var endNodeData = selected.Select(x => x.EndNodeData).Distinct().SingleOrDefaultExt();
+            var endNodeData = selected.Select(x => x.Model.EndNodeData).Distinct().SingleOrDefaultExt();
             if (sender != tree) {
-                visualizerData.NodeData.ClearSelection();
+                visualizerData.Root.ClearSelection();
                 selected.ForEach(x => x.IsSelected = true);
             }
             if (sender != source) {
                 // Until we implement https://github.com/zspitz/ExpressionToSyntaxNode/issues/25, we can only select one ExpressionNodeData in the source code
-                vm.ExpressionNodeData toHighlight;
+                ExpressionNodeDataViewModel toHighlight;
                 if (sender == tree) {
                     // use the last selected from the tree
-                    toHighlight = tree.LastSelectedItem<vm.ExpressionNodeData>();
+                    toHighlight = tree.LastSelectedItem<ExpressionNodeDataViewModel>();
                 } else {
                     toHighlight = selected.FirstOrDefault();
                 }
                 if (toHighlight != null) {
-                    source.Select(toHighlight.Span.start, toHighlight.Span.length);
+                    source.Select(toHighlight.Model.Span.start, toHighlight.Model.Span.length);
                 } else {
                     source.Select(0, 0);
                 }
@@ -115,32 +113,34 @@ namespace ExpressionTreeVisualizer {
             }
         }
 
-        private vm.VisualizerDataOptions? _options;
-        public vm.VisualizerDataOptions? Options {
-            get => _options;
+        private ConfigViewModel? _config;
+        public ConfigViewModel? Config {
+            get => _config;
             set {
-                if (value == null || value == _options) { return; }
-                _options = value;
-                optionsPopup.DataContext = _options;
-                _options.PropertyChanged += (s, e) => LoadDataContext();
+                if (value == null || value == _config) { return; }
+                _config = value;
+                optionsPopup.DataContext = _config;
+                _config.PropertyChanged += (s, e) => LoadDataContext();
                 LoadDataContext();
             }
         }
         private void LoadDataContext() {
-            if (_options == null || ObjectProvider == null) { return; }
-            DataContext = ObjectProvider.TransferObject(Options);
+            if (_config == null || ObjectProvider == null) { return; }
+            var vd = (VisualizerData)ObjectProvider.TransferObject(Config.Model);
+            DataContext = new VisualizerDataViewModel(vd);
+            // TODO when changing the data context, also reload the config?
         }
 
         private void HelpContextMenu_Loaded(object sender, RoutedEventArgs e) {
             var menu = (MenuItem)sender;
-            var node = (vm.ExpressionNodeData)menu.DataContext;
+            var node = (ExpressionNodeDataViewModel)menu.DataContext;
 
             if (menu.Items.Any()) { return; }
 
             var listData = new List<(string header, string url)>();
 
-            if (node.ParentProperty.HasValue) {
-                var (@namespace, typename, propertyname) = node.ParentProperty.Value;
+            if (node.Model.ParentProperty.HasValue) {
+                var (@namespace, typename, propertyname) = node.Model.ParentProperty.Value;
                 listData.Add(
                     $"Property: {typename}.{propertyname}",
                     $"{BaseUrl}{new[] { @namespace, typename, propertyname }.Joined(".")}"
@@ -149,8 +149,8 @@ namespace ExpressionTreeVisualizer {
 
             addSeparator();
 
-            if (node.NodeTypesParts != null) {
-                foreach (var (@namespace, typename, membername) in node.NodeTypesParts) {
+            if (node.Model.NodeTypesParts != null) {
+                foreach (var (@namespace, typename, membername) in node.Model.NodeTypesParts) {
                     listData.Add(
                         $"Node type: {typename}.{membername}",
                         $"{BaseUrl}{new[] { @namespace, typename }.Joined(".")}#{new[] { @namespace.Replace(".", "_"), typename, membername }.Joined("_")}"
@@ -160,8 +160,8 @@ namespace ExpressionTreeVisualizer {
 
             addSeparator();
 
-            if (node.BaseTypes != null) {
-                node.BaseTypes.SelectT((@namespace, typename) => (
+            if (node.Model.BaseTypes != null) {
+                node.Model.BaseTypes.SelectT((@namespace, typename) => (
                     $"Base type: {typename}",
                     $"{BaseUrl}{@namespace}.{typename.Replace("~", "-")}"
                 )).AddRangeTo(listData);
@@ -169,8 +169,8 @@ namespace ExpressionTreeVisualizer {
 
             addSeparator();
 
-            if (node.FactoryMethodNames != null) {
-                node.FactoryMethodNames.Select(methodName => (
+            if (node.Model.FactoryMethodNames != null) {
+                node.Model.FactoryMethodNames.Select(methodName => (
                     $"Factory method: {methodName}",
                     $"{BaseUrl}system.linq.expressions.expression.{methodName}"
                 )).AddRangeTo(listData);
@@ -209,17 +209,17 @@ namespace ExpressionTreeVisualizer {
                 txbRootExpression.Text = dlg.Expression;
             }
 
-            var node = (vm.ExpressionNodeData)((MenuItem)sender).DataContext;
-            Clipboard.SetText(string.Format(node.WatchExpressionFormatString, txbRootExpression.Text));
+            var node = (ExpressionNodeDataViewModel)((MenuItem)sender).DataContext;
+            Clipboard.SetText(string.Format(node.Model.WatchExpressionFormatString, txbRootExpression.Text));
         }
 
         private void OpenNewWindow_Click(object sender, RoutedEventArgs e) {
-            var options = new vm.VisualizerDataOptions(_options);
-            options.Path = ((vm.ExpressionNodeData)((MenuItem)sender).DataContext).FullPath;
+            var options = new ConfigViewModel(_config!.Model);
+            options.Model.Path = ((ExpressionNodeDataViewModel)((MenuItem)sender).DataContext).Model.FullPath;
             var window = new VisualizerWindow();
             var control = (VisualizerDataControl)window.Content;
             control.ObjectProvider = ObjectProvider;
-            control.Options = options;
+            control.Config = options;
             window.ShowDialog();
         }
     }

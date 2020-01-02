@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Xunit;
 using ExpressionTreeTestObjects;
-using ExpressionTreeVisualizer.Serialization.ViewModels;
+using ExpressionTreeVisualizer.Serialization;
 
 namespace ExpressionTreeVisualizer.Tests {
     public class TestContainer {

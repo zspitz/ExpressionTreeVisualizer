@@ -2,7 +2,9 @@
 using System;
 using System.Diagnostics;
 using System.Windows;
-using ExpressionTreeVisualizer.Serialization.ViewModels;
+using ExpressionTreeVisualizer.Serialization;
+using ExpressionTreeVisualizer.UI;
+using ExpressionTreeVisualizer.Util;
 
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer), 
@@ -45,12 +47,14 @@ namespace ExpressionTreeVisualizer {
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) {
             if (windowService == null) { throw new ArgumentNullException(nameof(windowService)); }
 
+            //PresentationTraceSources.DataBindingSource.Listeners.Add(new DebugTraceListener());
+
             FrameworkCompatibilityPreferences.AreInactiveSelectionHighlightBrushKeysSupported = false;
 
             var window = new VisualizerWindow();
             var control = (VisualizerDataControl)window.Content;
             control.ObjectProvider = objectProvider;
-            control.Options = new VisualizerDataOptions() { Formatter = "C#" };
+            control.Config = new ConfigViewModel(new Config() { Formatter = "C#" });
 
             window.ShowDialog();
         }
