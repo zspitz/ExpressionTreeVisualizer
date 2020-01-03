@@ -15,6 +15,7 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Util\DebugTraceListener.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\DependencyObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\FrameworkElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\IEnumerableT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MultiSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\MultiSelectTreeView.cs" />
@@ -22,6 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Util\Extensions\TreeView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Functions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Monitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\RelayCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Selectable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\ViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ConfigViewModel.cs" />

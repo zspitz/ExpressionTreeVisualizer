@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Package\Package.csproj" />
+    <ProjectReference Include="..\Debuggee\Debuggee.csproj" />
   </ItemGroup>
 
 </Project>

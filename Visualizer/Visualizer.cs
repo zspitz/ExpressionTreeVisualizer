@@ -51,11 +51,10 @@ namespace ExpressionTreeVisualizer {
 
             FrameworkCompatibilityPreferences.AreInactiveSelectionHighlightBrushKeysSupported = false;
 
-            var window = new VisualizerWindow();
-            var control = (VisualizerDataControl)window.Content;
-            control.ObjectProvider = objectProvider;
-            control.Config = new ConfigViewModel(new Config() { Formatter = "C#" });
-
+            var window = new VisualizerWindow {
+                ObjectProvider = objectProvider,
+                Config = new Config() { Formatter = "C#" }
+            };
             window.ShowDialog();
         }
     }

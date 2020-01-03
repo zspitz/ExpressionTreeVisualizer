@@ -1,27 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExpressionTreeVisualizer.Util;
+﻿using ExpressionTreeVisualizer.Util;
 using ExpressionTreeVisualizer.Serialization;
-using static ExpressionTreeToString.Util.Functions;
 
 namespace ExpressionTreeVisualizer.UI {
     public class ConfigViewModel : ViewModelBase<Config> {
-        public ConfigViewModel(Config model) : base(model) { }
+        private readonly Config _originalValues;
+        public ConfigViewModel(Config config) : base(config.Clone()) {
+            _originalValues = config;
+        }
 
         public string Formatter {
             get => Model.Formatter;
             set {
-                Language = ResolveLanguage(value);
+                var prevLanguage = Model.Language;
                 NotifyChanged(Model.Formatter, value, () => Model.Formatter = value);
+                NotifyChanged(prevLanguage, Language, null, "Language");
             }
         }
 
         public string Language {
             get => Model.Language;
             set => NotifyChanged(Model.Language, value, () => Model.Language = value);
+        }
+
+        public bool IsDirty {
+            get {
+                var o = _originalValues;
+                var m = Model;
+                return
+                    o.Formatter != m.Formatter ||
+                    o.Language != m.Language ||
+                    o.Path != m.Path;
+            }
         }
     }
 }

@@ -12,15 +12,6 @@
   <Import Project="..\Serialization\Serialization.projitems" Label="Shared" />-->
 
   <ItemGroup>
-    <!-- These dependencies should be removed and replaced with the above commented imports-->
-    <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.DebuggerVisualizers.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <ProjectReference Include="..\Visualizer\Visualizer.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="ExpressionTreeToString" Version="2.0.15" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

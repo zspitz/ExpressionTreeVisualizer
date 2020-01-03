@@ -16,13 +16,13 @@ namespace ExpressionTreeVisualizer.Util {
 
         private bool IsEqual<T>(T current, T newValue) {
             if (current is IEquatable<T> equatable) {
-                if (equatable.Equals(newValue)) { return false; }
+                return equatable.Equals(newValue);
             } else if (current is null) {
-                if (newValue is null) { return false; }
+                if (newValue is null) { return true; }
             } else {
-                if (current.Equals(newValue)) { return false; }
+                if (current.Equals(newValue)) { return true; }
             }
-            return true;
+            return false;
         }
         private void Invoke(string? name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
@@ -34,9 +34,9 @@ namespace ExpressionTreeVisualizer.Util {
         }
 
         /// <summary>Raises change notification for fields not defined in the current class (e.g. the model class)</summary>
-        protected void NotifyChanged<T>(T current, T newValue, Action setter, [CallerMemberName] string? name = null) {
+        protected void NotifyChanged<T>(T current, T newValue, Action? setter = null, [CallerMemberName] string? name = null) {
             if (IsEqual(current, newValue)) { return; }
-            setter();
+            setter?.Invoke(); 
             Invoke(name);
         }
     }

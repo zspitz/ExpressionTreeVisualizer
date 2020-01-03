@@ -1,41 +1,13 @@
 ﻿<DockPanel x:Class="ExpressionTreeVisualizer.VisualizerDataControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ag="clr-namespace:WpfAutoGrid" xmlns:my="clr-namespace:ExpressionTreeVisualizer" xmlns:ygoe="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView">
+
     <FrameworkElement.Resources>
         <my:RootConverter x:Key="RootConverter" />
         <my:ConditionalFormatConverter x:Key="ConditionalFormatConverter" />
         <my:AnyVisibilityConverter x:Key="AnyVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <SolidColorBrush x:Key="TypeColor" Color="#066555" />
-        <HierarchicalDataTemplate x:Key="ExpressionNodeTemplate" ItemsSource="{Binding Children}">
-            <TextBlock DataContext="{Binding Model, Mode=OneTime}">
-                <TextBlock.ToolTip>
-                    <ag:AutoGrid Columns="65,Auto">
-                        <TextBlock Text="Path" />
-                        <TextBlock FontWeight="Bold" Text="{Binding FullPath}" />
-                        <TextBlock Text="Node type" />
-                        <TextBlock FontWeight="Bold" Text="{Binding NodeType}" />
-                        <TextBlock Text="Type" />
-                        <TextBlock FontWeight="Bold" Text="{Binding ReflectionTypeName}" />
-                        <TextBlock Text="Name" />
-                        <TextBlock FontWeight="Bold" Text="{Binding Name}" />
-                        <TextBlock Text="Value" />
-                        <TextBlock FontWeight="Bold" Text="{Binding StringValue}" />
-                    </ag:AutoGrid>
-                </TextBlock.ToolTip>
-                <TextBlock.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Copy watch expression" Click="CopyWatchExpression_Click" />
-                        <MenuItem Header="Open value in new window" Click="OpenNewWindow_Click" Visibility="{Binding EnableValueInNewWindow, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                        <MenuItem Header="Help" Loaded="HelpContextMenu_Loaded" />
-                    </ContextMenu>                    
-                </TextBlock.ContextMenu>
-                <Run Foreground="DarkGray" Text="{Binding PathFromParent, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
-                <Run FontWeight="Bold" Text="{Binding NodeType, Mode=OneTime}" />
-                <Run Foreground="{StaticResource TypeColor}" Text="{Binding ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=({0})}" />
-                <Run Text="{Binding Name, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\}}" />
-                <Run Text="{Binding StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" />
-            </TextBlock>
-        </HierarchicalDataTemplate>
     </FrameworkElement.Resources>
+
     <DockPanel Width="{Binding ActualWidth, ElementName=endNodes}" Margin="0,12,12,12" DockPanel.Dock="Right">
         <ag:AutoGrid x:Name="endNodes" ChildHorizontalAlignment="Left" ColumnCount="1" DockPanel.Dock="Bottom">
             <Grid.Resources>
@@ -89,29 +61,11 @@
                 </DataGrid.Columns>
             </DataGrid>
         </ag:AutoGrid>
-        <Grid Margin="0,0,0,5" DockPanel.Dock="Top">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="19" />
-            </Grid.RowDefinitions>
-            <TextBlock VerticalAlignment="Bottom" Text="Source:" />
-            <Button Name="optionsButton" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderThickness="0">
-                <StackPanel>
-                    <TextBlock Text="&#9881;" />
-                    <Popup Name="optionsPopup" AllowsTransparency="True" Placement="Custom" PlacementTarget="{Binding ElementName=optionsButton}" StaysOpen="False">
-                        <Border Background="White" BorderBrush="Black" BorderThickness="1">
-                            <ag:AutoGrid Margin="6" ChildMargin="3" ChildVerticalAlignment="Center" ColumnCount="2">
-                                <TextBlock Background="White" Text="Formatter" />
-                                <ComboBox Name="cmbFormatters" SelectedItem="{Binding Formatter}" />
-                                <TextBlock Background="White" Text="Language" />
-                                <ComboBox Name="cmbLanguages" SelectedItem="{Binding Language}" />
-                            </ag:AutoGrid>
-                        </Border>
-                    </Popup>
-                </StackPanel>
-            </Button>
-        </Grid>
+
+        <TextBlock VerticalAlignment="Bottom" Text="Source:" Margin="0,0,0,5" DockPanel.Dock="Top" Height="20" />
         <TextBox Name="source" Margin="0,0,0,12" MinWidth="600"  BorderBrush="Gray" BorderThickness="1" FontFamily="Consolas" FontSize="14" IsInactiveSelectionHighlightEnabled="True" IsReadOnly="True" IsReadOnlyCaretVisible="True" SelectionBrush="Blue" Text="{Binding Model.Source}" TextWrapping="Wrap" />
     </DockPanel>
+    
     <DockPanel Margin="12">
         <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
             <TextBlock Text="Expression:" Margin="0,0,12,0" VerticalAlignment="Center" />
@@ -131,14 +85,46 @@
                 </TextBlock.ToolTip>
             </TextBlock>
         </StackPanel>
-      <ygoe:MultiSelectTreeView Name="tree" BorderBrush="Gray" BorderThickness="1" ItemTemplate="{StaticResource ExpressionNodeTemplate}" ItemsSource="{Binding Root, Converter={StaticResource RootConverter}}">
-        <ygoe:MultiSelectTreeView.ItemContainerStyle>
-          <Style TargetType="ygoe:MultiSelectTreeViewItem">
-            <Setter Property="IsExpanded" Value="True" />
-            <Setter Property="ItemIndent" Value="18" />
-            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-          </Style>
-        </ygoe:MultiSelectTreeView.ItemContainerStyle>
-      </ygoe:MultiSelectTreeView>
+        <ygoe:MultiSelectTreeView Name="tree" BorderBrush="Gray" BorderThickness="1" ItemsSource="{Binding Root, Converter={StaticResource RootConverter}}">
+            <ygoe:MultiSelectTreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <TextBlock DataContext="{Binding Model, Mode=OneTime}">
+                        <TextBlock.ToolTip>
+                            <ag:AutoGrid Columns="65,Auto">
+                                <TextBlock Text="Path" />
+                                <TextBlock FontWeight="Bold" Text="{Binding FullPath}" />
+                                <TextBlock Text="Node type" />
+                                <TextBlock FontWeight="Bold" Text="{Binding NodeType}" />
+                                <TextBlock Text="Type" />
+                                <TextBlock FontWeight="Bold" Text="{Binding ReflectionTypeName}" />
+                                <TextBlock Text="Name" />
+                                <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+                                <TextBlock Text="Value" />
+                                <TextBlock FontWeight="Bold" Text="{Binding StringValue}" />
+                            </ag:AutoGrid>
+                        </TextBlock.ToolTip>
+                        <TextBlock.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Copy watch expression" Click="CopyWatchExpression_Click" />
+                                <MenuItem Header="Open value in new window" Command="{Binding OpenNewWindow}" Visibility="{Binding EnableValueInNewWindow, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <MenuItem Header="Help" Loaded="HelpContextMenu_Loaded" />
+                            </ContextMenu>
+                        </TextBlock.ContextMenu>
+                        <Run Foreground="DarkGray" Text="{Binding PathFromParent, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
+                        <Run FontWeight="Bold" Text="{Binding NodeType, Mode=OneTime}" />
+                        <Run Foreground="{StaticResource TypeColor}" Text="{Binding ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=({0})}" />
+                        <Run Text="{Binding Name, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\}}" />
+                        <Run Text="{Binding StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" />
+                    </TextBlock>
+                </HierarchicalDataTemplate>
+            </ygoe:MultiSelectTreeView.ItemTemplate>
+            <ygoe:MultiSelectTreeView.ItemContainerStyle>
+                <Style TargetType="ygoe:MultiSelectTreeViewItem">
+                    <Setter Property="IsExpanded" Value="True" />
+                    <Setter Property="ItemIndent" Value="18" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                </Style>
+            </ygoe:MultiSelectTreeView.ItemContainerStyle>
+        </ygoe:MultiSelectTreeView>
     </DockPanel>
 </DockPanel>

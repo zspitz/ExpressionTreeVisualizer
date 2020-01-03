@@ -1,15 +1,10 @@
 ﻿using ExpressionTreeToString.Util;
 using ExpressionTreeVisualizer.Util;
-using Microsoft.VisualStudio.DebuggerVisualizers;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using static ExpressionTreeToString.FormatterNames;
-using ExpressionTreeVisualizer.Serialization;
 using ExpressionTreeVisualizer.UI;
 
 namespace ExpressionTreeVisualizer {
@@ -22,15 +17,6 @@ namespace ExpressionTreeVisualizer {
             endNodeContainers = endNodes.FindVisualChildren<DataGrid>().ToList();
 
             Loaded += (s, e) => {
-                // https://stackoverflow.com/a/21436273/111794
-                optionsPopup.CustomPopupPlacementCallback += (popupSize, targetSize, offset) => {
-                    return new[] {
-                        new CustomPopupPlacement() {
-                            Point = new Point(targetSize.Width - popupSize.Width, targetSize.Height)
-                        }
-                    };
-                };
-
                 tree.SelectionChanged += (s1, e1) => changeSelection(s1);
                 source.SelectionChanged += (s1, e1) => changeSelection(s1);
                 endNodeContainers.ForEach(x => x.SelectionChanged += (s1, e1) => changeSelection(s1));
@@ -45,12 +31,7 @@ namespace ExpressionTreeVisualizer {
                 //    if (tree.ActualWidth > tree.MinWidth) { tree.MinWidth = tree.ActualWidth; }
                 //    if (tree.ActualHeight > tree.MinHeight) { tree.MinHeight = tree.ActualHeight; }
                 //};
-
-                optionsButton.Click += (s1, e1) => optionsPopup.IsOpen = true;
             };
-
-            cmbFormatters.ItemsSource = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
-            cmbLanguages.ItemsSource = new[] { CSharp, VisualBasic };
         }
 
         private VisualizerDataViewModel visualizerData => (VisualizerDataViewModel)DataContext;
@@ -101,34 +82,6 @@ namespace ExpressionTreeVisualizer {
             endNodeContainers.Where(x => x != sender).ForEach(x => x.SelectedValue = endNodeData);
 
             inChangeSelection = false;
-        }
-
-        private IVisualizerObjectProvider? _objectProvider;
-        public IVisualizerObjectProvider? ObjectProvider {
-            get => _objectProvider;
-            set {
-                if (value == null || value == _objectProvider) { return; }
-                _objectProvider = value;
-                LoadDataContext();
-            }
-        }
-
-        private ConfigViewModel? _config;
-        public ConfigViewModel? Config {
-            get => _config;
-            set {
-                if (value == null || value == _config) { return; }
-                _config = value;
-                optionsPopup.DataContext = _config;
-                _config.PropertyChanged += (s, e) => LoadDataContext();
-                LoadDataContext();
-            }
-        }
-        private void LoadDataContext() {
-            if (_config == null || ObjectProvider == null) { return; }
-            var vd = (VisualizerData)ObjectProvider.TransferObject(Config.Model);
-            DataContext = new VisualizerDataViewModel(vd);
-            // TODO when changing the data context, also reload the config?
         }
 
         private void HelpContextMenu_Loaded(object sender, RoutedEventArgs e) {
@@ -211,16 +164,6 @@ namespace ExpressionTreeVisualizer {
 
             var node = (ExpressionNodeDataViewModel)((MenuItem)sender).DataContext;
             Clipboard.SetText(string.Format(node.Model.WatchExpressionFormatString, txbRootExpression.Text));
-        }
-
-        private void OpenNewWindow_Click(object sender, RoutedEventArgs e) {
-            var options = new ConfigViewModel(_config!.Model);
-            options.Model.Path = ((ExpressionNodeDataViewModel)((MenuItem)sender).DataContext).Model.FullPath;
-            var window = new VisualizerWindow();
-            var control = (VisualizerDataControl)window.Content;
-            control.ObjectProvider = ObjectProvider;
-            control.Config = options;
-            window.ShowDialog();
         }
     }
 }

@@ -49,6 +49,8 @@ namespace ExpressionTreeVisualizer.UI {
             }
             return current;
         }
+
+        public RelayCommand? OpenNewWindow { get; set; }
     }
 }
 

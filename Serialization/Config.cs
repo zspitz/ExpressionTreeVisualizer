@@ -1,11 +1,20 @@
 ﻿using System;
 using static ExpressionTreeToString.FormatterNames;
-using static System.IO.Path;
 
 namespace ExpressionTreeVisualizer.Serialization {
     [Serializable]
     public class Config {
-        public string Formatter { get; set; } = CSharp;
+        private string formatter = CSharp;
+        public string Formatter {
+            get => formatter;
+            set {
+                formatter = value;
+                if (value == VisualBasic || value == CSharp) {
+                    Language = value;
+                }
+            }
+        }
+
         public string Language { get; set; } = CSharp;
         public string? Path { get; set; }
 
