@@ -10,17 +10,17 @@ namespace ExpressionTreeVisualizer.UI {
     public class ExpressionNodeDataViewModel : Selectable<ExpressionNodeData> {
         public List<ExpressionNodeDataViewModel> Children { get; }
 
-        public ExpressionNodeDataViewModel(ExpressionNodeData model, List<ExpressionNodeDataViewModel> endNodes) : base(model) {
+        public ExpressionNodeDataViewModel(ExpressionNodeData model, List<ExpressionNodeDataViewModel> allNodes) : base(model) {
             Children = model.Children.Select(x => {
-                var vm = new ExpressionNodeDataViewModel(x, endNodes);
-                if (x.EndNodeType != null) { endNodes.Add(vm); }
+                var vm = new ExpressionNodeDataViewModel(x, allNodes);
+                allNodes.Add(vm);
                 return vm;
             }).ToList();
         }
 
-        public void ClearSelection() {
-            IsSelected = false;
-            Children.ForEach(x => x.ClearSelection());
+        public void ClearSelection(params ExpressionNodeDataViewModel[] toSelect) {
+            IsSelected = this.In(toSelect);
+            Children.ForEach(x => x.ClearSelection(toSelect));
         }
     }
 }

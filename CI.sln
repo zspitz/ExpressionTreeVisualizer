@@ -13,11 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests.Visualizer\T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Visualizer", "Visualizer\Visualizer.csproj", "{B77B6DF5-33D7-4A81-9E17-E32731EFD4AB}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Visualizer.Xaml", "Visualizer.Xaml\Visualizer.Xaml.shproj", "{89DE9332-5AA0-4136-A785-ED712FDC39FC}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Visualizer.Xaml\Visualizer.Xaml.projitems*{89de9332-5aa0-4136-a785-ed712fdc39fc}*SharedItemsImports = 13
 		Serialization\Serialization.projitems*{9365b962-f17c-451c-92eb-f4fed9c6c84e}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

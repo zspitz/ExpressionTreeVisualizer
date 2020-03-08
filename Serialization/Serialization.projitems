@@ -13,7 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)EndNodeData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EndNodeType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionNodeData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NullableAttributes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VisualizerData.cs" />
   </ItemGroup>

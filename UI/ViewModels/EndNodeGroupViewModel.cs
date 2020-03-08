@@ -24,5 +24,11 @@ namespace ExpressionTreeVisualizer.UI {
                 node.PropertyChanged += handler;
             }
         }
+
+        //public void IsSelectedAndChildren(bool selected) {
+        //    foreach (var node in Nodes) {
+        //        node.IsSelected = selected;
+        //    }
+        //}
     }
 }

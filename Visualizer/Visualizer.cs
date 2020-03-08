@@ -3,7 +3,6 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using ExpressionTreeVisualizer.Serialization;
-using ExpressionTreeVisualizer.UI;
 using ExpressionTreeVisualizer.Util;
 
 [assembly: DebuggerVisualizer(
@@ -47,9 +46,7 @@ namespace ExpressionTreeVisualizer {
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) {
             if (windowService == null) { throw new ArgumentNullException(nameof(windowService)); }
 
-            //PresentationTraceSources.DataBindingSource.Listeners.Add(new DebugTraceListener());
-
-            FrameworkCompatibilityPreferences.AreInactiveSelectionHighlightBrushKeysSupported = false;
+            PresentationTraceSources.DataBindingSource.Listeners.Add(new DebugTraceListener());
 
             var window = new VisualizerWindow {
                 ObjectProvider = objectProvider,

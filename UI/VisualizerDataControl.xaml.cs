@@ -1,29 +1,25 @@
 ﻿using ExpressionTreeToString.Util;
-using ExpressionTreeVisualizer.Util;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using ExpressionTreeVisualizer.UI;
+using static System.Windows.SystemColors;
 
 namespace ExpressionTreeVisualizer {
     public partial class VisualizerDataControl {
-        private readonly List<DataGrid> endNodeContainers;
-
         public VisualizerDataControl() {
             InitializeComponent();
 
-            endNodeContainers = endNodes.FindVisualChildren<DataGrid>().ToList();
+            // When a control loses focus, it should look no different from when it had the focus (e.g. selection color)
+            Resources[InactiveSelectionHighlightBrushKey] = HighlightBrush;
+            Resources[InactiveSelectionHighlightTextBrushKey] = HighlightTextBrush;
 
             Loaded += (s, e) => {
-                tree.SelectionChanged += (s1, e1) => changeSelection(s1);
-                source.SelectionChanged += (s1, e1) => changeSelection(s1);
-                endNodeContainers.ForEach(x => x.SelectionChanged += (s1, e1) => changeSelection(s1));
-
-                // if we don't do this, the selection will only be visible if the textbox currently has the focus
+                // HACK: without the next two lines the selection will only be visible if the textbox currently has the focus
+                source.LostFocus += (s1, e1) => e1.Handled = true;
                 source.Focus();
-                source.SelectAll();
 
                 // except if the user makes the window wider, then narrower, the tree doesn't contract
                 //tree.LayoutUpdated += (s1, e1) => {
@@ -31,58 +27,11 @@ namespace ExpressionTreeVisualizer {
                 //    if (tree.ActualWidth > tree.MinWidth) { tree.MinWidth = tree.ActualWidth; }
                 //    if (tree.ActualHeight > tree.MinHeight) { tree.MinHeight = tree.ActualHeight; }
                 //};
+
             };
         }
 
         private VisualizerDataViewModel visualizerData => (VisualizerDataViewModel)DataContext;
-
-        private bool inChangeSelection;
-        private void changeSelection(object sender) {
-            if (inChangeSelection) { return; }
-            inChangeSelection = true;
-
-            // determine the selected ExpressionNodeData based on the sender
-            // determine also the distinct EndNodeData from the selected nodes
-
-            // apply selection changed to treeview, textbox, and endnode datagrids
-            // if sender is treeview, apply to textbox and datagrids
-            // if sender is textbox, apply to treeview, then apply to datagrids
-            // if sender is datagrid, apply to other datagrids, apply to treeview, then to textbox
-
-            List<ExpressionNodeDataViewModel> selected = new List<ExpressionNodeDataViewModel>();
-            if (sender == tree) {
-                tree.SelectedItems<ExpressionNodeDataViewModel>().AddRangeTo(selected);
-            } else if (sender == source) {
-                var singleNode = visualizerData.FindNodeBySpan(source.SelectionStart, source.SelectionLength);
-                if (singleNode != null) { selected.Add(singleNode); }
-            } else if (sender is DataGrid dg) {
-                dg.SelectedItem<EndNodeGroupViewModel>().Nodes.AddRangeTo(selected);
-            }
-
-            var endNodeData = selected.Select(x => x.Model.EndNodeData).Distinct().SingleOrDefaultExt();
-            if (sender != tree) {
-                visualizerData.Root.ClearSelection();
-                selected.ForEach(x => x.IsSelected = true);
-            }
-            if (sender != source) {
-                // Until we implement https://github.com/zspitz/ExpressionToSyntaxNode/issues/25, we can only select one ExpressionNodeData in the source code
-                ExpressionNodeDataViewModel toHighlight;
-                if (sender == tree) {
-                    // use the last selected from the tree
-                    toHighlight = tree.LastSelectedItem<ExpressionNodeDataViewModel>();
-                } else {
-                    toHighlight = selected.FirstOrDefault();
-                }
-                if (toHighlight != null) {
-                    source.Select(toHighlight.Model.Span.start, toHighlight.Model.Span.length);
-                } else {
-                    source.Select(0, 0);
-                }
-            }
-            endNodeContainers.Where(x => x != sender).ForEach(x => x.SelectedValue = endNodeData);
-
-            inChangeSelection = false;
-        }
 
         private void HelpContextMenu_Loaded(object sender, RoutedEventArgs e) {
             var menu = (MenuItem)sender;
@@ -167,3 +116,6 @@ namespace ExpressionTreeVisualizer {
         }
     }
 }
+
+
+// TODO don't add context menu entry for new window when not available
