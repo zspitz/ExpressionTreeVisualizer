@@ -138,7 +138,7 @@
                         <TextBlock.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Copy watch expression" Click="CopyWatchExpression_Click" />
-                                <MenuItem Header="Open value in new window" Command="{Binding OpenNewWindow}" Visibility="{Binding EnableValueInNewWindow, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <!--<MenuItem Header="Open value in new window" Command="{Binding OpenNewWindow}" Visibility="{Binding EnableValueInNewWindow, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
                                 <MenuItem Header="Help" Loaded="HelpContextMenu_Loaded" />
                             </ContextMenu>
                         </TextBlock.ContextMenu>

@@ -16,14 +16,14 @@ using System.Collections;
 namespace ExpressionTreeVisualizer.Serialization {
     [Serializable]
     public class ExpressionNodeData {
-        private static readonly HashSet<Type> propertyTypes = 
+        private static readonly HashSet<Type> propertyTypes =
             NodeTypes
                 .SelectMany(x => new[] { x, typeof(IEnumerable<>).MakeGenericType(x) })
                 .ToHashSet();
 
         private static readonly Dictionary<Type, List<(string @namespace, string typename)>> baseTypes = new Dictionary<Type, List<(string @namespace, string typename)>>();
 
-        private static readonly Dictionary<Type, string[]> factoryMethodNamesByType = 
+        private static readonly Dictionary<Type, string[]> factoryMethodNamesByType =
             typeof(Expression).GetMethods()
                 .Where(x => x.IsStatic)
                 .GroupBy(x => x.ReturnType, x => x.Name)
@@ -66,13 +66,13 @@ namespace ExpressionTreeVisualizer.Serialization {
         internal ExpressionNodeData(object o, (string aggregatePath, string pathFromParent) path, VisualizerData visualizerData, Dictionary<string, (int start, int length)> pathSpans, bool isParameterDeclaration = false, PropertyInfo? pi = null, string? parentWatchExpression = null) :
             this(
                 o, path,
-                visualizerData.Config.Language, 
+                visualizerData.Config.Language,
                 pathSpans, isParameterDeclaration, pi, parentWatchExpression
             ) { }
 
         private ExpressionNodeData(
             object o, (string aggregatePath, string pathFromParent) path,
-            string language, 
+            string language,
             Dictionary<string, (int start, int length)> pathSpans, bool isParameterDeclaration = false, PropertyInfo? pi = null, string? parentWatchExpression = null
         ) {
             var (aggregatePath, pathFromParent) = path;
@@ -152,17 +152,21 @@ namespace ExpressionTreeVisualizer.Serialization {
                 Span = span;
             }
 
+            var typename = o.GetType().BaseTypes(false, true).First(x => !x.IsGenericType && x.IsPublic); // because the FullName of generic types is often the fully-qualified name
             if (parentWatchExpression.IsNullOrWhitespace()) {
-                WatchExpressionFormatString = "{0}";
-            } else if (pi is { }) {
-                if (pi.DeclaringType is null) { throw new ArgumentNullException("pi.DeclaringType"); }
-
+                var formatString = "{0}";
+                if (language == CSharp) {
+                    WatchExpressionFormatString = $"(({typename}){formatString})";
+                } else { // VisualBasic
+                    WatchExpressionFormatString = $"CType({formatString}, {typename})";
+                }
+            } else {
                 var watchPathFromParent = PathFromParent;
                 if (language == CSharp) {
-                    WatchExpressionFormatString = $"(({pi.DeclaringType.FullName}){parentWatchExpression}).{watchPathFromParent}";
-                } else {  //VisualBasic
+                    WatchExpressionFormatString = $"(({typename}){parentWatchExpression}.{watchPathFromParent})";
+                } else {  // Visual Basic
                     watchPathFromParent = watchPathFromParent.Replace("[", "(").Replace("]", ")");
-                    WatchExpressionFormatString = $"CType({parentWatchExpression}, {pi.DeclaringType.FullName}).{watchPathFromParent}";
+                    WatchExpressionFormatString = $"CType({parentWatchExpression}.{watchPathFromParent}, {typename})";
                 }
             }
 
