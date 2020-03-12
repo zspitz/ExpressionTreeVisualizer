@@ -2,7 +2,7 @@
 
 [![AppVeyor build status](https://img.shields.io/appveyor/ci/zspitz/expressiontreevisualizer?style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreevisualizer) [![Tests](https://img.shields.io/appveyor/tests/zspitz/expressiontreevisualizer?compact_message&style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreevisualizer) [![GitHub Release](https://img.shields.io/github/release/zspitz/expressiontreevisualizer.svg?style=flat&max-age=86400)](https://github.com/zspitz/ExpressionTreeVisualizer/releases)
 
-This project provides a custom debugging visualizer for expression trees that can be used with Visual Studio (on Windows). The UI consists of:
+This project provides a custom debugging visualizer for expression trees, that can be used while debugging with Visual Studio (on Windows). The UI consists of:
 
 1. a graphical treeview of the expression tree structure,
 2. [source code representation of the tree](https://github.com/zspitz/ExpressionTreeToString), and
