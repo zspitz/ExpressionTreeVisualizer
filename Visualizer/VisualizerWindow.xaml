@@ -30,7 +30,7 @@
             </Label>
 
             <Label Content="Expression" Padding="0,5,5,5" />
-            <TextBox Text="{Binding RootExpression, RelativeSource={RelativeSource AncestorType=my:VisualizerWindow}}" />
+            <TextBox Text="{Binding RootExpression, Source={x:Static my:Visualizer.Current}}" />
 
         </DockPanel>
         <my:VisualizerDataControl x:Name="visualizerDataControl"/>

@@ -1,15 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>ExpressionTreeVisualizer</RootNamespace>
     <AssemblyName>ExpressionTreeVisualizer.UI</AssemblyName>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
-
-  <!--<Import Project="..\UI\UI.projitems" Label="Shared" />
-  <Import Project="..\Serialization\Serialization.projitems" Label="Shared" />-->
 
   <ItemGroup>
     <PackageReference Include="ExpressionTreeToString" Version="2.0.20" />

@@ -99,10 +99,6 @@
     </DockPanel>
 
     <DockPanel Margin="0,0,12,0">
-        <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
-            <TextBlock Text="Expression:" Margin="0,0,12,0" VerticalAlignment="Center" />
-            <TextBox Name="txbRootExpression" VerticalContentAlignment="Center" />
-        </DockPanel>
         <StackPanel Margin="0,0,0,5" VerticalAlignment="Bottom" DockPanel.Dock="Top" Orientation="Horizontal">
             <TextBlock VerticalAlignment="Bottom" Text="Tree: " />
             <TextBlock FontSize="15" Foreground="Blue" Text="&#128712;">

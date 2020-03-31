@@ -13,7 +13,6 @@ namespace ExpressionTreeVisualizer {
         public ExpressionRootPrompt() {
             InitializeComponent();
 
-            //Closing += (s, e) => Expression = txbExpression.Text;
             link.RequestNavigate += (s, e) => Process.Start(link.NavigateUri.ToString());
         }
 

@@ -23,35 +23,6 @@ using ZSpitz.Util.Wpf;
 
 namespace ExpressionTreeVisualizer {
     public partial class VisualizerWindow : Window {
-        private static string? globalRootExpression;
-
-        public static string? GlobalRootExpression { 
-            get {
-                if (globalRootExpression.IsNullOrWhitespace()) {
-                    var dlg = new ExpressionRootPrompt();
-                    // TODO synchronize dialog value with field using databinding
-                    //dlg.Expression = rootExpression;
-                    dlg.ShowDialog();
-                    globalRootExpression = dlg.Expression;
-                }
-                return globalRootExpression;
-            }
-            set => globalRootExpression = value;
-        }
-
-        public static readonly DependencyProperty RootExpressionProperty =
-            DependencyProperty.Register("RootExpression", typeof(string), typeof(VisualizerWindow), new PropertyMetadata(
-                null, 
-                (d, args) => GlobalRootExpression = (string)args.NewValue, 
-                (d, baseValue) => GlobalRootExpression
-            ));
-
-        public string RootExpression {
-            get => (string)GetValue(RootExpressionProperty);
-            set => SetValue(RootExpressionProperty, value);
-        }
-        
-
         private IVisualizerObjectProvider? _objectProvider;
         public IVisualizerObjectProvider? ObjectProvider {
             set {

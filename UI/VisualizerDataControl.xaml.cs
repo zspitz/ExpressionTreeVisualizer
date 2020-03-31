@@ -105,14 +105,11 @@ namespace ExpressionTreeVisualizer {
         private const string BaseUrl = "https://docs.microsoft.com/dotnet/api/";
 
         private void CopyWatchExpression_Click(object sender, RoutedEventArgs e) {
-            if (txbRootExpression.Text.IsNullOrWhitespace()) {
-                var dlg = new ExpressionRootPrompt();
-                dlg.ShowDialog();
-                txbRootExpression.Text = dlg.Expression;
-            }
+            var rootExpression = Visualizer.Current?.GetRootExpression();
+            if (rootExpression.IsNullOrWhitespace()) { return; }
 
             var node = (ExpressionNodeDataViewModel)((MenuItem)sender).DataContext;
-            Clipboard.SetText(string.Format(node.Model.WatchExpressionFormatString, txbRootExpression.Text));
+            Clipboard.SetText(string.Format(node.Model.WatchExpressionFormatString, rootExpression));
         }
     }
 }
