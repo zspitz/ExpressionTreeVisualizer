@@ -111,7 +111,5 @@ namespace ExpressionTreeVisualizer.UI {
                 sourceSelectionStart + sourceSelectionLength - 1;
 
         public RelayCommand UpdateSelection { get; }
-
-        //public RelayCommand CopyWatchExpression { get; }
     }
 }

@@ -1,8 +1,9 @@
-﻿<DockPanel x:Class="ExpressionTreeVisualizer.VisualizerDataControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+﻿<util:AutoGrid x:Class="ExpressionTreeVisualizer.VisualizerDataControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:util="clr-namespace:ZSpitz.Util.Wpf;assembly=ZSpitz.Util.Wpf"
            xmlns:my="clr-namespace:ExpressionTreeVisualizer"
            xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-           xmlns:ygoe="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView">
+           xmlns:ygoe="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView"
+            Rows="*,*" Columns="Auto,*" Orientation="Vertical">
 
     <FrameworkElement.Resources>
         <my:RootConverter x:Key="RootConverter" />
@@ -12,96 +13,10 @@
         <SolidColorBrush x:Key="TypeColor" Color="#066555" />
     </FrameworkElement.Resources>
 
-    <DockPanel Width="{Binding ActualWidth, ElementName=endNodes}" DockPanel.Dock="Right">
-        <util:AutoGrid x:Name="endNodes" ChildHorizontalAlignment="Left" ColumnCount="1" DockPanel.Dock="Bottom">
-            <Grid.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Margin" Value="0,10,0,5" />
-                </Style>
-                <Style TargetType="DataGrid">
-                    <Setter Property="IsReadOnly" Value="True" />
-                    <Setter Property="AutoGenerateColumns" Value="False" />
-                    <Setter Property="Visibility" Value="{Binding ItemsSource, RelativeSource={RelativeSource Self}, Converter={StaticResource AnyVisibilityConverter}}" />
-                    <Setter Property="BorderThickness" Value="1" />
-                    <Setter Property="BorderBrush" Value="Gray" />
-                    <Setter Property="HeadersVisibility" Value="Column" />
-                    <Setter Property="HorizontalAlignment" Value="Stretch" />
-                    <Setter Property="SelectionMode" Value="Extended" />
-                </Style>
-                <Style TargetType="DataGridRow">
-                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                </Style>
-            </Grid.Resources>
-
-            <TextBlock Text="Parameters: " Visibility="{Binding Parameters, Converter={StaticResource AnyVisibilityConverter}}" />
-            <DataGrid ItemsSource="{Binding Parameters}" SelectedValuePath="Model" Name="dgParameters">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Model.Name}" Header="Name" />
-                    <DataGridTextColumn Binding="{Binding Model.Type}" Foreground="{StaticResource TypeColor}" Header="Type" />
-                </DataGrid.Columns>
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="SelectionChanged">
-                        <b:InvokeCommandAction Command="{Binding UpdateSelection}" CommandParameter="{Binding SelectedItem, ElementName=dgParameters}" />
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-            </DataGrid>
-
-            <TextBlock Text="Closed-over variables: " Visibility="{Binding ClosedVars, Converter={StaticResource AnyVisibilityConverter}}" />
-            <DataGrid ItemsSource="{Binding ClosedVars}" SelectedValuePath="Model" Name="dgClosedVars">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Model.Closure}" Header="Closure" />
-                    <DataGridTextColumn Binding="{Binding Model.Name}" Header="Name" />
-                    <DataGridTextColumn Binding="{Binding Model.Type}" Foreground="{StaticResource TypeColor}" Header="Type" />
-                    <DataGridTextColumn Binding="{Binding Model.Value}" Header="Value" />
-                </DataGrid.Columns>
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="SelectionChanged">
-                        <b:InvokeCommandAction Command="{Binding UpdateSelection}" CommandParameter="{Binding SelectedItem, ElementName=dgClosedVars}" />
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-            </DataGrid>
-
-            <TextBlock Text="Constants: " Visibility="{Binding Constants, Converter={StaticResource AnyVisibilityConverter}}" />
-            <DataGrid ItemsSource="{Binding Constants}" SelectedValuePath="Model" Name="dgConstants">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Model.Type}" Foreground="{StaticResource TypeColor}" Header="Type" />
-                    <DataGridTextColumn Binding="{Binding Model.Value}" Header="Value" />
-                </DataGrid.Columns>
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="SelectionChanged">
-                        <b:InvokeCommandAction Command="{Binding UpdateSelection}" CommandParameter="{Binding SelectedItem, ElementName=dgConstants}" />
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-            </DataGrid>
-
-            <TextBlock Text="Defaults: " Visibility="{Binding Defaults, Converter={StaticResource AnyVisibilityConverter}}" />
-            <DataGrid ItemsSource="{Binding Defaults}" SelectedValuePath="Model" Name="dgDefaults">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Model.Type}" Foreground="{StaticResource TypeColor}" Header="Type" />
-                    <DataGridTextColumn Binding="{Binding Model.Value}" Header="Value" />
-                </DataGrid.Columns>
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="SelectionChanged">
-                        <b:InvokeCommandAction Command="{Binding UpdateSelection}" CommandParameter="{Binding SelectedItem, ElementName=dgDefaults}" />
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-            </DataGrid>
-        </util:AutoGrid>
-
-        <TextBlock VerticalAlignment="Bottom" Text="Source:" Margin="0,0,0,5" DockPanel.Dock="Top" Height="20" />
-        <util:BindableSelectionTextBox x:Name="source" Margin="0,0,0,12" MinWidth="600"  BorderBrush="Gray" BorderThickness="1" FontFamily="Consolas" FontSize="14" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding Model.Source}" TextWrapping="Wrap" BindableSelectionStart="{Binding SourceSelectionStart}" BindableSelectionLength="{Binding SourceSelectionLength}">
-            <b:Interaction.Triggers>
-                <b:EventTrigger EventName="SelectionChanged">
-                    <b:InvokeCommandAction Command="{Binding UpdateSelection}" CommandParameter="{Binding Text, ElementName=source}" />
-                </b:EventTrigger>
-            </b:Interaction.Triggers>
-        </util:BindableSelectionTextBox>
-    </DockPanel>
-
-    <DockPanel Margin="0,0,12,0">
-        <StackPanel Margin="0,0,0,5" VerticalAlignment="Bottom" DockPanel.Dock="Top" Orientation="Horizontal">
-            <TextBlock VerticalAlignment="Bottom" Text="Tree: " />
-            <TextBlock FontSize="15" Foreground="Blue" Text="&#128712;">
+    <DockPanel Grid.RowSpan="2" Margin="0,0,12,0">
+        <StackPanel Margin="0,0,0,5" DockPanel.Dock="Top" Orientation="Horizontal">
+            <TextBlock Text="Tree: " />
+            <TextBlock FontSize="12" Foreground="Blue" Text="&#128712;">
                 <TextBlock.ToolTip>
                     <TextBlock>
                         <Run Foreground="DarkGray" Text="Property of parent" />
@@ -167,4 +82,91 @@
             </b:Interaction.Triggers>
         </ygoe:MultiSelectTreeView>
     </DockPanel>
-</DockPanel>
+
+    <DockPanel>
+        <TextBlock Text="Source:" Margin="0,0,0,5" DockPanel.Dock="Top" />
+        <util:BindableSelectionTextBox x:Name="source" Margin="0,0,0,12" BorderBrush="Gray" BorderThickness="1" FontFamily="Consolas" FontSize="14" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding Model.Source}" TextWrapping="NoWrap" BindableSelectionStart="{Binding SourceSelectionStart}" BindableSelectionLength="{Binding SourceSelectionLength}">
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="SelectionChanged">
+                    <b:InvokeCommandAction Command="{Binding UpdateSelection}" CommandParameter="{Binding Text, ElementName=source}" />
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </util:BindableSelectionTextBox>
+    </DockPanel>
+
+    <util:AutoGrid x:Name="endNodes" ChildHorizontalAlignment="Left" ColumnCount="1" DockPanel.Dock="Bottom">
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="0,10,0,5" />
+            </Style>
+            <Style TargetType="DataGrid">
+                <Setter Property="IsReadOnly" Value="True" />
+                <Setter Property="AutoGenerateColumns" Value="False" />
+                <Setter Property="Visibility" Value="{Binding ItemsSource, RelativeSource={RelativeSource Self}, Converter={StaticResource AnyVisibilityConverter}}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="Gray" />
+                <Setter Property="HeadersVisibility" Value="Column" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="SelectionMode" Value="Extended" />
+            </Style>
+            <Style TargetType="DataGridRow">
+                <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+            </Style>
+        </Grid.Resources>
+
+        <TextBlock Text="Parameters: " Visibility="{Binding Parameters, Converter={StaticResource AnyVisibilityConverter}}" />
+        <DataGrid ItemsSource="{Binding Parameters}" SelectedValuePath="Model" Name="dgParameters">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Model.Name}" Header="Name" />
+                <DataGridTextColumn Binding="{Binding Model.Type}" Foreground="{StaticResource TypeColor}" Header="Type" />
+            </DataGrid.Columns>
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="SelectionChanged">
+                    <b:InvokeCommandAction Command="{Binding UpdateSelection}" CommandParameter="{Binding SelectedItem, ElementName=dgParameters}" />
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </DataGrid>
+
+        <TextBlock Text="Closed-over variables: " Visibility="{Binding ClosedVars, Converter={StaticResource AnyVisibilityConverter}}" />
+        <DataGrid ItemsSource="{Binding ClosedVars}" SelectedValuePath="Model" Name="dgClosedVars">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Model.Closure}" Header="Closure" />
+                <DataGridTextColumn Binding="{Binding Model.Name}" Header="Name" />
+                <DataGridTextColumn Binding="{Binding Model.Type}" Foreground="{StaticResource TypeColor}" Header="Type" />
+                <DataGridTextColumn Binding="{Binding Model.Value}" Header="Value" />
+            </DataGrid.Columns>
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="SelectionChanged">
+                    <b:InvokeCommandAction Command="{Binding UpdateSelection}" CommandParameter="{Binding SelectedItem, ElementName=dgClosedVars}" />
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </DataGrid>
+
+        <TextBlock Text="Constants: " Visibility="{Binding Constants, Converter={StaticResource AnyVisibilityConverter}}" />
+        <DataGrid ItemsSource="{Binding Constants}" SelectedValuePath="Model" Name="dgConstants">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Model.Type}" Foreground="{StaticResource TypeColor}" Header="Type" />
+                <DataGridTextColumn Binding="{Binding Model.Value}" Header="Value" />
+            </DataGrid.Columns>
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="SelectionChanged">
+                    <b:InvokeCommandAction Command="{Binding UpdateSelection}" CommandParameter="{Binding SelectedItem, ElementName=dgConstants}" />
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </DataGrid>
+
+        <TextBlock Text="Defaults: " Visibility="{Binding Defaults, Converter={StaticResource AnyVisibilityConverter}}" />
+        <DataGrid ItemsSource="{Binding Defaults}" SelectedValuePath="Model" Name="dgDefaults">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Model.Type}" Foreground="{StaticResource TypeColor}" Header="Type" />
+                <DataGridTextColumn Binding="{Binding Model.Value}" Header="Value" />
+            </DataGrid.Columns>
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="SelectionChanged">
+                    <b:InvokeCommandAction Command="{Binding UpdateSelection}" CommandParameter="{Binding SelectedItem, ElementName=dgDefaults}" />
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </DataGrid>
+    </util:AutoGrid>
+
+</util:AutoGrid>
