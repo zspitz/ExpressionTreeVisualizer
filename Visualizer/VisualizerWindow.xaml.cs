@@ -12,15 +12,46 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ExpressionTreeVisualizer.Util;
 using System.Windows.Controls.Primitives;
 using static ExpressionTreeToString.FormatterNames;
 using Microsoft.VisualStudio.DebuggerVisualizers;
 using ExpressionTreeVisualizer.UI;
 using ExpressionTreeVisualizer.Serialization;
+using ExpressionTreeToString.Util;
+using ZSpitz.Util;
+using ZSpitz.Util.Wpf;
 
 namespace ExpressionTreeVisualizer {
     public partial class VisualizerWindow : Window {
+        private static string? globalRootExpression;
+
+        public static string? GlobalRootExpression { 
+            get {
+                if (globalRootExpression.IsNullOrWhitespace()) {
+                    var dlg = new ExpressionRootPrompt();
+                    // TODO synchronize dialog value with field using databinding
+                    //dlg.Expression = rootExpression;
+                    dlg.ShowDialog();
+                    globalRootExpression = dlg.Expression;
+                }
+                return globalRootExpression;
+            }
+            set => globalRootExpression = value;
+        }
+
+        public static readonly DependencyProperty RootExpressionProperty =
+            DependencyProperty.Register("RootExpression", typeof(string), typeof(VisualizerWindow), new PropertyMetadata(
+                null, 
+                (d, args) => GlobalRootExpression = (string)args.NewValue, 
+                (d, baseValue) => GlobalRootExpression
+            ));
+
+        public string RootExpression {
+            get => (string)GetValue(RootExpressionProperty);
+            set => SetValue(RootExpressionProperty, value);
+        }
+        
+
         private IVisualizerObjectProvider? _objectProvider;
         public IVisualizerObjectProvider? ObjectProvider {
             set {
@@ -64,17 +95,14 @@ namespace ExpressionTreeVisualizer {
         public VisualizerWindow() {
             InitializeComponent();
 
-
             // if we could find out which is the current monitor, that would be better
             var workingAreas = Monitor.AllMonitors.Select(x => x.WorkingArea).ToList();
             MaxWidth = workingAreas.Min(x => x.Width) * .90;
             MaxHeight = workingAreas.Min(x => x.Height) * .90;
 
-
             PreviewKeyDown += (s, e) => {
                 if (e.Key == Key.Escape) { Close(); }
             };
-
 
             cmbFormatters.ItemsSource = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
             cmbLanguages.ItemsSource = new[] { CSharp, VisualBasic };

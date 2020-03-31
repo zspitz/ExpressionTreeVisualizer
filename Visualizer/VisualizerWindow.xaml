@@ -1,4 +1,4 @@
-﻿<Window x:Class="ExpressionTreeVisualizer.VisualizerWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:my="clr-namespace:ExpressionTreeVisualizer" xmlns:ag="clr-namespace:WpfAutoGrid"
+﻿<Window x:Class="ExpressionTreeVisualizer.VisualizerWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:my="clr-namespace:ExpressionTreeVisualizer" xmlns:util="clr-namespace:ZSpitz.Util.Wpf;assembly=ZSpitz.Util.Wpf"
         HorizontalAlignment="Center" VerticalAlignment="Center" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <my:TitleConverter x:Key="TitleConverter" />
@@ -10,22 +10,29 @@
             <Binding Path="Model.Config.Path" Mode="OneWay" FallbackValue="{x:Null}" />
         </MultiBinding>
     </Window.Title>
-    <Grid>
-        <Label Name="optionsAnchor" HorizontalContentAlignment="Right" VerticalContentAlignment="Top">
-            <Hyperlink Name="optionsLink">
-                <TextBlock Text="Settings" />
-                <Popup Name="optionsPopup" AllowsTransparency="True" Placement="Custom" PlacementTarget="{Binding ElementName=optionsAnchor}" StaysOpen="False">
-                    <Border Background="White" BorderBrush="Black" BorderThickness="1">
-                        <ag:AutoGrid Margin="6" ChildMargin="3" ChildVerticalAlignment="Center" ColumnCount="2">
-                            <TextBlock Background="White" Text="Formatter" />
-                            <ComboBox Name="cmbFormatters" SelectedItem="{Binding Formatter}" />
-                            <TextBlock Background="White" Text="Language" />
-                            <ComboBox Name="cmbLanguages" SelectedItem="{Binding Language}" />
-                        </ag:AutoGrid>
-                    </Border>
-                </Popup>
-            </Hyperlink>
-        </Label>
+
+    <DockPanel Margin="12">
+        <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+            <Label Name="optionsAnchor" DockPanel.Dock="Right" Margin="9,0,0,0">
+                <Hyperlink Name="optionsLink">
+                    <TextBlock Text="Settings" />
+                    <Popup Name="optionsPopup" AllowsTransparency="True" Placement="Custom" PlacementTarget="{Binding ElementName=optionsAnchor}" StaysOpen="False">
+                        <Border Background="White" BorderBrush="Black" BorderThickness="1">
+                            <util:AutoGrid Margin="6" ChildMargin="3" ChildVerticalAlignment="Center" ColumnCount="2">
+                                <TextBlock Background="White" Text="Formatter" />
+                                <ComboBox Name="cmbFormatters" SelectedItem="{Binding Formatter}" />
+                                <TextBlock Background="White" Text="Language" />
+                                <ComboBox Name="cmbLanguages" SelectedItem="{Binding Language}" />
+                            </util:AutoGrid>
+                        </Border>
+                    </Popup>
+                </Hyperlink>
+            </Label>
+
+            <Label Content="Expression" Padding="0,5,5,5" />
+            <TextBox Text="{Binding RootExpression, RelativeSource={RelativeSource AncestorType=my:VisualizerWindow}}" />
+
+        </DockPanel>
         <my:VisualizerDataControl x:Name="visualizerDataControl"/>
-    </Grid>
-</Window>
+    </DockPanel>
+    </Window>

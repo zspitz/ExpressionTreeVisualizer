@@ -1,19 +1,19 @@
 ﻿<DockPanel x:Class="ExpressionTreeVisualizer.VisualizerDataControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-           xmlns:ag="clr-namespace:WpfAutoGrid"
-           xmlns:my="clr-namespace:ExpressionTreeVisualizer" xmlns:my1="clr-namespace:ExpressionTreeVisualizer.Util"
+           xmlns:util="clr-namespace:ZSpitz.Util.Wpf;assembly=ZSpitz.Util.Wpf"
+           xmlns:my="clr-namespace:ExpressionTreeVisualizer"
            xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
            xmlns:ygoe="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView">
 
     <FrameworkElement.Resources>
         <my:RootConverter x:Key="RootConverter" />
         <my:ConditionalFormatConverter x:Key="ConditionalFormatConverter" />
-        <my:AnyVisibilityConverter x:Key="AnyVisibilityConverter" />
+        <util:AnyVisibilityConverter x:Key="AnyVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <SolidColorBrush x:Key="TypeColor" Color="#066555" />
     </FrameworkElement.Resources>
 
-    <DockPanel Width="{Binding ActualWidth, ElementName=endNodes}" Margin="0,12,12,12" DockPanel.Dock="Right">
-        <ag:AutoGrid x:Name="endNodes" ChildHorizontalAlignment="Left" ColumnCount="1" DockPanel.Dock="Bottom">
+    <DockPanel Width="{Binding ActualWidth, ElementName=endNodes}" DockPanel.Dock="Right">
+        <util:AutoGrid x:Name="endNodes" ChildHorizontalAlignment="Left" ColumnCount="1" DockPanel.Dock="Bottom">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="Margin" Value="0,10,0,5" />
@@ -86,19 +86,19 @@
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </DataGrid>
-        </ag:AutoGrid>
+        </util:AutoGrid>
 
         <TextBlock VerticalAlignment="Bottom" Text="Source:" Margin="0,0,0,5" DockPanel.Dock="Top" Height="20" />
-        <my1:BindableSelectionTextBox x:Name="source" Margin="0,0,0,12" MinWidth="600"  BorderBrush="Gray" BorderThickness="1" FontFamily="Consolas" FontSize="14" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding Model.Source}" TextWrapping="Wrap" BindableSelectionStart="{Binding SourceSelectionStart}" BindableSelectionLength="{Binding SourceSelectionLength}">
+        <util:BindableSelectionTextBox x:Name="source" Margin="0,0,0,12" MinWidth="600"  BorderBrush="Gray" BorderThickness="1" FontFamily="Consolas" FontSize="14" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding Model.Source}" TextWrapping="Wrap" BindableSelectionStart="{Binding SourceSelectionStart}" BindableSelectionLength="{Binding SourceSelectionLength}">
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="SelectionChanged">
                     <b:InvokeCommandAction Command="{Binding UpdateSelection}" CommandParameter="{Binding Text, ElementName=source}" />
                 </b:EventTrigger>
             </b:Interaction.Triggers>
-        </my1:BindableSelectionTextBox>
+        </util:BindableSelectionTextBox>
     </DockPanel>
 
-    <DockPanel Margin="12">
+    <DockPanel Margin="0,0,12,0">
         <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
             <TextBlock Text="Expression:" Margin="0,0,12,0" VerticalAlignment="Center" />
             <TextBox Name="txbRootExpression" VerticalContentAlignment="Center" />
@@ -120,20 +120,20 @@
         <ygoe:MultiSelectTreeView Name="tree" BorderBrush="Gray" BorderThickness="1" ItemsSource="{Binding Root, Converter={StaticResource RootConverter}}">
             <ygoe:MultiSelectTreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <TextBlock DataContext="{Binding Model, Mode=OneTime}">
+                    <TextBlock>
                         <TextBlock.ToolTip>
-                            <ag:AutoGrid Columns="65,Auto">
+                            <util:AutoGrid Columns="65,Auto">
                                 <TextBlock Text="Path" />
-                                <TextBlock FontWeight="Bold" Text="{Binding FullPath}" />
+                                <TextBlock FontWeight="Bold" Text="{Binding Model.FullPath, Mode=OneTime}" />
                                 <TextBlock Text="Node type" />
-                                <TextBlock FontWeight="Bold" Text="{Binding NodeType}" />
+                                <TextBlock FontWeight="Bold" Text="{Binding Model.NodeType, Mode=OneTime}" />
                                 <TextBlock Text="Type" />
-                                <TextBlock FontWeight="Bold" Text="{Binding ReflectionTypeName}" />
+                                <TextBlock FontWeight="Bold" Text="{Binding Model.ReflectionTypeName, Mode=OneTime}" />
                                 <TextBlock Text="Name" />
-                                <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+                                <TextBlock FontWeight="Bold" Text="{Binding Model.Name, Mode=OneTime}" />
                                 <TextBlock Text="Value" />
-                                <TextBlock FontWeight="Bold" Text="{Binding StringValue}" />
-                            </ag:AutoGrid>
+                                <TextBlock FontWeight="Bold" Text="{Binding Model.StringValue, Mode=OneTime}" />
+                            </util:AutoGrid>
                         </TextBlock.ToolTip>
                         <TextBlock.ContextMenu>
                             <ContextMenu>
@@ -142,11 +142,11 @@
                                 <MenuItem Header="Help" Loaded="HelpContextMenu_Loaded" />
                             </ContextMenu>
                         </TextBlock.ContextMenu>
-                        <Run Foreground="DarkGray" Text="{Binding PathFromParent, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
-                        <Run FontWeight="Bold" Text="{Binding NodeType, Mode=OneTime}" />
-                        <Run Foreground="{StaticResource TypeColor}" Text="{Binding ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=({0})}" />
-                        <Run Text="{Binding Name, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\}}" />
-                        <Run Text="{Binding StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" />
+                        <Run Foreground="DarkGray" Text="{Binding Model.PathFromParent, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\} -}" />
+                        <Run FontWeight="Bold" Text="{Binding Model.NodeType, Mode=OneTime}" />
+                        <Run Foreground="{StaticResource TypeColor}" Text="{Binding Model.ReflectionTypeName, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=({0})}" />
+                        <Run Text="{Binding Model.Name, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\{0\}}" />
+                        <Run Text="{Binding Model.StringValue, Mode=OneTime, Converter={StaticResource ConditionalFormatConverter}, ConverterParameter=\= {0}}" />
                     </TextBlock>
                 </HierarchicalDataTemplate>
             </ygoe:MultiSelectTreeView.ItemTemplate>

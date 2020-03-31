@@ -1,9 +1,10 @@
 ﻿using ExpressionTreeVisualizer.Serialization;
-using ExpressionTreeVisualizer.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using static ExpressionTreeVisualizer.Serialization.EndNodeTypes;
+using ZSpitz.Util;
+using ZSpitz.Util.Wpf;
 
 namespace ExpressionTreeVisualizer.UI {
     public class VisualizerDataViewModel : ViewModelBase<VisualizerData> {
@@ -110,5 +111,7 @@ namespace ExpressionTreeVisualizer.UI {
                 sourceSelectionStart + sourceSelectionLength - 1;
 
         public RelayCommand UpdateSelection { get; }
+
+        //public RelayCommand CopyWatchExpression { get; }
     }
 }

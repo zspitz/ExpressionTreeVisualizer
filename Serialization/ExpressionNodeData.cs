@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using ExpressionTreeToString.Util;
 using static ExpressionTreeVisualizer.Serialization.EndNodeTypes;
 using static ExpressionTreeToString.Globals;
-using static ExpressionTreeToString.Util.Functions;
 using System.Runtime.CompilerServices;
 using static ExpressionTreeToString.FormatterNames;
 using System.Collections;
+using ZSpitz.Util;
+using static ZSpitz.Util.Functions;
 
 namespace ExpressionTreeVisualizer.Serialization {
     [Serializable]
@@ -172,7 +173,7 @@ namespace ExpressionTreeVisualizer.Serialization {
 
             // populate Children
             var type = o.GetType();
-            var preferredOrder = PreferredPropertyOrders.FirstOrDefault(x => x.type.IsAssignableFrom(type)).Item2;
+            var preferredOrder = PreferredPropertyOrders.FirstOrDefault(x => x.type.IsAssignableFrom(type)).propertyNames;
             Children = type.GetProperties()
                 .Where(prp =>
                     !(prp.DeclaringType!.Name == "BlockExpression" && prp.Name == "Result") &&

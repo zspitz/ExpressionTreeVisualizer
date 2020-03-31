@@ -1,4 +1,4 @@
-﻿using ExpressionTreeVisualizer.Util;
+﻿using ZSpitz.Util.Wpf;
 using ExpressionTreeVisualizer.Serialization;
 
 namespace ExpressionTreeVisualizer.UI {

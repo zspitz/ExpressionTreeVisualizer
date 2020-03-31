@@ -1,5 +1,4 @@
 ﻿using ExpressionTreeVisualizer.Serialization;
-using ExpressionTreeVisualizer.Util;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +6,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZSpitz.Util;
+using ZSpitz.Util.Wpf;
 
 namespace ExpressionTreeVisualizer.UI {
     public class EndNodeGroupViewModel : Selectable<EndNodeData> {

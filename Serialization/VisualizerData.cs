@@ -1,9 +1,9 @@
 ﻿using ExpressionTreeToString;
-using ExpressionTreeToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using static ExpressionTreeToString.Util.Functions;
+using ZSpitz.Util;
+using static ZSpitz.Util.Functions;
 
 namespace ExpressionTreeVisualizer.Serialization {
     [Serializable]

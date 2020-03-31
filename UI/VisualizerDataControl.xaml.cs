@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using ExpressionTreeVisualizer.UI;
 using static System.Windows.SystemColors;
 using ExpressionTreeVisualizer.Serialization;
+using ZSpitz.Util;
 
 namespace ExpressionTreeVisualizer {
     public partial class VisualizerDataControl {
@@ -34,14 +35,14 @@ namespace ExpressionTreeVisualizer {
 
         private void HelpContextMenu_Loaded(object sender, RoutedEventArgs e) {
             var menu = (MenuItem)sender;
-            var node = (ExpressionNodeData)menu.DataContext;
+            var node = (ExpressionNodeDataViewModel)menu.DataContext;
 
             if (menu.Items.Any()) { return; }
 
             var listData = new List<(string header, string url)>();
 
-            if (node.ParentProperty is { }) {
-                var (@namespace, typename, propertyname) = node.ParentProperty.Value;
+            if (node.Model.ParentProperty is { }) {
+                var (@namespace, typename, propertyname) = node.Model.ParentProperty.Value;
                 listData.Add(
                     $"Property: {typename}.{propertyname}",
                     $"{BaseUrl}{new[] { @namespace, typename, propertyname }.Joined(".")}"
@@ -50,8 +51,8 @@ namespace ExpressionTreeVisualizer {
 
             addSeparator();
 
-            if (node.NodeTypesParts is { }) {
-                foreach (var (@namespace, typename, membername) in node.NodeTypesParts) {
+            if (node.Model.NodeTypesParts is { }) {
+                foreach (var (@namespace, typename, membername) in node.Model.NodeTypesParts) {
                     listData.Add(
                         $"Node type: {typename}.{membername}",
                         $"{BaseUrl}{new[] { @namespace, typename }.Joined(".")}#{new[] { @namespace.Replace(".", "_"), typename, membername }.Joined("_")}"
@@ -61,8 +62,8 @@ namespace ExpressionTreeVisualizer {
 
             addSeparator();
 
-            if (node.BaseTypes is { }) {
-                node.BaseTypes.SelectT((@namespace, typename) => (
+            if (node.Model.BaseTypes is { }) {
+                node.Model.BaseTypes.SelectT((@namespace, typename) => (
                     $"Base type: {typename}",
                     $"{BaseUrl}{@namespace}.{typename.Replace("~", "-")}"
                 )).AddRangeTo(listData);
@@ -70,8 +71,8 @@ namespace ExpressionTreeVisualizer {
 
             addSeparator();
 
-            if (node.FactoryMethodNames is { }) {
-                node.FactoryMethodNames.Select(methodName => (
+            if (node.Model.FactoryMethodNames is { }) {
+                node.Model.FactoryMethodNames.Select(methodName => (
                     $"Factory method: {methodName}",
                     $"{BaseUrl}system.linq.expressions.expression.{methodName}"
                 )).AddRangeTo(listData);
@@ -110,8 +111,8 @@ namespace ExpressionTreeVisualizer {
                 txbRootExpression.Text = dlg.Expression;
             }
 
-            var node = (ExpressionNodeData)((MenuItem)sender).DataContext;
-            Clipboard.SetText(string.Format(node.WatchExpressionFormatString, txbRootExpression.Text));
+            var node = (ExpressionNodeDataViewModel)((MenuItem)sender).DataContext;
+            Clipboard.SetText(string.Format(node.Model.WatchExpressionFormatString, txbRootExpression.Text));
         }
     }
 }

@@ -3,7 +3,9 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using ExpressionTreeVisualizer.Serialization;
-using ExpressionTreeVisualizer.Util;
+using System.ComponentModel;
+using ZSpitz.Util;
+using ZSpitz.Util.Wpf;
 
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer), 
@@ -42,7 +44,25 @@ using ExpressionTreeVisualizer.Util;
     Description = "Expression Tree Visualizer")]
 
 namespace ExpressionTreeVisualizer {
-    public class Visualizer : DialogDebuggerVisualizer {
+    public class Visualizer : DialogDebuggerVisualizer, INotifyPropertyChanged {
+        public static Visualizer? Current;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private string? rootExpression;
+
+        public string? RootExpression {
+            get => rootExpression;
+            set => this.NotifyChanged(ref rootExpression, value, PropertyChanged);
+        }
+
+        public string? GetRootExpression() {
+            if (rootExpression.IsNullOrWhitespace()) {
+                new ExpressionRootPrompt().ShowDialog();
+            }
+            return rootExpression;
+        }
+
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) {
             if (windowService == null) { throw new ArgumentNullException(nameof(windowService)); }
 
@@ -54,5 +74,7 @@ namespace ExpressionTreeVisualizer {
             };
             window.ShowDialog();
         }
+
+        public Visualizer() => Current = this;
     }
 }

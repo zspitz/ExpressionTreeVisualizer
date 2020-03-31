@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ExpressionTreeVisualizer.Util;
+using ZSpitz.Util;
+using ZSpitz.Util.Wpf;
 using ExpressionTreeVisualizer.Serialization;
 
 namespace ExpressionTreeVisualizer.UI {
