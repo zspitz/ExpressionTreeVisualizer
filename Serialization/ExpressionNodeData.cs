@@ -153,7 +153,15 @@ namespace ExpressionTreeVisualizer.Serialization {
                 Span = span;
             }
 
-            var typename = o.GetType().BaseTypes(false, true).First(x => !x.IsGenericType && x.IsPublic); // because the FullName of generic types is often the fully-qualified name
+            var type = o.GetType();
+            var properties = type.GetProperties()
+                .Where(prp =>
+                    !(prp.DeclaringType!.Name == "BlockExpression" && prp.Name == "Result") &&
+                    propertyTypes.Any(x => x.IsAssignableFrom(prp.PropertyType))
+                )
+                .ToList();
+
+            var typename = o.GetType().BaseTypes(false, true).First(x => !x.IsGenericType && x.IsPublic && properties.All(prp => x.GetProperty(prp.Name) is { })); // because the FullName of generic types is often the fully-qualified name
             if (parentWatchExpression.IsNullOrWhitespace()) {
                 var formatString = "{0}";
                 if (language == CSharp) {
@@ -172,13 +180,8 @@ namespace ExpressionTreeVisualizer.Serialization {
             }
 
             // populate Children
-            var type = o.GetType();
             var preferredOrder = PreferredPropertyOrders.FirstOrDefault(x => x.type.IsAssignableFrom(type)).propertyNames;
-            Children = type.GetProperties()
-                .Where(prp =>
-                    !(prp.DeclaringType!.Name == "BlockExpression" && prp.Name == "Result") &&
-                    propertyTypes.Any(x => x.IsAssignableFrom(prp.PropertyType))
-                )
+            Children = properties
                 .OrderBy(prp => {
                     if (preferredOrder == null) { return -1; }
                     return Array.IndexOf(preferredOrder, prp.Name);
