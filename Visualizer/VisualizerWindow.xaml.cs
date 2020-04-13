@@ -48,22 +48,38 @@ namespace ExpressionTreeVisualizer {
                 throw new InvalidOperationException("Unspecified error while serializing/deserializing");
             }
 
-            var vm = new VisualizerDataViewModel(response);
-            vm.OpenNewWindow = new RelayCommand(data => {
-                var config = _config.Clone();
-                config.Path = (string)data;
-                var window = new VisualizerWindow {
-                    ObjectProvider = _objectProvider,
-                    Config = config
-                };
-                window.ShowDialog();
-            });
-
             optionsPopup.DataContext = new ConfigViewModel(response.Config);
-            DataContext = new VisualizerDataViewModel(response);
+            var vm = new VisualizerDataViewModel(response, OpenInNewWindow, Visualizer.CopyWatchExpression);
+            DataContext = vm;
+        }
+
+        public Action<Config, object>? ConfigTransformer { get; set; }
+        public ICommand? OpenInNewWindow { get; private set; }
+
+        private class _OpenInNewWindow : ICommand {
+            private readonly VisualizerWindow window;
+            public _OpenInNewWindow(VisualizerWindow window) => this.window = window;
+            public bool CanExecute(object parameter) => true;
+            public void Execute(object parameter) {
+                if (window.ConfigTransformer is null) { throw new ArgumentNullException("Missing 'ConfigTransformer'."); }
+                if (window.Config is null) { throw new ArgumentNullException("Missing 'Config'."); }
+
+                var newConfig = window.Config.Clone();
+                window.ConfigTransformer(newConfig, parameter);
+                var newWindow = new VisualizerWindow {
+                    ObjectProvider = window._objectProvider,
+                    Config = newConfig,
+                    ConfigTransformer = window.ConfigTransformer
+                };
+                newWindow.ShowDialog();
+            }
+
+            public event EventHandler? CanExecuteChanged;
         }
 
         public VisualizerWindow() {
+            OpenInNewWindow = new _OpenInNewWindow(this);
+
             InitializeComponent();
 
             // if we could find out which is the current monitor, that would be better

@@ -96,9 +96,8 @@ namespace ExpressionTreeVisualizer {
             });
 
             void addSeparator() {
-                if (listData.Any() && listData.Last().header != "---") {
-                    listData.Add("---", "");
-                }
+                if (listData.None() || listData.Last().header == "---") { return; }
+                listData.Add("---", "");
             }
         }
 

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using ExpressionTreeVisualizer.UI;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using ZSpitz.Util;
 using ZSpitz.Util.Wpf;
+using static System.Windows.Visibility;
 
 namespace ExpressionTreeVisualizer {
     public class RootConverter : ReadOnlyConverterBase {
@@ -33,5 +35,10 @@ namespace ExpressionTreeVisualizer {
             }
             return parts.SelectT((name, val) => $"{name}: {val}").Joined(", ");
         }
+    }
+
+    public class NotNullToVisibilityConverter : ReadOnlyConverterBase {
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture) => 
+            value is null ? Collapsed : Visible;
     }
 }

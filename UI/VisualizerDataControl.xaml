@@ -8,6 +8,7 @@
     <FrameworkElement.Resources>
         <my:RootConverter x:Key="RootConverter" />
         <my:ConditionalFormatConverter x:Key="ConditionalFormatConverter" />
+        <my:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter" />
         <util:AnyVisibilityConverter x:Key="AnyVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <SolidColorBrush x:Key="TypeColor" Color="#066555" />
@@ -48,8 +49,9 @@
                         </TextBlock.ToolTip>
                         <TextBlock.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Copy watch expression" Click="CopyWatchExpression_Click" />
-                                <!--<MenuItem Header="Open value in new window" Command="{Binding OpenNewWindow}" Visibility="{Binding EnableValueInNewWindow, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
+                                <!--<MenuItem Header="Copy watch expression" Click="CopyWatchExpression_Click" />-->
+                                <MenuItem Header="Copy watch expression" Command="{Binding CopyWatchExpression}" CommandParameter="{Binding Model.WatchExpressionFormatString}" Visibility="{Binding CopyWatchExpression, Converter={StaticResource NotNullToVisibilityConverter}}" />
+                                <MenuItem Header="Open value in new window" Command="{Binding OpenInNewWindow}" CommandParameter="{Binding}" Visibility="{Binding OpenInNewWindow, Converter={StaticResource NotNullToVisibilityConverter}}" />
                                 <MenuItem Header="Help" Loaded="HelpContextMenu_Loaded" />
                             </ContextMenu>
                         </TextBlock.ContextMenu>
@@ -65,14 +67,6 @@
                 <Style TargetType="ygoe:MultiSelectTreeViewItem">
                     <Setter Property="IsExpanded" Value="True" />
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-
-                    <!--<Setter Property="Border.BorderBrush" Value="{x:Static Brushes.Transparent}" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsSelected}">
-                            <Setter Property="Control.Background" Value="{x:Static SystemColors.HighlightBrush}" />
-                            <Setter Property="TextBlock.Foreground" Value="{x:Static SystemColors.HighlightTextBrush}" />
-                        </DataTrigger>
-                    </Style.Triggers>-->
                 </Style>
             </ygoe:MultiSelectTreeView.ItemContainerStyle>
             <b:Interaction.Triggers>

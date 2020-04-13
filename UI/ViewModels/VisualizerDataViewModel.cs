@@ -5,6 +5,7 @@ using System.Linq;
 using static ExpressionTreeVisualizer.Serialization.EndNodeTypes;
 using ZSpitz.Util;
 using ZSpitz.Util.Wpf;
+using System.Windows.Input;
 
 namespace ExpressionTreeVisualizer.UI {
     public class VisualizerDataViewModel : ViewModelBase<VisualizerData> {
@@ -19,9 +20,9 @@ namespace ExpressionTreeVisualizer.UI {
 
         private readonly List<EndNodeGroupViewModel> allGroups;
 
-        public VisualizerDataViewModel(VisualizerData model) : base(model) {
+        public VisualizerDataViewModel(VisualizerData model, ICommand? openInNewWindow=null, RelayCommand? copyWatchExpression = null) : base(model) {
             AllNodes = new List<ExpressionNodeDataViewModel>();
-            Root = new ExpressionNodeDataViewModel(model.Root, AllNodes);
+            Root = new ExpressionNodeDataViewModel(model.Root, AllNodes, openInNewWindow, copyWatchExpression);
 
             var grouped =
                 AllNodes
@@ -89,8 +90,6 @@ namespace ExpressionTreeVisualizer.UI {
             }
             return current;
         }
-
-        public RelayCommand? OpenNewWindow { get; set; }
 
         private int sourceSelectionStart;
         public int SourceSelectionStart {

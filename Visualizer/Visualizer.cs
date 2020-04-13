@@ -6,12 +6,13 @@ using ExpressionTreeVisualizer.Serialization;
 using System.ComponentModel;
 using ZSpitz.Util;
 using ZSpitz.Util.Wpf;
+using ExpressionTreeVisualizer.UI;
 
 [assembly: DebuggerVisualizer(
-    visualizer: typeof(ExpressionTreeVisualizer.Visualizer), 
-    visualizerObjectSource: typeof(ExpressionTreeVisualizer.VisualizerDataObjectSource), 
-    Target = typeof(System.Linq.Expressions.Expression), 
-    Description ="Expression Tree Visualizer")]
+    visualizer: typeof(ExpressionTreeVisualizer.Visualizer),
+    visualizerObjectSource: typeof(ExpressionTreeVisualizer.VisualizerDataObjectSource),
+    Target = typeof(System.Linq.Expressions.Expression),
+    Description = "Expression Tree Visualizer")]
 
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer),
@@ -45,6 +46,15 @@ using ZSpitz.Util.Wpf;
 
 namespace ExpressionTreeVisualizer {
     public class Visualizer : DialogDebuggerVisualizer, INotifyPropertyChanged {
+        public static RelayCommand CopyWatchExpression = new RelayCommand(parameter => {
+            if (!(parameter is string formatString)) { throw new ArgumentException("'parameter' is not a string."); }
+
+            var rootExpression = Visualizer.Current?.GetRootExpression();
+            if (rootExpression.IsNullOrWhitespace()) { return; }
+
+            Clipboard.SetText(string.Format(formatString, rootExpression));
+        });
+
         public static Visualizer? Current;
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -70,7 +80,14 @@ namespace ExpressionTreeVisualizer {
 
             var window = new VisualizerWindow {
                 ObjectProvider = objectProvider,
-                Config = new Config() { Formatter = "C#" }
+                Config = new Config() { Formatter = "C#" },
+                ConfigTransformer = (config, parameter) => {
+                    config.Path = parameter switch
+                    {
+                        ExpressionNodeDataViewModel nodeVM => nodeVM.Model.FullPath,
+                        _ => throw new ArgumentException("Unrecognized parameter type."),
+                    };
+                }
             };
             window.ShowDialog();
         }
