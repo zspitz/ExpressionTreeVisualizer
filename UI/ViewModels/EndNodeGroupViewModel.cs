@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using ZSpitz.Util;
 using ZSpitz.Util.Wpf;
 
-namespace ExpressionTreeVisualizer.UI {
+namespace ExpressionTreeVisualizer {
     public class EndNodeGroupViewModel : Selectable<EndNodeData> {
         public readonly ReadOnlyCollection<ExpressionNodeDataViewModel> Nodes;
 

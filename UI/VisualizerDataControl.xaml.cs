@@ -1,12 +1,9 @@
-﻿using ExpressionTreeToString.Util;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ExpressionTreeVisualizer.UI;
 using static System.Windows.SystemColors;
-using ExpressionTreeVisualizer.Serialization;
 using ZSpitz.Util;
 
 namespace ExpressionTreeVisualizer {
@@ -102,14 +99,6 @@ namespace ExpressionTreeVisualizer {
         }
 
         private const string BaseUrl = "https://docs.microsoft.com/dotnet/api/";
-
-        private void CopyWatchExpression_Click(object sender, RoutedEventArgs e) {
-            var rootExpression = Visualizer.Current?.GetRootExpression();
-            if (rootExpression.IsNullOrWhitespace()) { return; }
-
-            var node = (ExpressionNodeDataViewModel)((MenuItem)sender).DataContext;
-            Clipboard.SetText(string.Format(node.Model.WatchExpressionFormatString, rootExpression));
-        }
     }
 }
 

@@ -8,7 +8,7 @@ using ZSpitz.Util.Wpf;
 using ExpressionTreeVisualizer.Serialization;
 using System.Windows.Input;
 
-namespace ExpressionTreeVisualizer.UI {
+namespace ExpressionTreeVisualizer {
     public class ExpressionNodeDataViewModel : Selectable<ExpressionNodeData> {
         public List<ExpressionNodeDataViewModel> Children { get; }
 

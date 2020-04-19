@@ -1,21 +1,25 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
-    <RootNamespace>ExpressionTreeVisualizer</RootNamespace>
-    <AssemblyName>ExpressionTreeVisualizer.UI</AssemblyName>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+    <PropertyGroup>
+        <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
+        <RootNamespace>ExpressionTreeVisualizer</RootNamespace>
+        <AssemblyName>ExpressionTreeVisualizer</AssemblyName>
+        <LangVersion>8.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ExpressionTreeToString" Version="2.0.20" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="ExpressionTreeToString" Version="2.0.20" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
+        <PackageReference Include="ZSpitz.Util" Version="0.0.11" />
+        <PackageReference Include="ZSpitz.Util.Wpf" Version="0.0.11" />
+        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+        <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
+    </ItemGroup>
+
+    <Import Project="..\UI\UI.projitems" Label="Shared" />
+
+    <Import Project="..\Serialization\Serialization.projitems" Label="Shared" />
+
 </Project>

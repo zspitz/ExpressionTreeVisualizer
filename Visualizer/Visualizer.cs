@@ -6,7 +6,6 @@ using ExpressionTreeVisualizer.Serialization;
 using System.ComponentModel;
 using ZSpitz.Util;
 using ZSpitz.Util.Wpf;
-using ExpressionTreeVisualizer.UI;
 
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer),

@@ -10,9 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Converters.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ExpressionRootPrompt.xaml.cs">
-      <DependentUpon>ExpressionRootPrompt.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ConfigViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EndNodeGroupViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ExpressionNodeDataViewModel.cs" />
@@ -22,10 +19,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="$(MSBuildThisFileDirectory)ExpressionRootPrompt.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="$(MSBuildThisFileDirectory)VisualizerDataControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

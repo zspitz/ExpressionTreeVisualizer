@@ -1,7 +1,7 @@
 ﻿using ZSpitz.Util.Wpf;
 using ExpressionTreeVisualizer.Serialization;
 
-namespace ExpressionTreeVisualizer.UI {
+namespace ExpressionTreeVisualizer {
     public class ConfigViewModel : ViewModelBase<Config> {
         private readonly Config _originalValues;
         public ConfigViewModel(Config config) : base(config.Clone()) {

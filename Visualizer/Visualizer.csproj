@@ -8,7 +8,7 @@
         <Nullable>enable</Nullable>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>
-
+    
     <ItemGroup>
         <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers">
             <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.DebuggerVisualizers.dll</HintPath>
@@ -33,6 +33,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Page Include="ExpressionRootPrompt.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </Page>
         <Page Include="VisualizerWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
         </Page>

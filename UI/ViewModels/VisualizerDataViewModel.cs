@@ -7,7 +7,7 @@ using ZSpitz.Util;
 using ZSpitz.Util.Wpf;
 using System.Windows.Input;
 
-namespace ExpressionTreeVisualizer.UI {
+namespace ExpressionTreeVisualizer {
     public class VisualizerDataViewModel : ViewModelBase<VisualizerData> {
         public ExpressionNodeDataViewModel Root { get; }
 
