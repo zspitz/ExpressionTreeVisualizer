@@ -1,0 +1,20 @@
+﻿<DockPanel Margin="12" x:Class="Periscope.VisualizerWindowChrome"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:ps="clr-namespace:Periscope">
+    <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+        <Label Name="optionsAnchor" DockPanel.Dock="Right" Margin="9,0,0,0">
+            <Hyperlink Name="optionsLink">
+                <TextBlock Text="Settings" />
+                <Popup Name="optionsPopup" AllowsTransparency="True" Placement="Custom" PlacementTarget="{Binding ElementName=optionsAnchor}" StaysOpen="False">
+                    <Border Background="White" BorderBrush="Black" BorderThickness="1" Name="optionsBorder" />
+                </Popup>
+            </Hyperlink>
+        </Label>
+
+        <Label Content="Expression" Padding="0,5,5,5" />
+        <TextBox Text="{Binding RootExpression, Source={x:Static ps:Visualizer.Current}}" />
+
+    </DockPanel>
+    <Border BorderBrush="Transparent" BorderThickness="0" Name="mainContent" />
+</DockPanel>

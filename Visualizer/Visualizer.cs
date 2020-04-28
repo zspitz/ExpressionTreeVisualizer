@@ -1,11 +1,5 @@
-﻿using Microsoft.VisualStudio.DebuggerVisualizers;
-using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Diagnostics;
 using ExpressionTreeVisualizer.Serialization;
-using System.ComponentModel;
-using ZSpitz.Util;
-using ZSpitz.Util.Wpf;
 
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer),
@@ -44,53 +38,9 @@ using ZSpitz.Util.Wpf;
     Description = "Expression Tree Visualizer")]
 
 namespace ExpressionTreeVisualizer {
-    public class Visualizer : DialogDebuggerVisualizer, INotifyPropertyChanged {
-        public static RelayCommand CopyWatchExpression = new RelayCommand(parameter => {
-            if (!(parameter is string formatString)) { throw new ArgumentException("'parameter' is not a string."); }
+    public abstract class VisualizerWindowBase : Periscope.VisualizerWindowBase<VisualizerWindow, Config> { }
 
-            var rootExpression = Visualizer.Current?.GetRootExpression();
-            if (rootExpression.IsNullOrWhitespace()) { return; }
-
-            Clipboard.SetText(string.Format(formatString, rootExpression));
-        });
-
-        public static Visualizer? Current;
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private string? rootExpression;
-
-        public string? RootExpression {
-            get => rootExpression;
-            set => this.NotifyChanged(ref rootExpression, value, PropertyChanged);
-        }
-
-        public string? GetRootExpression() {
-            if (rootExpression.IsNullOrWhitespace()) {
-                new ExpressionRootPrompt().ShowDialog();
-            }
-            return rootExpression;
-        }
-
-        protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) {
-            if (windowService == null) { throw new ArgumentNullException(nameof(windowService)); }
-
-            PresentationTraceSources.DataBindingSource.Listeners.Add(new DebugTraceListener());
-
-            var window = new VisualizerWindow {
-                ObjectProvider = objectProvider,
-                Config = new Config() { Formatter = "C#" },
-                ConfigTransformer = (config, parameter) => {
-                    config.Path = parameter switch
-                    {
-                        ExpressionNodeDataViewModel nodeVM => nodeVM.Model.FullPath,
-                        _ => throw new ArgumentException("Unrecognized parameter type."),
-                    };
-                }
-            };
-            window.ShowDialog();
-        }
-
-        public Visualizer() => Current = this;
+    public class Visualizer : Periscope.VisualizerBase<VisualizerWindow, Config> {
+        public override Config GetInitialConfig() => new Config() { Formatter = "C#" };
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ExpressionTreeVisualizer {
+namespace Periscope {
     public partial class ExpressionRootPrompt {
         public string? Expression { get; private set; }
 

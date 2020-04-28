@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net2.0;netstandard2.0;netcoreapp2.0</TargetFrameworks>
+        <RootNamespace>Periscope.Debuggee</RootNamespace>
+        <AssemblyName>Periscope.Debuggee</AssemblyName>
+        <LangVersion>8.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    </PropertyGroup>
+
+</Project>

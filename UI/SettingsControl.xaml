@@ -1,0 +1,10 @@
+﻿<util:AutoGrid x:Class="ExpressionTreeVisualizer.SettingsControl" 
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+            xmlns:util="clr-namespace:ZSpitz.Util.Wpf;assembly=ZSpitz.Util.Wpf"
+        Margin="6" ChildMargin="3" ChildVerticalAlignment="Center" ColumnCount="2">
+    <TextBlock Background="White" Text="Formatter" />
+    <ComboBox Name="cmbFormatters" SelectedItem="{Binding Formatter}" />
+    <TextBlock Background="White" Text="Language" />
+    <ComboBox Name="cmbLanguages" SelectedItem="{Binding Language}" />
+</util:AutoGrid>

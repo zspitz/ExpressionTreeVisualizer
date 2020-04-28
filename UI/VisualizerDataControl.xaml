@@ -49,7 +49,6 @@
                         </TextBlock.ToolTip>
                         <TextBlock.ContextMenu>
                             <ContextMenu>
-                                <!--<MenuItem Header="Copy watch expression" Click="CopyWatchExpression_Click" />-->
                                 <MenuItem Header="Copy watch expression" Command="{Binding CopyWatchExpression}" CommandParameter="{Binding Model.WatchExpressionFormatString}" Visibility="{Binding CopyWatchExpression, Converter={StaticResource NotNullToVisibilityConverter}}" />
                                 <MenuItem Header="Open value in new window" Command="{Binding OpenInNewWindow}" CommandParameter="{Binding}" Visibility="{Binding OpenInNewWindow, Converter={StaticResource NotNullToVisibilityConverter}}" />
                                 <MenuItem Header="Help" Loaded="HelpContextMenu_Loaded" />

@@ -110,5 +110,21 @@ namespace ExpressionTreeVisualizer {
                 sourceSelectionStart + sourceSelectionLength - 1;
 
         public RelayCommand UpdateSelection { get; }
+
+        public string WindowTitle {
+            get {
+                var (formatter, language, path) = Model.Config;
+                var parts = new List<(string? name, string? value)> {
+                    {"Formatter", formatter }
+                };
+                if (formatter != language) {
+                    parts.Add("Language", language);
+                }
+                if (!path.IsNullOrWhitespace()) {
+                    parts.Add("Path", path);
+                }
+                return "Expression Tree Visualizer — " + parts.SelectT((name, val) => $"{name}: {val}").Joined(", ");
+            }
+        }
     }
 }

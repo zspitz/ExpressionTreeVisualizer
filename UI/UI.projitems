@@ -10,6 +10,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Converters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SettingsControl.xaml.cs">
+      <DependentUpon>SettingsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ConfigViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EndNodeGroupViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ExpressionNodeDataViewModel.cs" />
@@ -19,6 +22,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)SettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)VisualizerDataControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
