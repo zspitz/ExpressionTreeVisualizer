@@ -80,6 +80,8 @@ namespace Periscope {
         public VisualizerWindowBase() {
             openInNewWindow = new _OpenInNewWindow((TWindow)this);
 
+            SizeToContent = SizeToContent.WidthAndHeight;
+
             chrome = new VisualizerWindowChrome();
             Content = chrome;
 
