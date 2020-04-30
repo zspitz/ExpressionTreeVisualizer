@@ -1,6 +1,6 @@
 # Expression Tree Visualizer
 
-[![AppVeyor build status](https://img.shields.io/appveyor/ci/zspitz/expressiontreevisualizer?style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreevisualizer) [![Tests](https://img.shields.io/appveyor/tests/zspitz/expressiontreevisualizer?compact_message&style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreevisualizer) [![GitHub Release](https://img.shields.io/github/release/zspitz/expressiontreevisualizer.svg?style=flat&max-age=86400)](https://github.com/zspitz/ExpressionTreeVisualizer/releases)
+[![AppVeyor build status](https://img.shields.io/appveyor/ci/zspitz/expressiontreevisualizer?style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreevisualizer) [![Tests](https://img.shields.io/appveyor/tests/zspitz/expressiontreevisualizer?compact_message&style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreevisualizer) [![GitHub Release](https://img.shields.io/github/release/zspitz/expressiontreevisualizer.svg?style=flat&max-age=86400)](https://github.com/zspitz/ExpressionTreeVisualizer/releases) [![NuGet status of UI components package](https://img.shields.io/nuget/v/ExpressionTreeVisualizer.UI.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeVisualizer.UI/)
 
 This project provides a custom debugging visualizer for expression trees, that can be used while debugging with Visual Studio (on Windows). The UI contains:
 
@@ -29,6 +29,8 @@ Selection syncing:
   ![Selection sync from end nodes](sync-from-endnodes.gif)
   
 For more information, see the [wiki](https://github.com/zspitz/ExpressionTreeVisualizer/wiki).
+
+The UI components are also available as a [NuGet package](https://www.nuget.org/packages/ExpressionTreeVisualizer.UI/) (targeting .NET Core 3.1 / .NET Framework 4.7.2), which you can use in your own projects
   
 # Requirements / Supports
 
