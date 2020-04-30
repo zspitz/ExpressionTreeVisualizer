@@ -50,9 +50,17 @@ artifacts:
     type: File
     name: visualizer
 
+  - path: '**\*.nupkg'
+    type: NuGetPackage
+
 deploy:
   - provider: GitHub
     description: ''
     auth_token:
       secure: NgxEvJd/ApBpuz6rwCNDfOI5c6nAvBIabLMj1vAtzuV4ozyaVDfjRJKa7WeJK2Ri
     artifact: visualizer
+
+  - provider: NuGet
+    api_key:
+      secure: 76XN9J7Gg4Kkxt4XowKWEs8fzUQLXyJOKuPBVe455dWyXjOSMuWmueSWEPNeRAxy
+    artifact: /.*\.nupkg/

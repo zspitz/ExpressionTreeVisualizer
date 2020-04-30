@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
@@ -7,6 +7,7 @@
         <LangVersion>8.0</LangVersion>
         <Nullable>enable</Nullable>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <UseWPF>true</UseWPF>
     </PropertyGroup>
     
     <ItemGroup>
@@ -14,10 +15,6 @@
             <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.DebuggerVisualizers.dll</HintPath>
             <Private>false</Private>
         </Reference>
-        <Reference Include="PresentationCore" />
-        <Reference Include="PresentationFramework" />
-        <Reference Include="System.Xaml" />
-        <Reference Include="WindowsBase" />
         <PackageReference Include="Costura.Fody" Version="4.1.0" />
         <PackageReference Include="ExpressionTreeToString" Version="2.0.20" />
         <PackageReference Include="Fody" Version="6.1.1">
@@ -27,16 +24,10 @@
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
         <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
+        <PackageReference Include="Periscope" Version="0.0.2" />
         <PackageReference Include="ZSpitz.Util" Version="0.0.14" />
         <PackageReference Include="ZSpitz.Util.Wpf" Version="0.0.14" />
         <ProjectReference Include="..\Debuggee\Debuggee.csproj" />
-        <ProjectReference Include="..\Periscope\Periscope.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Page Include="VisualizerWindow.xaml">
-            <Generator>MSBuild:Compile</Generator>
-        </Page>
     </ItemGroup>
 
     <Import Project="..\UI\UI.projitems" Label="Shared" />
