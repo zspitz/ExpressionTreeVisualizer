@@ -10,7 +10,7 @@ This project provides a custom debugging visualizer for expression trees, that c
 
 ![Screenshot](screenshot-01.png)
 
-You can [switch formatters](https://github.com/zspitz/ExpressionTreeVisualizer/wiki#settings) without reloading the visualizer:
+There are [multiple representations (a.k.a. "formatters")](https://github.com/zspitz/ExpressionTreeVisualizer/wiki#settings) available:
 
 ![Language switch](formatter-switch.gif)
 
