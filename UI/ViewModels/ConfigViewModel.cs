@@ -3,10 +3,7 @@ using ExpressionTreeVisualizer.Serialization;
 
 namespace ExpressionTreeVisualizer {
     public class ConfigViewModel : ViewModelBase<Config> {
-        private readonly Config _originalValues;
-        public ConfigViewModel(Config config) : base(config.Clone()) {
-            _originalValues = config;
-        }
+        public ConfigViewModel(Config config) : base(config) { }
 
         public string Formatter {
             get => Model.Formatter;
@@ -20,17 +17,6 @@ namespace ExpressionTreeVisualizer {
         public string Language {
             get => Model.Language;
             set => NotifyChanged(Model.Language, value, () => Model.Language = value);
-        }
-
-        public bool IsDirty {
-            get {
-                var o = _originalValues;
-                var m = Model;
-                return
-                    o.Formatter != m.Formatter ||
-                    o.Language != m.Language ||
-                    o.Path != m.Path;
-            }
         }
     }
 }

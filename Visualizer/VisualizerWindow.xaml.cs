@@ -14,11 +14,13 @@ namespace ExpressionTreeVisualizer {
                 new VisualizerDataViewModel(vd, OpenInNewWindow, Periscope.Visualizer.CopyWatchExpression),
                 vd.Config
             );
-            var settingsContext = new ConfigViewModel(windowState.Config);
+
+            var settingsContext = new ConfigViewModel(windowState.Config.Clone());
             var settingsState = new ViewState<Config>(
                 settingsContext,
                 settingsContext.Model
             );
+
             return (windowState, settingsState);
         }
 

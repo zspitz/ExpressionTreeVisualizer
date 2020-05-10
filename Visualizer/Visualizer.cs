@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using ExpressionTreeVisualizer.Serialization;
 
 [assembly: DebuggerVisualizer(
@@ -40,7 +41,5 @@ using ExpressionTreeVisualizer.Serialization;
 namespace ExpressionTreeVisualizer {
     public abstract class VisualizerWindowBase : Periscope.VisualizerWindowBase<VisualizerWindow, Config> { }
 
-    public class Visualizer : Periscope.VisualizerBase<VisualizerWindow, Config> {
-        public override Config GetInitialConfig() => new Config() { Formatter = "C#" };
-    }
+    public class Visualizer : Periscope.VisualizerBase<VisualizerWindow, Config> {}
 }
