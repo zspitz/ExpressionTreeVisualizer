@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using ExpressionTreeVisualizer.Serialization;
+using Microsoft.VisualStudio.DebuggerVisualizers;
 
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer),
@@ -41,5 +42,8 @@ using ExpressionTreeVisualizer.Serialization;
 namespace ExpressionTreeVisualizer {
     public abstract class VisualizerWindowBase : Periscope.VisualizerWindowBase<VisualizerWindow, Config> { }
 
-    public class Visualizer : Periscope.VisualizerBase<VisualizerWindow, Config> {}
+    public class Visualizer : DialogDebuggerVisualizer {
+        protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) =>
+            Periscope.Visualizer.Show<VisualizerWindow, Config>(GetType(), objectProvider);
+    }
 }

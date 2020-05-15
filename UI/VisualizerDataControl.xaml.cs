@@ -101,6 +101,3 @@ namespace ExpressionTreeVisualizer {
         private const string BaseUrl = "https://docs.microsoft.com/dotnet/api/";
     }
 }
-
-
-// TODO don't add context menu entry for new window when not available

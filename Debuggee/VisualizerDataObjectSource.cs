@@ -3,8 +3,14 @@ using System.IO;
 using ExpressionTreeVisualizer.Serialization;
 
 namespace ExpressionTreeVisualizer {
-    public class VisualizerDataObjectSource : Periscope.Debuggee.ObjectSourceBase<Config> {
-        public override object GetSerializationModel(object target, Config config) =>
-            new VisualizerData(target, config);
+    public class VisualizerDataObjectSource : VisualizerObjectSource {
+        public override void GetData(object target, Stream outgoingData) =>
+            Serialize(outgoingData, "");
+
+        public override void TransferData(object target, Stream incomingData, Stream outgoingData) {
+            var config = (Config)Deserialize(incomingData);
+            var serializationModel = new VisualizerData(target, config);
+            Serialize(outgoingData, serializationModel);
+        }
     }
 }

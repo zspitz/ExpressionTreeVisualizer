@@ -11,7 +11,10 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers">
+      <!-- we need to explicitly reference this, otherwise it'll take the minimum required dependency for ExpressionTreeToString, and Costura will compile that in-->
+      <PackageReference Include="ZSpitz.Util" Version="0.0.15" />
+
+      <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers">
             <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.DebuggerVisualizers.dll</HintPath>
             <Private>false</Private>
         </Reference>
@@ -24,7 +27,7 @@
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
         <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
-        <PackageReference Include="Periscope" Version="0.0.17" />
+        <PackageReference Include="Periscope" Version="0.0.20" />
         <PackageReference Include="ZSpitz.Util" Version="0.0.15" />
         <PackageReference Include="ZSpitz.Util.Wpf" Version="0.0.15" />
         <ProjectReference Include="..\Debuggee\Debuggee.csproj" />
