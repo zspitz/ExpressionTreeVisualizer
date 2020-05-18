@@ -34,7 +34,7 @@ The UI components are also available as a [NuGet package](https://www.nuget.org/
   
 # Requirements / Supports
 
-The visualizer been tested with VS 2019 and VS 2017.
+The visualizer been tested with VS 2019 and VS 2017; theoretically the 2017 version should work with previous versions of VS.
 
 It supports .NET Core, ,NET Framework, and any .NET Standard 2.0 implementation. (Note that .NET Framework < 4.7 [may have issues in VS 2017](https://github.com/zspitz/ANTLR4ParseTreeVisualizer/issues/51).)
   
