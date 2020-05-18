@@ -11,11 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- we need to explicitly reference this, otherwise it'll take the minimum required dependency for ExpressionTreeToString, and Costura will compile that in-->
-    <PackageReference Include="ZSpitz.Util" Version="0.0.15" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.DebuggerVisualizers.dll</HintPath>
       <Private>false</Private>
