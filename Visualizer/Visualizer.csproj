@@ -8,6 +8,7 @@
     <Nullable>enable</Nullable>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <UseWPF>true</UseWPF>
+    <Version>0.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
