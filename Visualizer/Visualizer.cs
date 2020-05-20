@@ -44,6 +44,6 @@ namespace ExpressionTreeVisualizer {
 
     public class Visualizer : DialogDebuggerVisualizer {
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) =>
-            Periscope.Visualizer.Show<VisualizerWindow, Config>(GetType(), objectProvider, "https://github.com/zspitz/ExpressionTreeVisualizer/issues/new/choose");
+            Periscope.Visualizer.Show<VisualizerWindow, Config>(GetType(), objectProvider, new Periscope.GithubProjectInfo("zspitz","expressiontreevisualizer"));
     }
 }

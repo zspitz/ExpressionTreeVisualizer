@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFrameworks>net472</TargetFrameworks>
     <RootNamespace>ExpressionTreeVisualizer</RootNamespace>
     <AssemblyName>ExpressionTreeVisualizer</AssemblyName>
     <LangVersion>8.0</LangVersion>
@@ -25,7 +25,7 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
-    <PackageReference Include="Periscope" Version="0.0.27" />
+    <PackageReference Include="Periscope" Version="0.0.29" />
     <PackageReference Include="ZSpitz.Util" Version="0.0.22" />
     <PackageReference Include="ZSpitz.Util.Wpf" Version="0.0.22" />
     <ProjectReference Include="..\Debuggee\Debuggee.csproj" />
