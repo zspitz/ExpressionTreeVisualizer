@@ -13,12 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests.Visualizer\T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Visualizer", "Visualizer\Visualizer.csproj", "{B77B6DF5-33D7-4A81-9E17-E32731EFD4AB}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UI", "UI\UI.shproj", "{E1D67370-17AC-47FC-89BC-34B20B3BD6E7}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Serialization\Serialization.projitems*{7a8de3fa-8761-45de-9465-53d2c778f355}*SharedItemsImports = 5
 		UI\UI.projitems*{7a8de3fa-8761-45de-9465-53d2c778f355}*SharedItemsImports = 5
 		Serialization\Serialization.projitems*{9365b962-f17c-451c-92eb-f4fed9c6c84e}*SharedItemsImports = 13
 		UI\UI.projitems*{b77b6df5-33d7-4a81-9e17-e32731efd4ab}*SharedItemsImports = 5
+		UI\UI.projitems*{e1d67370-17ac-47fc-89bc-34b20b3bd6e7}*SharedItemsImports = 13
 		Serialization\Serialization.projitems*{e865e70a-0959-4835-8c64-95a0d9815868}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
