@@ -32,20 +32,20 @@ For more information, see the [wiki](https://github.com/zspitz/ExpressionTreeVis
 
 The UI components are also available as a [NuGet package](https://www.nuget.org/packages/ExpressionTreeVisualizer.UI/) (targeting .NET Core 3.1 / .NET Framework 4.7.2), which you can use in your own projects
   
-# Requirements / Supports
+## Requirements / Supports
 
 The visualizer been tested with VS 2019 and VS 2017; theoretically the 2017 version should work with previous versions of VS.
 
 It supports .NET Core, ,NET Framework, and any .NET Standard 2.0 implementation. (Note that .NET Framework < 4.7 [may have issues in VS 2017](https://github.com/zspitz/ANTLR4ParseTreeVisualizer/issues/51).)
   
-# Installation
+## Installation
 
 From the [project's Releases page](https://github.com/zspitz/ExpressionTreeVisualizer/releases), download the ZIP file corresponding to your Visual Studio version (2019 or 2017),
 
 1. Unblock the ZIP file
 2. Extract the files to the visualizers folder, preserving the [required folder structure](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2019#to-install-a-visualizer-for-visual-studio-2019).
 
-# Contributing / Feedback
+## Contributing / Feedback
 
 * [Support Fody](https://opencollective.com/fody); this project uses [Costura](https://github.com/Fody/Costura/) to merge dependent DLLs into a single final DLL, keeping the Visualizers folder clean.
 * Test the visualizer. (The significance of this kind of contribution cannot be overestimated.)
@@ -56,7 +56,7 @@ From the [project's Releases page](https://github.com/zspitz/ExpressionTreeVisua
 * Spread the word
 * Provide feedback to Microsoft about [these limitations to the visualizer API](https://github.com/zspitz/ExpressionToString/wiki/External-issues)
 
-# Credits
+## Credits
 
 * John M. Wright's series on [writing debugger visualizers](https://wrightfully.com/writing-a-readonly-debugger-visualizer)
 * Multiple-selection treeview is provided by [MultiSelectTreeView](https://github.com/ygoe/MultiSelectTreeView)
