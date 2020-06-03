@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if VISUALIZER_DEBUGGEE
+using Periscope.Debuggee;
+#endif
+using System;
 using static ExpressionTreeToString.FormatterNames;
 
 namespace ExpressionTreeVisualizer.Serialization {
@@ -23,10 +26,12 @@ namespace ExpressionTreeVisualizer.Serialization {
         public string? Path { get; set; }
 
 #if VISUALIZER_DEBUGGEE
-        public override bool NeedsTransferData(Config original) => 
-            original.Formatter != Formatter || 
-            original.Language != Language || 
-            original.Path != Path;
+        public override ConfigDiffStates Diff(Config baseline) =>
+            (
+                baseline.Formatter == Formatter &&
+                baseline.Language == Language &&
+                baseline.Path == Path
+            ) ? ConfigDiffStates.NoAction : ConfigDiffStates.NeedsTransfer;
 
         public override Config Clone() =>
 #else

@@ -203,7 +203,7 @@ namespace ExpressionTreeVisualizer.Serialization {
 
             // populate URLs
             if (pi != null) {
-                ParentProperty = (pi.DeclaringType.Namespace!, pi.DeclaringType.Name!, pi.Name);
+                ParentProperty = (pi.DeclaringType!.Namespace!, pi.DeclaringType.Name, pi.Name);
             }
 
             if (!baseTypes.TryGetValue(o.GetType(), out _baseTypes)) {
