@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using ExpressionTreeVisualizer.Serialization;
 using Microsoft.VisualStudio.DebuggerVisualizers;
-using Periscope.Debuggee;
+using PostSharp.Community.Packer;
+
+[assembly: Packer]
 
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer),
@@ -46,8 +47,6 @@ namespace ExpressionTreeVisualizer {
     public abstract class VisualizerBase : DialogDebuggerVisualizer { }
 
     public class Visualizer : VisualizerBase {
-        static Visualizer() => AssemblyResolve.Attach("ExpressionTreeVisualizer");
-
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) =>
             Periscope.Visualizer.Show<VisualizerWindow, Config>(GetType(), objectProvider, new Periscope.GithubProjectInfo("zspitz","expressiontreevisualizer"));
     }

@@ -20,6 +20,7 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
+    <PackageReference Include="PostSharp.Community.Packer" Version="1.1.0" />
     <PackageReference Include="ZSpitz.Util" Version="0.0.27" />
     <PackageReference Include="ZSpitz.Util.Wpf" Version="0.0.27" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
