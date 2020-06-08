@@ -29,8 +29,8 @@
   <ItemGroup>
     <PackageReference Include="ExpressionTreeToString" Version="2.0.20" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
-    <PackageReference Include="ZSpitz.Util" Version="0.0.26" />
-    <PackageReference Include="ZSpitz.Util.Wpf" Version="0.0.26" />
+    <PackageReference Include="ZSpitz.Util" Version="0.0.27" />
+    <PackageReference Include="ZSpitz.Util.Wpf" Version="0.0.27" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
   </ItemGroup>

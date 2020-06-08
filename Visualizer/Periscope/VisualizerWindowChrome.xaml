@@ -1,0 +1,95 @@
+﻿<DockPanel Margin="12" x:Class="Periscope.VisualizerWindowChrome"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:ps="clr-namespace:Periscope"
+        xmlns:util="clr-namespace:ZSpitz.Util.Wpf;assembly=ZSpitz.Util.Wpf"
+        xmlns:s="clr-namespace:System;assembly=mscorlib">
+
+    <DockPanel.Resources>
+        <util:VisibilityConverter x:Key="NotNullVisibilityConverter" MatchValue="{x:Null}" Invert="True" />
+        <s:Boolean x:Key="True">True</s:Boolean>
+        <s:Boolean x:Key="False">False</s:Boolean>
+        <util:VisibilityConverter x:Key="NullVisibleConverter" MatchValue="{x:Null}" />
+        <util:VisibilityConverter x:Key="FalseVisibleConverter" MatchValue="{StaticResource False}" />
+        <util:MultiVisibilityConverter x:Key="MultiVisibilityConverter" />
+    </DockPanel.Resources>
+
+    <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0" DataContext="{Binding Source={x:Static ps:Visualizer.Current}}">
+
+        <Label Name="aboutAnchor" Margin="0" DockPanel.Dock="Right">
+            <Hyperlink Name="aboutLink">
+                <TextBlock Text="About" />
+                <Popup Name="aboutPopup" AllowsTransparency="True" Placement="Custom" PlacementTarget="{Binding ElementName=aboutAnchor}" StaysOpen="False">
+                    <Border Background="White" BorderBrush="Black" BorderThickness="1" Padding="12">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock FontSize="20" FontWeight="Bold">
+                                <Run Text="{Binding Description, Mode=OneWay}" />
+                                &#x00B7;
+                                <Run Text="{Binding Version, Mode=OneWay}" />
+                            </TextBlock>
+                            <TextBlock HorizontalAlignment="Center">
+                                <util:Hyperlink NavigateUri="{Binding Location, TargetNullValue=''}" CommandParameter="{Binding UrlArgs}">
+                                    <Run Text="{Binding Filename, Mode=OneWay}" />
+                                </util:Hyperlink>
+                            </TextBlock>
+                            <TextBlock HorizontalAlignment="Center">
+                                <util:Hyperlink NavigateUri="{Binding ProjectUrl, TargetNullValue=''}">Project</util:Hyperlink>
+                                &#x00B7;
+                                <util:Hyperlink NavigateUri="{Binding ReleaseUrl, TargetNullValue=''}">Releases</util:Hyperlink>
+                                &#x00B7;
+                                <util:Hyperlink NavigateUri="{Binding FeedbackUrl, TargetNullValue=''}">Feedback</util:Hyperlink>
+                            </TextBlock>
+                            <Separator HorizontalAlignment="Stretch" VerticalAlignment="Center" Width="Auto" Height="10" />
+                            <TextBlock HorizontalAlignment="Center">
+                                Latest version:
+                                <Run Text="{Binding LatestVersionString, Mode=OneWay}" />
+                            </TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Visibility="{Binding VersionCheckedOn, Converter={StaticResource NotNullVisibilityConverter}}" >
+                                Last checked:
+                               <Run Text="{Binding VersionCheckedOn, Mode=OneWay}" />
+                            </TextBlock>
+                            <Button Command="{Binding LatestVersionCheck}" Content="Check for latest version" HorizontalAlignment="Center" />
+                            <CheckBox IsChecked="{Binding AutoVersionCheck}" Content="Auto check for new version" HorizontalAlignment="Center" />
+                        </StackPanel>
+                        <!--<util:AutoGrid ColumnCount="2">
+                            <TextBlock Text="Current version" />
+                            <TextBlock Text="{Binding Version}" />
+                            <TextBlock Text="Latest version" />
+                            <TextBlock Text="{Binding LatestVersionString}" />
+                            <CheckBox IsChecked="{Binding AutoVersionCheck}" Content="Auto check for new version" Grid.ColumnSpan="2" />
+                            <TextBlock Text="Last version check" />
+                            <TextBlock Text="{Binding VersionCheckedOn}" />
+                            <Button Grid.ColumnSpan="2" Command="{Binding LatestVersionCheck}" Content="Check for latest version" />
+                            <TextBlock Text="Location" />
+                            <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                                <util:Hyperlink NavigateUri="{Binding Location}" CommandParameter="{Binding UrlArgs}">
+                                    <Run Text="{Binding Filename, Mode=OneWay}" />
+                                </util:Hyperlink>
+                            </TextBlock>
+                            <TextBlock>
+                                <util:Hyperlink NavigateUri="{Binding ProjectUrl, TargetNullValue=''}">Feedback</util:Hyperlink>
+                            </TextBlock>
+                            <TextBlock>
+                                <util:Hyperlink NavigateUri="{Binding FeedbackUrl, TargetNullValue=''}">Feedback</util:Hyperlink>
+                            </TextBlock>
+                        </util:AutoGrid>-->
+                    </Border>
+                </Popup>
+            </Hyperlink>
+        </Label>
+
+        <Label Name="optionsAnchor" Margin="9,0,0,0" DockPanel.Dock="Right">
+            <Hyperlink Name="optionsLink">
+                <TextBlock Text="Settings" />
+                <Popup Name="optionsPopup" AllowsTransparency="True" Placement="Custom" PlacementTarget="{Binding ElementName=optionsAnchor}" StaysOpen="False">
+                    <Border Background="White" BorderBrush="Black" BorderThickness="1" Name="optionsBorder" Padding="12" />
+                </Popup>
+            </Hyperlink>
+        </Label>
+
+        <Label Content="Expression" Padding="0,5,5,5" />
+        <TextBox Text="{Binding RootExpression}" MinWidth="50" />
+
+    </DockPanel>
+    <Border BorderBrush="Transparent" BorderThickness="0" Name="mainContent" />
+</DockPanel>

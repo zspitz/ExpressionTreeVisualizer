@@ -1,0 +1,17 @@
+﻿<Window x:Class="Periscope.ExpressionRootPrompt" Title="Input" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ContentRendered="Window_ContentRendered" MaxWidth="300"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:my="clr-namespace:Periscope">
+    <StackPanel Orientation="Vertical" Margin="12">
+        <TextBlock Text="Enter the expression currently being debugged:" />
+        <TextBox Margin="0,5,0,0" Name="txbExpression" Text="{Binding RootExpression, Source={x:Static my:Visualizer.Current}}" />
+        <TextBlock Margin="0,5,0,0" TextWrapping="Wrap">
+            <Run Text="The custom visualizer API currently doesn't expose the debugged expression; there is a (currently closed)" />
+            <Hyperlink NavigateUri="https://developercommunity.visualstudio.com/idea/503782/api-for-visualized-expression-in-custom-visualizer.html" Name="link">
+                request on Visual Studio Developer Community
+            </Hyperlink>
+            <Run Text="to allow this"/>
+        </TextBlock>
+        <Button HorizontalAlignment="Right" Content="OK" IsDefault="True" Click="OK_Click" Margin="0,18,0,0" Width="75" Height="23" />
+    </StackPanel>
+</Window>
