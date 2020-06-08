@@ -30,7 +30,7 @@ before_build:
 - cmd: dotnet restore
 
 build:
-  project: CI.sln
+  project: ExpressionTreeVisualizer.sln
 
 matrix:
   fast_finish: true
