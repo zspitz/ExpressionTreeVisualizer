@@ -1,9 +1,6 @@
 ﻿using System.Diagnostics;
 using ExpressionTreeVisualizer.Serialization;
 using Microsoft.VisualStudio.DebuggerVisualizers;
-using PostSharp.Community.Packer;
-
-[assembly: Packer]
 
 [assembly: DebuggerVisualizer(
     visualizer: typeof(ExpressionTreeVisualizer.Visualizer),

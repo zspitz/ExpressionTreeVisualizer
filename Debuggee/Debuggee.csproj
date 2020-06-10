@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <!-- we need to explicitly reference this, otherwise Nuget will take the minimum required dependency for ExpressionTreeToString, and Costura will compile that in-->
-    <PackageReference Include="PostSharp.Community.Packer" Version="1.1.0" />
     <PackageReference Include="ZSpitz.Util" Version="0.0.27" />
     
     <PackageReference Include="ExpressionTreeToString" Version="2.0.20" />
