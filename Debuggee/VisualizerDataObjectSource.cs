@@ -4,6 +4,8 @@ using ExpressionTreeVisualizer.Serialization;
 
 namespace ExpressionTreeVisualizer {
     public class VisualizerDataObjectSource : VisualizerObjectSource {
+        static VisualizerDataObjectSource() => Periscope.Debuggee.SubfolderAssemblyResolver.Hook("ExpressionTreeVisualizer");
+
         public override void GetData(object target, Stream outgoingData) =>
             Serialize(outgoingData, "");
 

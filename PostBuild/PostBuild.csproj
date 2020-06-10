@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy $(SolutionDir)Visualizer\bin\Debug\net472\*.* &quot;%userprofile%\Documents\Visual Studio 2017\Visualizers\&quot;" />
-    <Exec Command="copy $(SolutionDir)Debuggee\bin\Debug\net2.0\*.* &quot;%userprofile%\Documents\Visual Studio 2017\Visualizers\&quot;" />
-    <Exec Command="copy $(SolutionDir)Visualizer\bin\Debug\net472\*.* &quot;%userprofile%\Documents\Visual Studio 2019\Visualizers\&quot;" />
+    <Exec Command="xcopy C:\Users\Spitz\source\repos\zspitz\ExpressionTreeVisualizer\Visualizer\bin\Debug\net472\*.* &quot;%userprofile%\Documents\Visual Studio 2017\Visualizers\&quot; /e /y" />
+    <Exec Command="xcopy C:\Users\Spitz\source\repos\zspitz\ExpressionTreeVisualizer\Debuggee\bin\Debug\net2.0\*.* &quot;%userprofile%\Documents\Visual Studio 2017\Visualizers\&quot; /e /y" />
+    <Exec Command="xcopy C:\Users\Spitz\source\repos\zspitz\ExpressionTreeVisualizer\Visualizer\bin\Debug\net472\*.* &quot;%userprofile%\Documents\Visual Studio 2019\Visualizers\&quot; /e /y" />
     <Exec Command="xcopy C:\Users\Spitz\source\repos\zspitz\ExpressionTreeVisualizer\Debuggee\bin\Debug &quot;%userprofile%\Documents\Visual Studio 2019\Visualizers\&quot; /e /y" />
   </Target>
 

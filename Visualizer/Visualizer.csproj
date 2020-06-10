@@ -29,4 +29,12 @@
 
   <Import Project="..\UI\UI.projitems" Label="Shared" />
 
+  <Target Name="CopyPackageAssembliesToSubFolder" AfterTargets="ResolveReferences">
+    <ItemGroup>
+      <ReferenceCopyLocalPaths Condition=" '%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' "
+        Update="%(ReferenceCopyLocalPaths)"
+        DestinationSubDirectory="ExpressionTreeVisualizer\" />
+    </ItemGroup>
+  </Target>
+
 </Project>
