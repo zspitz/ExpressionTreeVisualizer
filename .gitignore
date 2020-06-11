@@ -264,5 +264,5 @@ __pycache__/
 # Because the plaground projects (start with _) should not be in the repo
 _*
 # neither should the solution that references them
-/ExpressionTreeVisualizer.sln
+/ExpressionTreeVisualizer.Dev.sln
 
