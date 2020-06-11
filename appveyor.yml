@@ -29,6 +29,9 @@ dotnet_csproj:
 before_build:
 - cmd: dotnet restore
 
+install:
+- cmd: git submodule update --init --recursive
+
 build:
   project: ExpressionTreeVisualizer.sln
 
