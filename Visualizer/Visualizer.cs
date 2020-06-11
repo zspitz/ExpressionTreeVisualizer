@@ -41,9 +41,7 @@ using Microsoft.VisualStudio.DebuggerVisualizers;
 namespace ExpressionTreeVisualizer {
     public abstract class VisualizerWindowBase : Periscope.VisualizerWindowBase<VisualizerWindow, Config> { }
 
-    public abstract class VisualizerBase : DialogDebuggerVisualizer { }
-
-    public class Visualizer : VisualizerBase {
+    public class Visualizer : DialogDebuggerVisualizer {
         static Visualizer() => Periscope.Debuggee.SubfolderAssemblyResolver.Hook("ExpressionTreeVisualizer");
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider) =>
             Periscope.Visualizer.Show<VisualizerWindow, Config>(GetType(), objectProvider, new Periscope.GithubProjectInfo("zspitz","expressiontreevisualizer"));
