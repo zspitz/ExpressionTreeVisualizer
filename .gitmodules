@@ -1,0 +1,3 @@
+[submodule "Visualizer/Periscope"]
+	path = Visualizer/Periscope
+	url = https://github.com/zspitz/Periscope.git
