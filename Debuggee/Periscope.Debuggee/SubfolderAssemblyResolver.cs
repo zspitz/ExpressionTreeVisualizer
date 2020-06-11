@@ -21,14 +21,15 @@ namespace Periscope.Debuggee {
             if (loadedAssembly is { }) { return loadedAssembly; }
 
             var n = new AssemblyName(e.Name);
-            if (exclusions.Any(x => n.Name.EndsWith(x, OrdinalIgnoreCase))) { return null; }
-            //if (n.Name.EndsWithAny(OrdinalIgnoreCase, exclusions)) { return null; }
+            if (n.Name.EndsWithAny(OrdinalIgnoreCase, exclusions)) { return null; }
 
             // search in basePath first, as it's probably the better dependency
             var assemblyPath =
                 resolveFromFolder(basePath!) ??
                 resolveFromFolder(subfolderPath!) ??
-                throw new Exception($"Assembly {e.Name} not found");
+                null;
+
+            if (assemblyPath is null) { return null; }
 
             return LoadFrom(assemblyPath);
 
@@ -38,10 +39,8 @@ namespace Periscope.Debuggee {
                     .FirstOrDefault(filePath => {
                         try {
                             return n.Name.Equals(AssemblyName.GetAssemblyName(filePath).Name, OrdinalIgnoreCase);
-                        } catch (BadImageFormatException) {
+                        } catch {
                             return false;
-                        } catch (Exception ex) {
-                            throw new Exception($"Error loading assembly {filePath}", ex);
                         }
                     });
         }
