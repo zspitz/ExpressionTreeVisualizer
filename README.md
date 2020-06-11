@@ -45,7 +45,12 @@ From the [project's Releases page](https://github.com/zspitz/ExpressionTreeVisua
 1. Unblock the ZIP file
 2. Extract the files to the visualizers folder, preserving the [required folder structure](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2019#to-install-a-visualizer-for-visual-studio-2019).
 
-**Note** There currently is some kind of bug when using the visualizer with .NET Core or .NET Standard projects, and the visualizer is installed in the subfolder under `Documents`. A workaround is to [install the visualizer to the VS install path](https://github.com/zspitz/ExpressionTreeVisualizer/issues/103#issuecomment-583212386) instead.
+## Uninstallation
+
+To delete the visualizer:
+
+1. Navigate to the visualizer location. This can be done by clicking on the **About** link, and then clicking on the **ExpressionTreeVisualizer.dll** link.
+2. Delete all files and folders whose name starts with `ExpressionTreeVisualizer`. You can find these by typing `name:ExpressionTreeVisualizer` in the Windows search box.
 
 ## Contributing / Feedback
 
