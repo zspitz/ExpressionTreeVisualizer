@@ -44,6 +44,7 @@ after_build:
   - 7z a %APPVEYOR_BUILD_FOLDER%\ExpressionTreeVisualizer.2019.zip %APPVEYOR_BUILD_FOLDER%\Visualizer\bin\Debug\net472\*.dll*
   - cd %APPVEYOR_BUILD_FOLDER%\Debuggee\bin\Debug
   - 7z a %APPVEYOR_BUILD_FOLDER%\ExpressionTreeVisualizer.2019.zip -r *.dll
+  - 7z a %APPVEYOR_BUILD_FOLDER%\ExpressionTreeVisualizer.2019.zip -r ExpressionTreeVisualizer\*.dll
 
 artifacts:
   - path: ExpressionTreeVisualizer.2019.zip
