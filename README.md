@@ -54,7 +54,6 @@ To delete the visualizer:
 
 ## Contributing / Feedback
 
-* [Support Fody](https://opencollective.com/fody); this project uses [Costura](https://github.com/Fody/Costura/) to merge dependent DLLs into a single final DLL, keeping the Visualizers folder clean.
 * Test the visualizer. (The significance of this kind of contribution cannot be overestimated.)
 * Suggest ideas and enhancements (via [issues](https://github.com/zspitz/ExpressionTreeVisualizer/issues/new/choose))
 * Notify about bugs (via [issues](https://github.com/zspitz/ExpressionTreeVisualizer/issues/new/choose))
