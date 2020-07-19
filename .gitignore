@@ -266,3 +266,4 @@ _*
 # neither should the solution that references them
 /ExpressionTreeVisualizer.Dev.sln
 
+/PostBuild

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;netstandard2.0;netcoreapp2.0</TargetFrameworks>
-    <RootNamespace>ExpressionTreeVisualizer.Serialization</RootNamespace>
+    <RootNamespace>ExpressionTreeVisualizer.Debuggee</RootNamespace>
     <AssemblyName>ExpressionTreeVisualizer.Debuggee</AssemblyName>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
@@ -28,8 +28,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ZSpitz.Util" Version="0.0.27" />
-    <PackageReference Include="ExpressionTreeToString" Version="2.0.20" />
+    <PackageReference Include="ZSpitz.Util" Version="0.0.42" />
+    <PackageReference Include="ExpressionTreeToString" Version="2.0.27" />
     <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.DebuggerVisualizers.dll</HintPath>
       <Private>false</Private>
@@ -40,9 +40,7 @@
 
   <Target Name="CopyPackageAssembliesToSubFolder" AfterTargets="ResolveReferences">
     <ItemGroup>
-      <ReferenceCopyLocalPaths Condition=" '%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' "
-        Update="%(ReferenceCopyLocalPaths)"
-        DestinationSubDirectory="ExpressionTreeVisualizer\" />
+      <ReferenceCopyLocalPaths Condition=" '%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' " Update="%(ReferenceCopyLocalPaths)" DestinationSubDirectory="ExpressionTreeVisualizer\" />
     </ItemGroup>
   </Target>
 </Project>

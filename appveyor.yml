@@ -14,7 +14,6 @@ only_commits:
     - Serialization/
     - UI/
     - Visualizer/
-    - Visualizer.Xaml/
     - appveyor.yml
 
 dotnet_csproj:

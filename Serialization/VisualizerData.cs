@@ -18,7 +18,9 @@ namespace ExpressionTreeVisualizer.Serialization {
                 o = ((Expression)ResolvePath(o, Config.Path)).ExtractValue();
             }
             Source = WriterBase.Create(o, Config.Formatter, Config.Language, out var pathSpans).ToString();
-            Root = new ExpressionNodeData(o, ("", ""), this, pathSpans, false);
+
+            var valueExtractor = new ValueExtractor();
+            Root = new ExpressionNodeData(o, ("", ""), this, valueExtractor, pathSpans, false);
         }
     }
 }

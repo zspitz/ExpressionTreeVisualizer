@@ -13,6 +13,7 @@ using static ExpressionTreeToString.FormatterNames;
 using System.Collections;
 using ZSpitz.Util;
 using static ZSpitz.Util.Functions;
+using ExpressionTreeToString;
 
 namespace ExpressionTreeVisualizer.Serialization {
     [Serializable]
@@ -64,16 +65,18 @@ namespace ExpressionTreeVisualizer.Serialization {
         public string[] FactoryMethodNames => _factoryMethodNames;
 
 
-        internal ExpressionNodeData(object o, (string aggregatePath, string pathFromParent) path, VisualizerData visualizerData, Dictionary<string, (int start, int length)> pathSpans, bool isParameterDeclaration = false, PropertyInfo? pi = null, string? parentWatchExpression = null) :
+        internal ExpressionNodeData(object o, (string aggregatePath, string pathFromParent) path, VisualizerData visualizerData, ValueExtractor valueExtractor, Dictionary<string, (int start, int length)> pathSpans, bool isParameterDeclaration = false, PropertyInfo? pi = null, string? parentWatchExpression = null) :
             this(
                 o, path,
                 visualizerData.Config.Language,
+                valueExtractor,
                 pathSpans, isParameterDeclaration, pi, parentWatchExpression
             ) { }
 
         private ExpressionNodeData(
             object o, (string aggregatePath, string pathFromParent) path,
             string language,
+            ValueExtractor valueExtractor,
             Dictionary<string, (int start, int length)> pathSpans, bool isParameterDeclaration = false, PropertyInfo? pi = null, string? parentWatchExpression = null
         ) {
             var (aggregatePath, pathFromParent) = path;
@@ -107,30 +110,26 @@ namespace ExpressionTreeVisualizer.Serialization {
                         Closure = expressionType.Name;
                     }
 
-                    object? value = null;
+                    var (evaluated, value) = valueExtractor.GetValue(expr);
+                    if (evaluated) {
+                        StringValue = StringValue(value!, language); // TODO value is allowed to be null
+                        EnableValueInNewWindow = value is { } && value.GetType().InheritsFromOrImplementsAny(NodeTypes);
+                    }
 
                     // fill StringValue and EndNodeType properties, for expressions
                     switch (expr) {
                         case ConstantExpression cexpr when !cexpr.Type.IsClosureClass():
-                            value = cexpr.Value;
                             EndNodeType = Constant;
                             break;
                         case ParameterExpression pexpr1:
                             EndNodeType = Parameter;
                             break;
                         case Expression e1 when expr.IsClosedVariable():
-                            value = expr.ExtractValue();
                             EndNodeType = ClosedVar;
                             break;
                         case DefaultExpression defexpr:
-                            value = defexpr.ExtractValue();
                             EndNodeType = Default;
                             break;
-                    }
-
-                    if (value != null) {
-                        StringValue = StringValue(value, language);
-                        EnableValueInNewWindow = value.GetType().InheritsFromOrImplementsAny(NodeTypes);
                     }
 
                     break;
@@ -197,7 +196,7 @@ namespace ExpressionTreeVisualizer.Serialization {
                 .Where(x => x.x != null)
                 .SelectT((relativePath, o1, prp) => new ExpressionNodeData(
                     o1, (FullPath ?? "", relativePath),
-                    language, pathSpans,
+                    language, valueExtractor, pathSpans,
                     false, prp, WatchExpressionFormatString))
                 .ToList();
 
