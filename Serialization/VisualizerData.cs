@@ -1,6 +1,5 @@
 ﻿using ExpressionTreeToString;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using ZSpitz.Util;
 using static ZSpitz.Util.Functions;
@@ -17,7 +16,7 @@ namespace ExpressionTreeVisualizer.Serialization {
             if (!Config.Path.IsNullOrWhitespace()) {
                 o = ((Expression)ResolvePath(o, Config.Path)).ExtractValue();
             }
-            Source = WriterBase.Create(o, Config.Formatter, Config.Language, out var pathSpans).ToString();
+            Source = Renderers.Invoke(Config.Formatter, o, Config.Language, out var pathSpans);
 
             var valueExtractor = new ValueExtractor();
             Root = new ExpressionNodeData(o, ("", ""), this, valueExtractor, pathSpans, false);

@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using ExpressionTreeToString.Util;
 using static ExpressionTreeVisualizer.Serialization.EndNodeTypes;
 using static ExpressionTreeToString.Globals;
 using System.Runtime.CompilerServices;
-using static ExpressionTreeToString.FormatterNames;
 using System.Collections;
 using ZSpitz.Util;
 using static ZSpitz.Util.Functions;
 using ExpressionTreeToString;
+using static ZSpitz.Util.Language;
 
 namespace ExpressionTreeVisualizer.Serialization {
     [Serializable]
@@ -68,14 +66,14 @@ namespace ExpressionTreeVisualizer.Serialization {
         internal ExpressionNodeData(object o, (string aggregatePath, string pathFromParent) path, VisualizerData visualizerData, ValueExtractor valueExtractor, Dictionary<string, (int start, int length)> pathSpans, bool isParameterDeclaration = false, PropertyInfo? pi = null, string? parentWatchExpression = null) :
             this(
                 o, path,
-                visualizerData.Config.Language,
+                OneOfStringLanguageExtensions.ResolveLanguage(visualizerData.Config.Language)!.Value,
                 valueExtractor,
                 pathSpans, isParameterDeclaration, pi, parentWatchExpression
             ) { }
 
         private ExpressionNodeData(
             object o, (string aggregatePath, string pathFromParent) path,
-            string language,
+            Language language,
             ValueExtractor valueExtractor,
             Dictionary<string, (int start, int length)> pathSpans, bool isParameterDeclaration = false, PropertyInfo? pi = null, string? parentWatchExpression = null
         ) {
@@ -212,7 +210,7 @@ namespace ExpressionTreeVisualizer.Serialization {
 
             string? factoryMethodName = null;
             if (o is BinaryExpression || o is UnaryExpression) {
-                BinaryUnaryMethods.TryGetValue(((Expression)o).NodeType, out factoryMethodName);
+                Globals.FactoryMethodNames.TryGetValue(((Expression)o).NodeType, out factoryMethodName);
             }
             if (factoryMethodName.IsNullOrWhitespace()) {
                 var publicType = o.GetType().BaseTypes(false, true).FirstOrDefault(x => !x.IsInterface && x.IsPublic);

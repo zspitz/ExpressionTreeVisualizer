@@ -2,7 +2,7 @@
 using Periscope.Debuggee;
 #endif
 using System;
-using static ExpressionTreeToString.FormatterNames;
+using static ExpressionTreeToString.RendererNames;
 
 namespace ExpressionTreeVisualizer.Serialization {
     [Serializable]
