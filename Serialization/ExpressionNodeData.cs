@@ -139,7 +139,7 @@ namespace ExpressionTreeVisualizer.Serialization {
                     Name = mbind.Member.Name;
                     break;
                 case CallSiteBinder callSiteBinder:
-                    NodeType = callSiteBinder.BinderType();
+                    NodeType = callSiteBinder.BinderType().ToString();
                     break;
                 default:
                     NodeType = o.GetType().FriendlyName(language);
