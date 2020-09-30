@@ -3,7 +3,7 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
             xmlns:util="clr-namespace:ZSpitz.Util.Wpf;assembly=ZSpitz.Util.Wpf"
         ChildMargin="6" ChildVerticalAlignment="Center" ColumnCount="2">
-    <TextBlock Background="White" Text="Formatter" />
+    <TextBlock Background="White" Text="Renderer" />
     <ComboBox Name="cmbFormatters" SelectedItem="{Binding Formatter}" />
     <TextBlock Background="White" Text="Language" />
     <ComboBox Name="cmbLanguages" SelectedItem="{Binding Language}" />

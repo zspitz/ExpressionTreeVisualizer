@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <PackageReference Include="ZSpitz.Util" Version="0.1.56" />
-    <PackageReference Include="ExpressionTreeToString" Version="3.0.41" />
+    <PackageReference Include="ExpressionTreeToString" Version="3.1.45" />
     <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.DebuggerVisualizers.dll</HintPath>
       <Private>false</Private>
