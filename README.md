@@ -10,7 +10,7 @@ This project provides a custom debugging visualizer for expression trees, that c
 
 ![Screenshot](screenshot-01.png)
 
-There are [multiple renderers)](https://github.com/zspitz/ExpressionTreeVisualizer/wiki#settings) available:
+There are [multiple renderers](https://github.com/zspitz/ExpressionTreeVisualizer/wiki#settings) available:
 
 ![Language switch](formatter-switch.gif)
 
