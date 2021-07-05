@@ -84,7 +84,10 @@ namespace ExpressionTreeVisualizer {
             //if (start < NodeData.Span.start || end > NodeData.SpanEnd) { throw new ArgumentOutOfRangeException(); }
             var current = Root;
             while (true) {
-                var child = current.Children.SingleOrDefault(x => x.Model.Span.start <= start && x.Model.SpanEnd >= end);
+                var child = 
+                    (start, length) == (0,0) ?
+                        current.Children.FirstOrDefault(x => x.Model.Span == (0,0)) :
+                        current.Children.SingleOrDefault(x => x.Model.Span.start <= start && x.Model.SpanEnd >= end);
                 if (child == null) { break; }
                 current = child;
             }

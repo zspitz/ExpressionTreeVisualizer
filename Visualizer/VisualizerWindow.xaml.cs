@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using ExpressionTreeVisualizer.Serialization;
-using Periscope;
 
 namespace ExpressionTreeVisualizer {
     public partial class VisualizerWindow : VisualizerWindowBase {
@@ -15,7 +13,7 @@ namespace ExpressionTreeVisualizer {
         public VisualizerWindow() => InitializeComponent();
 
         protected override (object windowContext, object optionsContext, Config config) GetViewState(object response, ICommand? OpenInNewWindow) {
-            if (!(response is VisualizerData vd)) {
+            if (response is not VisualizerData vd) {
                 throw new InvalidOperationException("Unrecognized response type; expected VisualizerData.");
             }
 

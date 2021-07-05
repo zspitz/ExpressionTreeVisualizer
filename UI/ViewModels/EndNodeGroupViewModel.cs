@@ -16,7 +16,7 @@ namespace ExpressionTreeVisualizer {
         public EndNodeGroupViewModel(EndNodeData model, IEnumerable<ExpressionNodeDataViewModel> nodes) : base(model) {
             Nodes =  nodes.ToReadOnlyCollection();
 
-            void handler(object s, PropertyChangedEventArgs e) {
+            void handler(object? s, PropertyChangedEventArgs e) {
                 if (e.PropertyName != nameof(IsSelected)) { return; }
                 IsSelected = Nodes.Any(x => x.IsSelected);
             }

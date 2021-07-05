@@ -14,7 +14,7 @@ namespace ExpressionTreeVisualizer.Serialization {
         public VisualizerData(object o, Config? config = null) {
             Config = config ?? new Config();
             if (!Config.Path.IsNullOrWhitespace()) {
-                o = ((Expression)ResolvePath(o, Config.Path)).ExtractValue();
+                o = ((Expression)ResolvePath(o, Config.Path)!).ExtractValue()!;
             }
             Source = Renderers.Invoke(Config.Formatter, o, Config.Language, out var pathSpans);
 

@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp3.1;net5.0-windows</TargetFrameworks>
     <RootNamespace>ExpressionTreeVisualizer</RootNamespace>
     <AssemblyName>ExpressionTreeVisualizer.UI</AssemblyName>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <UseWPF>true</UseWPF>
@@ -27,10 +27,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ExpressionTreeToString" Version="3.2.53" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
-    <PackageReference Include="ZSpitz.Util" Version="0.1.81" />
-    <PackageReference Include="ZSpitz.Util.Wpf" Version="0.1.81" />
+    <PackageReference Include="ExpressionTreeToString" Version="3.4.63" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
+    <PackageReference Include="ZSpitz.Util" Version="0.1.105" />
+    <PackageReference Include="ZSpitz.Util.Wpf" Version="0.1.105" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
   </ItemGroup>

@@ -37,7 +37,7 @@ namespace ExpressionTreeVisualizer.Serialization {
 #else
         public Config Clone() => 
 #endif
-            new Config {
+            new() {
                 Formatter = Formatter,
                 Language = Language,
                 Path = Path

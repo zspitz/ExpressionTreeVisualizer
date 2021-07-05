@@ -21,7 +21,7 @@ namespace ExpressionTreeVisualizer.Serialization {
                 .SelectMany(x => new[] { x, typeof(IEnumerable<>).MakeGenericType(x) })
                 .ToHashSet();
 
-        private static readonly Dictionary<Type, List<(string @namespace, string typename)>> baseTypes = new Dictionary<Type, List<(string @namespace, string typename)>>();
+        private static readonly Dictionary<Type, List<(string @namespace, string typename)>> baseTypes = new();
 
         private static readonly Dictionary<Type, string[]> factoryMethodNamesByType =
             typeof(Expression).GetMethods()
@@ -110,7 +110,7 @@ namespace ExpressionTreeVisualizer.Serialization {
 
                     var (evaluated, value) = valueExtractor.GetValue(expr);
                     if (evaluated) {
-                        StringValue = StringValue(value!, language); // TODO value is allowed to be null
+                        StringValue = StringValue(value, language); // TODO value is allowed to be null
                         EnableValueInNewWindow = value is { } && value.GetType().InheritsFromOrImplementsAny(NodeTypes);
                     }
 
@@ -142,7 +142,7 @@ namespace ExpressionTreeVisualizer.Serialization {
                     NodeType = callSiteBinder.BinderType().ToString();
                     break;
                 default:
-                    NodeType = o.GetType().FriendlyName(language);
+                    NodeType = o.GetType().FriendlyName(language)!;
                     break;
             }
 
@@ -161,11 +161,10 @@ namespace ExpressionTreeVisualizer.Serialization {
             var typename = o.GetType().BaseTypes(false, true).First(x => !x.IsGenericType && x.IsPublic && properties.All(prp => x.GetProperty(prp.Name) is { })); // because the FullName of generic types is often the fully-qualified name
             if (parentWatchExpression.IsNullOrWhitespace()) {
                 var formatString = "{0}";
-                if (language == CSharp) {
-                    WatchExpressionFormatString = $"(({typename}){formatString})";
-                } else { // VisualBasic
-                    WatchExpressionFormatString = $"CType({formatString}, {typename})";
-                }
+                WatchExpressionFormatString = 
+                    language == CSharp ? 
+                        $"(({typename}){formatString})" : 
+                        $"CType({formatString}, {typename})";
             } else {
                 var watchPathFromParent = PathFromParent;
                 if (language == CSharp) {
@@ -179,14 +178,15 @@ namespace ExpressionTreeVisualizer.Serialization {
             // populate Children
             var preferredOrder = PreferredPropertyOrders.FirstOrDefault(x => x.type.IsAssignableFrom(type)).propertyNames;
             Children = properties
-                .OrderBy(prp => {
-                    if (preferredOrder == null) { return -1; }
-                    return Array.IndexOf(preferredOrder, prp.Name);
-                })
+                .OrderBy(prp => 
+                    preferredOrder is not null ? 
+                        Array.IndexOf(preferredOrder, prp.Name) : 
+                        -1
+                )
                 .ThenBy(prp => prp.Name)
                 .SelectMany(prp => {
                     if (prp.PropertyType.InheritsFromOrImplements<IEnumerable>()) {
-                        return (prp.GetValue(o) as IEnumerable).Cast<object>().Select((x, index) => ($"{prp.Name}[{index}]", x, prp));
+                        return (prp.GetValue(o) as IEnumerable)!.Cast<object>().Select((x, index) => ($"{prp.Name}[{index}]", x, prp));
                     } else {
                         return new[] { (prp.Name, prp.GetValue(o)!, prp) };
                     }
@@ -213,14 +213,14 @@ namespace ExpressionTreeVisualizer.Serialization {
                 Globals.FactoryMethodNames.TryGetValue(((Expression)o).NodeType, out factoryMethodName);
             }
             if (factoryMethodName.IsNullOrWhitespace()) {
-                var publicType = o.GetType().BaseTypes(false, true).FirstOrDefault(x => !x.IsInterface && x.IsPublic);
+                var publicType = o.GetType().BaseTypes(false, true).First(x => !x.IsInterface && x.IsPublic);
                 factoryMethodNamesByType.TryGetValue(publicType, out _factoryMethodNames!);
             } else {
                 _factoryMethodNames = new[] { factoryMethodName };
             }
         }
 
-        public EndNodeData EndNodeData => new EndNodeData {
+        public EndNodeData EndNodeData => new() {
             Closure = Closure,
             Name = Name,
             Type = ReflectionTypeName,

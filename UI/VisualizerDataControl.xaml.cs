@@ -79,7 +79,7 @@ namespace ExpressionTreeVisualizer {
                 listData.RemoveLast();
             }
 
-            listData.ForEachT((header, url) => {
+            foreach (var (header, url) in listData) {
                 if (header == "---") {
                     menu.Items.Add(new Separator());
                     return;
@@ -90,7 +90,7 @@ namespace ExpressionTreeVisualizer {
                 };
                 mi.Click += (s1, e1) => Process.Start(url);
                 menu.Items.Add(mi);
-            });
+            }
 
             void addSeparator() {
                 if (listData.None() || listData.Last().header == "---") { return; }
