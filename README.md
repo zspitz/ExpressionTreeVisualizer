@@ -42,7 +42,7 @@ It supports .NET Core, ,NET Framework, and any .NET Standard 2.0 implementation.
 
 From the [project's Releases page](https://github.com/zspitz/ExpressionTreeVisualizer/releases), download the ZIP file corresponding to your Visual Studio version (2019 or 2017). Then:
 
-1. Unblock the ZIP file
+1. [Unblock the ZIP file](https://github.com/zspitz/ExpressionTreeVisualizer/wiki/Troubleshooting-visualizer-installation).
 2. Extract the files to the visualizers folder, preserving the [required folder structure](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-install-a-visualizer?view=vs-2019#to-install-a-visualizer-for-visual-studio-2019).
 
 ## Uninstallation
