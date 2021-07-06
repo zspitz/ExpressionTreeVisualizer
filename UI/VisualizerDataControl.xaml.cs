@@ -86,9 +86,10 @@ namespace ExpressionTreeVisualizer {
                 }
 
                 var mi = new MenuItem() {
-                    Header = header
+                    Header = header,
+                    DataContext = url
                 };
-                mi.Click += (s1, e1) => Process.Start(url);
+                mi.Click += static (s1,e1) => Process.Start((string)((MenuItem)s1).DataContext);
                 menu.Items.Add(mi);
             }
 
@@ -99,5 +100,7 @@ namespace ExpressionTreeVisualizer {
         }
 
         private const string baseUrl = "https://docs.microsoft.com/dotnet/api/";
+
+        
     }
 }
