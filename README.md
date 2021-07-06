@@ -30,7 +30,7 @@ Selection syncing:
   
 For more information, see the [wiki](https://github.com/zspitz/ExpressionTreeVisualizer/wiki).
 
-The UI components are also available as a [NuGet package](https://www.nuget.org/packages/ExpressionTreeVisualizer.UI/) (targeting .NET Core 3.1 / .NET Framework 4.7.2), which you can use in your own projects
+The UI components are also available as a [NuGet package](https://www.nuget.org/packages/ExpressionTreeVisualizer.UI/) (targeting .NET Core 3.1 / .NET Framework 4.7.2), which you can use in your own projects (demo available [here](https://github.com/zspitz/ExpressionTreeVisualizer.UIDemo)).
   
 ## Requirements / Supports
 
