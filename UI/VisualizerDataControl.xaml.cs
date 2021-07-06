@@ -89,7 +89,14 @@ namespace ExpressionTreeVisualizer {
                     Header = header,
                     DataContext = url
                 };
-                mi.Click += static (s1,e1) => Process.Start((string)((MenuItem)s1).DataContext);
+                mi.Click += static (s1, e1) => {
+                    // we need to explicitly set UseShellExecute to true -- https://github.com/dotnet/runtime/issues/28005
+                    var psi = new ProcessStartInfo {
+                        FileName = (string)((MenuItem)s1).DataContext,
+                        UseShellExecute = true
+                    };
+                    Process.Start(psi);
+                };
                 menu.Items.Add(mi);
             }
 
@@ -100,7 +107,5 @@ namespace ExpressionTreeVisualizer {
         }
 
         private const string baseUrl = "https://docs.microsoft.com/dotnet/api/";
-
-        
     }
 }
