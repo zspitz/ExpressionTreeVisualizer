@@ -79,11 +79,12 @@ namespace ExpressionTreeVisualizer.Serialization {
         ) {
             var (aggregatePath, pathFromParent) = path;
             PathFromParent = pathFromParent;
-            if (aggregatePath.IsNullOrWhitespace() || pathFromParent.IsNullOrWhitespace()) {
-                FullPath = aggregatePath + pathFromParent;
-            } else {
-                FullPath = $"{aggregatePath}.{pathFromParent}";
-            }
+
+            var separator = 
+                aggregatePath is null or "" || pathFromParent is null or "" ? 
+                    "" : 
+                    ".";
+            FullPath = aggregatePath + separator + pathFromParent;
 
             switch (o) {
                 case Expression expr:

@@ -42,7 +42,7 @@ namespace ExpressionTreeVisualizer {
                 var (@namespace, typename, propertyname) = node.Model.ParentProperty.Value;
                 listData.Add(
                     $"Property: {typename}.{propertyname}",
-                    $"{BaseUrl}{new[] { @namespace, typename, propertyname }.Joined(".")}"
+                    $"{baseUrl}{new[] { @namespace, typename, propertyname }.Joined(".")}"
                 );
             }
 
@@ -52,7 +52,7 @@ namespace ExpressionTreeVisualizer {
                 foreach (var (@namespace, typename, membername) in node.Model.NodeTypesParts) {
                     listData.Add(
                         $"Node type: {typename}.{membername}",
-                        $"{BaseUrl}{new[] { @namespace, typename }.Joined(".")}#{new[] { @namespace.Replace(".", "_"), typename, membername }.Joined("_")}"
+                        $"{baseUrl}{new[] { @namespace, typename }.Joined(".")}#{new[] { @namespace.Replace(".", "_"), typename, membername }.Joined("_")}"
                     );
                 }
             }
@@ -62,7 +62,7 @@ namespace ExpressionTreeVisualizer {
             if (node.Model.BaseTypes is { }) {
                 node.Model.BaseTypes.SelectT((@namespace, typename) => (
                     $"Base type: {typename}",
-                    $"{BaseUrl}{@namespace}.{typename.Replace("~", "-")}"
+                    $"{baseUrl}{@namespace}.{typename.Replace("~", "-")}"
                 )).AddRangeTo(listData);
             }
 
@@ -71,7 +71,7 @@ namespace ExpressionTreeVisualizer {
             if (node.Model.FactoryMethodNames is { }) {
                 node.Model.FactoryMethodNames.Select(methodName => (
                     $"Factory method: {methodName}",
-                    $"{BaseUrl}system.linq.expressions.expression.{methodName}"
+                    $"{baseUrl}system.linq.expressions.expression.{methodName}"
                 )).AddRangeTo(listData);
             }
 
@@ -82,7 +82,7 @@ namespace ExpressionTreeVisualizer {
             foreach (var (header, url) in listData) {
                 if (header == "---") {
                     menu.Items.Add(new Separator());
-                    return;
+                    continue;
                 }
 
                 var mi = new MenuItem() {
@@ -98,6 +98,6 @@ namespace ExpressionTreeVisualizer {
             }
         }
 
-        private const string BaseUrl = "https://docs.microsoft.com/dotnet/api/";
+        private const string baseUrl = "https://docs.microsoft.com/dotnet/api/";
     }
 }

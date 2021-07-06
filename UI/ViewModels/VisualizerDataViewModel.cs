@@ -38,7 +38,7 @@ namespace ExpressionTreeVisualizer {
                         )
                     )
                     .SelectMany(x => x.Item2.Select(y => (x.endNodeType, y)))
-                    .ToLookup(x => x.endNodeType, x => x.Item2);
+                    .ToLookup(x => x.endNodeType, x => x.y);
 
             Constants = grouped[Constant].ToList();
             Parameters = grouped[Parameter].ToList();
