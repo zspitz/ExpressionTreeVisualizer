@@ -16,12 +16,12 @@
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.DebuggerVisualizers.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <PackageReference Include="ExpressionTreeToString" Version="3.4.63" />
+    <PackageReference Include="ExpressionTreeToString" Version="3.4.65" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
     <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
-    <PackageReference Include="ZSpitz.Util" Version="0.1.105" />
-    <PackageReference Include="ZSpitz.Util.Wpf" Version="0.1.105" />
+    <PackageReference Include="ZSpitz.Util" Version="0.1.113" />
+    <PackageReference Include="ZSpitz.Util.Wpf" Version="0.1.113" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Octokit" Version="0.50.0" />
     <ProjectReference Include="..\Debuggee\Debuggee.csproj" />

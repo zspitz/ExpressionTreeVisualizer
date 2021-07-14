@@ -27,10 +27,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ExpressionTreeToString" Version="3.4.63" />
+    <PackageReference Include="ExpressionTreeToString" Version="3.4.65" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
-    <PackageReference Include="ZSpitz.Util" Version="0.1.105" />
-    <PackageReference Include="ZSpitz.Util.Wpf" Version="0.1.105" />
+    <PackageReference Include="ZSpitz.Util" Version="0.1.113" />
+    <PackageReference Include="ZSpitz.Util.Wpf" Version="0.1.113" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
   </ItemGroup>
