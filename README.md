@@ -68,4 +68,3 @@ To delete the visualizer:
 * Multiple-selection treeview is provided by [MultiSelectTreeView](https://github.com/ygoe/MultiSelectTreeView)
 * [ReadableExpressions](https://github.com/agileobjects/ReadableExpressions) for inspiration
 * [Greenshot](https://getgreenshot.org/) and [ScreenToGIF](https://www.screentogif.com/) for the screenshots
-* [Fody](https://github.com/Fody/Home/) and [Costura](https://github.com/Fody/Costura/)
