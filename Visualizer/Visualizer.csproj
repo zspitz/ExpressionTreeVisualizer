@@ -22,7 +22,7 @@
     <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
     <PackageReference Include="ZSpitz.Util" Version="0.1.113" />
     <PackageReference Include="ZSpitz.Util.Wpf" Version="0.1.113" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Octokit" Version="0.50.0" />
     <ProjectReference Include="..\Debuggee\Debuggee.csproj" />
   </ItemGroup>
